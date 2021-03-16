@@ -1,8 +1,8 @@
-package sonnicon.modtemplate;
+package progressed;
 
-import mindustry.mod.Mod;
+import mindustry.mod.*;
 
-public class ModTemplate extends Mod{
+public class ProgressedMaterials extends Mod{
 
     @Override
     public void init(){

@@ -7,11 +7,9 @@ import arc.util.*;
 import mindustry.entities.*;
 import mindustry.graphics.*;
 
-import static arc.graphics.g2d.Draw.rect;
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
 import static arc.math.Angles.*;
-import static mindustry.Vars.*;
 
 public class PMFx{
     public static final Effect
@@ -139,7 +137,7 @@ public class PMFx{
             float rot = Mathf.randomSeed((long)(e.id + x + y), 360);
             float tx = x * e.fin(Interp.pow2Out);
             float ty = y * e.fin(Interp.pow2Out);
-            PMDrawf.plus(x + tx + Tmp.v1.x, y + ty + Tmp.v1.y, 4f, rot, e.color, e.fout());
+            PMDrawf.plus(e.x + tx + Tmp.v1.x, e.y + ty + Tmp.v1.y, 4f, rot, e.color, e.fout());
         });
     });
 }

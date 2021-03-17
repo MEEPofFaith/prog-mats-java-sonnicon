@@ -6,7 +6,9 @@ import progressed.entities.bullet.*;
 
 public class PMBullets implements ContentList{
     public static BulletType
-    pixel;
+    pixel,
+    
+    sniperBoltThorium;
 
     @Override
     public void load(){
@@ -21,6 +23,10 @@ public class PMBullets implements ContentList{
             weaveScale = 10f;
             weaveMag = 2f;
             trailDelay = 7.5f;
+        }};
+
+        sniperBoltThorium = new CritBulletType(20f, 800f){{
+            lifetime = 30f;
         }};
     }
 }

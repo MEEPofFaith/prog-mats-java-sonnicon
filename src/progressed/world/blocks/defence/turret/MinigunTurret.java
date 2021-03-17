@@ -82,10 +82,10 @@ public class MinigunTurret extends ItemTurret{
                 frameSpeed = Mathf.lerpDelta(frameSpeed, 0, windDownSpeed);
             }
 
-            trueFrame = trueFrame + frameSpeed * Time.delta;
+            trueFrame = trueFrame + frameSpeed * delta();
             frame = Mathf.floor(trueFrame % 3f);
             for(int i = 0; i < 4; i++){
-                heatFrames[i] = Mathf.floor(Mathf.mod(trueFrame - (i * 3f), 12f));
+                heatFrames[i] = Mathf.mod(Mathf.floor(trueFrame % 12) - (i * 3), 12);
                 heats[i] = Mathf.lerpDelta(heats[i], 0f, cooldown);
             }
 

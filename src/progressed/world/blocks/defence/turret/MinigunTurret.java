@@ -15,7 +15,7 @@ public class MinigunTurret extends ItemTurret{
     public float windupSpeed, windDownSpeed, minFiringSpeed;
     public float barX, barY, barStroke, barLength;
     public float[] shootLocs;
-    public TextureRegion[] turretRegions = new TextureRegion[3], outlineRegions = new TextureRegion[3], heatRegions = new TextureRegion[12];
+    public TextureRegion[] turretRegions = new TextureRegion[3], heatRegions = new TextureRegion[12];
 
     public MinigunTurret(String name){
         super(name);
@@ -27,20 +27,18 @@ public class MinigunTurret extends ItemTurret{
 
         for(int i = 0; i < 3; i ++){
             turretRegions[i] = Core.atlas.find(name + "-frame-" + i);
-            outlineRegions[i] = Core.atlas.find(name + "-outline-" + i);
         }
         for(int i = 0; i < 12; i++){
             heatRegions[i] = Core.atlas.find(name + "-heat-" + i);
         }
-        region = turretRegions[0];
     }
 
     public class MinigunTurretBuild extends ItemTurretBuild{
         public float[] heats = {0f, 0f, 0f, 0f};
         public int[] heatFrames = {0, 0, 0, 0};
-        int frame, barrel;
-        float frameSpeed, trueFrame;
-        boolean shouldShoot, shouldBarrel;
+        public int frame, barrel;
+        public float frameSpeed, trueFrame;
+        public boolean shouldShoot, shouldBarrel;
 
         @Override
         public void draw(){
@@ -50,8 +48,7 @@ public class MinigunTurret extends ItemTurret{
 
             tr2.trns(rotation, -recoil);
 
-            Drawf.shadow(outlineRegions[frame], x + tr2.x - elevation, y + tr2.y - elevation, rotation - 90f);
-            Draw.rect(outlineRegions[frame], x + tr2.x, y + tr2.y, rotation - 90f);
+            Drawf.shadow(turretRegions[frame], x + tr2.x - elevation, y + tr2.y - elevation, rotation - 90f);
             Draw.rect(turretRegions[frame], x + tr2.x, y + tr2.y, rotation - 90f);
 
             for(int i = 0; i < 4; i++){
@@ -82,7 +79,7 @@ public class MinigunTurret extends ItemTurret{
                 frameSpeed = Mathf.lerpDelta(frameSpeed, 0, windDownSpeed);
             }
 
-            trueFrame = trueFrame + frameSpeed * delta();
+            trueFrame = trueFrame + frameSpeed * Time.delta;
             frame = Mathf.floor(trueFrame % 3f);
             for(int i = 0; i < 4; i++){
                 heatFrames[i] = Mathf.mod(Mathf.floor(trueFrame % 12) - (i * 3), 12);
@@ -106,7 +103,7 @@ public class MinigunTurret extends ItemTurret{
                 Liquid liquid = liquids.current();
 
                 float used = Math.min(Math.min(liquids.get(liquid), maxUsed * Time.delta), Math.max(0, ((reloadTime - reload) / coolantMultiplier) / liquid.heatCapacity)) * baseReloadSpeed();
-                frameSpeed = Mathf.lerpDelta(frameSpeed, 1f, windupSpeed * (1 + used) * liquid.heatCapacity * coolantMultiplier * peekAmmo().reloadMultiplier);
+                frameSpeed = Mathf.lerpDelta(frameSpeed, 1f, windupSpeed * (1 + used) * liquid.heatCapacity * coolantMultiplier * peekAmmo().reloadMultiplier * timeScale());
                 liquids.remove(liquid, used);
 
                 if(frame == 0 && shouldShoot && frameSpeed > minFiringSpeed){

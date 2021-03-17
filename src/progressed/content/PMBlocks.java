@@ -32,7 +32,7 @@ public class PMBlocks implements ContentList{
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 2f;
+            rotateSpeed = 4f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -65,7 +65,7 @@ public class PMBlocks implements ContentList{
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 2f;
+            rotateSpeed = 4f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -98,7 +98,7 @@ public class PMBlocks implements ContentList{
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 2f;
+            rotateSpeed = 4f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;

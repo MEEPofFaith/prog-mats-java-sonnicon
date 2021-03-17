@@ -8,6 +8,7 @@ import progressed.content.*;
 public class ProgressedMaterials extends Mod{
 
     private final ContentList[] pmContent = {
+        new PMItems(),
         new PMBullets(),
         new PMBlocks()
     };

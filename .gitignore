@@ -1,4 +1,5 @@
 /.gradle/
 /.idea/
+/bin/
+/bin/main/
 /build/
-/.bin/

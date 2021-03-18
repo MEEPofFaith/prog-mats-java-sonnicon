@@ -64,14 +64,14 @@ public class FloatingConveyor extends Conveyor{
 
                         Draw.z(Layer.blockUnder - 0.01f);
                         Drawf.shadow(sliced(regions[blendbits][frame], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f - elevation, y + Geometry.d4y(dir) * tilesize * 0.75f - elevation, rot);
-                        Draw.z(Layer.block - 0.2f);
+                        Draw.z(Layer.block - 0.199f);
                         Draw.rect(sliced(floatRegions[blendbits], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * floatRegions[blendbits].width / 4f * 0.75f, y + Geometry.d4y(dir) * floatRegions[blendbits].height / 4f * 0.75f, rot);
                     }
                 }
 
                 Draw.z(Layer.blockUnder - 0.01f);
                 Drawf.shadow(regions[blendbits][frame], x - elevation, y - elevation, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
-                Draw.z(Layer.block - 0.2f);
+                Draw.z(Layer.block - 0.199f);
                 Draw.rect(floatRegions[blendbits], x, y, floatRegions[blendbits].width / 4f * blendsclx, floatRegions[blendbits].height / 4f * blendscly, rotation * 90);
             }
         }

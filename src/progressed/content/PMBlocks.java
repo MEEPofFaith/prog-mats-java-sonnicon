@@ -145,7 +145,7 @@ public class PMBlocks implements ContentList{
         }};
 
         bit = new BitTurret("bit"){{
-            requirements(Category.turret, BuildVisibility.sandboxOnly, with(Items.copper, 50, Items.lead, 60,  Items.silicon, 40, Items.titanium, 30));
+            requirements(Category.turret, with(Items.copper, 50, Items.lead, 60,  Items.silicon, 40, Items.titanium, 30));
             size = 2;
             reloadTime = 70f;
             recoilAmount = 4f;

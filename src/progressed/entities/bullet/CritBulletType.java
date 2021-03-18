@@ -12,13 +12,17 @@ import progressed.graphics.*;
 import static mindustry.Vars.*;
 
 public class CritBulletType extends BasicBulletType{
-    public float critChance = 0.25f, critMultiplier = 5f;
+    public float critChance = 0.1f, critMultiplier = 5f;
     public Effect critEffect = PMFx.sniperCrit;
 
     public CritBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
         pierce = true;
         pierceBuilding = true;
+        ammoMultiplier = 1;
+        shootEffect = Fx.shootBig;
+        smokeEffect = Fx.shootBigSmoke;
+        drawSize = 80f;
     }
 
     public CritBulletType(float speed, float damage){

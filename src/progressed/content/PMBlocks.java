@@ -8,6 +8,7 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 import progressed.world.blocks.defence.turret.*;
+import progressed.world.blocks.power.*;
 
 import static mindustry.type.ItemStack.*;
 
@@ -20,7 +21,10 @@ public class PMBlocks implements ContentList{
     caliber,
 
     //Pixel Turrets
-    bit;
+    bit,
+    
+    //Sandbox Power
+    strobeNode, strobeInf, strobeBoost;
 
     @Override
     public void load(){
@@ -145,6 +149,15 @@ public class PMBlocks implements ContentList{
             range = 140f;
             powerUse = 1.35f;
             shootType = PMBullets.pixel;
+        }};
+
+        strobeNode = new StrobeNode("rainbow-power-node");
+
+        strobeInf = new StrobeSource("rainbow-power-source");
+
+        strobeBoost = new StrobeSource("rainbow-power-boost"){{
+            boost = true;
+            speedBoost = 100f;
         }};
     }
 }

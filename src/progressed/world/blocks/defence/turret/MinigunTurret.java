@@ -15,7 +15,8 @@ public class MinigunTurret extends ItemTurret{
     public float windupSpeed, windDownSpeed, minFiringSpeed;
     public float barX, barY, barStroke, barLength;
     public float[] shootLocs;
-    public TextureRegion[] turretRegions = new TextureRegion[3], heatRegions = new TextureRegion[12];
+
+    protected TextureRegion[] turretRegions = new TextureRegion[3], heatRegions = new TextureRegion[12];
 
     public MinigunTurret(String name){
         super(name);

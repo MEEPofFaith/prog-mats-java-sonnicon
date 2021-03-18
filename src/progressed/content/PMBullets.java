@@ -71,6 +71,8 @@ public class PMBullets implements ContentList{
 
         sniperBoltThorium = new CritBulletType(20f, 800f){{
             lifetime = 30f;
+            knockback = 12f;
+            height = 12f;
         }};
 
         pixel = new BitBulletType(2f, 5f){{

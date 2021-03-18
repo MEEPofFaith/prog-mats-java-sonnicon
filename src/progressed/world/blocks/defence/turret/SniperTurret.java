@@ -12,7 +12,8 @@ import static arc.Core.*;
 public class SniperTurret extends ItemTurret{
     public int partCount = 3;
     public float split, chargeMoveFract = 0.9f;
-    public TextureRegion[] outlines, parts;
+
+    protected TextureRegion[] outlines, parts;
 
     public SniperTurret(String name){
         super(name);

@@ -43,4 +43,18 @@ public class ProgressedMaterials extends Mod{
             Log.info("@: Loaded content list: @", getClass().getSimpleName(), list.getClass().getSimpleName());
         }
     }
+
+    public static void print(Object... args){
+        StringBuilder builder = new StringBuilder();
+        if(args == null){
+            builder.append("null");
+        }else{
+            for(int i = 0; i < args.length; i++){
+                builder.append(args[i]);
+                if(i < args.length - 1) builder.append(", ");
+            }
+        }
+
+        Log.info("&lc&fb[PM]&fr @", builder.toString());
+    }
 }

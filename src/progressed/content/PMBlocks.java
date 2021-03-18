@@ -8,6 +8,7 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 import progressed.world.blocks.defence.turret.*;
+import progressed.world.blocks.distribution.*;
 import progressed.world.blocks.power.*;
 
 import static mindustry.type.ItemStack.*;
@@ -22,6 +23,9 @@ public class PMBlocks implements ContentList{
 
     //Pixel Turrets
     bit,
+
+    //Random distribution
+    floatingConveyor,
     
     //Sandbox Power
     strobeNode, strobeInf, strobeBoost;
@@ -149,6 +153,13 @@ public class PMBlocks implements ContentList{
             range = 140f;
             powerUse = 1.35f;
             shootType = PMBullets.pixel;
+        }};
+
+        floatingConveyor = new FloatingConveyor("floating-conveyor"){{
+            requirements(Category.distribution, with(Items.copper, 1, Items.metaglass, 2, Items.titanium, 1));
+            health = 15;
+            speed = 0.08f;
+            displayedSpeed = 11f;
         }};
 
         strobeNode = new StrobeNode("rainbow-power-node");

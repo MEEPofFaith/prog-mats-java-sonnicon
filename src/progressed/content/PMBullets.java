@@ -111,6 +111,21 @@ public class PMBullets implements ContentList{
             public void despawned(Bullet b){
                 //Do nothing
             }
+
+            @Override
+            public void hit(Bullet b, float x, float y){
+                //Do nothing
+            }
+
+            @Override
+            public void hitTile(Bullet b, Building build, float initialHealth, boolean direct){
+                //do nothing
+            }
+
+            @Override
+            public void update(Bullet b){
+                //Do nothing
+            }
         };
     }
 }

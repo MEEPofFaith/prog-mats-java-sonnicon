@@ -39,7 +39,7 @@ public class PMUtls{
         int tx = World.toTile(wx);
         int ty = World.toTile(wy);
 
-        int tileRange = Mathf.floorPositive(range / Vars.tilesize + 1f);
+        int tileRange = Mathf.floorPositive(range / Vars.tilesize);
 
         for(int x = -tileRange + tx; x <= tileRange + tx; x++){
             for(int y = -tileRange + ty; y <= tileRange + ty; y++){
@@ -59,7 +59,7 @@ public class PMUtls{
         int tx = World.toTile(wx);
         int ty = World.toTile(wy);
 
-        int tileRange = Mathf.floorPositive(range / Vars.tilesize + 1f);
+        int tileRange = Mathf.floorPositive(range / Vars.tilesize);
 
         for(int x = -tileRange + tx; x <= tileRange + tx; x++){
             for(int y = -tileRange + ty; y <= tileRange + ty; y++){

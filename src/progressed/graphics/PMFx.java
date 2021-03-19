@@ -165,7 +165,7 @@ public class PMFx{
         Bullet b = (Bullet)e.data;
 
         if(b != null && b.type instanceof BlackHoleBulletType){
-            color(Color.black);
+            color(Color.black, Mathf.curve(e.time, 0f, 15f));
             float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
             Fill.circle(b.x + trnsx(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), b.y + trnsy(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), ((float[])b.data)[3] * e.fout());
 
@@ -182,13 +182,13 @@ public class PMFx{
         });
 
         stroke(2f * e.fout());
-        randLenVectors(e.id, 5, e.fin() * 15f, (x, y) -> {
+        randLenVectors(e.id, 4, e.fin() * 15f, (x, y) -> {
             float ang = Mathf.angle(x, y);
             lineAngle(e.x + x, e.y + y, ang, e.fout() * 3 + 1f);
         });
 
         color(e.color);
-        randLenVectors(e.id, 5, e.fin() * 15f, (x, y) -> {
+        randLenVectors(e.id * 2, 4, e.fin() * 15f, (x, y) -> {
             float ang = Mathf.angle(x, y);
             lineAngle(e.x + x, e.y + y, ang, e.fout() * 3 + 1f);
         });

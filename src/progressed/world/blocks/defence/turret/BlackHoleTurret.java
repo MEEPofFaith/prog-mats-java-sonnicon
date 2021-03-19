@@ -54,7 +54,7 @@ public class BlackHoleTurret extends PowerTurret{
         public void draw(){
             super.draw();
 
-            Draw.color(team.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(10f, 0.4f)), alpha);
+            Draw.color(team.color.cpy().lerp(Color.black, 0.7f + Mathf.absin(10f, 0.2f)), alpha);
             Draw.rect(spaceRegion, x + tr2.x, y + tr2.y, rotation - 90f);
             Draw.reset();
         }

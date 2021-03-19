@@ -32,7 +32,7 @@ public class BlackHoleCataclysmType extends BulletType{
 
     @Override
     public void update(Bullet b) {
-        //[radius, uForce, uScaledForce, bForce, bScaledForce, range, c1, c2]
+        //[radius, uForce, uScaledForce, bForce, bScaledForce, range, c1, c2, world load]
         Object[] rawData = (Object[])b.data;
 
         float[] data = new float[6];
@@ -72,12 +72,16 @@ public class BlackHoleCataclysmType extends BulletType{
         }
 
         if(b.time < growTime * 2f){ //*inhales* SPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACE
-            PMUtls.trueEachTile(b.x, b.y, data[0] * scl, tile -> {
-                tile.setAir();
-                tile.setFloorNet(Blocks.space);
-                Vars.world.notifyChanged(tile);
+            PMUtls.trueEachTile(b.x, b.y, (data[0] - 8f) * scl, tile -> {
+                if(tile.floor() != Blocks.space){
+                    tile.setAir();
+                    tile.setFloorNet(Blocks.space);
+                    Vars.world.notifyChanged(tile);
+                }
             });
+        }else if((boolean)rawData[8]){
             Events.fire(new WorldLoadEvent());
+            rawData[8] = false;
         }
     }
 

@@ -81,7 +81,7 @@ public class BlackHoleBulletType extends BulletType{
                                 float bForce = (((float[])b.data)[6] * cataclysmBulletForceMul + ((float[])other.data)[6] * type.cataclysmBulletForceMul) / 2f;
                                 float bScaledForce = (((float[])b.data)[7] * cataclysmBulletForceMul + ((float[])other.data)[7] * type.cataclysmBulletForceMul) / 2f;
                                 float range = (cataclymForceRange + type.cataclymForceRange) / 2f;
-                                Object[] cataclysmParams = {radius, uForce, uScaledForce, bForce, bScaledForce, range, b.team.color, other.team.color};
+                                Object[] cataclysmParams = {radius, uForce, uScaledForce, bForce, bScaledForce, range, b.team.color, other.team.color, true};
 
                                 float midX = (b.x + other.x) / 2f;
                                 float midY = (b.y + other.y) / 2f;
@@ -90,7 +90,7 @@ public class BlackHoleBulletType extends BulletType{
                                 PMBullets.cataclysm.create(b.owner, b.team, midX, midY, 0f, 0f, 1f, 1f, cataclysmParams);
                                 absorbBullet(b, other, true);
                             }
-                        }else{
+                        }else if(!(other.type instanceof BlackHoleCataclysmType)){
                             absorbBullet(b, other, false);
                         }
                     }

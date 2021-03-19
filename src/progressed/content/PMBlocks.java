@@ -12,6 +12,7 @@ import progressed.world.blocks.distribution.*;
 import progressed.world.blocks.power.*;
 
 import static mindustry.type.ItemStack.*;
+import static mindustry.Vars.*;
 
 public class PMBlocks implements ContentList{
     public static Block
@@ -23,6 +24,9 @@ public class PMBlocks implements ContentList{
 
     //Pixel Turrets
     bit,
+
+    //Misc
+    tinker,
 
     //Random distribution
     floatingConveyor,
@@ -153,6 +157,21 @@ public class PMBlocks implements ContentList{
             range = 140f;
             powerUse = 1.35f;
             shootType = PMBullets.pixel;
+        }};
+
+        tinker = new LaunchTurret("tinker"){{
+            requirements(Category.turret, with(Items.copper, 125, Items.lead, 75, Items.silicon, 30, Items.titanium, 50));
+            size = 3;
+            reloadTime = 60f * 10f;
+            minRange = 5f * tilesize;
+            range = 40 * tilesize;
+            velocityInaccuracy = 0.2f;
+            cooldown = 0.03f;
+            recoilAmount = 6f;
+            restitution = 0.02f;
+            shootShake = 2f;
+            shootLength = 16f;
+            ammo(PMItems.basicSentryBox, PMBullets.basicSentryLaunch, PMItems.dashSentryBox, PMBullets.dashSentryLaunch);
         }};
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{

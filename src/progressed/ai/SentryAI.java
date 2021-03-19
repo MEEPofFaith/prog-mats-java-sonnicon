@@ -13,6 +13,6 @@ public class SentryAI extends AIController{
 
     @Override
     protected boolean retarget(){
-        return timer.get(timerTarget, target == null ? 10 : 20);
+        return timer.get(timerTarget, target == null ? 10f : 20f);
     }
 }

@@ -5,6 +5,7 @@ import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.Pal;
 import progressed.entities.bullet.*;
+import progressed.graphics.*;
 
 public class PMBullets implements ContentList{
     public static BulletType
@@ -12,7 +13,9 @@ public class PMBullets implements ContentList{
 
     sniperBoltThorium,
 
-    pixel;
+    pixel,
+    
+    basicSentryLaunch, dashSentryLaunch;
 
     @Override
     public void load(){
@@ -87,5 +90,9 @@ public class PMBullets implements ContentList{
             weaveMag = 2f;
             trailDelay = 7.5f;
         }};
+
+        basicSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.basicSentry);
+
+        dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
     }
 }

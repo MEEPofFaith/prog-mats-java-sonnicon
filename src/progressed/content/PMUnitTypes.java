@@ -1,10 +1,12 @@
 package progressed.content;
 
 import arc.func.*;
+import arc.graphics.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import progressed.ai.*;
 import progressed.entities.units.*;
@@ -13,14 +15,14 @@ import progressed.world.units.*;
 public class PMUnitTypes implements ContentList{
     //Steal from Project Unity
     private static final Prov<?>[] constructors = new Prov[]{
-        SentryBase::new
+        Sentry::new
     };
 
     //Steal from Project Unity
     private static final int[] classIDs = new int[constructors.length];
 
     //sentry
-    public static UnitType basicSentry;
+    public static UnitType basicSentry, strikeSentry, dashSentry;
 
     //Steal from Project Unity
     public static int getClassId(int index){
@@ -45,7 +47,7 @@ public class PMUnitTypes implements ContentList{
         }
 
         //Region Sentry Units
-        setEntity("basic-sentry", SentryBase::new);
+        setEntity("basic-sentry", Sentry::new);
         basicSentry = new SentryUnit("basic-sentry"){{
             defaultController = SentryAI::new;
 
@@ -73,5 +75,47 @@ public class PMUnitTypes implements ContentList{
                 }};
             }});
         }};
+
+        setEntity("strike-sentry", Sentry::new);
+        strikeSentry = new SentryUnit("strike-sentry"){{
+            //TODO implement missiles
+        }};
+
+        setEntity("dash-sentry", Sentry::new);
+        dashSentry = new SentryUnit("dash-sentry"){
+            float len = 56f;
+            {
+                health = 450f;
+                rotateSpeed = 30f;
+                range = len * 6f;
+                duration = 12f * 60f;
+                itemCapacity = 15;
+
+                weapons.add(new Weapon(name + "-laser"){{
+                    top = true;
+                    rotate = true;
+                    mirror = false;
+                    rotateSpeed = 60f;
+                    reload = 20f;
+                    x = 0f;
+                    y = -2f;
+                    shootY = 4.25f;
+                    shootCone = 2;
+                    shootSound = Sounds.laser;
+                    bullet = new LaserBulletType(90f){
+                        {
+                            length = len;
+                            recoil = -10f;
+                            colors = new Color[]{Pal.surge.cpy().a(0.4f), Pal.surge, Color.white};
+                        }
+
+                        @Override
+                        public float range(){
+                            return length * 6f;
+                        };
+                    };
+                }});
+            }
+        };
     }
 }

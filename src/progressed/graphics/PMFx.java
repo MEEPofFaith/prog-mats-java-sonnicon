@@ -139,5 +139,10 @@ public class PMFx{
             float ty = y * e.fin(Interp.pow2Out);
             PMDrawf.plus(e.x + tx + Tmp.v1.x, e.y + ty + Tmp.v1.y, 4f, rot, e.color, e.fout());
         });
+    }),
+    
+    sentryTrail = new Effect(150f, e -> {
+        color(e.color);
+        Fill.circle(e.x, e.y, e.rotation * e.fout());
     });
 }

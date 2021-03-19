@@ -5,7 +5,9 @@ import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.entities.*;
+import mindustry.gen.*;
 import mindustry.graphics.*;
+import progressed.entities.bullet.*;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -144,5 +146,57 @@ public class PMFx{
     sentryTrail = new Effect(150f, e -> {
         color(e.color);
         Fill.circle(e.x, e.y, e.rotation * e.fout());
+    }),
+    
+    kugelblitzChargeBegin = new Effect(80f, e -> {
+        Draw.z(Layer.max - 0.01f);
+        Fill.light(e.x, e.y, 60, 5f * e.fin(), e.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(10f, 0.4f)), Color.black);
+    }),
+    
+    kugelblitzCharge = new Effect(38f, e -> {
+        color(e.color.cpy().lerp(Color.black, 0.5f), Color.black, e.fin());
+        randLenVectors(e.id, 2, 45f * e.fout(), e.rotation, 180f, (x, y) -> {
+            float ang = Mathf.angle(x, y);
+            Lines.lineAngle(e.x + x, e.y + y, ang, e.fslope() * 5f);
+        });
+    }),
+    
+    blackHoleSwirl = new Effect(90f, e -> {
+        Bullet b = (Bullet)e.data;
+
+        if(b != null && b.type instanceof BlackHoleBulletType){
+            color(Color.black);
+            float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
+            Fill.circle(b.x + trnsx(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), b.y + trnsy(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), ((float[])b.data)[3] * e.fout());
+
+            Drawf.light(b.x + trnsx(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), b.y + trnsy(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), (((float[])b.data)[3] + 3f) * e.fout(), Draw.getColor(), 0.7f);
+        }
+    }).layer(Layer.max - 0.5f),
+    
+    blackHoleDespawn = new Effect(24f, e -> {
+        color(Color.darkGray, Color.black, e.fin());
+
+        e.scaled(12f, s -> {
+            stroke(2f * e.fout());
+            Lines.circle(e.x, e.y, s.fin() * 10f);
+        });
+
+        stroke(2f * e.fout());
+        randLenVectors(e.id, 5, e.fin() * 15f, (x, y) -> {
+            float ang = Mathf.angle(x, y);
+            lineAngle(e.x + x, e.y + y, ang, e.fout() * 3 + 1f);
+        });
+
+        color(e.color);
+        randLenVectors(e.id, 5, e.fin() * 15f, (x, y) -> {
+            float ang = Mathf.angle(x, y);
+            lineAngle(e.x + x, e.y + y, ang, e.fout() * 3 + 1f);
+        });
+    }),
+    
+    blackHoleAbsorb = new Effect(20f, e -> {
+        color(Color.black);
+        stroke(2f * e.fout(Interp.pow3In));
+        Lines.circle(e.x, e.y, 8f * e.fout(Interp.pow3In));
     });
 }

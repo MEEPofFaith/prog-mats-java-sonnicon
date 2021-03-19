@@ -1,11 +1,11 @@
 package progressed.content;
 
-import mindustry.content.Fx;
+import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
-import mindustry.graphics.Pal;
+import mindustry.gen.*;
+import mindustry.graphics.*;
 import progressed.entities.bullet.*;
-import progressed.graphics.*;
 
 public class PMBullets implements ContentList{
     public static BulletType
@@ -15,7 +15,9 @@ public class PMBullets implements ContentList{
 
     pixel,
     
-    basicSentryLaunch, dashSentryLaunch;
+    basicSentryLaunch, dashSentryLaunch,
+    
+    blackHole, cataclysm, absorbed;
 
     @Override
     public void load(){
@@ -94,5 +96,21 @@ public class PMBullets implements ContentList{
         basicSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.basicSentry);
 
         dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
+
+        blackHole = new BlackHoleBulletType(0.5f, 575f / 30f){{
+            lifetime = 420f;
+            backMove = false;
+            lightRadius = 8f;
+            lightOpacity = 0.7f;
+        }};
+
+        cataclysm = new BlackHoleCataclysmType();
+
+        absorbed = new BulletType(0f, 0f){
+            @Override
+            public void despawned(Bullet b){
+                //Do nothing
+            }
+        };
     }
 }

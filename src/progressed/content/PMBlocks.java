@@ -2,11 +2,12 @@ package progressed.content;
 
 import mindustry.content.*;
 import mindustry.ctype.*;
-import mindustry.gen.Sounds;
-import mindustry.graphics.Pal;
+import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
+import progressed.graphics.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.distribution.*;
 import progressed.world.blocks.power.*;
@@ -26,7 +27,7 @@ public class PMBlocks implements ContentList{
     bit,
 
     //Misc
-    tinker,
+    tinker, blackhole,
 
     //Random distribution
     floatingConveyor,
@@ -172,6 +173,27 @@ public class PMBlocks implements ContentList{
             shootShake = 2f;
             shootLength = 16f;
             ammo(PMItems.basicSentryBox, PMBullets.basicSentryLaunch, PMItems.dashSentryBox, PMBullets.dashSentryLaunch);
+        }};
+
+        blackhole = new BlackHoleTurret("blackhole"){{
+            requirements(Category.turret, with(Items.titanium, 100, Items.thorium, 150, Items.plastanium, 250, Items.surgeAlloy, 250, Items.silicon, 800, Items.phaseFabric, 500, PMItems.techtanite, 500));
+            size = 4;
+            health = 2140;
+            reloadTime = 520f;
+            range = 128f;
+            shootEffect = smokeEffect = Fx.none;
+            chargeBeginEffect = PMFx.kugelblitzChargeBegin;
+            chargeEffect = PMFx.kugelblitzCharge;
+            chargeMaxDelay = 30f;
+            chargeEffects = 16;
+            chargeTime = PMFx.kugelblitzChargeBegin.lifetime;
+            recoilAmount = 2f;
+            restitution = 0.015f;
+            cooldown = 0.005f;
+            shootLength = 0f;
+            rotateSpeed = 1.25f;
+            shootSound = Sounds.release;
+            shootType = PMBullets.blackHole;
         }};
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{

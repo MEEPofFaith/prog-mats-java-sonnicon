@@ -9,7 +9,9 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import progressed.ai.*;
+import progressed.entities.bullet.*;
 import progressed.entities.units.*;
+import progressed.graphics.PMFx;
 import progressed.world.units.*;
 
 public class PMUnitTypes implements ContentList{
@@ -78,7 +80,40 @@ public class PMUnitTypes implements ContentList{
 
         setEntity("strike-sentry", Sentry::new);
         strikeSentry = new SentryUnit("strike-sentry"){{
-            //TODO implement missiles
+            health = 150f;
+
+            weapons.add(new Weapon(name + "-hole"){{
+                rotate = mirror = alternate = top = false;
+                x = y = recoil = shootY = 0f;
+                reload = 20f;
+                shootCone = 360f;
+                inaccuracy = 15f;
+                shootSound = Sounds.missile;
+                bullet = new StrikeBulletType(2.4f, 40f, "prog-mats-storm"){{
+                    lifetime = 90f;
+                    
+                    splashDamage = 150f;
+                    splashDamageRadius = 42f;
+                    homingPower = 0.035f;
+                    homingRange = 200f;
+
+                    hitSound = Sounds.explosion;
+                    hitShake = 1.5f;
+
+                    trailParam = 3f;
+                    trailEffect = PMFx.missileTrailSmall;
+
+                    despawnEffect = PMFx.smallBoom;
+
+                    autoDropRadius = 12f;
+                    stopRadius = 8f;
+
+                    riseEngineSize = fallEngineSize = 5f;
+
+                    trailSize = 0.2f;
+                    targetRadius = 0.5f;
+                }};
+            }});
         }};
 
         setEntity("dash-sentry", Sentry::new);

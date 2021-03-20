@@ -173,7 +173,7 @@ public class PMBlocks implements ContentList{
             restitution = 0.02f;
             shootShake = 2f;
             shootLength = 16f;
-            ammo(PMItems.basicSentryBox, PMBullets.basicSentryLaunch, PMItems.dashSentryBox, PMBullets.dashSentryLaunch);
+            ammo(PMItems.basicSentryBox, PMBullets.basicSentryLaunch, PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch, PMItems.dashSentryBox, PMBullets.dashSentryLaunch);
         }};
 
         blackhole = new BlackHoleTurret("blackhole"){{

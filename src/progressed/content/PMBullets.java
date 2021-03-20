@@ -15,7 +15,7 @@ public class PMBullets implements ContentList{
 
     pixel,
     
-    basicSentryLaunch, dashSentryLaunch,
+    basicSentryLaunch, strikeSentryLaunch, dashSentryLaunch,
     
     blackHole, cataclysm, absorbed;
 
@@ -94,6 +94,8 @@ public class PMBullets implements ContentList{
         }};
 
         basicSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.basicSentry);
+
+        strikeSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.strikeSentry);
 
         dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
 

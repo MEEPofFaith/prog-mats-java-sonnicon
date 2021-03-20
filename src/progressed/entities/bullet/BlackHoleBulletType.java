@@ -67,7 +67,7 @@ public class BlackHoleBulletType extends BulletType{
             });
 
             Groups.bullet.intersect(b.x - ((float[])b.data)[0], b.y - ((float[])b.data)[0], ((float[])b.data)[0] * 2f, ((float[])b.data)[0] * 2f, other -> {
-                if(other != null && Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[0]) && b != other && b.team != other.team && other.type.speed > 0.01f){
+                if(other != null && Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[0]) && b != other && b.team != other.team && other.type.speed > 0.01f && !checkType(other.type)){
                     Vec2 impulse = Tmp.v1.set(b).sub(other).limit((((float[])b.data)[6] + (1f - other.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[7]) * Time.delta);
                     other.vel().add(impulse);
 
@@ -113,6 +113,10 @@ public class BlackHoleBulletType extends BulletType{
     @Override
     public void despawned(Bullet b){
         despawnEffect.at(b.x, b.y, b.rotation(), b.team.color);
+    }
+
+    public boolean checkType(BulletType type){ //Returns true for bullets immune to suction.
+        return (type instanceof StrikeBulletType);
     }
 
     public void absorbBullet(Bullet b, Bullet other, boolean cataclysm){

@@ -1,19 +1,20 @@
 package progressed.world.blocks.distribution;
 
 import arc.*;
+import arc.graphics.*;
 import arc.graphics.g2d.*;
-import arc.math.geom.*;
 import arc.util.*;
-import mindustry.entities.units.BuildPlan;
+import mindustry.entities.units.*;
+import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.blocks.distribution.*;
 
 import static mindustry.Vars.*;
 
 public class FloatingConveyor extends Conveyor{
-    public float elevation = -1f;
+    public Color coverColor;
 
-    protected TextureRegion[] floatRegions = new TextureRegion[5];
+    protected TextureRegion[] floatRegions = new TextureRegion[5], coverRegions = new TextureRegion[5];
 
     public FloatingConveyor(String name){
         super(name);
@@ -26,6 +27,7 @@ public class FloatingConveyor extends Conveyor{
         super.load();
         for(int i = 0; i < 5; i++){
             floatRegions[i] = Core.atlas.find(name + "-float-" + i);
+            coverRegions[i] = Core.atlas.find(name + "-cover-" + i);
         }
     }
 
@@ -33,7 +35,7 @@ public class FloatingConveyor extends Conveyor{
     public void init(){
         super.init();
 
-        if(elevation < 0) elevation = size * 2f;
+        if(coverColor == null) coverColor = Pal.shadow;
     }
 
     @Override
@@ -44,7 +46,11 @@ public class FloatingConveyor extends Conveyor{
 
             if(bits == null) return;
 
-            TextureRegion region = floatRegions[bits[0]];
+            Draw.color(coverColor);
+            TextureRegion region = coverRegions[bits[0]];
+            Draw.rect(region, req.drawx(), req.drawy(), region.width * bits[1] * Draw.scl, region.height * bits[2] * Draw.scl, req.rotation * 90);
+            Draw.color();
+            region = floatRegions[bits[0]];
             Draw.rect(region, req.drawx(), req.drawy(), region.width * bits[1] * Draw.scl, region.height * bits[2] * Draw.scl, req.rotation * 90);
         }
     }
@@ -54,27 +60,20 @@ public class FloatingConveyor extends Conveyor{
         public void draw(){
             super.draw();
             if(tile().floor().isDeep()){
-                int frame = enabled && clogHeat <= 0.5f ? (int)((Time.time * speed * 8f * timeScale) % 4) : 0;
-
-                //draw extra conveyors facing this one for non-square tiling purposes
-                for(int i = 0; i < 4; i++){
-                    if((blending & (1 << i)) != 0){
-                        int dir = rotation - i;
-                        float rot = i == 0 ? rotation * 90 : (dir)*90;
-
-                        Draw.z(Layer.blockUnder - 0.01f);
-                        Drawf.shadow(sliced(regions[blendbits][frame], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * tilesize * 0.75f - elevation, y + Geometry.d4y(dir) * tilesize * 0.75f - elevation, rot);
-                        Drawf.shadow(sliced(floatRegions[blendbits], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * floatRegions[blendbits].width / 4f * 0.75f - elevation, y + Geometry.d4y(dir) * floatRegions[blendbits].height / 4f * 0.75f - elevation, rot);
-                        Draw.z(Layer.block - 0.09f);
-                        Draw.rect(sliced(floatRegions[blendbits], i != 0 ? SliceMode.bottom : SliceMode.top), x + Geometry.d4x(dir) * floatRegions[blendbits].width / 4f * 0.75f, y + Geometry.d4y(dir) * floatRegions[blendbits].height / 4f * 0.75f, rot);
-                    }
-                }
-
-                Draw.z(Layer.blockUnder - 0.01f);
-                Drawf.shadow(regions[blendbits][frame], x - elevation, y - elevation, tilesize * blendsclx, tilesize * blendscly, rotation * 90);
-                Drawf.shadow(floatRegions[blendbits], x - elevation, y - elevation, floatRegions[blendbits].width / 4f * blendsclx, floatRegions[blendbits].height / 4f * blendscly, rotation * 90);
                 Draw.z(Layer.block - 0.09f);
+                Draw.color(coverColor);
+                Draw.rect(coverRegions[blendbits], x, y, coverRegions[blendbits].width / 4f * blendsclx, coverRegions[blendbits].height / 4f * blendscly, rotation * 90);
+                Draw.color();
+
+                Draw.z(Layer.block - 0.08f);
                 Draw.rect(floatRegions[blendbits], x, y, floatRegions[blendbits].width / 4f * blendsclx, floatRegions[blendbits].height / 4f * blendscly, rotation * 90);
+            }
+        }
+
+        @Override
+        public void unitOn(Unit unit){
+            if(!tile().floor().isDeep()){
+                super.unitOn(unit);
             }
         }
     }

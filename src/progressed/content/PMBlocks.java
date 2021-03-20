@@ -1,5 +1,6 @@
 package progressed.content;
 
+import arc.graphics.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
@@ -197,10 +198,11 @@ public class PMBlocks implements ContentList{
         }};
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{
-            requirements(Category.distribution, with(Items.copper, 1, Items.metaglass, 2, Items.titanium, 1));
+            requirements(Category.distribution, with(Items.lead, 2, Items.metaglass, 4, Items.titanium, 1));
             health = 15;
             speed = 0.08f;
             displayedSpeed = 11f;
+            coverColor = Color.sky.cpy().a(0.5f);
         }};
 
         strobeNode = new StrobeNode("rainbow-power-node");

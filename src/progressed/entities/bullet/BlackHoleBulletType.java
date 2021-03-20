@@ -19,7 +19,7 @@ public class BlackHoleBulletType extends BulletType{
     public Effect absorbEffect = PMFx.blackHoleAbsorb, swirlEffect = PMFx.blackHoleSwirl;
     public float cataclysmRadius = 25f * 8f;
     public float cataclysmForceMul = 5f, cataclysmBulletForceMul = 5f, cataclymForceRange = 18f * 8f;
-    public float suctionRadius = 64f, size = 5f, damageRadius = 24f;
+    public float suctionRadius = 96f, size = 5f, damageRadius = 32f;
     public float force = 90f, scaledForce = 80f, bulletForce = 0.8f, bulletScaledForce = 1.2f;
     public float swirlSize = 4f;
 

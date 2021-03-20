@@ -26,7 +26,7 @@ public class Sentry extends UnitEntity{
 
     @Override
     public int cap(){
-        return count() * 5;
+        return count() + 5;
     }
 
     @Override

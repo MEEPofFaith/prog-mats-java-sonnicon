@@ -171,7 +171,7 @@ public class PMFx{
 
             Drawf.light(b.x + trnsx(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), b.y + trnsy(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), (((float[])b.data)[3] + 3f) * e.fout(), Draw.getColor(), 0.7f);
         }
-    }).layer(Layer.max - 0.5f),
+    }).layer(Layer.max - 0.02f),
     
     blackHoleDespawn = new Effect(24f, e -> {
         color(Color.darkGray, Color.black, e.fin());
@@ -192,13 +192,13 @@ public class PMFx{
             float ang = Mathf.angle(x, y);
             lineAngle(e.x + x, e.y + y, ang, e.fout() * 3 + 1f);
         });
-    }),
+    }).layer(Layer.max - 0.03f),
     
     blackHoleAbsorb = new Effect(20f, e -> {
         color(Color.black);
         stroke(2f * e.fout(Interp.pow3In));
         Lines.circle(e.x, e.y, 8f * e.fout(Interp.pow3In));
-    }),
+    }).layer(Layer.max - 0.04f),
     
     particle = new Effect(38f, e -> {
         color(e.color);

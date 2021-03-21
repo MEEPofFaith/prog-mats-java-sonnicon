@@ -15,7 +15,7 @@ import progressed.graphics.*;
 import progressed.util.*;
 
 public class BlackHoleBulletType extends BulletType{
-    public float maxHealthReduction = 1f, bulletAbsorbPercent = 0.05f, damageIncreasePercent = 0.005f, strengthIncreasePercent = 0.005f;
+    public float maxHealthReduction = 1f, bulletAbsorbPercent = 0.05f, hitSizeScl = 0.02f, damageIncreasePercent = 0.005f, strengthIncreasePercent = 0.005f;
     public Effect absorbEffect = PMFx.blackHoleAbsorb, swirlEffect = PMFx.blackHoleSwirl;
     public float cataclysmRadius = 25f * 8f;
     public float cataclysmForceMul = 5f, cataclysmBulletForceMul = 5f, cataclymForceRange = 18f * 8f;
@@ -52,7 +52,7 @@ public class BlackHoleBulletType extends BulletType{
                     unit.impulseNet(Tmp.v1.set(b).sub(unit).limit((((float[])b.data)[4] + (1f - unit.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[5]) * Time.delta));
 
                     if(unit.within(b.x, b.y, ((float[])b.data)[1])){
-                        float scl = unit.dst(b) / ((float[])b.data)[1];
+                        float scl = (unit.dst(b) / ((float[])b.data)[1]) * (unit.type.hitSize * hitSizeScl);
                         b.damage += b.damage * scl * damageIncreasePercent;
                         unit.maxHealth -= scl * maxHealthReduction;
                         
@@ -60,7 +60,7 @@ public class BlackHoleBulletType extends BulletType{
                         if(unit.maxHealth < 0f) unit.kill();
 
                         for(int i = 0; i < ((float[])b.data).length; i++){
-                            ((float[])b.data)[i] *= scl * strengthIncreasePercent;
+                            ((float[])b.data)[i] += ((float[])b.data)[i] * scl * strengthIncreasePercent;
                         }
                     }
                 }
@@ -75,7 +75,7 @@ public class BlackHoleBulletType extends BulletType{
                         if(other.type instanceof BlackHoleBulletType){
                             BlackHoleBulletType type = (BlackHoleBulletType)other.type; //Pattern matching in instanceof when hhhhh
                             float radius = (cataclysmRadius + type.cataclysmRadius) / 2f;
-                            if(radius > 0){
+                            if(radius > 0){ //Do not create negative radius cataclysms. I have no idea what this would cause anyways.
                                 float uForce = (((float[])b.data)[4] * cataclysmForceMul + ((float[])other.data)[4] * type.cataclysmForceMul) / 2f;
                                 float uScaledForce = (((float[])b.data)[5] * cataclysmForceMul + ((float[])other.data)[5] * type.cataclysmForceMul) / 2f;
                                 float bForce = (((float[])b.data)[6] * cataclysmBulletForceMul + ((float[])other.data)[6] * type.cataclysmBulletForceMul) / 2f;
@@ -90,13 +90,15 @@ public class BlackHoleBulletType extends BulletType{
                                 PMBullets.cataclysm.create(b.owner, b.team, midX, midY, 0f, 0f, 1f, 1f, cataclysmParams);
                                 absorbBullet(b, other, true);
                             }
-                        }else if(!(other.type instanceof BlackHoleCataclysmType)){
+                        }else{
                             absorbBullet(b, other, false);
                         }
                     }
                 }
             });
         }
+
+        super.update(b);
     }
 
     @Override
@@ -106,17 +108,25 @@ public class BlackHoleBulletType extends BulletType{
     }
 
     @Override
-    public void drawLight(Bullet b) {
+    public void drawLight(Bullet b){
         Drawf.light(b.team, b, lightRadius, b.team.color, lightOpacity);
     }
 
     @Override
     public void despawned(Bullet b){
         despawnEffect.at(b.x, b.y, b.rotation(), b.team.color);
+
+        hitSound.at(b);
+
+        Effect.shake(despawnShake, despawnShake, b);
+
+        if(!b.hit && (fragBullet != null || splashDamageRadius > 0f || lightning > 0)){
+            hit(b);
+        }
     }
 
     public boolean checkType(BulletType type){ //Returns true for bullets immune to suction.
-        return (type instanceof StrikeBulletType) || (type instanceof UnitSpawnStrikeBulletType) || (type instanceof ParticleBulletType);
+        return (type instanceof StrikeBulletType) || (type instanceof UnitSpawnStrikeBulletType) || (type instanceof ParticleBulletType) || (type instanceof BlackHoleCataclysmType);
     }
 
     public void absorbBullet(Bullet b, Bullet other, boolean cataclysm){

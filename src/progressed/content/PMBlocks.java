@@ -18,8 +18,14 @@ import static mindustry.Vars.*;
 
 public class PMBlocks implements ContentList{
     public static Block
+    //Eruptors
+    flame, blaze, inferno,
+
     //Miniguns
     minigun, miinigun, mivnigun,
+
+    //Teslas
+    shock, spark, storm,
 
     //Crit Snipers
     caliber,
@@ -28,7 +34,13 @@ public class PMBlocks implements ContentList{
     bit,
 
     //Misc
-    tinker, blackhole,
+    tinker,
+
+    //Missiles
+    firestorm, strikedown, arbiter,
+
+    //Misc
+    blackhole,
 
     //Random distribution
     floatingConveyor,
@@ -38,6 +50,12 @@ public class PMBlocks implements ContentList{
 
     @Override
     public void load(){
+        flame = new Block("flame");
+
+        blaze = new Block("blaze");
+
+        inferno = new Block("inferno");
+
         minigun = new MinigunTurret("minigun"){{
             requirements(Category.turret, with(Items.copper, 200, Items.graphite, 175, Items.titanium, 100, Items.thorium, 80));
             size = 4;
@@ -137,6 +155,12 @@ public class PMBlocks implements ContentList{
             ammo(Items.copper, PMBullets.standardCopperMini, Items.graphite, PMBullets.standardDenseMini, Items.silicon, PMBullets.standardHomingMini, Items.pyratite, PMBullets.standardIncendiaryMini, Items.thorium, PMBullets.standardThoriumMini, Items.blastCompound, PMBullets.standardExplosiveMini);
         }};
 
+        shock = new Block("shock");
+
+        spark = new Block("spark");
+
+        storm = new Block("storm");
+
         caliber = new SniperTurret("caliber"){{
             requirements(Category.turret, BuildVisibility.sandboxOnly, empty);
             size = 3;
@@ -175,6 +199,12 @@ public class PMBlocks implements ContentList{
             shootLength = 16f;
             ammo(PMItems.basicSentryBox, PMBullets.basicSentryLaunch, PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch, PMItems.dashSentryBox, PMBullets.dashSentryLaunch);
         }};
+
+        firestorm = new Block("firestorm");
+
+        strikedown = new Block("strikedown");
+
+        arbiter = new Block("arbiter");
 
         blackhole = new BlackHoleTurret("blackhole"){{
             requirements(Category.turret, with(Items.titanium, 100, Items.thorium, 150, Items.plastanium, 250, Items.surgeAlloy, 250, Items.silicon, 800, Items.phaseFabric, 500, PMItems.techtanite, 500));

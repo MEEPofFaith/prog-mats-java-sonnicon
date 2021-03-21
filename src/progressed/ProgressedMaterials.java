@@ -14,6 +14,7 @@ public class ProgressedMaterials extends Mod{
 
     private final ContentList[] pmContent = {
         new PMItems(),
+        new PMStatusEffects(),
         new PMUnitTypes(),
         new PMBullets(),
         new PMWeathers(),

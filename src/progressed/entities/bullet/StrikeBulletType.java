@@ -33,11 +33,14 @@ public class StrikeBulletType extends BasicBulletType{
         ammoMultiplier = 1;
         backMove = collides = hittable = absorbable = keepVelocity = false;
         hitEffect = Fx.blockExplosionSmoke;
-        despawnEffect = Fx.massiveExplosion;
         shootEffect = smokeEffect = Fx.none;
         lightRadius = 32f;
         lightOpacity = 0.6f;
         lightColor = Pal.engine;
+    }
+
+    public StrikeBulletType(float speed, float damage){
+        this(speed, damage, "error");
     }
 
     @Override

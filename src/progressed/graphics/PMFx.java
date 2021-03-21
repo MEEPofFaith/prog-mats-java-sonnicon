@@ -63,7 +63,7 @@ public class PMFx{
         Fill.circle(e.x, e.y, 8f * e.fout());
     }),
 
-    smallBoom = new Effect(30f, e -> {
+    missileBoom = new Effect(30f, e -> {
         color(Pal.missileYellow);
 
         e.scaled(7, s -> {
@@ -198,5 +198,26 @@ public class PMFx{
         color(Color.black);
         stroke(2f * e.fout(Interp.pow3In));
         Lines.circle(e.x, e.y, 8f * e.fout(Interp.pow3In));
+    }),
+    
+    particle = new Effect(38f, e -> {
+        color(e.color);
+
+        randLenVectors(e.id, 2, 1f + 20f * e.fin(Interp.pow2Out), e.rotation, 120f, (x, y) -> {
+            Drawf.tri(e.x + x, e.y + y, e.fslope() * 3f + 1, e.fslope() * 3f + 1, Mathf.angle(x, y));
+        });
+    }),
+    
+    teleportEffect = new Effect(60f, e -> {
+        color(e.color, e.fout());
+
+        float[] data = (float[])e.data;
+        
+        stroke(data[0] * e.fout());
+        line(e.x, e.y, data[1], data[2]);
+        Fill.circle(e.x, e.y, data[0] * 1.5f);
+        Fill.circle(data[1], data[2], data[0] * 1.5f);
+        
+        reset();
     });
 }

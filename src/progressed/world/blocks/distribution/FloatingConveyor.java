@@ -7,6 +7,7 @@ import arc.util.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 
 import static mindustry.Vars.*;
@@ -41,7 +42,8 @@ public class FloatingConveyor extends Conveyor{
     @Override
     public void drawRequestRegion(BuildPlan req, Eachable<BuildPlan> list){
         super.drawRequestRegion(req, list);
-        if(world.tileWorld(req.drawx(), req.drawy()).floor().isDeep()){
+        Tile t = world.tileWorld(req.drawx(), req.drawy());
+        if(t != null && t.floor().isDeep()){
             int[] bits = getTiling(req, list);
 
             if(bits == null) return;

@@ -45,7 +45,7 @@ public class StrobeSource extends StrobeNode{
         @Override
         public void updateTile(){
             super.updateTile();
-            if(boost && timer(1, 60f)){
+            if(boost && timer(0, 60f)){
                 for(int i = 0; i < power.links.size; i++){
                     Building b = Vars.world.tile(power.links.items[i]).build;
                     if(b != null){

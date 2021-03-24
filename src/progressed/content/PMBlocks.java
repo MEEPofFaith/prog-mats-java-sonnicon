@@ -240,6 +240,7 @@ public class PMBlocks implements ContentList{
         strobeInf = new StrobeSource("rainbow-power-source");
 
         strobeBoost = new StrobeSource("rainbow-power-boost"){{
+            size = 2;
             boost = true;
             speedBoost = 100f;
         }};

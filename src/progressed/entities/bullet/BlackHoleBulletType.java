@@ -22,6 +22,7 @@ public class BlackHoleBulletType extends BulletType{
     public float suctionRadius = 96f, size = 5f, damageRadius = 32f;
     public float force = 90f, scaledForce = 80f, bulletForce = 0.8f, bulletScaledForce = 1.2f;
     public float swirlSize = 4f;
+    public boolean push;
 
     public BlackHoleBulletType(float speed, float damage){
         super(speed, damage);
@@ -49,7 +50,9 @@ public class BlackHoleBulletType extends BulletType{
 
             Units.nearbyEnemies(b.team, b.x - ((float[])b.data)[0], b.y - ((float[])b.data)[0], ((float[])b.data)[0] * 2f, ((float[])b.data)[0] * 2f, unit -> {
                 if(unit.within(b.x, b.y, ((float[])b.data)[0])){
-                    unit.impulseNet(Tmp.v1.set(b).sub(unit).limit((((float[])b.data)[4] + (1f - unit.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[5]) * Time.delta));
+                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((((float[])b.data)[4] + (1f - unit.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[5]) * Time.delta);
+                    if(push) Tmp.v1.rotate(180f);
+                    unit.impulseNet(impulse);
 
                     if(unit.within(b.x, b.y, ((float[])b.data)[1])){
                         float scl = (unit.dst(b) / ((float[])b.data)[1]) * (unit.type.hitSize * hitSizeScl);
@@ -69,7 +72,13 @@ public class BlackHoleBulletType extends BulletType{
             Groups.bullet.intersect(b.x - ((float[])b.data)[0], b.y - ((float[])b.data)[0], ((float[])b.data)[0] * 2f, ((float[])b.data)[0] * 2f, other -> {
                 if(other != null && Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[0]) && b != other && b.team != other.team && other.type.speed > 0.01f && !checkType(other.type)){
                     Vec2 impulse = Tmp.v1.set(b).sub(other).limit((((float[])b.data)[6] + (1f - other.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[7]) * Time.delta);
+                    if(push) Tmp.v1.rotate(180f);
                     other.vel().add(impulse);
+
+                    //manually move units to simulate velocity for remote players
+                    if(b.isRemote()){
+                        other.move(Tmp.v1.x, Tmp.v1.y);
+                    }
 
                     if(Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[1] * 2f)){
                         if(other.type instanceof BlackHoleBulletType){

@@ -88,13 +88,16 @@ public class StrikeBulletType extends BasicBulletType{
         if(target != null && stopRadius > 0f){
             boolean inRange = Mathf.within(b.x, b.y, target.x(), target.y(), stopRadius);
             if(inRange && !(boolean)rawData[3]){
-                rawData[2] = b.vel;
+                rawData[2] = b.vel.len();
                 rawData[3] = true;
                 b.vel.trns(b.vel.angle(), 0.001f);
             }else if(resumeSeek && (!inRange || ((Healthc)target).dead() || ((Healthc)target).health() < 0f) && (boolean)rawData[3]){
-                b.vel.set((Vec2)rawData[2]);
+                b.vel.trns(b.vel.angle(), (float)rawData[2]);
                 rawData[3] = false;
             }
+        }else if(resumeSeek && (boolean)rawData[3]){
+            b.vel.set((Vec2)rawData[2]);
+            rawData[3] = false;
         }
 
         if(!(boolean)rawData[3]){

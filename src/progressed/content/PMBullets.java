@@ -7,6 +7,7 @@ import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import progressed.*;
 import progressed.entities.bullet.*;
 import progressed.graphics.*;
 
@@ -30,7 +31,7 @@ public class PMBullets implements ContentList{
     
     strikedownBasic, strikedownEmp, strikedownQuantum,
     
-    arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterUnit;
+    arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry;
 
     @Override
     public void load(){
@@ -221,6 +222,8 @@ public class PMBullets implements ContentList{
             trailSize = 0.7f;
             riseSpin = 300f;
             fallSpin = 135f;
+
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
         }};
 
         strikedownEmp = new StrikeBulletType(3f, 80f, "prog-mats-strikedown-emp"){{
@@ -405,7 +408,7 @@ public class PMBullets implements ContentList{
         strikeSentryDrop = new UnitSpawnStrikeBulletType(PMUnitTypes.strikeSentry);
         dashSentryDrop = new UnitSpawnStrikeBulletType(PMUnitTypes.dashSentry);
 
-        arbiterUnit = new StrikeBulletType(2.25f, 0f, "prog-mats-arbiter-unit"){
+        arbiterSentry = new StrikeBulletType(2.25f, 0f, "prog-mats-arbiter-unit"){
             public BulletType[] unitDrops = {basicSentryDrop, strikeSentryDrop, dashSentryDrop};
 
             {
@@ -441,12 +444,13 @@ public class PMBullets implements ContentList{
             }
 
             @Override
-            public void hit(Bullet b, float x, float y){
+            public void despawned(Bullet b){
+                super.despawned(b);
                 for(int i = 0; i < fragBullets; i++){
                     float len = Mathf.random(1f, 7f);
                     float a = b.rotation() + Mathf.range(fragCone/2) + fragAngle;
-                    BulletType randUnitDrop = unitDrops[Mathf.random(unitDrops.length)];
-                    randUnitDrop.create(b, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax));
+                    BulletType randUnitDrop = unitDrops[Mathf.random(unitDrops.length - 1)];
+                    randUnitDrop.create(b, b.x + Angles.trnsx(a, len), b.y + Angles.trnsy(a, len), a, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax));
                 }
             }
         };

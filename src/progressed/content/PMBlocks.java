@@ -1,6 +1,7 @@
 package progressed.content;
 
 import arc.graphics.*;
+import arc.math.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
@@ -58,6 +59,14 @@ public class PMBlocks implements ContentList{
 
         minigun = new MinigunTurret("minigun"){{
             requirements(Category.turret, with(Items.copper, 200, Items.graphite, 175, Items.titanium, 100, Items.thorium, 80));
+            ammo(
+                Items.copper, PMBullets.standardCopperMini,
+                Items.graphite, PMBullets.standardDenseMini,
+                Items.silicon, PMBullets.standardHomingMini,
+                Items.pyratite, PMBullets.standardIncendiaryMini,
+                Items.thorium, PMBullets.standardThoriumMini,
+                Items.blastCompound, PMBullets.standardExplosiveMini
+            );
             size = 4;
             range = 255f;
             health = 1800;
@@ -85,12 +94,18 @@ public class PMBlocks implements ContentList{
             //Dummy stats to mess with the shots/sec stat
             reloadTime = 3f;
             shots = 1;
-
-            ammo(Items.copper, PMBullets.standardCopperMini, Items.graphite, PMBullets.standardDenseMini, Items.silicon, PMBullets.standardHomingMini, Items.pyratite, PMBullets.standardIncendiaryMini, Items.thorium, PMBullets.standardThoriumMini, Items.blastCompound, PMBullets.standardExplosiveMini);
         }};
 
         miinigun = new MinigunTurret("miinigun"){{
             requirements(Category.turret, with(Items.copper, 350, Items.graphite, 300, Items.plastanium, 175, Items.thorium, 80, PMItems.techtanite, 80));
+            ammo(
+                Items.copper, PMBullets.standardCopperMini,
+                Items.graphite, PMBullets.standardDenseMini,
+                Items.silicon, PMBullets.standardHomingMini,
+                Items.pyratite, PMBullets.standardIncendiaryMini,
+                Items.thorium, PMBullets.standardThoriumMini,
+                Items.blastCompound, PMBullets.standardExplosiveMini
+            );
             size = 4;
             range = 255f;
             health = 1800;
@@ -118,12 +133,18 @@ public class PMBlocks implements ContentList{
             //Dummy stats to mess with the shots/sec stat
             reloadTime = 3f;
             shots = 2;
-
-            ammo(Items.copper, PMBullets.standardCopperMini, Items.graphite, PMBullets.standardDenseMini, Items.silicon, PMBullets.standardHomingMini, Items.pyratite, PMBullets.standardIncendiaryMini, Items.thorium, PMBullets.standardThoriumMini, Items.blastCompound, PMBullets.standardExplosiveMini);
         }};
 
         mivnigun = new MinigunTurret("mivnigun"){{
             requirements(Category.turret, with(Items.copper, 650, Items.graphite, 600, Items.titanium, 120, Items.thorium, 160, Items.plastanium, 325, PMItems.techtanite, 240));
+            ammo(
+                Items.copper, PMBullets.standardCopperMini,
+                Items.graphite, PMBullets.standardDenseMini,
+                Items.silicon, PMBullets.standardHomingMini,
+                Items.pyratite, PMBullets.standardIncendiaryMini,
+                Items.thorium, PMBullets.standardThoriumMini,
+                Items.blastCompound, PMBullets.standardExplosiveMini
+            );
             size = 4;
             range = 255f;
             health = 1800;
@@ -151,8 +172,6 @@ public class PMBlocks implements ContentList{
             //Dummy stats to mess with the shots/sec stat
             reloadTime = 3f;
             shots = 1;
-
-            ammo(Items.copper, PMBullets.standardCopperMini, Items.graphite, PMBullets.standardDenseMini, Items.silicon, PMBullets.standardHomingMini, Items.pyratite, PMBullets.standardIncendiaryMini, Items.thorium, PMBullets.standardThoriumMini, Items.blastCompound, PMBullets.standardExplosiveMini);
         }};
 
         shock = new Block("shock");
@@ -163,6 +182,9 @@ public class PMBlocks implements ContentList{
 
         caliber = new SniperTurret("caliber"){{
             requirements(Category.turret, BuildVisibility.sandboxOnly, empty);
+            ammo(
+                Items.thorium, PMBullets.sniperBoltThorium
+            );
             size = 3;
             reloadTime = 450f;
             inaccuracy = 0f;
@@ -171,7 +193,6 @@ public class PMBlocks implements ContentList{
             chargeTime = 300f;
             shootLength = 18f;
             shootSound = Sounds.railgun;
-            ammo(Items.thorium, PMBullets.sniperBoltThorium);
         }};
 
         bit = new BitTurret("bit"){{
@@ -187,6 +208,11 @@ public class PMBlocks implements ContentList{
 
         tinker = new LaunchTurret("tinker"){{
             requirements(Category.turret, with(Items.copper, 125, Items.lead, 75, Items.silicon, 30, Items.titanium, 50));
+            ammo(
+                PMItems.basicSentryBox, PMBullets.basicSentryLaunch,
+                PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch,
+                PMItems.dashSentryBox, PMBullets.dashSentryLaunch
+            );
             size = 3;
             reloadTime = 60f * 10f;
             minRange = 5f * tilesize;
@@ -197,14 +223,74 @@ public class PMBlocks implements ContentList{
             restitution = 0.02f;
             shootShake = 2f;
             shootLength = 16f;
-            ammo(PMItems.basicSentryBox, PMBullets.basicSentryLaunch, PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch, PMItems.dashSentryBox, PMBullets.dashSentryLaunch);
         }};
 
-        firestorm = new Block("firestorm");
+        firestorm = new MissileTurret("firestorm"){{
+            requirements(Category.turret, with(Items.copper, 180, Items.graphite, 140, Items.silicon, 65, Items.titanium, 70));
+            ammo(
+                Items.blastCompound, PMBullets.firestormMissile
+            );
+            size = 3;
+            health = 1430;
+            range = 160f;
+            reloadTime = 75f;
+            shootSound = Sounds.missile;
+            cooldown = 0.001f;
+            shootShake = 1f;
+            targetAir = false;
+            burstSpacing = 7f;
+            inaccuracy = 15f;
+            maxAmmo = 36;
+            shootLocs = new float[][]{
+                {-31f/4f, 31f/4f}, //TL
+                {31f/4f, 31f/4f}, //TR
+                {-31f/4f, -31f/4f}, //BL
+                {31f/4f, -31f/4f}, //BR
+                {0f, 29f/4f}, //T
+                {-29f/4f, 0f}, //L
+                {0f, -29f/4f}, //B
+                {29f/4f, 0f}, //R
+                {0f, 0f} //C
+            };
+        }};
 
-        strikedown = new Block("strikedown");
+        strikedown = new MissileTurret("strikedown"){{
+            requirements(Category.turret, with(Items.copper, 70, Items.lead, 350, Items.graphite, 300, Items.silicon, 300, Items.titanium, 250, PMItems.techtanite, 120));
+            ammo(
+                PMItems.basicMissile, PMBullets.strikedownBasic,
+                PMItems.empMissile, PMBullets.strikedownEmp,
+                PMItems.quantiumMissile, PMBullets.strikedownQuantum
+            );
+            size = 4;
+            health = 2870;
+            range = 330f;
+            reloadTime = 180f;
+            shootSound = Sounds.artillery;
+            cooldown = 0.001f;
+            shootShake = 5f;
+            inaccuracy = 5f;
+            maxAmmo = 8;
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+        }};
 
-        arbiter = new Block("arbiter");
+        arbiter = new MissileTurret("arbiter"){{
+            requirements(Category.turret, with(Items.copper, 4000, Items.graphite, 2200, Items.silicon, 2000, Items.titanium, 1300, Items.thorium, 650, Items.surgeAlloy, 200, PMItems.techtanite, 800));
+            ammo(
+                PMItems.basicNuke, PMBullets.arbiterBasic,
+                PMItems.empNuke, PMBullets.arbiterEmp,
+                PMItems.clusterNuke, PMBullets.arbiterCluster,
+                PMItems.sentryNuke, PMBullets.arbiterSentry
+            );
+            size = 7;
+            health = 5950;
+            range = 4400f;
+            shootSound = Sounds.explosionbig;
+            cooldown = 0.001f;
+            shootShake = 10f;
+            reloadTime = 1500f;
+            maxAmmo = 2;
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+        }};
 
         blackhole = new BlackHoleTurret("blackhole"){{
             requirements(Category.turret, with(Items.titanium, 100, Items.thorium, 150, Items.plastanium, 250, Items.surgeAlloy, 250, Items.silicon, 800, Items.phaseFabric, 500, PMItems.techtanite, 500));

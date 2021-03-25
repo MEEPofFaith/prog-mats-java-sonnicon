@@ -7,8 +7,8 @@ import mindustry.type.*;
 import mindustry.ui.*;
 
 public class UnitSpawnStrikeBulletType extends StrikeBulletType{
-    public float minVelMult, maxVelMult, killChance;
-    public Item[] items;
+    public float minVelMult = 1f, maxVelMult = 3f, killChance = 0.25f;
+    public Item[] items = {Items.pyratite, Items.pyratite, Items.blastCompound};
     public UnitType spawn;
 
     public UnitSpawnStrikeBulletType(float speed, float damage, UnitType spawn){
@@ -51,12 +51,14 @@ public class UnitSpawnStrikeBulletType extends StrikeBulletType{
 
     @Override
     public void despawned(Bullet b){
+        super.despawned(b);
+
         Unit spawned = spawn.spawn(b.team, b.x, b.y);
         spawned.rotation = b.rotation();
         float vel = Mathf.random(minVelMult, maxVelMult);
 
         if(items.length > 0){
-            Item randomItem = items[Mathf.random(items.length)];
+            Item randomItem = items[Mathf.random(items.length - 1)];
             int amount = Mathf.random(0, spawned.maxAccepted(randomItem));
             if(amount > 0){
                 spawned.addItem(randomItem, amount);
@@ -65,7 +67,5 @@ public class UnitSpawnStrikeBulletType extends StrikeBulletType{
 
         if(vel != 0f) spawned.vel.add(b.vel, vel);
         if(Mathf.chance(killChance)) spawned.kill();
-
-        super.despawned(b);
     }
 }

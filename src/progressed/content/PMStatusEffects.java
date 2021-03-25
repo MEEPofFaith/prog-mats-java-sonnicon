@@ -20,7 +20,8 @@ public class PMStatusEffects implements ContentList{
         }};
 
         teleportation = new TeleportStatusEffect("strikedown-quantum"){{
-            teleportRange = 80f;
+            teleportRange = 40f;
+            rangeScl = 1.5f;
             teleportDamageScl = 0.5f;
             cooldown = 60f * 5f;
         }};

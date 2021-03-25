@@ -112,21 +112,25 @@ public class PMFx{
         });
     }),
 
-    mushroomCloudExplosion = new Effect(450f, 800f, e -> {
+    mushroomCloudExplosion = new Effect(250f, 800f, e -> {
         float colorFin = e.fin(Interp.pow2Out);
-        float slopeFin = e.fin(Interp.pow3Out);
+        float slopeFin = e.fin(Interp.pow5Out);
         float slopeFout = 1 - e.fin(Interp.pow3In);
 
-        randLenVectors(e.id, 300, 140f * slopeFin, (x, y) -> {
+        randLenVectors(e.id, 150, 140f * slopeFin, (x, y) -> {
             color(Color.white, Color.gray, colorFin);
             Fill.circle(e.x + x, e.y + y, 8f * slopeFout);
         });
 
-        color(Color.yellow, Color.lightGray, colorFin);
-        stroke(6f * e.fout());
-        Lines.circle(e.x, e.y, 180f * slopeFin);
+        e.scaled(125f, s -> {
+            float sColorFin = s.fin(Interp.pow2Out);
+            float sSlopeFin = s.fin(Interp.pow5Out);
+            color(Color.lightGray, Color.white, sColorFin);
+            stroke(6f * s.fout());
+            Lines.circle(e.x, e.y, 180f * sSlopeFin);
+        });
 
-        randLenVectors(e.id * 2, 400, 60f * slopeFin, (x, y) -> {
+        randLenVectors(e.id * 2, 200, 60f * slopeFin, (x, y) -> {
             color(Color.orange.cpy().lerp(new Color[]{Color.orange, Color.red, Color.crimson, Color.darkGray}, colorFin));
             Fill.circle(e.x + x, e.y + y, 8f * slopeFout);
         });

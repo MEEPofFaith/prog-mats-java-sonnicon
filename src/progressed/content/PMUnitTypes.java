@@ -85,14 +85,14 @@ public class PMUnitTypes implements ContentList{
             weapons.add(new Weapon(name + "-hole"){{
                 rotate = mirror = alternate = top = false;
                 x = y = recoil = shootY = 0f;
-                reload = 20f;
+                reload = 40f;
                 shootCone = 360f;
                 inaccuracy = 15f;
                 shootSound = Sounds.missile;
                 bullet = new StrikeBulletType(2.4f, 40f, "prog-mats-storm"){{
                     lifetime = 90f;
                     
-                    splashDamage = 150f;
+                    splashDamage = 250f;
                     splashDamageRadius = 42f;
                     homingPower = 0.035f;
                     homingRange = 200f;

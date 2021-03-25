@@ -41,7 +41,13 @@ public class PMBlocks implements ContentList{
     firestorm, strikedown, arbiter,
 
     //Misc
-    blackhole,
+    blackhole, excalibur,
+
+    //Sandbox
+    harbinger, everythingGun,
+
+    //Crafters
+    shellPress, missileFactory, sentryBuilder,
 
     //Random distribution
     floatingConveyor,
@@ -51,6 +57,9 @@ public class PMBlocks implements ContentList{
 
     @Override
     public void load(){
+
+        // Region Turrets
+
         flame = new Block("flame");
 
         blaze = new Block("blaze");
@@ -313,6 +322,24 @@ public class PMBlocks implements ContentList{
             shootType = PMBullets.blackHole;
         }};
 
+        excalibur = new Block("excalibur");
+
+        harbinger = new Block("harbinger");
+
+        everythingGun = new Block("everything-gun");
+        
+        //End Region
+        //Region Crafters
+
+        shellPress = new Block("shell-press");
+
+        missileFactory = new Block("missile-facotry");
+
+        sentryBuilder = new Block("sentry-builder");
+
+        //End Region
+        //Region Distribution
+
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{
             requirements(Category.distribution, with(Items.lead, 2, Items.metaglass, 4, Items.titanium, 1));
             health = 15;
@@ -320,6 +347,9 @@ public class PMBlocks implements ContentList{
             displayedSpeed = 11f;
             coverColor = Color.sky.cpy().a(0.5f);
         }};
+
+        //End Region
+        //Region Power
 
         strobeNode = new StrobeNode("rainbow-power-node");
 
@@ -330,5 +360,8 @@ public class PMBlocks implements ContentList{
             boost = true;
             speedBoost = 100f;
         }};
+
+
+        //End Region
     }
 }

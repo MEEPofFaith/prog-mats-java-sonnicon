@@ -20,9 +20,9 @@ public class BlackHoleBulletType extends BulletType{
     public float cataclysmRadius = 25f * 8f;
     public float cataclysmForceMul = 5f, cataclysmBulletForceMul = 5f, cataclymForceRange = 18f * 8f;
     public float suctionRadius = 96f, size = 5f, damageRadius = 32f;
-    public float force = 90f, scaledForce = 80f, bulletForce = 0.8f, bulletScaledForce = 1.2f;
+    public float force = 15f, scaledForce = 160f, bulletForce = 0.1f, bulletScaledForce = 2f;
     public float swirlSize = 4f;
-    public boolean push;
+    public boolean repel;
 
     public BlackHoleBulletType(float speed, float damage){
         super(speed, damage);
@@ -51,7 +51,7 @@ public class BlackHoleBulletType extends BulletType{
             Units.nearbyEnemies(b.team, b.x - ((float[])b.data)[0], b.y - ((float[])b.data)[0], ((float[])b.data)[0] * 2f, ((float[])b.data)[0] * 2f, unit -> {
                 if(unit.within(b.x, b.y, ((float[])b.data)[0])){
                     Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((((float[])b.data)[4] + (1f - unit.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[5]) * Time.delta);
-                    if(push) Tmp.v1.rotate(180f);
+                    if(repel) impulse.rotate(180f);
                     unit.impulseNet(impulse);
 
                     if(unit.within(b.x, b.y, ((float[])b.data)[1])){
@@ -72,7 +72,7 @@ public class BlackHoleBulletType extends BulletType{
             Groups.bullet.intersect(b.x - ((float[])b.data)[0], b.y - ((float[])b.data)[0], ((float[])b.data)[0] * 2f, ((float[])b.data)[0] * 2f, other -> {
                 if(other != null && Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[0]) && b != other && b.team != other.team && other.type.speed > 0.01f && !checkType(other.type)){
                     Vec2 impulse = Tmp.v1.set(b).sub(other).limit((((float[])b.data)[6] + (1f - other.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[7]) * Time.delta);
-                    if(push) Tmp.v1.rotate(180f);
+                    if(repel) impulse.rotate(180f);
                     other.vel().add(impulse);
 
                     //manually move units to simulate velocity for remote players
@@ -84,10 +84,13 @@ public class BlackHoleBulletType extends BulletType{
                         if(other.type instanceof BlackHoleBulletType type){
                             float radius = (cataclysmRadius + type.cataclysmRadius) / 2f;
                             if(radius > 0){ //Do not create negative radius cataclysms. I have no idea what this would cause anyways.
-                                float uForce = (((float[])b.data)[4] * cataclysmForceMul + ((float[])other.data)[4] * type.cataclysmForceMul) / 2f;
-                                float uScaledForce = (((float[])b.data)[5] * cataclysmForceMul + ((float[])other.data)[5] * type.cataclysmForceMul) / 2f;
-                                float bForce = (((float[])b.data)[6] * cataclysmBulletForceMul + ((float[])other.data)[6] * type.cataclysmBulletForceMul) / 2f;
-                                float bScaledForce = (((float[])b.data)[7] * cataclysmBulletForceMul + ((float[])other.data)[7] * type.cataclysmBulletForceMul) / 2f;
+                                float thisUMul = cataclysmForceMul * Mathf.sign(!repel), thisBMul = cataclysmBulletForceMul * Mathf.sign(!repel);
+                                float otherUMul = type.cataclysmForceMul * Mathf.sign(!type.repel), otherBMul = type.cataclysmBulletForceMul * Mathf.sign(!type.repel);
+
+                                float uForce = (((float[])b.data)[4] * thisUMul + ((float[])other.data)[4] * otherUMul) / 2f;
+                                float uScaledForce = (((float[])b.data)[5] * thisUMul + ((float[])other.data)[5] * otherUMul) / 2f;
+                                float bForce = (((float[])b.data)[6] * thisBMul + ((float[])other.data)[6] * otherBMul) / 2f;
+                                float bScaledForce = (((float[])b.data)[7] * thisBMul + ((float[])other.data)[7] * otherBMul) / 2f;
                                 float range = (cataclymForceRange + type.cataclymForceRange) / 2f;
                                 Object[] cataclysmParams = {radius, uForce, uScaledForce, bForce, bScaledForce, range, b.team.color, other.team.color, true};
 

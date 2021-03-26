@@ -47,7 +47,9 @@ public class BlackHoleCataclysmType extends BulletType{
         if(b.timer(1, 2f)){
             Units.nearbyEnemies(null, b.x - suctionRadius, b.y - suctionRadius, suctionRadius * 2f, suctionRadius * 2f, unit -> {
                 if(unit.within(b.x, b.y, suctionRadius)){
-                    unit.impulseNet(Tmp.v1.set(b).sub(unit).limit((data[1] * scl + (1f - unit.dst(b) / suctionRadius) * data[2] * scl) * Time.delta));
+                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((data[1] * scl + (1f - unit.dst(b) / suctionRadius) * data[2] * scl) * Time.delta);
+                    if(data[1] < 0f || data[2] < 0f) impulse.rotate(180f);
+                    unit.impulseNet(impulse);
 
                     if(unit.within(b.x, b.y, data[0] * scl)){
                         unit.kill();
@@ -58,6 +60,7 @@ public class BlackHoleCataclysmType extends BulletType{
             Groups.bullet.intersect(b.x - suctionRadius, b.y - suctionRadius, suctionRadius * 2f, suctionRadius * 2f, other -> {
                 if(other != null && Mathf.within(b.x, b.y, other.x, other.y, suctionRadius) && b != other && other.type.speed > 0.01f){
                     Vec2 impulse = Tmp.v1.set(b).sub(other).limit((data[3] * scl + (1f - other.dst(b) / suctionRadius) * data[4] * scl) * Time.delta);
+                    if(data[3] < 0f || data[4] < 0f) impulse.rotate(180f);
                     other.vel().add(impulse);
 
                     if(Mathf.within(b.x, b.y, other.x, other.y, data[0] * scl)){

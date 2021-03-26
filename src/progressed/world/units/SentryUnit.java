@@ -83,7 +83,7 @@ public class SentryUnit extends UnitType{
             table.table(t -> {
                 float durSec = duration / 60f;
                 String val = durSec + " " + StatUnit.seconds.localized();
-                t.add("(" + Core.bundle.get("stat.prog-mats.sentry-lifetime") + ": " + val + ")");
+                t.add("(" + Core.bundle.get("stat.prog-mats-sentry-lifetime") + ": " + val + ")");
             });
         });
 

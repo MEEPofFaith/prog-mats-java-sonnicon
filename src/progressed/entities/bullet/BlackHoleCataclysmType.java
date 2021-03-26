@@ -31,7 +31,7 @@ public class BlackHoleCataclysmType extends BulletType{
     }
 
     @Override
-    public void update(Bullet b) {
+    public void update(Bullet b){
         //[radius, uForce, uScaledForce, bForce, bScaledForce, range, c1, c2, world load]
         Object[] rawData = (Object[])b.data;
 

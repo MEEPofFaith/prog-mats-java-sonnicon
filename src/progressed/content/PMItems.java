@@ -17,7 +17,7 @@ public class PMItems implements ContentList{
     basicSentryBox, strikeSentryBox, dashSentryBox;
 
     @Override
-    public void load() {
+    public void load(){
         techtanite = new Item("techtanite", Color.valueOf("8C8C8C")){{
             cost = 2.5f;
         }};

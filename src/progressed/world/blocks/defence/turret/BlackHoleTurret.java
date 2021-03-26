@@ -1,7 +1,6 @@
 package progressed.world.blocks.defence.turret;
 
 import arc.*;
-import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -11,13 +10,25 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 import progressed.util.*;
 
-import static mindustry.Vars.*;
-
 public class BlackHoleTurret extends PowerTurret{
     protected TextureRegion spaceRegion;
     
     public BlackHoleTurret(String name){
         super(name);
+        heatDrawer = tile -> {
+            if(tile.heat <= 0.00001f) return;
+            float r = PMUtls.pow6In.apply(tile.heat);
+            float g = (Interp.pow3In.apply(tile.heat) + ((1f - Interp.pow3In.apply(tile.heat)) * 0.12f)) / 2f;
+            float b = Interp.pow2Out.apply(tile.heat);
+            float a = Interp.pow2Out.apply(tile.heat);
+            Tmp.c1.set(r, g, b, a);
+            Draw.color(Tmp.c1);
+    
+            Draw.blend(Blending.additive);
+            Draw.rect(heatRegion, tile.x + tr2.x, tile.y + tr2.y, tile.rotation - 90);
+            Draw.blend();
+            Draw.color();
+        };
     }
 
     @Override
@@ -32,20 +43,6 @@ public class BlackHoleTurret extends PowerTurret{
 
         spaceRegion = Core.atlas.find(name + "-space");
     }
-
-    public Cons<TurretBuild> heatDrawer = tile -> {
-        if(tile.heat <= 0.00001f) return;
-        float r = PMUtls.pow6In.apply(tile.heat);
-        float g = (Interp.pow3In.apply(tile.heat) + ((1f - Interp.pow3In.apply(tile.heat)) * 0.12f)) / 2f;
-        float b = Interp.pow2Out.apply(tile.heat);
-        float a = Interp.pow2Out.apply(tile.heat);
-
-        Draw.color(Tmp.c1.set(r, g, b, a).cpy());
-        Draw.blend(Blending.additive);
-        Draw.rect(heatRegion, tile.x + tr2.x, tile.y + tr2.y, tile.rotation - 90);
-        Draw.blend();
-        Draw.color();
-    };
 
     public class BlackHoleTurretBuild extends PowerTurretBuild{
         public float alpha;

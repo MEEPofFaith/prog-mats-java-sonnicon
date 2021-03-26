@@ -18,7 +18,11 @@ repositories {
 }
 
 dependencies {
-    implementation "com.github.Anuken.Mindustry:core:v126.1"
+    implementation "com.github.Anuken.Arc:arc-core:$mindustryVersion"
+    implementation "com.github.Anuken.Mindustry:core:$mindustryVersion"
+    implementation "com.squareup:javapoet:$javapoetVersion"
+    implementation "com.github.younggam:multi-lib:$multilibVersion"
+    implementation "com.github.Anuken:jabel:$jabelVersion"
 }
 
 jar {
@@ -43,6 +47,10 @@ task dexify(type: Jar) {
     }
 
     from(zipTree(jarArtifact), zipTree(dexedArtifact))
+}
+
+tasks.withType(JavaExec){
+    jvmArgs += "--enable-preview"
 }
 
 task buildDex dependsOn "build", "dexify"

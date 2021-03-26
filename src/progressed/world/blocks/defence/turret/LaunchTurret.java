@@ -147,7 +147,7 @@ public class LaunchTurret extends ItemTurret{
         }
 
         @Override
-        protected void shoot(BulletType type) {
+        protected void shoot(BulletType type){
             preEffects();
 
             tr.trns(rotation, shootLength - recoil);
@@ -204,7 +204,7 @@ public class LaunchTurret extends ItemTurret{
         }
 
         @Override
-        public void handleItem(Building source, Item item) {
+        public void handleItem(Building source, Item item){
             reload = 0f; //Sorry, but you can't just replace a half-loaded bullet. Gotta restart.
             super.handleItem(source, item);
         }

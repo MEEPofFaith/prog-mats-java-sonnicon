@@ -27,7 +27,7 @@ public class SentryUnit extends UnitType{
     }
 
     @Override
-    public void drawEngine(Unit unit) {
+    public void drawEngine(Unit unit){
         if(!unit.isFlying()) return;
 
         float scl = unit.elevation;

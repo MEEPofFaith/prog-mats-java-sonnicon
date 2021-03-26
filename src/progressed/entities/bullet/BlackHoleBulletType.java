@@ -81,8 +81,7 @@ public class BlackHoleBulletType extends BulletType{
                     }
 
                     if(Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[1] * 2f)){
-                        if(other.type instanceof BlackHoleBulletType){
-                            BlackHoleBulletType type = (BlackHoleBulletType)other.type; //Pattern matching in instanceof when hhhhh
+                        if(other.type instanceof BlackHoleBulletType type){
                             float radius = (cataclysmRadius + type.cataclysmRadius) / 2f;
                             if(radius > 0){ //Do not create negative radius cataclysms. I have no idea what this would cause anyways.
                                 float uForce = (((float[])b.data)[4] * cataclysmForceMul + ((float[])other.data)[4] * type.cataclysmForceMul) / 2f;

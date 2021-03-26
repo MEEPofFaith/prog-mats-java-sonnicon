@@ -5,6 +5,7 @@ import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.entities.*;
+import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.entities.bullet.*;
@@ -12,6 +13,7 @@ import progressed.entities.bullet.*;
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
 import static arc.math.Angles.*;
+import static mindustry.Vars.*;
 
 public class PMFx{
     public static final Effect
@@ -245,5 +247,38 @@ public class PMFx{
         Fill.circle(data[1], data[2], data[0] * 1.5f);
         
         reset();
-    });
+    }),
+    
+    //[length, width, team]
+    fakeLightning = new Effect(10f, 500f, e -> {
+        Object[] data = (Object[])e.data;
+
+        float length = (float)data[0];
+        int tileLength = Mathf.round(length / tilesize);
+        
+        Lines.stroke((float)data[1] * e.fout());
+        Draw.color(e.color, Color.white, e.fin());
+        
+        for(int i = 0; i < tileLength; i++){
+            float offsetXA = i == 0 ? 0f : Mathf.randomSeed(e.id + (i * 6413), -4.5f, 4.5f);
+            float offsetYA = (length / tileLength) * i;
+            
+            int f = i + 1;
+            
+            float offsetXB = f == tileLength ? 0f : Mathf.randomSeed(e.id + (f * 6413), -4.5f, 4.5f);
+            float offsetYB = (length / tileLength) * f;
+            
+            Tmp.v1.trns(e.rotation, offsetYA, offsetXA);
+            Tmp.v1.add(e.x, e.y);
+            
+            Tmp.v2.trns(e.rotation, offsetYB, offsetXB);
+            Tmp.v2.add(e.x, e.y);
+            
+            Lines.line(Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, false);
+            Fill.circle(Tmp.v1.x, Tmp.v1.y, Lines.getStroke() / 2f);
+            Drawf.light((Team)data[2], Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, (float)data[1] * 3f, e.color, 0.4f);
+        }
+
+        Fill.circle(Tmp.v2.x, Tmp.v2.y, Lines.getStroke() / 2);
+    }).layer(Layer.bullet + 0.01f);
 }

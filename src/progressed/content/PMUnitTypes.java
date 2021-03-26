@@ -89,7 +89,7 @@ public class PMUnitTypes implements ContentList{
                 shootCone = 360f;
                 inaccuracy = 15f;
                 shootSound = Sounds.missile;
-                bullet = new StrikeBulletType(2.4f, 40f, "prog-mats-storm"){{
+                bullet = new StrikeBulletType(2.4f, 40f, "prog-mats-storm-missile"){{
                     lifetime = 90f;
                     
                     splashDamage = 250f;

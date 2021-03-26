@@ -6,7 +6,9 @@ import arc.math.Interp.*;
 import arc.struct.*;
 import mindustry.*;
 import mindustry.core.*;
+import mindustry.entities.*;
 import mindustry.entities.bullet.*;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.world.*;
 import progressed.entities.bullet.*;
@@ -72,5 +74,23 @@ public class PMUtls{
                 }
             }
         }
+    }
+    
+    public static Seq<Teamc> allNearbyEnemies(Team team, float x, float y, float radius){
+        Seq<Teamc> targets = new Seq<>();
+
+        Units.nearbyEnemies(team, x - radius, y - radius, radius * 2f, radius * 2f, unit -> {
+            if(Mathf.within(x, y, unit.x, unit.y, radius) && !unit.dead){
+                targets.add(unit);
+            }
+        });
+        
+        trueEachBlock(x, y, radius, build -> {
+            if(build.team != team && !build.dead && build.block != null){
+                targets.add(build);
+            }
+        });
+
+        return targets;
     }
 }

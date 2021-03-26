@@ -1,6 +1,8 @@
 package progressed.content;
 
+import arc.*;
 import arc.graphics.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
@@ -183,11 +185,115 @@ public class PMBlocks implements ContentList{
             shots = 1;
         }};
 
-        shock = new Block("shock");
+        shock = new TeslaTurret("shock"){{
+            requirements(Category.turret, with(Items.copper, 45, Items.lead, 60, Items.silicon, 25, Items.titanium, 25));
+            rings.add(
+                new TeslaRing(0.75f),
+                new TeslaRing(2.5f)
+            );
+            size = 1;
+            health = 260;
+            powerUse = 3.6f;
+            reloadTime = 60f;
+            range = 72f;
+            rangeExtention = 8f;
+            shots = 2;
+            zaps = 4;
+            zapAngleRand = 27f;
+            inaccuracy = 32f;
+            shootType = PMBullets.shockZap;
+        }};
 
-        spark = new Block("spark");
+        spark = new TeslaTurret("spark"){{
+            requirements(Category.turret, with(Items.copper, 60, Items.lead, 85, Items.graphite, 40, Items.silicon, 55, Items.titanium, 80));
+            rings.add(
+                new TeslaRing(2f),
+                new TeslaRing(6f)
+            );
+            size = 2;
+            health = 870;
+            powerUse = 4.8f;
+            reloadTime = 40f;
+            range = 130f;
+            rangeExtention = 16f;
+            shots = 2;
+            zaps = 6;
+            zapAngleRand = 19f;
+            inaccuracy = 28f;
+            shootType = PMBullets.sparkZap;
+        }};
 
-        storm = new Block("storm");
+        storm = new TeslaTurret("storm"){{
+            requirements(Category.turret, ItemStack.with(Items.copper, 120, Items.lead, 150, Items.graphite, 55, Items.silicon, 105, Items.titanium, 90, Items.surgeAlloy, 40, PMItems.techtanite, 50));
+            rings.addAll(
+                new TeslaRing(1f),
+                new TeslaRing(3.25f),
+                new TeslaRing(6.5f),
+                //Spinner 1
+                new TeslaRing(4.25f){{ //TL
+                    hasSprite = true;
+                    drawUnder = true;
+                    xOffset = -8.625f;
+                    yOffset = 8.625f;
+                    rotationMul = 12f;
+                }},
+                new TeslaRing(4.25f){{ //TR
+                    drawUnder = true;
+                    xOffset = yOffset = 8.625f;
+                    rotationMul = 12f;
+                }},
+                new TeslaRing(4.25f){{ //BL
+                    drawUnder = true;
+                    xOffset = yOffset = -8.625f;
+                    rotationMul = 12f;
+                }},
+                new TeslaRing(4.25f){{ //BR
+                    drawUnder = true;
+                    xOffset = 8.625f;
+                    yOffset = -8.625f;
+                    rotationMul = 12f;
+                }},
+                //Spinner 2
+                new TeslaRing(1f){{ //Tl
+                    hasSprite = true;
+                    drawUnder = true;
+                    xOffset = -7.625f;
+                    yOffset = 7.625f;
+                    rotationMul = -12f;
+                }},
+                new TeslaRing(1f){{ //TT
+                    drawUnder = true;
+                    xOffset = yOffset = 7.625f;
+                    rotationMul = -12f;
+                }},
+                new TeslaRing(1f){{ //Bl
+                    drawUnder = true;
+                    xOffset = yOffset = -7.625f;
+                    rotationMul = -12f;
+                }},
+                new TeslaRing(1f){{ //BR
+                    drawUnder = true;
+                    xOffset = 7.625f;
+                    yOffset = -7.625f;
+                    rotationMul = -12f;
+                }}
+            );
+            size = 3;
+            health = 1540;
+            powerUse = 8.9f;
+            reloadTime = 20f;
+            range = 210f;
+            rangeExtention = 24f;
+            shots = 3;
+            zaps = 7;
+            zapAngleRand = 13f;
+            inaccuracy = 28f;
+            coolantMultiplier = 1f;
+            spinUp = 0.005f;
+            spinDown = 0.0125f;
+            hasSpinners = true;
+            shootType = PMBullets.stormZap;
+        }};
 
         caliber = new SniperTurret("caliber"){{
             requirements(Category.turret, BuildVisibility.sandboxOnly, empty);

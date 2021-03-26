@@ -15,6 +15,8 @@ public class PMBullets implements ContentList{
     public static BulletType
     standardCopperMini, standardDenseMini, standardHomingMini, standardIncendiaryMini, standardThoriumMini, standardExplosiveMini,
 
+    shockZap, sparkZap, stormZap,
+
     sniperBoltThorium,
 
     pixel,
@@ -86,6 +88,39 @@ public class PMBullets implements ContentList{
             inaccuracy = 6f;
             ammoMultiplier = 3;
             lifetime = 90f;
+        }};
+
+        shockZap = new LightningBulletType(){{
+            damage = 8f;
+            lightningLength = 5;
+            lightningLengthRand = 3;
+            lightningAngle = 0f;
+            lightningColor = Pal.surge;
+            lightRadius = 24f;
+            lightOpacity = 0.7f;
+            backMove = false;
+        }};
+
+        sparkZap = new LightningBulletType(){{
+            damage = 12f;
+            lightningLength = 6;
+            lightningLengthRand = 4;
+            lightningAngle = 0f;
+            lightningColor = Pal.surge;
+            lightRadius = 24f;
+            lightOpacity = 0.7f;
+            backMove = false;
+        }};
+
+        stormZap = new LightningBulletType(){{
+            damage = 15f;
+            lightningLength = 7;
+            lightningLengthRand = 5;
+            lightningAngle = 0f;
+            lightningColor = Pal.surge;
+            lightRadius = 24f;
+            lightOpacity = 0.7f;
+            backMove = false;
         }};
 
         sniperBoltThorium = new CritBulletType(20f, 800f){{
@@ -171,7 +206,7 @@ public class PMBullets implements ContentList{
             statusDuration = 60f * 12f;
         }};
         
-        firestormMissile = new StrikeBulletType(2.4f, 28f, "prog-mats-storm"){{
+        firestormMissile = new StrikeBulletType(2.4f, 28f, "prog-mats-storm-missile"){{
             splashDamage = 72f;
             splashDamageRadius = 30f;
             lifetime = 90f;

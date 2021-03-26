@@ -1,7 +1,6 @@
 package progressed.world.blocks.distribution;
 
 import arc.*;
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.util.*;
 import mindustry.entities.units.*;
@@ -13,7 +12,8 @@ import mindustry.world.blocks.distribution.*;
 import static mindustry.Vars.*;
 
 public class FloatingConveyor extends Conveyor{
-    public Color coverColor;
+    public boolean drawShallow;
+    public float coverOpacity = 0.5f;
 
     protected TextureRegion[] floatRegions = new TextureRegion[5], coverRegions = new TextureRegion[5];
 
@@ -33,22 +33,14 @@ public class FloatingConveyor extends Conveyor{
     }
 
     @Override
-    public void init(){
-        super.init();
-
-        if(coverColor == null) coverColor = Pal.shadow;
-    }
-
-    @Override
     public void drawRequestRegion(BuildPlan req, Eachable<BuildPlan> list){
         super.drawRequestRegion(req, list);
-        Tile t = world.tileWorld(req.drawx(), req.drawy());
-        if(t != null && t.floor().isDeep()){
+        if(shouldDrawOverlay(req.drawx(), req.drawy())){
             int[] bits = getTiling(req, list);
 
             if(bits == null) return;
 
-            Draw.color(coverColor);
+            Draw.color(world.tileWorld(req.drawx(), req.drawy()).floor().mapColor, coverOpacity);
             TextureRegion region = coverRegions[bits[0]];
             Draw.rect(region, req.drawx(), req.drawy(), region.width * bits[1] * Draw.scl, region.height * bits[2] * Draw.scl, req.rotation * 90);
             Draw.color();
@@ -57,13 +49,23 @@ public class FloatingConveyor extends Conveyor{
         }
     }
 
+    public boolean shouldDrawOverlay(float x, float y){
+        Tile t = world.tileWorld(x, y);
+        if(t != null && t.floor().isLiquid){
+            if(drawShallow || t.floor().isDeep()){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public class FloatingConveyorBuild extends ConveyorBuild{
         @Override
         public void draw(){
             super.draw();
-            if(tile().floor().isDeep()){
+            if(shouldDrawOverlay(x, y)){
                 Draw.z(Layer.block - 0.09f);
-                Draw.color(coverColor);
+                Draw.color(world.tileWorld(x, y).floor().mapColor, coverOpacity);
                 Draw.rect(coverRegions[blendbits], x, y, coverRegions[blendbits].width / 4f * blendsclx, coverRegions[blendbits].height / 4f * blendscly, rotation * 90);
                 Draw.color();
 
@@ -74,7 +76,7 @@ public class FloatingConveyor extends Conveyor{
 
         @Override
         public void unitOn(Unit unit){
-            if(!tile().floor().isDeep()){
+            if(!shouldDrawOverlay(x, y)){
                 super.unitOn(unit);
             }
         }

@@ -69,7 +69,12 @@ public class PMBlocks implements ContentList{
         inferno = new Block("inferno");
 
         minigun = new MinigunTurret("minigun"){{
-            requirements(Category.turret, with(Items.copper, 200, Items.graphite, 175, Items.titanium, 100, Items.thorium, 80));
+            requirements(Category.turret, with(
+                Items.copper, 200,
+                Items.graphite, 175,
+                Items.titanium, 100,
+                Items.thorium, 80
+            ));
             ammo(
                 Items.copper, PMBullets.standardCopperMini,
                 Items.graphite, PMBullets.standardDenseMini,
@@ -108,7 +113,13 @@ public class PMBlocks implements ContentList{
         }};
 
         miinigun = new MinigunTurret("miinigun"){{
-            requirements(Category.turret, with(Items.copper, 350, Items.graphite, 300, Items.plastanium, 175, Items.thorium, 80, PMItems.techtanite, 80));
+            requirements(Category.turret, with(
+                Items.copper, 350,
+                Items.graphite, 300,
+                Items.plastanium, 175,
+                Items.thorium, 80,
+                PMItems.techtanite, 80
+            ));
             ammo(
                 Items.copper, PMBullets.standardCopperMini,
                 Items.graphite, PMBullets.standardDenseMini,
@@ -147,7 +158,14 @@ public class PMBlocks implements ContentList{
         }};
 
         mivnigun = new MinigunTurret("mivnigun"){{
-            requirements(Category.turret, with(Items.copper, 650, Items.graphite, 600, Items.titanium, 120, Items.thorium, 160, Items.plastanium, 325, PMItems.techtanite, 240));
+            requirements(Category.turret, with(
+                Items.copper, 650,
+                Items.graphite, 600,
+                Items.titanium, 120,
+                Items.thorium, 160,
+                Items.plastanium, 325,
+                PMItems.techtanite, 240
+            ));
             ammo(
                 Items.copper, PMBullets.standardCopperMini,
                 Items.graphite, PMBullets.standardDenseMini,
@@ -186,7 +204,12 @@ public class PMBlocks implements ContentList{
         }};
 
         shock = new TeslaTurret("shock"){{
-            requirements(Category.turret, with(Items.copper, 45, Items.lead, 60, Items.silicon, 25, Items.titanium, 25));
+            requirements(Category.turret, with(
+                Items.copper, 45,
+                Items.lead, 60,
+                Items.silicon, 25,
+                Items.titanium, 25
+            ));
             rings.add(
                 new TeslaRing(0.75f),
                 new TeslaRing(2.5f)
@@ -205,7 +228,13 @@ public class PMBlocks implements ContentList{
         }};
 
         spark = new TeslaTurret("spark"){{
-            requirements(Category.turret, with(Items.copper, 60, Items.lead, 85, Items.graphite, 40, Items.silicon, 55, Items.titanium, 80));
+            requirements(Category.turret, with(
+                Items.copper, 60,
+                Items.lead, 85,
+                Items.graphite, 40,
+                Items.silicon, 55,
+                Items.titanium, 80
+            ));
             rings.add(
                 new TeslaRing(2f),
                 new TeslaRing(6f)
@@ -224,7 +253,15 @@ public class PMBlocks implements ContentList{
         }};
 
         storm = new TeslaTurret("storm"){{
-            requirements(Category.turret, ItemStack.with(Items.copper, 120, Items.lead, 150, Items.graphite, 55, Items.silicon, 105, Items.titanium, 90, Items.surgeAlloy, 40, PMItems.techtanite, 50));
+            requirements(Category.turret, ItemStack.with(
+                Items.copper, 120,
+                Items.lead, 150,
+                Items.graphite, 55,
+                Items.silicon, 105,
+                Items.titanium, 90,
+                Items.surgeAlloy, 40,
+                PMItems.techtanite, 50
+            ));
             rings.addAll(
                 new TeslaRing(1f),
                 new TeslaRing(3.25f),
@@ -311,7 +348,12 @@ public class PMBlocks implements ContentList{
         }};
 
         bit = new BitTurret("bit"){{
-            requirements(Category.turret, with(Items.copper, 50, Items.lead, 60,  Items.silicon, 40, Items.titanium, 30));
+            requirements(Category.turret, with(
+                Items.copper, 50,
+                Items.lead, 60,
+                Items.silicon, 40,
+                Items.titanium, 30
+            ));
             size = 2;
             reloadTime = 70f;
             recoilAmount = 4f;
@@ -322,7 +364,12 @@ public class PMBlocks implements ContentList{
         }};
 
         tinker = new LaunchTurret("tinker"){{
-            requirements(Category.turret, with(Items.copper, 125, Items.lead, 75, Items.silicon, 30, Items.titanium, 50));
+            requirements(Category.turret, with(
+                Items.copper, 125,
+                Items.lead, 75,
+                Items.silicon, 30,
+                Items.titanium, 50
+            ));
             ammo(
                 PMItems.basicSentryBox, PMBullets.basicSentryLaunch,
                 PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch,
@@ -341,7 +388,12 @@ public class PMBlocks implements ContentList{
         }};
 
         firestorm = new MissileTurret("firestorm"){{
-            requirements(Category.turret, with(Items.copper, 180, Items.graphite, 140, Items.silicon, 65, Items.titanium, 70));
+            requirements(Category.turret, with(
+                Items.copper, 180,
+                Items.graphite, 140,
+                Items.silicon, 65,
+                Items.titanium, 70
+            ));
             ammo(
                 Items.blastCompound, PMBullets.firestormMissile
             );
@@ -370,7 +422,14 @@ public class PMBlocks implements ContentList{
         }};
 
         strikedown = new MissileTurret("strikedown"){{
-            requirements(Category.turret, with(Items.copper, 70, Items.lead, 350, Items.graphite, 300, Items.silicon, 300, Items.titanium, 250, PMItems.techtanite, 120));
+            requirements(Category.turret, with(
+                Items.copper, 70,
+                Items.lead, 350,
+                Items.graphite, 300,
+                Items.silicon, 300,
+                Items.titanium, 250,
+                PMItems.techtanite, 120
+            ));
             ammo(
                 PMItems.basicMissile, PMBullets.strikedownBasic,
                 PMItems.empMissile, PMBullets.strikedownEmp,
@@ -389,7 +448,15 @@ public class PMBlocks implements ContentList{
         }};
 
         arbiter = new MissileTurret("arbiter"){{
-            requirements(Category.turret, with(Items.copper, 4000, Items.graphite, 2200, Items.silicon, 2000, Items.titanium, 1300, Items.thorium, 650, Items.surgeAlloy, 200, PMItems.techtanite, 800));
+            requirements(Category.turret, with(
+                Items.copper, 4000,
+                Items.graphite, 2200,
+                Items.silicon, 2000,
+                Items.titanium, 1300,
+                Items.thorium, 650,
+                Items.surgeAlloy, 200,
+                PMItems.techtanite, 800
+            ));
             ammo(
                 PMItems.basicNuke, PMBullets.arbiterBasic,
                 PMItems.empNuke, PMBullets.arbiterEmp,
@@ -408,7 +475,15 @@ public class PMBlocks implements ContentList{
         }};
 
         blackhole = new BlackHoleTurret("blackhole"){{
-            requirements(Category.turret, with(Items.titanium, 100, Items.thorium, 150, Items.plastanium, 250, Items.surgeAlloy, 250, Items.silicon, 800, Items.phaseFabric, 500, PMItems.techtanite, 500));
+            requirements(Category.turret, with(
+                Items.titanium, 100,
+                Items.thorium, 150,
+                Items.plastanium, 250,
+                Items.surgeAlloy, 250,
+                Items.silicon, 800,
+                Items.phaseFabric, 500,
+                PMItems.techtanite, 500
+            ));
             size = 4;
             health = 2140;
             reloadTime = 520f;
@@ -447,11 +522,15 @@ public class PMBlocks implements ContentList{
         //Region Distribution
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{
-            requirements(Category.distribution, with(Items.lead, 2, Items.metaglass, 4, Items.titanium, 1));
+            requirements(Category.distribution, with(
+                Items.lead, 1,
+                Items.metaglass, 2,
+                Items.titanium, 2
+            ));
             health = 15;
             speed = 0.08f;
             displayedSpeed = 11f;
-            coverColor = Color.sky.cpy().a(0.5f);
+            drawShallow = true;
         }};
 
         //End Region

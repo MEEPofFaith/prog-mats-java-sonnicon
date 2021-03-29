@@ -79,13 +79,7 @@ public class SentryUnit extends UnitType{
     public void setStats(){
         super.setStats();
         
-        stats.add(Stat.health, table -> {
-            table.table(t -> {
-                float durSec = duration / 60f;
-                String val = durSec + " " + StatUnit.seconds.localized();
-                t.add("(" + Core.bundle.get("stat.prog-mats.sentry-lifetime") + ": " + val + ")");
-            });
-        });
+        stats.add(Stat.health, Core.bundle.format("stat.prog-mats-sentry-lifetime", (int)(duration / 60f)));
 
         stats.remove(Stat.speed);
         stats.remove(Stat.itemCapacity);

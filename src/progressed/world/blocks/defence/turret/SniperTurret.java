@@ -6,6 +6,8 @@ import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.*;
 import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.meta.*;
+import progressed.ui.*;
 
 import static arc.Core.*;
 
@@ -17,6 +19,14 @@ public class SniperTurret extends ItemTurret{
 
     public SniperTurret(String name){
         super(name);
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.ammo);
+        stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
     }
 
     @Override

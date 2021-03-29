@@ -4,7 +4,7 @@
   "author": "[accent]Creator:\n        MEEP of Faith[]\n\n[accent]Contributors:[]\n        [accent]ThirstyBoi[] (Eruptor sprite)\n        [accent]Goober[] (Kugelblitz and Popeshadow sprites)\n        [accent]VozDuh[] (Missile turret sprites, new icon)\n        [accent]Ilya246[] (Luminocity damage ramping)\n        [accent]Younggam[] (Multi Lib)\n        [accent]Kapzduke[] (Tinker sprites)\n        Some sounds from Freesound.\n        Anyone I stole code from.",
   "description": "Progressed Materials, but in Java. Everything is scripted and I'n just experimenting with what I can do with turrets.\n\nThe name definitely isn't made of the synonyms of \"Advance\" and \"Content\".",
   "version": 0,
-  "minGameVersion": 126,
+  "minGameVersion": 126.2,
   "repo": "MEEPofFaith/progressed-materials",
   "main": "progressed.ProgressedMaterials",
   "hidden": false,

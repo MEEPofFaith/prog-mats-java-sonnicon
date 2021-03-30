@@ -35,7 +35,16 @@ public class BlackHoleBulletType extends BulletType{
 
     @Override
     public void init(Bullet b){
-        b.data = new float[]{suctionRadius, size, damageRadius, swirlSize, force, scaledForce, bulletForce, bulletScaledForce};
+        b.data = new BlackHoleData(){{
+            sR = suctionRadius;
+            s = size;
+            dR = damageRadius;
+            sS = swirlSize;
+            f = force;
+            sF = scaledForce;
+            bF = bulletForce;
+            bSF = bulletScaledForce;
+        }};
         super.init(b);
     }
 
@@ -47,36 +56,36 @@ public class BlackHoleBulletType extends BulletType{
     @Override
     public void update(Bullet b){
         if(b.timer(1, 2f)){
-            Damage.damage(b.team, b.x, b.y, ((float[])b.data)[2], b.damage);
+            BlackHoleData data = (BlackHoleData)b.data;
+
+            Damage.damage(b.team, b.x, b.y, data.dR, b.damage);
             
             if(swirlEffect != Fx.none && b.time <= b.lifetime - swirlEffect.lifetime){
                 swirlEffect.at(b.x, b.y, Mathf.random(360f), b);
             }
 
-            Units.nearbyEnemies(b.team, b.x - ((float[])b.data)[0], b.y - ((float[])b.data)[0], ((float[])b.data)[0] * 2f, ((float[])b.data)[0] * 2f, unit -> {
-                if(unit.within(b.x, b.y, ((float[])b.data)[0])){
-                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((((float[])b.data)[4] + (1f - unit.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[5]) * Time.delta);
+            Units.nearbyEnemies(b.team, b.x - data.sR, b.y - data.sR, data.sR * 2f, data.sR * 2f, unit -> {
+                if(unit.within(b.x, b.y, data.sR)){
+                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((data.f + (1f - unit.dst(b) / data.sR) * data.sF) * Time.delta);
                     if(repel) impulse.rotate(180f);
                     unit.impulseNet(impulse);
 
-                    if(unit.within(b.x, b.y, ((float[])b.data)[1])){
-                        float scl = (unit.dst(b) / ((float[])b.data)[1]) * (unit.type.hitSize * hitSizeScl);
+                    if(unit.within(b.x, b.y, data.s)){
+                        float scl = (unit.dst(b) / data.s) * (unit.type.hitSize * hitSizeScl);
                         b.damage += b.damage * scl * damageIncreasePercent;
                         unit.maxHealth -= scl * maxHealthReduction;
                         
                         unit.clampHealth();
                         if(unit.maxHealth < 0f) unit.kill();
 
-                        for(int i = 0; i < ((float[])b.data).length; i++){
-                            ((float[])b.data)[i] += ((float[])b.data)[i] * scl * strengthIncreasePercent;
-                        }
+                        data.powerIncrease(scl * strengthIncreasePercent);
                     }
                 }
             });
 
-            Groups.bullet.intersect(b.x - ((float[])b.data)[0], b.y - ((float[])b.data)[0], ((float[])b.data)[0] * 2f, ((float[])b.data)[0] * 2f, other -> {
-                if(other != null && Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[0]) && b != other && b.team != other.team && other.type.speed > 0.01f && !checkType(other.type)){
-                    Vec2 impulse = Tmp.v1.set(b).sub(other).limit((((float[])b.data)[6] + (1f - other.dst(b) / ((float[])b.data)[0]) * ((float[])b.data)[7]) * Time.delta);
+            Groups.bullet.intersect(b.x - data.sR, b.y - data.sR, data.sR * 2f, data.sR * 2f, other -> {
+                if(other != null && Mathf.within(b.x, b.y, other.x, other.y, data.sR) && b != other && b.team != other.team && other.type.speed > 0.01f && !checkType(other.type)){
+                    Vec2 impulse = Tmp.v1.set(b).sub(other).limit((data.bF + (1f - other.dst(b) / data.sR) * data.bSF) * Time.delta);
                     if(repel) impulse.rotate(180f);
                     other.vel().add(impulse);
 
@@ -85,25 +94,31 @@ public class BlackHoleBulletType extends BulletType{
                         other.move(Tmp.v1.x, Tmp.v1.y);
                     }
 
-                    if(Mathf.within(b.x, b.y, other.x, other.y, ((float[])b.data)[1] * 2f)){
+                    if(Mathf.within(b.x, b.y, other.x, other.y, data.s * 2f)){
                         if(other.type instanceof BlackHoleBulletType type){
                             float radius = (cataclysmRadius + type.cataclysmRadius) / 2f;
                             if(radius > 0){ //Do not create negative radius cataclysms. I have no idea what this would cause anyways.
                                 float thisUMul = cataclysmForceMul * Mathf.sign(!repel), thisBMul = cataclysmBulletForceMul * Mathf.sign(!repel);
                                 float otherUMul = type.cataclysmForceMul * Mathf.sign(!type.repel), otherBMul = type.cataclysmBulletForceMul * Mathf.sign(!type.repel);
 
-                                float uForce = (((float[])b.data)[4] * thisUMul + ((float[])other.data)[4] * otherUMul) / 2f;
-                                float uScaledForce = (((float[])b.data)[5] * thisUMul + ((float[])other.data)[5] * otherUMul) / 2f;
-                                float bForce = (((float[])b.data)[6] * thisBMul + ((float[])other.data)[6] * otherBMul) / 2f;
-                                float bScaledForce = (((float[])b.data)[7] * thisBMul + ((float[])other.data)[7] * otherBMul) / 2f;
-                                float range = (cataclymForceRange + type.cataclymForceRange) / 2f;
-                                Object[] cataclysmParams = {radius, uForce, uScaledForce, bForce, bScaledForce, range, b.team.color, other.team.color, true};
+                                BlackHoleData oData = (BlackHoleData)other.data;
+
+                                CataclysmData cData = new CataclysmData(){{
+                                    r = radius;
+                                    f = (data.f * thisUMul + oData.f * otherUMul) / 2f;
+                                    sF = (data.sF * thisUMul + oData.sF * otherUMul) / 2f;
+                                    bF = (data.bF * thisBMul + oData.bF * otherBMul) / 2f;
+                                    bSF = (data.bSF * thisBMul + oData.bSF * otherBMul) / 2f;
+                                    rg = (cataclymForceRange + type.cataclymForceRange) / 2f;
+                                    c1 = b.team.color;
+                                    c2 = other.team.color;
+                                }};
 
                                 float midX = (b.x + other.x) / 2f;
                                 float midY = (b.y + other.y) / 2f;
 
                                 Effect.shake(radius / 1.5f, radius * 1.5f, midX, midY);
-                                PMBullets.cataclysm.create(b.owner, b.team, midX, midY, 0f, 0f, 1f, 1f, cataclysmParams);
+                                PMBullets.cataclysm.create(b.owner, b.team, midX, midY, 0f, 0f, 1f, 1f, cData);
                                 absorbBullet(b, other, true);
                             }
                         }else{
@@ -120,7 +135,8 @@ public class BlackHoleBulletType extends BulletType{
     @Override
     public void draw(Bullet b){
         Draw.z(Layer.max - 0.01f);
-        Fill.light(b.x, b.y, 60, ((float[])b.data)[1], b.team.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 0.4f)), Color.black);
+        Fill.light(b.x, b.y, 60, ((BlackHoleData)b.data).s,
+            b.team.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 0.4f)), Color.black);
     }
 
     @Override
@@ -142,7 +158,10 @@ public class BlackHoleBulletType extends BulletType{
     }
 
     public boolean checkType(BulletType type){ //Returns true for bullets immune to suction.
-        return (type instanceof StrikeBulletType) || (type instanceof UnitSpawnStrikeBulletType) || (type instanceof ParticleBulletType) || (type instanceof BlackHoleCataclysmType);
+        return (type instanceof StrikeBulletType) ||
+            (type instanceof UnitSpawnStrikeBulletType) ||
+            (type instanceof ParticleBulletType) ||
+            (type instanceof BlackHoleCataclysmType);
     }
 
     public void absorbBullet(Bullet b, Bullet other, boolean cataclysm){
@@ -156,5 +175,34 @@ public class BlackHoleBulletType extends BulletType{
             b.type = PMBullets.absorbed;
             b.absorb();
         }
+    }
+
+    public class BlackHoleData{
+        //suctionRadius, size, damageRadius, swirlSize, force, scaledForce, bulletForce, bulletScaledForce
+        public float sR, s, dR, sS, f, sF, bF, bSF;
+
+        public BlackHoleData(){}
+
+        public void powerIncrease(float amount){
+            sR += sR * amount;
+            s += s * amount;
+            dR += dR * amount;
+            sS += sS * amount;
+            f += f * amount;
+            sF += sF * amount;
+            bF += bF * amount;
+            bSF += bSF * amount;
+        }
+    }
+
+    public class CataclysmData{
+        //radius, uForce, uScaledForce, bForce, bScaledForce, range
+        protected float r, f, sF, bF, bSF, rg;
+        //color 1, color 2
+        protected Color c1, c2;
+        //has converted floor to space
+        protected boolean space;
+
+        public CataclysmData(){}
     }
 }

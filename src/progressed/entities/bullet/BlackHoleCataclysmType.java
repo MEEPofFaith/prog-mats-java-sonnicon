@@ -14,6 +14,7 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.content.*;
+import progressed.entities.bullet.BlackHoleBulletType.*;
 import progressed.graphics.*;
 import progressed.util.*;
 
@@ -26,32 +27,27 @@ public class BlackHoleCataclysmType extends BulletType{
         collides = collidesAir = collidesGround = collidesTiles = false;
         pierce = true;
         shootEffect = smokeEffect = Fx.none;
-        lifetime = 60f * 60f; //Minute of death
+        lifetime = 60f * 60f; //Minute of death he he he
         drawSize = 2048f;
     }
 
     @Override
     public void update(Bullet b){
         //[radius, uForce, uScaledForce, bForce, bScaledForce, range, c1, c2, world load]
-        Object[] rawData = (Object[])b.data;
-
-        float[] data = new float[6];
-        for(int i = 0; i < 6; i++){
-            data[i] = (float)rawData[i];
-        }
+        CataclysmData data = (CataclysmData)b.data;
 
         float shrink = 1 - Mathf.curve(b.time, b.lifetime - fadeTime, b.lifetime);
         float scl = Mathf.curve(b.time, 0f, growTime) * shrink;
-        float suctionRadius = (data[0] + data[5]) * scl;
+        float suctionRadius = (data.r + data.rg) * scl;
 
         if(b.timer(1, 2f)){
             Units.nearbyEnemies(null, b.x - suctionRadius, b.y - suctionRadius, suctionRadius * 2f, suctionRadius * 2f, unit -> {
                 if(unit.within(b.x, b.y, suctionRadius)){
-                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((data[1] * scl + (1f - unit.dst(b) / suctionRadius) * data[2] * scl) * Time.delta);
-                    if(data[1] < 0f || data[2] < 0f) impulse.rotate(180f);
+                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((data.f * scl + (1f - unit.dst(b) / suctionRadius) * data.sF * scl) * Time.delta);
+                    if(data.f < 0f || data.sF < 0f) impulse.rotate(180f);
                     unit.impulseNet(impulse);
 
-                    if(unit.within(b.x, b.y, data[0] * scl)){
+                    if(unit.within(b.x, b.y, data.r * scl)){
                         unit.kill();
                     }
                 }
@@ -59,61 +55,56 @@ public class BlackHoleCataclysmType extends BulletType{
 
             Groups.bullet.intersect(b.x - suctionRadius, b.y - suctionRadius, suctionRadius * 2f, suctionRadius * 2f, other -> {
                 if(other != null && Mathf.within(b.x, b.y, other.x, other.y, suctionRadius) && b != other && other.type.speed > 0.01f){
-                    Vec2 impulse = Tmp.v1.set(b).sub(other).limit((data[3] * scl + (1f - other.dst(b) / suctionRadius) * data[4] * scl) * Time.delta);
-                    if(data[3] < 0f || data[4] < 0f) impulse.rotate(180f);
+                    Vec2 impulse = Tmp.v1.set(b).sub(other).limit((data.bF * scl + (1f - other.dst(b) / suctionRadius) * data.bSF * scl) * Time.delta);
+                    if(data.bF < 0f || data.bSF < 0f) impulse.rotate(180f);
                     other.vel().add(impulse);
 
-                    if(Mathf.within(b.x, b.y, other.x, other.y, data[0] * scl)){
+                    if(Mathf.within(b.x, b.y, other.x, other.y, data.r * scl)){
                         absorbBullet(other);
                     }
                 }
             });
 
-            PMUtls.trueEachBlock(b.x, b.y, data[0] * scl, other -> {
+            PMUtls.trueEachBlock(b.x, b.y, data.r * scl, other -> {
                 other.kill();
             });
         }
 
         if(b.time < growTime * 2f){ //*inhales* SPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACE
-            PMUtls.trueEachTile(b.x, b.y, (data[0] - 8f) * scl, tile -> {
+            PMUtls.trueEachTile(b.x, b.y, (data.r - 8f) * scl, tile -> {
                 if(tile.floor() != Blocks.space){
                     tile.setAir();
                     tile.setFloorNet(Blocks.space);
                     Vars.world.notifyChanged(tile);
                 }
             });
-        }else if((boolean)rawData[8]){
+        }else if(!data.space){
             Events.fire(new WorldLoadEvent());
-            rawData[8] = false;
+            data.space = true;
         }
     }
 
     @Override
     public void draw(Bullet b){
         //[radius, uForce, uScaledForce, bForce, bScaledForce, range, c1, c2]
-        Object[] rawData = (Object[])b.data;
+        CataclysmData data = (CataclysmData)b.data;
 
-        float[] data = new float[6];
-        for(int i = 0; i < 6; i++){
-            data[i] = (float)rawData[i];
-        }
-
-        Color[] colors = new Color[]{(Color)rawData[6], (Color)rawData[7]};
+        Color[] colors = new Color[]{data.c1, data.c2};
         Color[] darkenedColors = new Color[]{colors[0].cpy().lerp(Color.black, 0.5f), colors[1].cpy().lerp(Color.black, 0.5f)};
 
         float shrink = 1 - Mathf.curve(b.time, b.lifetime - fadeTime, b.lifetime);
         float scl = Mathf.curve(b.time, 0f, growTime) * shrink;
         float grow2 = Interp.pow2Out.apply(Mathf.curve(b.time, 0f, secondaryGrowTime));
-        float radius = data[0] * scl;
+        float radius = data.r * scl;
 
         Draw.z(Layer.max);
         Fill.light(b.x, b.y, 60, radius, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 1f)), Color.black);
 
-        Angles.randLenVectors(b.id * 2, Mathf.round(data[0] / 3f), (data[0] + data[5]), (x, y) -> {
+        Angles.randLenVectors(b.id * 2, Mathf.round(data.r / 3f), (data.r + data.rg), (x, y) -> {
             float offset = Mathf.randomSeed((long)(b.id * Mathf.randomSeed((long)x) * Mathf.randomSeed((long)y)));
             float tx = x * grow2;
             float ty = y * grow2;
-            Fill.light(b.x + tx, b.y + ty, 60, data[0] / 10f * grow2 * shrink, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + offset, 10f, 1f)), Color.black);
+            Fill.light(b.x + tx, b.y + ty, 60, data.r / 10f * grow2 * shrink, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + offset, 10f, 1f)), Color.black);
         });
     }
 

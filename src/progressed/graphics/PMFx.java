@@ -9,6 +9,7 @@ import mindustry.game.Team;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.entities.bullet.*;
+import progressed.entities.bullet.BlackHoleBulletType.*;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -193,11 +194,22 @@ public class PMFx{
         Bullet b = (Bullet)e.data;
 
         if(b != null && b.type instanceof BlackHoleBulletType){
-            color(Color.black, Mathf.curve(e.time, 0f, 15f));
-            float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
-            Fill.circle(b.x + trnsx(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), b.y + trnsy(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), ((float[])b.data)[3] * e.fout());
+            BlackHoleData data = (BlackHoleData)b.data;
 
-            Drawf.light(b.x + trnsx(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), b.y + trnsy(e.rotation + startAngle * e.fout(), ((float[])b.data)[0] * e.fout()), (((float[])b.data)[3] + 3f) * e.fout(), Draw.getColor(), 0.7f);
+            color(b.team.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
+            float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
+
+            Fill.light(b.x + trnsx(e.rotation + startAngle * e.fout(), data.sR * e.fout()),
+                b.y + trnsy(e.rotation + startAngle * e.fout(), data.sR * e.fout()),
+                60,  data.sS * e.fout(),
+                Draw.getColor(), Color.black
+            );
+
+            Drawf.light(b.x + trnsx(e.rotation + startAngle * e.fout(), data.sR * e.fout()),
+                b.y + trnsy(e.rotation + startAngle * e.fout(),
+                data.sR * e.fout()), data.sS * e.fout(),
+                Draw.getColor(), 0.7f
+            );
         }
     }).layer(Layer.max - 0.02f),
     

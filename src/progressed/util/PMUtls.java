@@ -10,13 +10,20 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import mindustry.type.*;
 import mindustry.world.*;
 import progressed.entities.bullet.*;
 
 public class PMUtls{
     private static IntSet collidedBlocks = new IntSet();
 
-    public static final PowIn pow6In = new PowIn(6);
+    public static PowIn customPowIn(int power){
+        return new PowIn(power);
+    }
+
+    public static PowOut customPowOut(int power){
+        return new PowOut(power);
+    }
     
     public static float bulletDamage(BulletType b, float lifetime){
         float damage = b.damage + b.splashDamage; //Base Damage
@@ -92,5 +99,21 @@ public class PMUtls{
         });
 
         return targets;
+    }
+
+    public static ItemStack[] randomizedItems(int[] repeatAmounts, int minAmount, int maxAmount){
+        Seq<ItemStack> stacks = new Seq<>();
+
+        Vars.content.items().each(item -> {
+            int repeats = repeatAmounts[Mathf.random(repeatAmounts.length - 1)];
+            if(repeats > 0){
+                for(int i = 0; i < repeats; i++){
+                    stacks.add(new ItemStack(item, Mathf.random(minAmount, maxAmount)));
+                }
+            }
+        });
+
+        stacks.shuffle();
+        return stacks.toArray(ItemStack.class);
     }
 }

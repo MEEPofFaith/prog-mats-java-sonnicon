@@ -1,8 +1,6 @@
 package progressed.content;
 
 import arc.*;
-import arc.graphics.*;
-import arc.graphics.g2d.*;
 import arc.math.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
@@ -505,9 +503,55 @@ public class PMBlocks implements ContentList{
 
         excalibur = new Block("excalibur");
 
-        harbinger = new Block("harbinger");
+        harbinger = new ChaosTurret("harbinger"){
+            {
+                size = 8;
+                shots = 100;
+                inaccuracy = 45f;
+                shootShake = 150f;
+                powerUse = 300f;
+                range = 560f;
+                recoilAmount = 8f;
+                rotateSpeed = 0.3f;
+                shootCone = 20f;
+                cooldown = 0.0015f;
+                restitution = 0.008f;
+                reloadTime = 450f;
+                chargeTime = PMFx.harbingerCharge.lifetime;
+                chargeBeginEffect = PMFx.harbingerCharge;
+                chargeSound = PMSounds.harbingerCharge;
+                shootSound = PMSounds.harbingerBlast;
+                shootType = PMBullets.harbingerLaser;
+            }
 
-        everythingGun = new Block("everything-gun");
+            @Override
+            public void init(){
+                super.init();
+                shootLength -= 16f;
+            }
+
+            @Override
+            public void load(){
+                super.load();
+                baseRegion = Core.atlas.find("prog-mats-block-" + size);
+            }
+        };
+
+        everythingGun = new EverythingTurret("everything-gun"){
+            {
+                health = 5000000;
+                size = 6;
+                reloadTime = 1f;
+                range = 4400f;
+                shootCone = 360f;
+            }
+
+            @Override
+            public void load(){
+                super.load();
+                baseRegion = Core.atlas.find("prog-mats-block-" + size);
+            }
+        };
         
         //End Region
         //Region Crafters

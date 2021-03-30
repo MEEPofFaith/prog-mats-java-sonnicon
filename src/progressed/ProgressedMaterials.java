@@ -4,6 +4,7 @@ import arc.*;
 import arc.func.*;
 import arc.util.*;
 import mindustry.ctype.*;
+import mindustry.game.EventType.*;
 import mindustry.mod.*;
 import mindustry.mod.Mods.*;
 import progressed.content.*;
@@ -23,6 +24,11 @@ public class ProgressedMaterials extends Mod{
 
     public ProgressedMaterials(){
         super();
+        PMSounds.load();
+
+        Events.on(DisposeEvent.class, e -> {
+            PMSounds.dispose();
+        });
     }
 
     @Override

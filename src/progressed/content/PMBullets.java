@@ -7,7 +7,6 @@ import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import progressed.*;
 import progressed.entities.bullet.*;
 import progressed.graphics.*;
 
@@ -33,7 +32,9 @@ public class PMBullets implements ContentList{
     
     strikedownBasic, strikedownEmp, strikedownQuantum,
     
-    arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry;
+    arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
+    
+    harbingerLaser;
 
     @Override
     public void load(){
@@ -490,6 +491,40 @@ public class PMBullets implements ContentList{
                     randUnitDrop.create(b, b.x + Angles.trnsx(a, len), b.y + Angles.trnsy(a, len), a, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax));
                 }
             }
+        };
+
+        harbingerLaser = new LaserBulletType(Float.MAX_VALUE){
+            {
+                colors = new Color[]{Color.valueOf("F3E97966"), Color.valueOf("F3E979"), Color.white};
+                length = 900f;
+                width = 75f;
+                lifetime = 130;
+                lightColor = colors[1];
+
+                lightningSpacing = 20f;
+                lightningLength = 15;
+                lightningLengthRand = 10;
+                lightningDelay = 0.5f;
+                lightningDamage = Float.MAX_VALUE;
+                lightningAngleRand = 45f;
+                lightningColor = colors[1];
+
+                sideAngle = 25f;
+                sideWidth = width / 8f;
+                sideLength = length / 1.5f;
+            }
+
+            @Override
+            public void hitTile(Bullet b, Building build, float initialHealth, boolean direct){
+                super.hitTile(b, build, initialHealth, direct);
+                if(build.team != b.team) build.kill();
+            };
+
+            @Override
+            public void hitEntity(Bullet b, Hitboxc other, float initialHealth){
+                super.hitEntity(b, other, initialHealth);
+                if(((Teamc)other).team() != b.team) ((Healthc)other).kill();
+            };
         };
     }
 }

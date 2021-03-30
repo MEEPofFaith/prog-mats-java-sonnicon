@@ -17,7 +17,7 @@ public class BlackHoleTurret extends PowerTurret{
         super(name);
         heatDrawer = tile -> {
             if(tile.heat <= 0.00001f) return;
-            float r = PMUtls.pow6In.apply(tile.heat);
+            float r = PMUtls.customPowIn(6).apply(tile.heat);
             float g = (Interp.pow3In.apply(tile.heat) + ((1f - Interp.pow3In.apply(tile.heat)) * 0.12f)) / 2f;
             float b = Interp.pow2Out.apply(tile.heat);
             float a = Interp.pow2Out.apply(tile.heat);

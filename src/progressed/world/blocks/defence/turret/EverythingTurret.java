@@ -93,7 +93,7 @@ public class EverythingTurret extends PowerTurret{
         super.setStats();
 
         stats.remove(Stat.ammo);
-        stats.add(Stat.ammo, "[red]All of the Above");
+        stats.add(Stat.ammo, "[red]Everything");
     }
 
     public class EverythingTurretBuild extends PowerTurretBuild{

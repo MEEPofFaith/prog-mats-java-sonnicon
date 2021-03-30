@@ -52,6 +52,16 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
                     }
                 }
 
+                if(type instanceof BlackHoleBulletType stype){
+                    sep(bt, Core.bundle.format("bullet.damage-radius", stype.damageRadius / tilesize));
+                    sep(bt, Core.bundle.format("bullet.suction-radius", stype.suctionRadius / tilesize));
+                }
+
+                if(type instanceof CritBulletType stype){
+                    sep(bt, Core.bundle.format("bullet.crit-chance", (int)(stype.critChance * 100f)));
+                    sep(bt, Core.bundle.format("bullet.crit-multiplier", (int)stype.critMultiplier));
+                }
+
                 if(type.buildingDamageMultiplier != 1){
                     sep(bt, Core.bundle.format("bullet.buildingdamage", (int)(type.buildingDamageMultiplier * 100)));
                 }
@@ -94,11 +104,6 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
 
                 if(type.lightning > 0){
                     sep(bt, Core.bundle.format("bullet.lightning", type.lightning, type.lightningDamage < 0 ? type.damage : type.lightningDamage));
-                }
-
-                if(type instanceof CritBulletType crit){
-                    sep(bt, Core.bundle.format("bullet.prog-mats-crit-chance", (int)(crit.critChance * 100f)));
-                    sep(bt, Core.bundle.format("bullet.prog-mats-crit-multiplier", (int)crit.critMultiplier));
                 }
 
                 if(type.fragBullet != null){

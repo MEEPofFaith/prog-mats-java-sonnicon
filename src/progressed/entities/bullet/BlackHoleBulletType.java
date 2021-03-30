@@ -40,6 +40,11 @@ public class BlackHoleBulletType extends BulletType{
     }
 
     @Override
+    public float continuousDamage(){
+        return damage / 2f * 60f; //Damage every 2 ticks
+    }
+
+    @Override
     public void update(Bullet b){
         if(b.timer(1, 2f)){
             Damage.damage(b.team, b.x, b.y, ((float[])b.data)[2], b.damage);

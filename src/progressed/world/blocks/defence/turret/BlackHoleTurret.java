@@ -4,10 +4,12 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.struct.*;
 import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
+import progressed.ui.*;
 import progressed.util.*;
 
 public class BlackHoleTurret extends PowerTurret{
@@ -32,16 +34,18 @@ public class BlackHoleTurret extends PowerTurret{
     }
 
     @Override
-    public void setStats(){
-        stats.remove(Stat.damage);
-        stats.add(Stat.damage, shootType.damage * 30f, StatUnit.perSecond);
-    }
-
-    @Override
     public void load(){
         super.load();
 
         spaceRegion = Core.atlas.find(name + "-space");
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.ammo);
+        stats.add(Stat.ammo, new PMAmmoListValue<>(OrderedMap.of(this, shootType)));
     }
 
     public class BlackHoleTurretBuild extends PowerTurretBuild{

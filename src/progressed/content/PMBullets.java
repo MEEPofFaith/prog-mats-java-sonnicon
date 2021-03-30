@@ -493,19 +493,20 @@ public class PMBullets implements ContentList{
             }
         };
 
-        harbingerLaser = new LaserBulletType(Float.MAX_VALUE){
+        harbingerLaser = new LaserBulletType(Float.MAX_VALUE + 1f){
             {
                 colors = new Color[]{Color.valueOf("F3E97966"), Color.valueOf("F3E979"), Color.white};
                 length = 900f;
                 width = 75f;
                 lifetime = 130;
                 lightColor = colors[1];
+                ammoMultiplier = 1;
 
                 lightningSpacing = 20f;
                 lightningLength = 15;
                 lightningLengthRand = 10;
                 lightningDelay = 0.5f;
-                lightningDamage = Float.MAX_VALUE;
+                lightningDamage = Float.MAX_VALUE + 1f;
                 lightningAngleRand = 45f;
                 lightningColor = colors[1];
 

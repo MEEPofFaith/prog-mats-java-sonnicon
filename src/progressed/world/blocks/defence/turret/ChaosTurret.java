@@ -3,6 +3,7 @@ package progressed.world.blocks.defence.turret;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.math.Interp.*;
 import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
@@ -18,6 +19,8 @@ import static mindustry.Vars.*;
 public class ChaosTurret extends PowerTurret{
     public float shootDuration;
 
+    protected PowIn pow = PMUtls.customPowIn(6);
+
     public ChaosTurret(String name){
         super(name);
 
@@ -29,8 +32,8 @@ public class ChaosTurret extends PowerTurret{
         heatDrawer = tile -> {
             if(tile.heat <= 0.00001f) return;
             float r = Interp.pow2Out.apply(tile.heat);
-            float g = (Interp.pow3In.apply(tile.heat) + ((1f - Interp.pow3In.apply(tile.heat)) * 0.12f)) / 2f;
-            float b = PMUtls.customPowIn(6).apply(tile.heat);
+            float g = Interp.pow3In.apply(tile.heat) + ((1f - Interp.pow3In.apply(tile.heat)) * 0.12f);
+            float b = pow.apply(tile.heat);
             float a = Interp.pow2Out.apply(tile.heat);
             Tmp.c1.set(r, g, b, a);
             Draw.color(Tmp.c1);
@@ -70,12 +73,12 @@ public class ChaosTurret extends PowerTurret{
                 wasShooting = true;
             }
 
-            if(reload < reloadTime){
+            if(reload > 0f){
                 Liquid liquid = liquids.current();
                 float maxUsed = consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount;
 
-                float used = (cheating() ? maxUsed * delta() : Math.min(liquids.get(liquid), maxUsed * delta())) * liquid.heatCapacity * coolantMultiplier;
-                reload += used;
+                float used = (cheating() ? maxUsed * Time.delta : Math.min(liquids.get(liquid), maxUsed * Time.delta)) * liquid.heatCapacity * coolantMultiplier * baseReloadSpeed();
+                reload -= used;
                 liquids.remove(liquid, used);
 
                 if(Mathf.chance(0.06 * used)){
@@ -91,12 +94,12 @@ public class ChaosTurret extends PowerTurret{
 
         @Override
         protected void updateShooting(){
-            if(reload >= reloadTime && !charging && consValid() && !active()){
+            if(reload <= 0f && !charging && consValid() && !active()){
                 BulletType type = peekAmmo();
 
                 shoot(type);
 
-                reload = 0f;
+                reload = reloadTime;
             }
         }
 

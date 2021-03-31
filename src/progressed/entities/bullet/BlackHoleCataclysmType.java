@@ -43,19 +43,26 @@ public class BlackHoleCataclysmType extends BulletType{
         if(b.timer(1, 2f)){
             Units.nearbyEnemies(null, b.x - suctionRadius, b.y - suctionRadius, suctionRadius * 2f, suctionRadius * 2f, unit -> {
                 if(unit.within(b.x, b.y, suctionRadius)){
-                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((data.f * scl + (1f - unit.dst(b) / suctionRadius) * data.sF * scl) * Time.delta);
+                    float deadForce = unit.dead ? 5f : 1f;
+                    float angle = b.angleTo(unit);
+                    float dist = !unit.within(b.x, b.y, data.r) ? unit.dst(b.x + Angles.trnsx(angle, data.r), b.y + Angles.trnsy(angle, data.r)) : 0f;
+                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit(((data.f * deadForce) * scl + (1f - dist / data.rg) * (data.sF * deadForce) * scl) * Time.delta);
                     if(data.f < 0f || data.sF < 0f) impulse.rotate(180f);
                     unit.impulseNet(impulse);
 
                     if(unit.within(b.x, b.y, data.r * scl)){
-                        unit.kill();
+                        unit.set(b);
+                        unit.vel.set(0f, 0f);
+                        unit.destroy();
                     }
                 }
             });
 
             Groups.bullet.intersect(b.x - suctionRadius, b.y - suctionRadius, suctionRadius * 2f, suctionRadius * 2f, other -> {
                 if(other != null && Mathf.within(b.x, b.y, other.x, other.y, suctionRadius) && b != other && other.type.speed > 0.01f){
-                    Vec2 impulse = Tmp.v1.set(b).sub(other).limit((data.bF * scl + (1f - other.dst(b) / suctionRadius) * data.bSF * scl) * Time.delta);
+                    float angle = b.angleTo(other);
+                    float dist = !other.within(b.x, b.y, data.r) ? other.dst(b.x + Angles.trnsx(angle, data.r), b.y + Angles.trnsy(angle, data.r)) : 0f;
+                    Vec2 impulse = Tmp.v1.set(b).sub(other).limit((data.bF * scl + (1f - dist / data.rg) * data.bSF * scl) * Time.delta);
                     if(data.bF < 0f || data.bSF < 0f) impulse.rotate(180f);
                     other.vel().add(impulse);
 
@@ -100,12 +107,22 @@ public class BlackHoleCataclysmType extends BulletType{
         Draw.z(Layer.max);
         Fill.light(b.x, b.y, 60, radius, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 1f)), Color.black);
 
-        Angles.randLenVectors(b.id * 2, Mathf.round(data.r / 3f), (data.r + data.rg), (x, y) -> {
+        Angles.randLenVectors(b.id * 2, Mathf.round((data.r + data.rg) / 3f), (data.r + data.rg), (x, y) -> {
             float offset = Mathf.randomSeed((long)(b.id * Mathf.randomSeed((long)x) * Mathf.randomSeed((long)y)));
             float tx = x * grow2;
             float ty = y * grow2;
-            Fill.light(b.x + tx, b.y + ty, 60, data.r / 10f * grow2 * shrink, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + offset, 10f, 1f)), Color.black);
+            Fill.light(b.x + tx + Mathf.range(1f), b.y + ty + Mathf.range(1f), 60, data.r / 10f * grow2 * shrink, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + offset, 10f, 1f)), Color.black);
         });
+    }
+
+    @Override
+    public void despawned(Bullet b){
+        // Do nothing
+    }
+
+    @Override
+    public void hit(Bullet b, float x, float y){
+        // Do nothing
     }
 
     public void absorbBullet(Bullet other){

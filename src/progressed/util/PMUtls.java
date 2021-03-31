@@ -116,4 +116,8 @@ public class PMUtls{
         stacks.shuffle();
         return stacks.toArray(ItemStack.class);
     }
+    
+    public static int statPrecision(float value){
+        return Math.abs((int)value - value) <= 0.001f ? 0 : Math.abs((int)(value * 10) - value * 10) <= 0.001f ? 1 : 2;
+    }
 }

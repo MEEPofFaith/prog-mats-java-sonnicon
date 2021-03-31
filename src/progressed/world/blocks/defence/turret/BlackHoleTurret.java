@@ -4,6 +4,7 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.math.Interp.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.entities.bullet.*;
@@ -14,12 +15,14 @@ import progressed.util.*;
 
 public class BlackHoleTurret extends PowerTurret{
     protected TextureRegion spaceRegion;
+
+    protected PowIn pow = PMUtls.customPowIn(6);
     
     public BlackHoleTurret(String name){
         super(name);
         heatDrawer = tile -> {
             if(tile.heat <= 0.00001f) return;
-            float r = PMUtls.customPowIn(6).apply(tile.heat);
+            float r = pow.apply(tile.heat);
             float g = (Interp.pow3In.apply(tile.heat) + ((1f - Interp.pow3In.apply(tile.heat)) * 0.12f)) / 2f;
             float b = Interp.pow2Out.apply(tile.heat);
             float a = Interp.pow2Out.apply(tile.heat);

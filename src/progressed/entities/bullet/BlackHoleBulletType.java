@@ -17,8 +17,8 @@ import progressed.util.*;
 public class BlackHoleBulletType extends BulletType{
     public float maxHealthReduction = 1f, bulletAbsorbPercent = 0.05f, hitSizeScl = 0.02f, damageIncreasePercent = 0.005f, strengthIncreasePercent = 0.005f;
     public Effect absorbEffect = PMFx.blackHoleAbsorb, swirlEffect = PMFx.blackHoleSwirl;
-    public float cataclysmRadius = 25f * 8f;
-    public float cataclysmForceMul = 5f, cataclysmBulletForceMul = 5f, cataclymForceRange = 18f * 8f;
+    public float cataclysmRadius = 20f * 8f;
+    public float cataclysmForceMul = 5f, cataclysmBulletForceMul = 5f, cataclysmForceRange = 40f * 8f;
     public float suctionRadius = 96f, size = 5f, damageRadius = 32f;
     public float force = 15f, scaledForce = 160f, bulletForce = 0.1f, bulletScaledForce = 2f;
     public float swirlSize = 4f;
@@ -44,6 +44,7 @@ public class BlackHoleBulletType extends BulletType{
             sF = scaledForce;
             bF = bulletForce;
             bSF = bulletScaledForce;
+            cFR = cataclysmForceRange;
         }};
         super.init(b);
     }
@@ -66,7 +67,8 @@ public class BlackHoleBulletType extends BulletType{
 
             Units.nearbyEnemies(b.team, b.x - data.sR, b.y - data.sR, data.sR * 2f, data.sR * 2f, unit -> {
                 if(unit.within(b.x, b.y, data.sR)){
-                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit((data.f + (1f - unit.dst(b) / data.sR) * data.sF) * Time.delta);
+                    float deadForce = unit.dead ? 5f : 1f;
+                    Vec2 impulse = Tmp.v1.set(b).sub(unit).limit(((data.f * deadForce) + (1f - unit.dst(b) / data.sR) * (data.sF * deadForce)) * Time.delta);
                     if(repel) impulse.rotate(180f);
                     unit.impulseNet(impulse);
 
@@ -91,7 +93,7 @@ public class BlackHoleBulletType extends BulletType{
 
                     //manually move units to simulate velocity for remote players
                     if(b.isRemote()){
-                        other.move(Tmp.v1.x, Tmp.v1.y);
+                        other.move(impulse.x, impulse.y);
                     }
 
                     if(Mathf.within(b.x, b.y, other.x, other.y, data.s * 2f)){
@@ -109,7 +111,7 @@ public class BlackHoleBulletType extends BulletType{
                                     sF = (data.sF * thisUMul + oData.sF * otherUMul) / 2f;
                                     bF = (data.bF * thisBMul + oData.bF * otherBMul) / 2f;
                                     bSF = (data.bSF * thisBMul + oData.bSF * otherBMul) / 2f;
-                                    rg = (cataclymForceRange + type.cataclymForceRange) / 2f;
+                                    rg = (data.cFR + oData.cFR) / 2f;
                                     c1 = b.team.color;
                                     c2 = other.team.color;
                                 }};
@@ -179,7 +181,7 @@ public class BlackHoleBulletType extends BulletType{
 
     public class BlackHoleData{
         //suctionRadius, size, damageRadius, swirlSize, force, scaledForce, bulletForce, bulletScaledForce
-        public float sR, s, dR, sS, f, sF, bF, bSF;
+        public float sR, s, dR, sS, f, sF, bF, bSF, cFR;
 
         public BlackHoleData(){}
 
@@ -192,6 +194,7 @@ public class BlackHoleBulletType extends BulletType{
             sF += sF * amount;
             bF += bF * amount;
             bSF += bSF * amount;
+            cFR += cFR * amount;
         }
     }
 

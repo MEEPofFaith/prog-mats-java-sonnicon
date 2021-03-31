@@ -7,6 +7,7 @@ import mindustry.*;
 import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
+import progressed.util.*;
 
 public class StrobeSource extends StrobeNode{
     public float powerProduction = 2000000000f / 60f;
@@ -32,7 +33,11 @@ public class StrobeSource extends StrobeNode{
     public void setBars(){
         super.setBars();
         if(boost){
-            bars.add("boost", (StrobeSourceBuild entity) -> new Bar(() -> Core.bundle.format("bar.gay", speedBoost * 100f), () -> laserColor1.cpy().lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1f, 1f)).shiftHue(Time.time * speed), () -> 100f));
+            bars.add("boost", (StrobeSourceBuild entity) -> new Bar(
+                () -> Core.bundle.format("bar.gay", Strings.fixed(speedBoost * 100f, PMUtls.statPrecision(speedBoost * 100f))),
+                () -> laserColor1.cpy().lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1f, 1f)).shiftHue(Time.time * speed),
+                () -> speedBoost * 100f
+            ));
         }
     }
 

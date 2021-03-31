@@ -3,6 +3,7 @@ package progressed.world.blocks.defence.turret;
 import arc.audio.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.math.Interp.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.content.*;
@@ -22,6 +23,7 @@ public class EverythingTurret extends PowerTurret{
     public float startingBias = 0.1f, maxBias = 6000f, growSpeed = 1.004f, shrinkSpeed = 0.05f;
 
     protected Seq<Object[]> bullets = new Seq<>();
+    protected PowOut pow = PMUtls.customPowOut(20);
 
     public EverythingTurret(String name){
         super(name);
@@ -104,7 +106,7 @@ public class EverythingTurret extends PowerTurret{
         public void updateTile(){
             super.updateTile();
             
-            float lerp = PMUtls.customPowOut(20).apply(bias / maxBias);
+            float lerp = pow.apply(bias / maxBias);
 
             for(int i = 0; i < 1f + lerp * 100f; i++){
                 if(Mathf.chanceDelta(1f)){ //I'm just copying over code I have no idea what the hell I'm looking at.

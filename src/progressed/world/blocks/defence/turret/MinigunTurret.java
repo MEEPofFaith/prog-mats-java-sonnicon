@@ -10,6 +10,8 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
+import mindustry.world.meta.*;
+import progressed.util.*;
 
 public class MinigunTurret extends ItemTurret{
     public float windupSpeed, windDownSpeed, minFiringSpeed;
@@ -32,6 +34,18 @@ public class MinigunTurret extends ItemTurret{
         for(int i = 0; i < 12; i++){
             heatRegions[i] = Core.atlas.find(name + "-heat-" + i);
         }
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+        
+        stats.remove(Stat.reload);
+        float minValue = 60f / (3f / minFiringSpeed) * shootLocs.length;
+        String minSpeed = Strings.fixed(minValue, PMUtls.statPrecision(minValue));
+        float maxValue = 60f / 3f * shootLocs.length;
+        String maxSpeed = Strings.fixed(maxValue, PMUtls.statPrecision(maxValue));
+        stats.add(Stat.reload, minSpeed + " - " + maxSpeed);
     }
 
     public class MinigunTurretBuild extends ItemTurretBuild{

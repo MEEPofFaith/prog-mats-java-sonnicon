@@ -104,10 +104,6 @@ public class PMBlocks implements ContentList{
             windupSpeed = 0.000125f;
             windDownSpeed = 0.0125f;
             minFiringSpeed = 1f/6f;
-
-            //Dummy stats to mess with the shots/sec stat
-            reloadTime = 3f;
-            shots = 1;
         }};
 
         miinigun = new MinigunTurret("miinigun"){{
@@ -149,10 +145,6 @@ public class PMBlocks implements ContentList{
             windupSpeed = 0.000125f/1.2f;
             windDownSpeed = 0.0125f;
             minFiringSpeed = 1f/6f;
-
-            //Dummy stats to mess with the shots/sec stat
-            reloadTime = 3f;
-            shots = 2;
         }};
 
         mivnigun = new MinigunTurret("mivnigun"){{
@@ -195,10 +187,6 @@ public class PMBlocks implements ContentList{
             windupSpeed = 0.000125f/1.4f;
             windDownSpeed = 0.0125f;
             minFiringSpeed = 1f/6f;
-
-            //Dummy stats to mess with the shots/sec stat
-            reloadTime = 3f;
-            shots = 1;
         }};
 
         shock = new TeslaTurret("shock"){{

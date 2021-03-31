@@ -42,6 +42,7 @@ public class TeslaTurret extends PowerTurret{
 
         stats.remove(Stat.inaccuracy);
         if(inaccuracy > 0f) stats.add(Stat.inaccuracy, inaccuracy / Vars.tilesize, StatUnit.blocks);
+        stats.add(Stat.reload, "[lightgray](" + zaps + " arcs per shot)");
     }
 
     @Override

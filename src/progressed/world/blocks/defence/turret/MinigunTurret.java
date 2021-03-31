@@ -8,6 +8,7 @@ import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
@@ -17,6 +18,7 @@ public class MinigunTurret extends ItemTurret{
     public float windupSpeed, windDownSpeed, minFiringSpeed;
     public float barX, barY, barStroke, barLength;
     public float[] shootLocs;
+    public Color c1 = Color.darkGray;
 
     protected TextureRegion[] turretRegions = new TextureRegion[3], heatRegions = new TextureRegion[12];
 
@@ -42,10 +44,18 @@ public class MinigunTurret extends ItemTurret{
         
         stats.remove(Stat.reload);
         float minValue = 60f / (3f / minFiringSpeed) * shootLocs.length;
-        String minSpeed = Strings.fixed(minValue, PMUtls.statPrecision(minValue));
         float maxValue = 60f / 3f * shootLocs.length;
-        String maxSpeed = Strings.fixed(maxValue, PMUtls.statPrecision(maxValue));
-        stats.add(Stat.reload, minSpeed + " - " + maxSpeed);
+        stats.add(Stat.reload, PMUtls.stringsFixed(minValue) + " - " + PMUtls.stringsFixed(maxValue));
+    }
+
+    @Override
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-minigun-speed", (MinigunTurretBuild entity) -> new Bar(
+            () -> Core.bundle.format("bar.pm-minigun-speed", PMUtls.stringsFixed(entity.frameSpeed * 100f)),
+            () -> entity.frameSpeed > minFiringSpeed ? entity.team.color : c1.cpy().lerp(entity.team.color, Mathf.curve(entity.frameSpeed, 0f, minFiringSpeed) / 2f),
+            () -> entity.frameSpeed
+        ));
     }
 
     public class MinigunTurretBuild extends ItemTurretBuild{
@@ -77,7 +87,7 @@ public class MinigunTurret extends ItemTurret{
             }
 
             if(frameSpeed > 0f){
-                Draw.color(team.color);
+                Draw.color(frameSpeed > minFiringSpeed ? team.color : c1.cpy().lerp(team.color, Mathf.curve(frameSpeed, 0f, minFiringSpeed) / 2f));
                 Lines.stroke(barStroke);
                 for(int i = 0; i < 2; i++){
                     tr2.trns(rotation - 90f, barX * Mathf.signs[i], barY - recoil);

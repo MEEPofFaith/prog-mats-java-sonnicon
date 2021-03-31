@@ -4,11 +4,21 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.scene.ui.*;
+import arc.scene.ui.layout.*;
 import arc.util.*;
+import mindustry.ai.types.*;
+import mindustry.content.*;
+import mindustry.entities.abilities.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.meta.*;
+import progressed.entities.units.*;
+
+import static mindustry.Vars.*;
 
 public class SentryUnit extends UnitType{
     public int engines = 4;
@@ -58,8 +68,12 @@ public class SentryUnit extends UnitType{
     public void update(Unit unit){
         if(!unit.dead && unit.health > 0) unit.elevation = Mathf.clamp(unit.elevation + riseSpeed * Time.delta);
 
-        float sub = (unit.maxHealth / duration) * Time.delta;
-        unit.health -= sub;
+        Sentry sentry = ((Sentry)unit);
+        sentry.duration -= Time.delta;
+        sentry.clampDuration();
+        if(sentry.duration <= 0f){
+            sentry.kill();
+        }
 
         super.update(unit);
     }
@@ -72,6 +86,7 @@ public class SentryUnit extends UnitType{
         unit.ammo = ammoCapacity; //fill up on ammo upon creation
         unit.elevation = 0;
         unit.health = unit.maxHealth;
+        ((Sentry)unit).duration = duration;
         return unit;
     }
 
@@ -79,9 +94,65 @@ public class SentryUnit extends UnitType{
     public void setStats(){
         super.setStats();
         
-        stats.add(Stat.health, Core.bundle.format("stat.sentry-lifetime", (int)(duration / 60f)));
+        stats.add(Stat.health, Core.bundle.format("stat.pm-sentry-lifetime", (int)(duration / 60f)));
 
         stats.remove(Stat.speed);
         stats.remove(Stat.itemCapacity);
+    }
+
+    @Override
+    public void display(Unit unit, Table table){
+        table.table(t -> {
+            t.left();
+            t.add(new Image(icon(Cicon.medium))).size(8 * 4).scaling(Scaling.fit);
+            t.labelWrap(localizedName).left().width(190f).padLeft(5);
+        }).growX().left();
+        table.row();
+
+        table.table(bars -> {
+            bars.defaults().growX().height(20f).pad(4);
+
+            bars.add(new Bar("stat.health", Pal.health, unit::healthf).blink(Color.white));
+            bars.row();
+            
+            Sentry sentry = ((Sentry)unit);
+            bars.add(new Bar(
+                () -> Core.bundle.format("bar.pm-sentry-life", Strings.fixed(sentry.duration / 60f, 1)),
+                () -> Pal.accent,
+                () -> sentry.durationf()
+            ));
+            bars.row();
+
+            if(state.rules.unitAmmo){
+                bars.add(new Bar(ammoType.icon + " " + Core.bundle.get("stat.ammo"), ammoType.barColor, () -> unit.ammo / ammoCapacity));
+                bars.row();
+            }
+
+            for(Ability ability : unit.abilities){
+                ability.displayBars(unit, bars);
+            }
+
+            if(unit instanceof Payloadc payload){
+                bars.add(new Bar("stat.payloadcapacity", Pal.items, () -> payload.payloadUsed() / unit.type().payloadCapacity));
+                bars.row();
+
+                var count = new float[]{-1};
+                bars.table().update(t -> {
+                    if(count[0] != payload.payloadUsed()){
+                        payload.contentInfo(t, 8 * 2, 270);
+                        count[0] = payload.payloadUsed();
+                    }
+                }).growX().left().height(0f).pad(0f);
+            }
+        }).growX();
+
+        if(unit.controller() instanceof LogicAI){
+            table.row();
+            table.add(Blocks.microProcessor.emoji() + " " + Core.bundle.get("units.processorcontrol")).growX().wrap().left();
+            table.row();
+            table.label(() -> Iconc.settings + " " + (long)unit.flag + "").color(Color.lightGray).growX().wrap().left();
+        }
+        
+        table.row();
     }
 }

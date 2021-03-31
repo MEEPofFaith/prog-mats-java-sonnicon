@@ -1,5 +1,6 @@
 package progressed.world.blocks.defence.turret;
 
+import arc.*;
 import arc.audio.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -11,6 +12,7 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 import progressed.ProgressedMaterials;
@@ -96,6 +98,16 @@ public class EverythingTurret extends PowerTurret{
 
         stats.remove(Stat.ammo);
         stats.add(Stat.ammo, "[red]Everything");
+    }
+
+    @Override
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-everything-strength", (EverythingTurretBuild entity) -> new Bar(
+            () -> Core.bundle.format("bar.pm-everything-strength", PMUtls.stringsFixed(entity.bias / maxBias * 100f)),
+            () -> entity.team.color,
+            () -> entity.bias / maxBias
+        ));
     }
 
     public class EverythingTurretBuild extends PowerTurretBuild{

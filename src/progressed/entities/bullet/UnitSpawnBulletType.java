@@ -23,6 +23,7 @@ public class UnitSpawnBulletType extends BasicBulletType{
         shootEffect = smokeEffect = Fx.none;
         lifetime = 120f;
         trailEffect = PMFx.sentryTrail;
+        ammoMultiplier = 1;
     }
 
     @Override

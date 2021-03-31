@@ -33,8 +33,8 @@ public class StrobeSource extends StrobeNode{
     public void setBars(){
         super.setBars();
         if(boost){
-            bars.add("boost", (StrobeSourceBuild entity) -> new Bar(
-                () -> Core.bundle.format("bar.gay", Strings.fixed(speedBoost * 100f, PMUtls.statPrecision(speedBoost * 100f))),
+            bars.add("pm-gay", (StrobeSourceBuild entity) -> new Bar(
+                () -> Core.bundle.format("bar.pm-gay", PMUtls.stringsFixed(speedBoost * 100f)),
                 () -> laserColor1.cpy().lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1f, 1f)).shiftHue(Time.time * speed),
                 () -> speedBoost * 100f
             ));

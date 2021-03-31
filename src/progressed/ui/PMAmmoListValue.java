@@ -53,13 +53,13 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
                 }
 
                 if(type instanceof BlackHoleBulletType stype){
-                    sep(bt, Core.bundle.format("bullet.damage-radius", stype.damageRadius / tilesize));
-                    sep(bt, Core.bundle.format("bullet.suction-radius", stype.suctionRadius / tilesize));
+                    sep(bt, Core.bundle.format("bullet.pm-damage-radius", stype.damageRadius / tilesize));
+                    sep(bt, Core.bundle.format("bullet.pm-suction-radius", stype.suctionRadius / tilesize));
                 }
 
                 if(type instanceof CritBulletType stype){
-                    sep(bt, Core.bundle.format("bullet.crit-chance", (int)(stype.critChance * 100f)));
-                    sep(bt, Core.bundle.format("bullet.crit-multiplier", (int)stype.critMultiplier));
+                    sep(bt, Core.bundle.format("bullet.pm-crit-chance", (int)(stype.critChance * 100f)));
+                    sep(bt, Core.bundle.format("bullet.pm-crit-multiplier", (int)stype.critMultiplier));
                 }
 
                 if(type.buildingDamageMultiplier != 1){

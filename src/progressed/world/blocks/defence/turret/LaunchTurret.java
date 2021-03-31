@@ -11,8 +11,10 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import mindustry.type.Item;
+import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.consumers.*;
 
 public class LaunchTurret extends ItemTurret{
     public int arrows = 5;
@@ -39,6 +41,25 @@ public class LaunchTurret extends ItemTurret{
             arrowRegions[i] = Core.atlas.find(name + "-arrow-" + i);
         }
         topRegion = Core.atlas.find(name + "-top");
+    }
+
+    @Override
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-reload", (LaunchTurretBuild entity) -> new Bar(
+            () -> {
+                float ovd = entity.timeScale; //Overdrive
+                float mul = entity.hasAmmo() ? entity.peekAmmo().reloadMultiplier : 1f; //Reload Multiplier
+                Liquid liquid = entity.liquids.current();
+                float reloadRate = 1f + consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount * coolantMultiplier * liquid.heatCapacity;
+                float result = reloadTime / (reloadTime / reloadRate);
+                float liq = entity.liquids.currentAmount() > 0f ? result : 1f; //Coolant (stolen from BoosterStatListValue)
+                float reloadSpeed = ovd * mul / liq;
+                return Core.bundle.format("bar.pm-reload", Strings.fixed(Mathf.clamp((reloadTime - entity.reload) / reloadSpeed, 0f, reloadTime) / 60f, 1));
+            },
+            () -> entity.team.color,
+            () -> entity.reload / reloadTime
+        ));
     }
 
     public class LaunchTurretBuild extends ItemTurretBuild{

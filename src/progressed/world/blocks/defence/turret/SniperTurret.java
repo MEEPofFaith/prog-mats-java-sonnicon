@@ -1,11 +1,15 @@
 package progressed.world.blocks.defence.turret;
 
+import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.*;
+import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.ui.*;
 
@@ -40,6 +44,31 @@ public class SniperTurret extends ItemTurret{
             outlines[i] = atlas.find(name + "-outline-" + i);
             parts[i] = atlas.find(name + "-part-" + i);
         }
+    }
+
+    @Override
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-reload", (SniperTurretBuild entity) -> new Bar(
+            () -> {
+                float ovd = entity.timeScale; //Overdrive
+                float mul = entity.hasAmmo() ? entity.peekAmmo().reloadMultiplier : 1f; //Reload Multiplier
+                Liquid liquid = entity.liquids.current();
+                float reloadRate = 1f + consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount * coolantMultiplier * liquid.heatCapacity;
+                float result = reloadTime / (reloadTime / reloadRate);
+                float liq = entity.liquids.currentAmount() > 0f ? result : 1f; //Coolant (stolen from BoosterStatListValue)
+                float reloadSpeed = ovd * mul / liq;
+                return Core.bundle.format("bar.pm-reload", Strings.fixed(Mathf.clamp((reloadTime - entity.reload) / reloadSpeed, 0f, reloadTime) / 60f, 1));
+            },
+            () -> entity.team.color,
+            () -> Mathf.clamp(entity.reload / reloadTime, 0f, reloadTime)
+        ));
+
+        bars.add("pm-charge", (SniperTurretBuild entity) -> new Bar(
+            () -> Core.bundle.format("bar.pm-charge", Strings.fixed(Mathf.clamp(chargeTime - (entity.charge * chargeTime), 0f, chargeTime) / 60f, 1)),
+            () -> entity.team.color,
+            () -> (entity.charge * chargeTime) / chargeTime
+        ));
     }
 
     public class SniperTurretBuild extends ItemTurretBuild{
@@ -90,12 +119,39 @@ public class SniperTurret extends ItemTurret{
                     BulletType type = peekAmmo();
         
                     shoot(type);
-        
-                    reload = 0;
-                }else if(hasAmmo()){
+                }else if(hasAmmo() && reload < reloadTime){
                     reload += delta() * peekAmmo().reloadMultiplier * baseReloadSpeed();
                 }
             }
+        }
+
+        @Override
+        protected void shoot(BulletType type){
+            tr.trns(rotation, shootLength);
+            chargeBeginEffect.at(x + tr.x, y + tr.y, rotation);
+            chargeSound.at(x + tr.x, y + tr.y, 1);
+
+            for(int i = 0; i < chargeEffects; i++){
+                Time.run(Mathf.random(chargeMaxDelay), () -> {
+                    if(!isValid()) return;
+                    tr.trns(rotation, shootLength);
+                    chargeEffect.at(x + tr.x, y + tr.y, rotation);
+                });
+            }
+
+            charging = true;
+
+            Time.run(chargeTime, () -> {
+                if(!isValid()) return;
+                tr.trns(rotation, shootLength);
+                recoil = recoilAmount;
+                heat = 1f;
+                bullet(type, rotation + Mathf.range(inaccuracy));
+                useAmmo();
+                effects();
+                reload = 0;
+                charging = false;
+            });
         }
 
         @Override

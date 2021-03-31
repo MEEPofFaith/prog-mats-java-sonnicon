@@ -4,6 +4,7 @@ import arc.func.*;
 import arc.math.*;
 import arc.math.Interp.*;
 import arc.struct.*;
+import arc.util.*;
 import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.*;
@@ -119,5 +120,9 @@ public class PMUtls{
     
     public static int statPrecision(float value){
         return Math.abs((int)value - value) <= 0.001f ? 0 : Math.abs((int)(value * 10) - value * 10) <= 0.001f ? 1 : 2;
+    }
+
+    public static String stringsFixed(float value){
+        return Strings.fixed(value, statPrecision(value));
     }
 }

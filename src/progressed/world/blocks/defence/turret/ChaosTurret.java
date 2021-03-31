@@ -1,5 +1,6 @@
 package progressed.world.blocks.defence.turret;
 
+import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -8,13 +9,11 @@ import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import mindustry.world.meta.values.*;
 import progressed.util.*;
-
-import static mindustry.Vars.*;
 
 public class ChaosTurret extends PowerTurret{
     public float shootDuration;
@@ -25,9 +24,6 @@ public class ChaosTurret extends PowerTurret{
         super(name);
 
         requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
-
-        consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 0.01f)).update(false);
-        coolantMultiplier = 1f;
 
         heatDrawer = tile -> {
             if(tile.heat <= 0.00001f) return;
@@ -53,11 +49,22 @@ public class ChaosTurret extends PowerTurret{
     }
 
     @Override
-    public void setStats(){
-        super.setStats();
-
-        stats.remove(Stat.booster);
-        stats.add(Stat.input, new BoosterListValue(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, false, l -> consumes.liquidfilters.get(l.id)));
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-reload", (ChaosTurretBuild entity) -> new Bar(
+            () -> {
+                float ovd = entity.timeScale; //Overdrive
+                float mul = entity.hasAmmo() ? entity.peekAmmo().reloadMultiplier : 1f; //Reload Multiplier
+                Liquid liquid = entity.liquids.current();
+                float reloadRate = 1f + consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount * coolantMultiplier * liquid.heatCapacity;
+                float result = reloadTime / (reloadTime / reloadRate);
+                float liq = entity.liquids.currentAmount() > 0f ? result : 1f; //Coolant (stolen from BoosterStatListValue)
+                float reloadSpeed = ovd * mul / liq;
+                return Core.bundle.format("bar.pm-reload", Strings.fixed(Mathf.clamp((reloadTime - entity.reload) / reloadSpeed, 0f, reloadTime) / 60f, 1));
+            },
+            () -> entity.team.color,
+            () -> entity.reload / reloadTime
+        ));
     }
 
     public class ChaosTurretBuild extends PowerTurretBuild{
@@ -72,34 +79,27 @@ public class ChaosTurret extends PowerTurret{
                 recoil = recoilAmount;
                 wasShooting = true;
             }
-
-            if(reload > 0f){
-                Liquid liquid = liquids.current();
-                float maxUsed = consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount;
-
-                float used = (cheating() ? maxUsed * Time.delta : Math.min(liquids.get(liquid), maxUsed * Time.delta)) * liquid.heatCapacity * coolantMultiplier * baseReloadSpeed();
-                reload -= used;
-                liquids.remove(liquid, used);
-
-                if(Mathf.chance(0.06 * used)){
-                    coolEffect.at(x + Mathf.range(size * tilesize / 2f), y + Mathf.range(size * tilesize / 2f));
-                }
-            }
         }
 
         @Override
         protected void updateCooling(){
-            //Do nothing, coolant is irrelevant here
+            if(consValid() && !active()){
+                super.updateCooling();
+            }
         }
 
         @Override
         protected void updateShooting(){
-            if(reload <= 0f && !charging && consValid() && !active()){
-                BulletType type = peekAmmo();
+            if(consValid() && !active()){
+                if(reload >= reloadTime && !charging){
+                    BulletType type = peekAmmo();
 
-                shoot(type);
+                    shoot(type);
 
-                reload = reloadTime;
+                    reload = 0f;
+                }else{
+                    reload += delta() * peekAmmo().reloadMultiplier * baseReloadSpeed();
+                }
             }
         }
 

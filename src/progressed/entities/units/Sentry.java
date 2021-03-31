@@ -1,9 +1,21 @@
 package progressed.entities.units;
 
+import arc.math.*;
 import mindustry.gen.*;
 import progressed.content.*;
+import progressed.world.units.*;
 
 public class Sentry extends UnitEntity{
+    public float duration;
+
+    public float durationf(){
+        return duration / ((SentryUnit)type).duration;
+    }
+
+    public void clampDuration(){
+        duration = Mathf.clamp(duration, 0f, ((SentryUnit)type).duration);
+    }
+
     @Override
     public boolean damaged(){
         return false; //Never view as damaged, healing will not target this.

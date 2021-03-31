@@ -421,6 +421,7 @@ public class PMBlocks implements ContentList{
                 PMItems.empMissile, PMBullets.strikedownEmp,
                 PMItems.quantiumMissile, PMBullets.strikedownQuantum
             );
+            reloadBar = true;
             size = 4;
             health = 2870;
             range = 330f;
@@ -449,6 +450,7 @@ public class PMBlocks implements ContentList{
                 PMItems.clusterNuke, PMBullets.arbiterCluster,
                 PMItems.sentryNuke, PMBullets.arbiterSentry
             );
+            reloadBar = true;
             size = 7;
             health = 5950;
             range = 4400f;

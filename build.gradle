@@ -26,7 +26,7 @@ dependencies {
 }
 
 jar {
-    archiveFileName.set pArtifactFilename
+    archiveFileName.set "raw-$pArtifactFilename"
 
     from {
         configurations.runtimeClasspath.collect {

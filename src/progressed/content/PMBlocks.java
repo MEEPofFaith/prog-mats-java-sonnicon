@@ -67,7 +67,7 @@ public class PMBlocks implements ContentList{
     // Region Crafting
 
     //Crafters
-    shellPress, missileFactory, sentryBuilder;
+    mindronCollider, shellPress, missileFactory, sentryBuilder;
 
     // endregion
 
@@ -590,6 +590,25 @@ public class PMBlocks implements ContentList{
 
         // endregion
         //Region Crafting
+
+        mindronCollider = new ColliderCrafter("mindron-collider"){{
+            requirements(Category.crafting, with(
+                Items.silicon, 150,
+                Items.metaglass, 50,
+                Items.plastanium, 80,
+                Items.thorium, 100,
+                Items.surgeAlloy, 110
+            ));
+            size = 5;
+            craftTime = 300f;
+            itemCapacity = 15;
+            consumes.power(14f);
+            consumes.items(with(
+                Items.titanium, 7,
+                Items.thorium, 7
+            ));
+            outputItem = new ItemStack(PMItems.techtanite, 4);
+        }};
 
         shellPress = new MultiCrafter("shell-press", 2){{
             requirements(Category.crafting, with(

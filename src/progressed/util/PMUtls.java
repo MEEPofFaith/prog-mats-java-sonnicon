@@ -168,4 +168,8 @@ public class PMUtls{
         });
         return result;
     }
+
+    public static float equalArcLen(float r1, float r2, float length){
+        return (r1 / r2) * length;
+    }
 }

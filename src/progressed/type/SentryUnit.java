@@ -18,8 +18,6 @@ import mindustry.ui.*;
 import mindustry.world.meta.*;
 import progressed.entities.units.*;
 
-import static mindustry.Vars.*;
-
 public class SentryUnit extends UnitType{
     public int engines = 4;
     public float engineRotOffset = 45f, duration = 600f, riseSpeed = 0.016f;

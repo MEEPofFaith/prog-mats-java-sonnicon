@@ -343,5 +343,20 @@ public class PMFx{
             e.y + Angles.trnsy(Mathf.randomSeed(e.id, 360f) + e.rotation * e.fin(), (16f + data[1]) * e.fin()),
             data[0] * e.fout()
         );
-    }).layer(Layer.bullet - 0.00999f);
+    }).layer(Layer.bullet - 0.00999f),
+    
+    colliderFusion = new Effect(30f, e -> {
+        color(Color.gray);
+        e.scaled(15f, s -> {
+            stroke(s.fout());
+            Lines.circle(e.x, e.y, 3f * e.fout());
+        });
+        
+        stroke(1f);
+
+        randLenVectors(e.id, 16, 5f * e.fout(), e.rotation, 180f, (x, y) -> {
+            float ang = angle(x, y, 0f, 0f);
+            Lines.lineAngle(e.x + x, e.y + y, ang, e.fslope() * 5f);
+        });
+    }).layer(32.5f);
 }

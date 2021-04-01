@@ -14,9 +14,9 @@ import static mindustry.Vars.*;
 public class ProgressedMaterials extends Mod{
 
     private final ContentList[] pmContent = {
-        new PMItems(),
         new PMStatusEffects(),
         new PMUnitTypes(),
+        new PMItems(),
         new PMBullets(),
         new PMWeathers(),
         new PMBlocks()

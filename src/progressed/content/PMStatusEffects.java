@@ -1,7 +1,6 @@
 package progressed.content;
 
 import mindustry.ctype.*;
-import mindustry.graphics.*;
 import mindustry.type.*;
 import progressed.type.*;
 

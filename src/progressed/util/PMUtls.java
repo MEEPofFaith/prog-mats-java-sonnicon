@@ -125,4 +125,47 @@ public class PMUtls{
     public static String stringsFixed(float value){
         return Strings.fixed(value, statPrecision(value));
     }
+
+    //For anything that isn't a block or unit
+    public static ItemStack[] researchRequirements(ItemStack[] requirements, float mul){
+        ItemStack[] out = new ItemStack[requirements.length];
+        for(int i = 0; i < out.length; i++){
+            int quantity = 60 + Mathf.round(Mathf.pow(requirements[i].amount, 1.1f) * 20 * mul, 10);
+
+            out[i] = new ItemStack(requirements[i].item, UI.roundAmount(quantity));
+        }
+
+        return out;
+    }
+
+    public static ItemStack[] researchRequirements(ItemStack[] requirements){
+        return researchRequirements(requirements, 1f);
+    }
+
+    //Adds `ItemStack[]`s together
+    public static ItemStack[] addItemStacks(ItemStack[][] stacks){
+        Seq<ItemStack> rawStacks = new Seq<>();
+        for(ItemStack[] arr : stacks){
+            for(ItemStack stack : arr){
+                rawStacks.add(stack);
+            }
+        }
+        Seq<Item> items = new Seq<>();
+        IntSeq amounts = new IntSeq();
+        rawStacks.each(s -> {
+            if(!items.contains(s.item)){
+                items.add(s.item);
+                amounts.add(s.amount);
+            }else{
+                int index = items.indexOf(s.item);
+                amounts.incr(index, s.amount);
+            }
+        });
+        ItemStack[] result = new ItemStack[items.size];
+        items.each(i -> {
+            int index = items.indexOf(i);
+            result[index] = new ItemStack(i, amounts.get(index));
+        });
+        return result;
+    }
 }

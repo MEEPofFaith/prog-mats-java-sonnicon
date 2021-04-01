@@ -9,7 +9,10 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
+import multilib.*;
+import multilib.Recipe.*;
 import progressed.graphics.*;
+import progressed.world.blocks.crafting.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.distribution.*;
 import progressed.world.blocks.power.*;
@@ -19,6 +22,9 @@ import static mindustry.Vars.*;
 
 public class PMBlocks implements ContentList{
     public static Block
+
+    // Region Turrets
+
     //Eruptors
     flame, blaze, inferno,
 
@@ -46,14 +52,24 @@ public class PMBlocks implements ContentList{
     //Sandbox
     harbinger, everythingGun,
 
-    //Crafters
-    shellPress, missileFactory, sentryBuilder,
-
-    //Random distribution
+    // endregion
+    // Region Distribution
+    
     floatingConveyor,
+
+    // endregion
+    // Region Power
     
     //Sandbox Power
-    strobeNode, strobeInf, strobeBoost;
+    strobeNode, strobeInf, strobeBoost,
+
+    // endregion
+    // Region Crafting
+
+    //Crafters
+    shellPress, missileFactory, sentryBuilder;
+
+    // endregion
 
     @Override
     public void load(){
@@ -543,16 +559,7 @@ public class PMBlocks implements ContentList{
             }
         };
         
-        //End Region
-        //Region Crafters
-
-        shellPress = new Block("shell-press");
-
-        missileFactory = new Block("missile-facotry");
-
-        sentryBuilder = new Block("sentry-builder");
-
-        //End Region
+        // endregion
         //Region Distribution
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{
@@ -567,7 +574,7 @@ public class PMBlocks implements ContentList{
             drawShallow = true;
         }};
 
-        //End Region
+        // endregion
         //Region Power
 
         strobeNode = new StrobeNode("rainbow-power-node");
@@ -581,6 +588,124 @@ public class PMBlocks implements ContentList{
         }};
 
 
-        //End Region
+        // endregion
+        //Region Crafting
+
+        shellPress = new MultiCrafter("shell-press", 2){{
+            requirements(Category.crafting, with(
+                Items.copper, 75,
+                Items.lead, 100,
+                Items.titanium, 100,
+                Items.silicon, 80
+            ));
+            addRecipe(
+                new InputContents(with(Items.copper, 5, Items.lead, 5, Items.titanium, 5), 3f),
+                new OutputContents(with(PMItems.missileShell, 2)),
+                60f
+            );
+            addRecipe(
+                new InputContents(with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10), 5f),
+                new OutputContents(with(PMItems.nukeShell, 1)),
+                90f, true
+            );
+            size = 3;
+            health = 135;
+            itemCapacity = 30;
+            craftEffect = Fx.pulverizeMedium;
+            updateEffect = Fx.none;
+            dumpToggle = true;
+        }};
+
+        missileFactory = new MissileCrafter("missile-factory", 7){{
+            requirements(Category.crafting, with(
+                Items.copper, 300,
+                Items.lead, 200,
+                Items.silicon, 200,
+                Items.plastanium, 150,
+                Items.thorium, 100,
+                Items.surgeAlloy, 110
+            ));
+            // Region Missiles
+
+            addRecipe(//Baisc Missile
+                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 3, Items.blastCompound, 6), 3f),
+                new OutputContents(with(PMItems.basicMissile, 1)),
+                60f
+            );
+            addRecipe(//EMP Missile
+                new InputContents(with(PMItems.missileShell, 1, Items.lead, 12, Items.titanium, 10, Items.silicon, 10), 4f),
+                new OutputContents(with(PMItems.empMissile, 1)),
+                75f, true
+            );
+            addRecipe(//Quantium Missile
+                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 8, Items.phaseFabric, 13, Items.silicon, 10), 7f),
+                new OutputContents(with(PMItems.quantiumMissile, 1)),
+                90f, true
+            );
+
+            // endregion
+            // Region Nukes
+
+            addRecipe(//Basic Nuke
+                new InputContents(with(PMItems.nukeShell, 1, Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25), 6f),
+                new OutputContents(with(PMItems.basicNuke, 1)),
+                90f, true
+            );
+            addRecipe(//EMP Nuke
+                new InputContents(with(PMItems.nukeShell, 1, Items.silicon, 30, Items.surgeAlloy, 20, PMItems.techtanite, 40), 8f),
+                new OutputContents(with(PMItems.empNuke, 1)),
+                105f, true
+            );
+            addRecipe(//Cluster Nuke
+                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicMissile, 5, Items.copper, 30, Items.plastanium, 15, PMItems.techtanite, 25), 6.25f),
+                new OutputContents(with(PMItems.clusterNuke, 1)),
+                120f, true
+            );
+            addRecipe(//Sentry Nuke
+                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicSentryBox, 3, PMItems.strikeSentryBox, 3, PMItems.dashSentryBox, 3, Items.pyratite, 10, Items.blastCompound, 5), 5.5f),
+                new OutputContents(with(PMItems.sentryNuke, 1)),
+                150f, true
+            );
+
+            // endregion
+
+            size = 4;
+            health = 215;
+            itemCapacity = 50;
+            craftEffect = Fx.pulverizeMedium;
+            updateEffect = Fx.none;
+            dumpToggle = true;
+        }};
+
+        sentryBuilder = new SentryCrafter("sentry-builder", 3){{
+            requirements(Category.crafting, with(
+                Items.copper, 90,
+                Items.lead, 80,
+                Items.titanium, 60,
+                Items.silicon, 150
+            ));
+            addRecipe(//Basic Sentry
+                new InputContents(with(Items.copper, 30, Items.lead, 35, Items.titanium, 15, Items.silicon, 25), 4f),
+                new OutputContents(with(PMItems.basicSentryBox, 3)),
+                90f, true
+            );
+            addRecipe(//Strike Sentry
+                new InputContents(with(Items.copper, 40, Items.lead, 40, Items.titanium, 20, Items.silicon, 30, Items.blastCompound, 10), 4.5f),
+                new OutputContents(with(PMItems.strikeSentryBox, 3)),
+                120f
+            );
+            addRecipe(//Dash Sentry
+                new InputContents(with(Items.copper, 30, Items.lead, 30, Items.titanium, 30, Items.graphite, 15, Items.silicon, 35), 5.25f),
+                new OutputContents(with(PMItems.dashSentryBox, 3)),
+                105f
+            );
+            size = 4;
+            health = 265;
+            itemCapacity = 100;
+            craftEffect = updateEffect = Fx.none;
+            dumpToggle = true;
+        }};
+
+        // endregion
     }
 }

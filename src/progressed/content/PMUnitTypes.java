@@ -12,7 +12,7 @@ import progressed.ai.*;
 import progressed.entities.bullet.*;
 import progressed.entities.units.*;
 import progressed.graphics.PMFx;
-import progressed.world.units.*;
+import progressed.type.*;
 
 public class PMUnitTypes implements ContentList{
     //Steal from Project Unity

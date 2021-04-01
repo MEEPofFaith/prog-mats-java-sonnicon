@@ -1,4 +1,4 @@
-package progressed.world.units;
+package progressed.type;
 
 import arc.*;
 import arc.graphics.*;
@@ -136,7 +136,7 @@ public class SentryUnit extends UnitType{
                 bars.add(new Bar("stat.payloadcapacity", Pal.items, () -> payload.payloadUsed() / unit.type().payloadCapacity));
                 bars.row();
 
-                var count = new float[]{-1};
+                float[] count = new float[]{-1};
                 bars.table().update(t -> {
                     if(count[0] != payload.payloadUsed()){
                         payload.contentInfo(t, 8 * 2, 270);

@@ -3,6 +3,7 @@ package progressed.content;
 import arc.graphics.*;
 import mindustry.ctype.*;
 import mindustry.type.*;
+import progressed.type.*;
 
 public class PMItems implements ContentList{
     public static Item
@@ -40,10 +41,10 @@ public class PMItems implements ContentList{
 
         sentryNuke = new Item("sentry-nuke", Color.valueOf("FEB380"));
 
-        basicSentryBox = new Item("basic-sentry-box", Color.valueOf("C9A58F"));
+        basicSentryBox = new SentryItem("basic-sentry-box", Color.valueOf("C9A58F"), PMUnitTypes.basicSentry);
         
-        strikeSentryBox = new Item("strike-sentry-box", Color.valueOf("FFA665"));
+        strikeSentryBox = new SentryItem("strike-sentry-box", Color.valueOf("FFA665"), PMUnitTypes.strikeSentry);
 
-        dashSentryBox = new Item("dash-sentry-box", Color.valueOf("84F491"));
+        dashSentryBox = new SentryItem("dash-sentry-box", Color.valueOf("84F491"), PMUnitTypes.dashSentry);
     }
 }

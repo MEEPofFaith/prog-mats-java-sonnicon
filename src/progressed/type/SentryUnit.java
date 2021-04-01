@@ -123,26 +123,8 @@ public class SentryUnit extends UnitType{
             ));
             bars.row();
 
-            if(state.rules.unitAmmo){
-                bars.add(new Bar(ammoType.icon + " " + Core.bundle.get("stat.ammo"), ammoType.barColor, () -> unit.ammo / ammoCapacity));
-                bars.row();
-            }
-
             for(Ability ability : unit.abilities){
                 ability.displayBars(unit, bars);
-            }
-
-            if(unit instanceof Payloadc payload){
-                bars.add(new Bar("stat.payloadcapacity", Pal.items, () -> payload.payloadUsed() / unit.type().payloadCapacity));
-                bars.row();
-
-                float[] count = new float[]{-1};
-                bars.table().update(t -> {
-                    if(count[0] != payload.payloadUsed()){
-                        payload.contentInfo(t, 8 * 2, 270);
-                        count[0] = payload.payloadUsed();
-                    }
-                }).growX().left().height(0f).pad(0f);
             }
         }).growX();
 

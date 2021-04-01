@@ -219,7 +219,7 @@ public class PMBlocks implements ContentList{
             size = 1;
             health = 260;
             powerUse = 3.6f;
-            reloadTime = 60f;
+            reloadTime = 30f;
             range = 72f;
             rangeExtention = 8f;
             shots = 2;
@@ -244,7 +244,7 @@ public class PMBlocks implements ContentList{
             size = 2;
             health = 870;
             powerUse = 4.8f;
-            reloadTime = 40f;
+            reloadTime = 20f;
             range = 130f;
             rangeExtention = 16f;
             shots = 2;
@@ -320,7 +320,7 @@ public class PMBlocks implements ContentList{
             size = 3;
             health = 1540;
             powerUse = 8.9f;
-            reloadTime = 20f;
+            reloadTime = 10f;
             range = 210f;
             rangeExtention = 24f;
             shots = 3;

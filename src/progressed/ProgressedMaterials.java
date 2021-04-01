@@ -19,7 +19,8 @@ public class ProgressedMaterials extends Mod{
         new PMItems(),
         new PMBullets(),
         new PMWeathers(),
-        new PMBlocks()
+        new PMBlocks(),
+        new PMTechTree()
     };
 
     public ProgressedMaterials(){

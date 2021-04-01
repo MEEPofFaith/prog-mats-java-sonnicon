@@ -28,8 +28,8 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew buildDex
 
-    - name: Upload build artifact
+    - name: Upload Build Artifact
       uses: actions/upload-artifact@v2.2.1
       with:
-        name: dexed
-        path: build/libs/dexed-*.jar
+        name: Dexed Progressed Materials-ed
+        path: build/libs/[!raw-]*.jar

@@ -186,4 +186,12 @@ public class PMUtls{
 
         return found && furthest != null ? Math.max(6f, Mathf.dst(x, y, furthest.worldx(), furthest.worldy())) : length;
     }
+
+    public static int boolArrToInt(boolean[] arr){
+        int i = 0;
+        for(boolean value : arr){
+            if(value) i++;
+        }
+        return i;
+    }
 }

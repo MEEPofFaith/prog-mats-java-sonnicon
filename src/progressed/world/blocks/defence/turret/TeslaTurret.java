@@ -93,9 +93,9 @@ public class TeslaTurret extends PowerTurret{
     }
     
     public class TeslaTurretBuild extends PowerTurretBuild{
-        public Seq<Teamc> targets = new Seq<>();
-        public float[] heats = new float[rings.size];
-        public float speedScl;
+        protected Seq<Teamc> targets = new Seq<>();
+        protected float[] heats = new float[rings.size];
+        protected float speedScl;
 
         @Override
         public void draw(){

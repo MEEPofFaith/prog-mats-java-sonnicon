@@ -72,7 +72,7 @@ public class SniperTurret extends ItemTurret{
     }
 
     public class SniperTurretBuild extends ItemTurretBuild{
-        public float charge;
+        protected float charge;
 
         @Override
         public void draw(){

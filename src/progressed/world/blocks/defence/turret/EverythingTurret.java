@@ -36,6 +36,7 @@ public class EverythingTurret extends PowerTurret{
         minRange = 0f;
         shootType = Bullets.standardCopper;
         powerUse = 246810f/60f;
+        alwaysUnlocked = true;
     }
 
     @Override
@@ -111,8 +112,8 @@ public class EverythingTurret extends PowerTurret{
     }
 
     public class EverythingTurretBuild extends PowerTurretBuild{
-        public float drawBias, bias = startingBias, drawRot = Mathf.random(360f);
-        public int selectedBullet;
+        protected float drawBias, bias = startingBias, drawRot = Mathf.random(360f);
+        protected int selectedBullet;
 
         @Override
         public void updateTile(){

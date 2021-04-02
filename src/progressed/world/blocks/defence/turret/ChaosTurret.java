@@ -25,6 +25,8 @@ public class ChaosTurret extends PowerTurret{
 
         requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
 
+        alwaysUnlocked = true;
+
         heatDrawer = tile -> {
             if(tile.heat <= 0.00001f) return;
             float r = Interp.pow2Out.apply(tile.heat);
@@ -68,7 +70,7 @@ public class ChaosTurret extends PowerTurret{
     }
 
     public class ChaosTurretBuild extends PowerTurretBuild{
-        public Bullet bullet;
+        protected Bullet bullet;
 
         @Override
         public void updateTile(){

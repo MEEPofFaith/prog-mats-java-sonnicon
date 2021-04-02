@@ -24,7 +24,7 @@ public class PMTechTree implements ContentList{
     @Override
     public void load(){
         /*TODO STOP PROCRASTINATING AND PORT THE ERUPTORS ALREADY
-        mergeNode(fuse, () ->{
+        vanillaNode(fuse, () ->{
             node(flame, () -> {
                 node(blaze, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
                     node(inferno, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
@@ -33,7 +33,7 @@ public class PMTechTree implements ContentList{
         });
         */
 
-        mergeNode(salvo, () -> {
+        vanillaNode(salvo, () -> {
             //Miniguns
             node(minigun, Seq.with(new Objectives.SectorComplete(SectorPresets.fungalPass)), () -> {
                 node(miinigun, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
@@ -45,7 +45,7 @@ public class PMTechTree implements ContentList{
             node(blackhole, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex), new Objectives.Research(meltdown)));
         });
 
-        mergeNode(ripple, () -> {
+        vanillaNode(ripple, () -> {
             //Missile (also painful to look at)
             node(firestorm, Seq.with(new Objectives.Research(launchPad), new Objectives.SectorComplete(SectorPresets.impact0078)), () -> {
                 node(strikedown, PMUtls.addItemStacks(new ItemStack[][]{brq(strikedown), brq(shellPress), recipeCost((MultiCrafter)shellPress, 0), brq(missileFactory), recipeCost((MultiCrafter)missileFactory, 0)}), Seq.with(new Objectives.Research(launchPad), new Objectives.SectorComplete(SectorPresets.nuclearComplex)), () -> {
@@ -86,7 +86,7 @@ public class PMTechTree implements ContentList{
             });
         });
 
-        mergeNode(arc, () -> {
+        vanillaNode(arc, () -> {
             //Coil
             node(shock, () -> {
                 node(spark, Seq.with(new Objectives.Research(differentialGenerator)), () -> {
@@ -95,27 +95,31 @@ public class PMTechTree implements ContentList{
             });
         });
 
-        mergeNode(lancer, () -> {
+        vanillaNode(lancer, () -> {
             //Pixel
             node(bit);
         });
 
-        mergeNode(foreshadow, () -> {
+        vanillaNode(cyclone, () -> {
+            node(caliber);
+        });
+
+        vanillaNode(foreshadow, () -> {
             node(excalibur, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
         });
 
-        mergeNode(armoredConveyor, () -> {
+        vanillaNode(armoredConveyor, () -> {
             //Floating Conveyor
             node(floatingConveyor, Seq.with(new Objectives.SectorComplete(SectorPresets.windsweptIslands)));
         });
 
-        mergeNode(surgeSmelter, () -> {
+        vanillaNode(surgeSmelter, () -> {
             //Mindron Collider
             node(mindronCollider);
         });
 
         //Items
-        mergeNode(surgeAlloy, () -> {
+        vanillaNode(surgeAlloy, () -> {
             nodeProduce(techtanite);
         });
     }
@@ -133,7 +137,7 @@ public class PMTechTree implements ContentList{
     }
     
     //Dont mind me I'ma just yoink some stuff from BetaMindy
-    private static void mergeNode(UnlockableContent parent, Runnable children){
+    private static void vanillaNode(UnlockableContent parent, Runnable children){
         TechNode parnode = TechTree.all.find(t -> t.content == parent);
         context = parnode;
         children.run();

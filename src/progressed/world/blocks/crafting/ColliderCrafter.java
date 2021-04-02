@@ -64,10 +64,10 @@ public class ColliderCrafter extends GenericCrafter{
     }
 
     public class ColliderCrafterBuild extends GenericCrafterBuild{
-        public Seq<Color> colors = Seq.with(pC1, pC2);
-        public float[] length = new float[2], curRot = new float[2], dist = new float[2];
-        public float stroke, heat, beforeHeat;
-        public boolean collided, released, reset;
+        protected Seq<Color> colors = Seq.with(pC1, pC2);
+        protected float[] length = new float[2], curRot = new float[2], dist = new float[2];
+        protected float stroke, heat, beforeHeat;
+        protected boolean collided, released, reset;
 
         @Override
         public void draw(){

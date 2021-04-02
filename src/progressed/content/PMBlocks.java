@@ -8,12 +8,12 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
-import mindustry.world.meta.*;
 import multilib.*;
 import multilib.Recipe.*;
 import progressed.graphics.*;
 import progressed.world.blocks.crafting.*;
 import progressed.world.blocks.defence.turret.*;
+import progressed.world.blocks.defence.wall.*;
 import progressed.world.blocks.distribution.*;
 import progressed.world.blocks.power.*;
 
@@ -62,6 +62,11 @@ public class PMBlocks implements ContentList{
     
     //Sandbox Power
     strobeNode, strobeInf, strobeBoost,
+
+    // endregion
+    // Region Walls
+
+    sandboxWall, sandboxWallLarge,
 
     // endregion
     // Region Crafting
@@ -335,7 +340,12 @@ public class PMBlocks implements ContentList{
         }};
 
         caliber = new SniperTurret("caliber"){{
-            requirements(Category.turret, BuildVisibility.sandboxOnly, empty);
+            requirements(Category.turret, with(
+                Items.copper, 220,
+                Items.titanium, 200,
+                Items.thorium, 150,
+                Items.plastanium, 110
+            ));
             ammo(
                 Items.thorium, PMBullets.sniperBoltThorium
             );
@@ -594,7 +604,7 @@ public class PMBlocks implements ContentList{
         };
         
         // endregion
-        //Region Distribution
+        // Region Distribution
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{
             requirements(Category.distribution, with(
@@ -609,7 +619,7 @@ public class PMBlocks implements ContentList{
         }};
 
         // endregion
-        //Region Power
+        // Region Power
 
         strobeNode = new StrobeNode("rainbow-power-node");
 
@@ -623,7 +633,23 @@ public class PMBlocks implements ContentList{
 
 
         // endregion
-        //Region Crafting
+        // Region Walls
+
+        sandboxWall = new SandboxWall("sandbox-wall"){{
+            health = 150000000;
+            iconSize = 3f;
+            rotateRadius = 2.5f;
+        }};
+
+        sandboxWallLarge = new SandboxWall("sandbox-wall-large"){{
+            size = 2;
+            health = 600000000;
+            iconSize = 6f;
+            rotateRadius = 5f;
+        }};
+
+        // endregion
+        // Region Crafting
 
         mindronCollider = new ColliderCrafter("mindron-collider"){{
             requirements(Category.crafting, with(

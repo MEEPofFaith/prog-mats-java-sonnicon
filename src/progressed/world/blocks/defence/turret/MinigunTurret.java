@@ -59,11 +59,11 @@ public class MinigunTurret extends ItemTurret{
     }
 
     public class MinigunTurretBuild extends ItemTurretBuild{
-        public float[] heats = {0f, 0f, 0f, 0f};
-        public int[] heatFrames = {0, 0, 0, 0};
-        public int frame, barrel;
-        public float frameSpeed, trueFrame;
-        public boolean shouldShoot, shouldBarrel;
+        protected float[] heats = {0f, 0f, 0f, 0f};
+        protected int[] heatFrames = {0, 0, 0, 0};
+        protected int frame, barrel;
+        protected float frameSpeed, trueFrame;
+        protected boolean shouldShoot, shouldBarrel;
 
         @Override
         public void draw(){

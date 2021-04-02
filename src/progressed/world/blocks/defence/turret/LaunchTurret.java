@@ -63,8 +63,8 @@ public class LaunchTurret extends ItemTurret{
     }
 
     public class LaunchTurretBuild extends ItemTurretBuild{
-        public float warmup, speed, current, offset, charge;
-        public boolean collantReloading;
+        protected float warmup, speed, current, offset, charge;
+        protected boolean collantReloading;
 
         @Override
         public void draw(){

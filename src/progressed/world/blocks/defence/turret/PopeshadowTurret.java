@@ -62,8 +62,8 @@ public class PopeshadowTurret extends PowerTurret{
     }
 
     public class PopeshadowTurretBuild extends PowerTurretBuild{
-        public float chargeTimer;
-        public boolean animation;
+        protected float chargeTimer;
+        protected boolean animation;
 
         @Override
         public void draw(){

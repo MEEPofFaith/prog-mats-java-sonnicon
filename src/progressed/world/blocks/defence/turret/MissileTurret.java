@@ -69,10 +69,10 @@ public class MissileTurret extends ItemTurret{
     }
 
     public class MissileTurretBuild extends ItemTurretBuild{
-        boolean firing;
-        boolean[] shot = new boolean[shots];
-        float speedScl;
-        float[] heats = new float[shots];
+        protected boolean firing;
+        protected boolean[] shot = new boolean[shots];
+        protected float speedScl;
+        protected float[] heats = new float[shots];
 
         @Override
         public void draw(){

@@ -52,7 +52,7 @@ public class BlackHoleTurret extends PowerTurret{
     }
 
     public class BlackHoleTurretBuild extends PowerTurretBuild{
-        public float alpha;
+        protected float alpha;
 
         @Override
         public void draw(){

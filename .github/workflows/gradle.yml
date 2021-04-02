@@ -28,5 +28,5 @@ jobs:
     - name: Upload Build Artifact
       uses: actions/upload-artifact@v2.2.1
       with:
-        name: Dexed Progressed Materialsed
+        name: Dexed Progressed Materials-ed
         path: build/libs/[!raw-]*.jar

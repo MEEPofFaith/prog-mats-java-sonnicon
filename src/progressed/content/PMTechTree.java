@@ -106,7 +106,7 @@ public class PMTechTree implements ContentList{
         });
         */
 
-        mergeNode(titaniumConveyor, () -> {
+        mergeNode(armoredConveyor, () -> {
             //Floating Conveyor
             node(floatingConveyor, Seq.with(new Objectives.SectorComplete(SectorPresets.windsweptIslands)));
         });

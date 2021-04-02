@@ -8,6 +8,7 @@ import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
 import mindustry.content.*;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -21,7 +22,7 @@ public class TeslaTurret extends PowerTurret{
     public Seq<TeslaRing> rings = new Seq<>();
     public boolean hasSpinners;
     public Color lightningColor;
-    public float zapAngleRand, spinUp, spinDown, rangeExtention;
+    public float zapAngleRand, spinUp, spinDown, rangeExtention, lightningStroke = 3.5f;
     public int zaps;
 
     protected TextureRegion[] ringRegions, heatRegions, outlineRegions;
@@ -187,21 +188,23 @@ public class TeslaTurret extends PowerTurret{
 
                     heats[rings.indexOf(ring)] = 1f;
 
-                    tr.trns(rotation * ring.rotationMul, ring.xOffset, ring.yOffset);
-                    tr2.setLength(ring.radius).setToRandomDirection();
+                    Tmp.v1.trns(rotation * ring.rotationMul, ring.xOffset, ring.yOffset); //ring location
+                    Tmp.v2.setToRandomDirection().setLength(ring.radius); //ring
+                    Tmp.v3.setToRandomDirection().setLength(Mathf.random(inaccuracy)); //inaccuracy
 
-                    Tmp.v1.setLength(Mathf.random(inaccuracy)).setToRandomDirection(); //inaccuracy
+                    float shootX = x + Tmp.v1.x + Tmp.v2.x, shootY = y + Tmp.v1.y + Tmp.v2.y;
+                    float sX = target.x() + Tmp.v3.x, sY = target.y() + Tmp.v3.y;
 
-                    float shootX = x + tr.x + tr2.x + Tmp.v1.x, shootY = y + tr.y + tr2.y + Tmp.v1.y;
+                    float shootAngle = Angles.angle(shootX, shootY, sX, sY);
+                    float dist = Mathf.dst(shootX, shootY, sX, sY);
 
-                    float shootAngle = Angles.angle(shootX, shootY, target.x(), target.y());
-                    float dist = Mathf.dst(shootX, shootY, target.x(), target.y());
-
-                    PMFx.fakeLightning.at(shootX, shootY,shootAngle, lightningColor, new Object[]{dist, 5f, team});
-                    shootSound.at(shootX, shootY,shootAngle, Mathf.random(0.9f, 1.1f));
+                    PMFx.fakeLightning.at(shootX, shootY, shootAngle, lightningColor, new Object[]{dist, lightningStroke, team});
+                    shootSound.at(shootX, shootY, Mathf.random(0.9f, 1.1f));
                     shootEffect.at(shootX, shootY, shootAngle, lightningColor);
-                    
-                    final float spawnX = target.x(), spawnY = target.y();
+                    if(shootShake > 0f){
+                        Effect.shake(shootShake, shootShake, this);
+                    }
+                    final float spawnX = sX, spawnY = sY;
                     Time.run(3f, () -> {
                         for(int j = 0; j < zaps; j++){
                             shootType.create(this, team, spawnX, spawnY, ((360f / zaps) * j) + Mathf.range(zapAngleRand));

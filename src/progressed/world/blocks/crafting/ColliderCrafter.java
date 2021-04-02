@@ -14,13 +14,13 @@ import progressed.util.*;
 public class ColliderCrafter extends GenericCrafter{
     public Color pC1, pC2, heatColor = Pal.accent;
     public float collidePoint = 12f, collideSep = 3f;
-    public float collideStart = 0.65f, collideEnd = 0.9f;
+    public float collideStart = 0.5f, collideEnd = 0.95f;
     public float lengthStart, lengthEnd = 72f;
     public float strokeStart = 1.25f, strokeEnd = 0.75f;
     public float[] strokes = {1f, 0.9f, 0.75f, 0.55f};
     public float particleSize = 1.05f;
     public float lightOpacity = 1f;
-    public float startRot = 540f;
+    public float startRot = 2700f;
     public float cooldown = 0.03f;
 
     protected TextureRegion bottomRegion, colliderRegion, glassRegion, topRegion;

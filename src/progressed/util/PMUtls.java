@@ -194,4 +194,17 @@ public class PMUtls{
         }
         return i;
     }
+
+    public static float moveToward(float from, float to, float speed, float min, float max){
+        float target = Mathf.clamp(to, min, max);
+        if(Math.abs(target - from) < speed) return target;
+        if(from > target){
+            return from - speed;
+        }
+        if(from < target){
+            return from + speed;
+        }
+
+        return from;
+    }
 }

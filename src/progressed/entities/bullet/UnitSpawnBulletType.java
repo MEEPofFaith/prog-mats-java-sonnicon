@@ -32,8 +32,8 @@ public class UnitSpawnBulletType extends BasicBulletType{
     }
 
     @Override
-    public void init(Bullet b){
-        super.init(b);
+    public void init(){
+        super.init();
 
         if(trailSize < 0) trailSize = spawn.hitSize * 0.75f;
     }

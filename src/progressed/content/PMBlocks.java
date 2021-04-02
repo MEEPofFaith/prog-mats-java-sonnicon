@@ -8,6 +8,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.consumers.*;
 import multilib.*;
 import multilib.Recipe.*;
 import progressed.graphics.*;
@@ -81,9 +82,69 @@ public class PMBlocks implements ContentList{
 
         // Region Turrets
 
-        flame = new Block("flame");
+        flame = new EruptorTurret("flame"){{
+            requirements(Category.turret, ItemStack.with(
+                Items.copper, 200,
+                Items.lead, 300,
+                Items.graphite, 300,
+                Items.silicon, 325,
+                Items.titanium, 200,
+                Items.thorium, 200
+            ));
+            float h = 0.75f;
+            cells.add(
+                new EruptorCell(-h, -h),
+                new EruptorCell(h, -h),
+                new EruptorCell(-h, h),
+                new EruptorCell(h, h)
+            );
+            size = 3;
+            health = 1800;
+            powerUse = 14f;
+            shootCone = 10f;
+            range = 240f;
+            rangeExtention = 40f;
+            reloadTime = 90f;
+            recoilAmount = 3f;
+            rotateSpeed = 3f;
+            shootDuration = 180f;
+            shootType = PMBullets.flameMagma;
 
-        blaze = new Block("blaze");
+            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 0.5f)).update(false);
+        }};
+
+        blaze = new EruptorTurret("blaze"){{
+            requirements(Category.turret, with(
+                Items.copper, 350,
+                Items.lead, 550,
+                Items.graphite, 550,
+                Items.silicon, 600,
+                Items.titanium, 350,
+                Items.surgeAlloy, 200,
+                PMItems.techtanite, 200
+            ));
+            float h = 0.9f;
+            cells.addAll(
+                new EruptorCell(-h, -h),
+                new EruptorCell(h, -h),
+                new EruptorCell(-h, h),
+                new EruptorCell(h, h),
+                new EruptorCell(-h, 0f, 2),
+                new EruptorCell(h, 0f, 2),
+                new EruptorCell(-h, h, 2),
+                new EruptorCell(h, h, 2)
+            );
+            size = 4;
+            health = 2140;
+            powerUse = 17f;
+            shootDuration = 240f;
+            range = 280f;
+            rangeExtention = 60f;
+            rotateSpeed = 2.25f;
+            recoilAmount = 4f;
+            layers = 2;
+            shootType = PMBullets.blazeMagma;
+        }};
 
         inferno = new Block("inferno");
 

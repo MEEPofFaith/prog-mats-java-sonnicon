@@ -44,6 +44,13 @@ public class StrikeBulletType extends BasicBulletType{
     }
 
     @Override
+    public void init(){
+        super.init();
+
+        drawSize = elevation + 64f;
+    }
+
+    @Override
     public void init(Bullet b){
         super.init(b);
 
@@ -59,8 +66,6 @@ public class StrikeBulletType extends BasicBulletType{
                 b.data = data;
             }
         }
-
-        drawSize = elevation + 64f;
     }
 
     @Override

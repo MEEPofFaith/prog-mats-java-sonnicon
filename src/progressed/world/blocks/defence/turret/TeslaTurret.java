@@ -81,7 +81,7 @@ public class TeslaTurret extends PowerTurret{
 
         public TeslaRing(float radius){
             this.radius = radius;
-        };
+        }
 
         public TeslaRing copy(){
             try{

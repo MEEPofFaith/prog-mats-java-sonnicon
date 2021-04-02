@@ -35,13 +35,18 @@ public class UnitSpawnStrikeBulletType extends StrikeBulletType{
     }
 
     @Override
+    public void init(){
+        super.init();
+
+        drawSize = elevation + 64f;
+    }
+
+    @Override
     public void init(Bullet b){
         super.init(b);
 
         Object[] data = {b.x, b.y, null, false};
         b.data = data;
-
-        drawSize = elevation + 64f;
     }
     
     @Override

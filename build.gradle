@@ -56,6 +56,12 @@ task dexify(type: Jar){
     from(zipTree(jarArtifact), zipTree(dexedArtifact))
 }
 
+tasks.withType(JavaCompile){
+    doFirst{
+        options.compilerArgs = options.compilerArgs.findAll{ it != '--enable-preview' }
+    }
+}
+
 tasks.withType(JavaExec){
     jvmArgs += "--enable-preview"
 }

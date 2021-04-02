@@ -140,6 +140,7 @@ public class PMBlocks implements ContentList{
             shootDuration = 240f;
             range = 280f;
             rangeExtention = 60f;
+            reloadTime = 150f;
             rotateSpeed = 2.25f;
             recoilAmount = 4f;
             layers = 2;

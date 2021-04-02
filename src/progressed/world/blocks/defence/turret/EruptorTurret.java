@@ -207,7 +207,7 @@ public class EruptorTurret extends PowerTurret{
                 extendTo(Math.min(range + rangeExtention, dst(targetPos)));
                 if(timer(lightningTimer, lightningInterval)){
                     tr2.trns(rotation, shootLength - recoil);
-                    PMFx.fakeLightning.at(x + tr2.x, y + tr2.y, angleTo(targetPos), lightningColor, new Object[]{Mathf.dst(x + tr2.x, y + tr2.y, targetPos.x, targetPos.y), lightningStroke, team});
+                    PMFx.fakeLightning.at(x + tr2.x, y + tr2.y, angleTo(bullet), lightningColor, new Object[]{Mathf.dst(x + tr2.x, y + tr2.y, bullet.x, bullet.y), lightningStroke, team});
                 }
                 if(bulletLife <= 0f){
                     bullet = null;

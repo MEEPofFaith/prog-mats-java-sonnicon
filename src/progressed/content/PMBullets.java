@@ -34,7 +34,7 @@ public class PMBullets implements ContentList{
     
     arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
-    harbingerLaser;
+    harbingerLaser, excaliburLaser;
 
     @Override
     public void load(){
@@ -527,5 +527,20 @@ public class PMBullets implements ContentList{
                 if(((Teamc)other).team() != b.team) ((Healthc)other).kill();
             };
         };
+
+        excaliburLaser = new CrossLaserBulletType(5000f){{
+            length = 800f;
+            width = 26f;
+            growTime = 10f;
+            fadeTime = 40f;
+            lifetime = 70f;
+            crossLength = 300f;
+            crossWidth = 18f;
+            colors = new Color[]{
+                Color.valueOf("E8D174").a(0.4f),
+                Pal.surge,
+                Color.white
+            };
+        }};
     }
 }

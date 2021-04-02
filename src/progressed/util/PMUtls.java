@@ -15,8 +15,11 @@ import mindustry.type.*;
 import mindustry.world.*;
 import progressed.entities.bullet.*;
 
+import static mindustry.Vars.*;
+
 public class PMUtls{
     private static IntSet collidedBlocks = new IntSet();
+    private static Tile furthest;
 
     public static PowIn customPowIn(int power){
         return new PowIn(power);
@@ -171,5 +174,16 @@ public class PMUtls{
 
     public static float equalArcLen(float r1, float r2, float length){
         return (r1 / r2) * length;
+    }
+
+    public static float findLaserLength(float x, float y, float angle, Team team, float length){
+        Tmp.v1.trns(angle, length);
+
+        furthest = null;
+
+        boolean found = world.raycast(World.toTile(x), World.toTile(y), World.toTile(x + Tmp.v1.x), World.toTile(y + Tmp.v1.y),
+        (tx, ty) -> (furthest = world.tile(tx, ty)) != null && furthest.team() != team && furthest.block().absorbLasers);
+
+        return found && furthest != null ? Math.max(6f, Mathf.dst(x, y, furthest.worldx(), furthest.worldy())) : length;
     }
 }

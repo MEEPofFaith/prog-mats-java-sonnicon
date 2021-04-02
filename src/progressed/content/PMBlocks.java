@@ -507,7 +507,41 @@ public class PMBlocks implements ContentList{
             shootType = PMBullets.blackHole;
         }};
 
-        excalibur = new Block("excalibur");
+        excalibur = new PopeshadowTurret("excalibur"){
+            {
+                requirements(Category.turret, with(
+                    Items.copper, 1200,
+                    Items.lead, 1100,
+                    Items.graphite, 800,
+                    Items.silicon, 1500,
+                    Items.titanium, 800,
+                    Items.thorium, 700,
+                    Items.plastanium, 350,
+                    Items.surgeAlloy, 450,
+                    PMItems.techtanite, 800
+                ));
+                size = 6;
+                health = 4610;
+                range = 740f;
+                shootEffect = smokeEffect = Fx.none;
+                shootLength = 0f;
+                cooldown = 0.0075f;
+                heatColor = Pal.surge;
+                chargeTime = 180f;
+                chargeSound = PMSounds.popeshadowCharge;
+                shootSound = PMSounds.popeshadowBlast;
+                recoilAmount = 8f;
+                restitution = 0.05f;
+                shootType = PMBullets.excaliburLaser;
+            }
+
+            @Override
+            public void load(){
+                super.load();
+
+                baseRegion = Core.atlas.find("prog-mats-block-" + size);
+            }
+        };
 
         harbinger = new ChaosTurret("harbinger"){
             {

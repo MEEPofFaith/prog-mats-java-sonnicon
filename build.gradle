@@ -1,4 +1,4 @@
-plugins {
+plugins{
     id 'java'
 }
 
@@ -6,18 +6,18 @@ group pGroup
 apply plugin: 'idea'
 
 sourceCompatibility = 1.8
-sourceSets.main {
+sourceSets.main{
     java.srcDir("src/")
     resources.srcDir("assets/")
 }
 
 
-repositories {
+repositories{
     mavenCentral()
     maven { url "https://jitpack.io" }
 }
 
-dependencies {
+dependencies{
     implementation "com.github.younggam:multi-lib:$multilibVersion"
     implementation "com.github.Anuken.Arc:arc-core:$mindustryVersion"
     implementation "com.github.Anuken.Mindustry:core:$mindustryVersion"
@@ -25,23 +25,24 @@ dependencies {
     implementation "com.github.Anuken:jabel:$jabelVersion"
 }
 
-jar {
+jar{
     archiveFileName.set "raw-$pArtifactFilename"
 
-    from {
-        configurations.runtimeClasspath.collect {
+    from{
+        configurations.runtimeClasspath.collect{
             it.isDirectory() ? it : zipTree(it)
         }
     }
 }
 
-task dexify(type: Jar) {
+task dexify(type: Jar){
     archiveName "$pArtifactFilename"
 
     final File jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "raw-$pArtifactFilename"),
                dexedArtifact = new File(tasks.dexify.getTemporaryDir(), "dexed.jar")
-    doFirst {
-        exec {
+    doFirst{
+        options.compilerArgs = options.compilerArgs.findAll{ it != '--enable-preview' }
+        exec{
             workingDir dexedArtifact.parent
             def command = ["d8", "--min-api", pMinApi, "--output", dexedArtifact, jarArtifact]
             if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows'))

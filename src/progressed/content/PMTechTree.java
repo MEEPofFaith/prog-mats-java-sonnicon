@@ -100,11 +100,9 @@ public class PMTechTree implements ContentList{
             node(bit);
         });
 
-        /*TODO port p o p s h a d o w
         mergeNode(foreshadow, () -> {
             node(excalibur, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
         });
-        */
 
         mergeNode(armoredConveyor, () -> {
             //Floating Conveyor

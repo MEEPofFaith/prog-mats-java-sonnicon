@@ -41,7 +41,6 @@ task dexify(type: Jar){
     final File jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "raw-$pArtifactFilename"),
                dexedArtifact = new File(tasks.dexify.getTemporaryDir(), "dexed.jar")
     doFirst{
-        options.compilerArgs = options.compilerArgs.findAll{ it != '--enable-preview' }
         exec{
             workingDir dexedArtifact.parent
             def command = ["d8", "--min-api", pMinApi, "--output", dexedArtifact, jarArtifact]

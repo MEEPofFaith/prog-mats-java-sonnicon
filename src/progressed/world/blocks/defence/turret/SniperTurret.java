@@ -22,6 +22,8 @@ public class SniperTurret extends ItemTurret{
 
     public SniperTurret(String name){
         super(name);
+
+        unitSort = (u, x, y) -> -u.maxHealth + u.dst(x, y) / 800f;
     }
 
     @Override

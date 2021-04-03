@@ -115,9 +115,9 @@ public class SentryUnit extends UnitType{
             
             Sentry sentry = ((Sentry)unit);
             bars.add(new Bar(
-                () -> Core.bundle.format("bar.pm-sentry-life", Strings.fixed(sentry.duration / 60f, 1)),
+                () -> Core.bundle.format("bar.pm-lifetime", Strings.fixed(sentry.duration / 60f, 1)),
                 () -> Pal.accent,
-                () -> sentry.durationf()
+                sentry::durationf
             ));
             bars.row();
 

@@ -23,13 +23,13 @@ public class MagmaBulletType extends BulletType{
         hitEffect = Fx.fireballsmoke;
         despawnEffect = shootEffect = smokeEffect = Fx.none;
         hitSize = 4;
-        lifetime = 10f;
+        lifetime = 16f;
         lightOpacity = 0.7f;
         hitColor = lightColor = colors[2];
         lightRadius = -1f;
         lightColor = Color.orange;
         makeFire = true;
-        keepVelocity = false;
+        keepVelocity = backMove = false;
         collides = pierce = true;
         hittable = absorbable = false;
         collidesTiles = false;

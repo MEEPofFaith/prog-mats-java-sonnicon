@@ -49,7 +49,7 @@ public class PMBullets implements ContentList{
         }};
 
         inerfnoMagma = new MagmaBulletType(62.5f, 7f){{
-            lifetime = 30f;
+            shake = 0.1f;
         }};
 
         standardCopperMini = new BasicBulletType(2.5f, 21f){{

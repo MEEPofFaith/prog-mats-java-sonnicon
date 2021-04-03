@@ -75,20 +75,12 @@ public class TeslaTurret extends PowerTurret{
         }
     }
 
-    public class TeslaRing implements Cloneable{ //Create different rings out of this
+    public class TeslaRing{ //Create different rings out of this
         public boolean drawUnder, hasSprite;
         public float rotationMul, radius, xOffset, yOffset;
 
         public TeslaRing(float radius){
             this.radius = radius;
-        }
-
-        public TeslaRing copy(){
-            try{
-                return (TeslaRing)clone();
-            }catch(CloneNotSupportedException suck){
-                throw new RuntimeException("very good language design", suck);
-            }
         }
     }
     

@@ -15,7 +15,6 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
-import progressed.ProgressedMaterials;
 import progressed.graphics.*;
 import progressed.util.*;
 
@@ -140,8 +139,6 @@ public class EverythingTurret extends PowerTurret{
             }else{
                 bias = Mathf.lerpDelta(bias, startingBias, shrinkSpeed);
             }
-
-            ProgressedMaterials.print(bias);
         }
 
         @Override

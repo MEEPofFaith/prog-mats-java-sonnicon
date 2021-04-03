@@ -105,12 +105,13 @@ public class PMBlocks implements ContentList{
             range = 240f;
             rangeExtention = 40f;
             reloadTime = 90f;
+            shootLength = 5f / 4f;
             recoilAmount = 3f;
             rotateSpeed = 3f;
             shootDuration = 180f;
             shootType = PMBullets.flameMagma;
 
-            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 0.5f)).update(false);
+            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 1f/3f)).update(false);
         }};
 
         blaze = new EruptorTurret("blaze"){{
@@ -141,13 +142,49 @@ public class PMBlocks implements ContentList{
             range = 280f;
             rangeExtention = 60f;
             reloadTime = 150f;
+            shootLength = 11f / 4f;
             rotateSpeed = 2.25f;
             recoilAmount = 4f;
+            lightningStroke = 6f;
             layers = 2;
             shootType = PMBullets.blazeMagma;
+
+            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 0.75f)).update(false);
         }};
 
-        inferno = new Block("inferno");
+        inferno = new InfernoTurret("inferno"){{
+            requirements(Category.turret, with(
+                Items.copper, 700,
+                Items.lead, 950,
+                Items.graphite, 750,
+                Items.silicon, 800,
+                Items.titanium, 600,
+                Items.thorium, 800,
+                Items.surgeAlloy, 650,
+                PMItems.techtanite, 600
+            ));
+            float h = 0.5f;
+            cells.add(
+                new InfernoCell(-h, h),
+                new InfernoCell(h, h),
+                new InfernoCell(-h, h, 2),
+                new InfernoCell(h, h, 2)
+            );
+            size = 4;
+            health = 2430;
+            powerUse = 23f;
+            recoilAmount = 8f;
+            range = 200f;
+            rangeExtention = 60f;
+            reloadTime = 240f;
+            shootLength = 42/4;
+            shootDuration = 60f;
+            rotateSpeed = 8f;
+            layers = 2;
+            shootType = PMBullets.inerfnoMagma;
+
+            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 1f)).update(false);
+        }};
 
         minigun = new MinigunTurret("minigun"){{
             requirements(Category.turret, with(

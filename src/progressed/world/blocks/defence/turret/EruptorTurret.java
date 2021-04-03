@@ -1,6 +1,5 @@
 package progressed.world.blocks.defence.turret;
 
-import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -12,18 +11,20 @@ import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
-import progressed.graphics.PMFx;
+import progressed.graphics.*;
 import progressed.util.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class EruptorTurret extends PowerTurret{
     public final int lightningTimer = timers++;
-    public float lightningInterval = 5f, lightningStroke = 5f;
+    public float lightningInterval = 2f, lightningStroke = 4f;
     public Color lightningColor = Color.valueOf("ff9c5a");
 
     public int layers = 1;
@@ -58,17 +59,17 @@ public class EruptorTurret extends PowerTurret{
     public void load(){
         super.load();
 
-        turretRegion = Core.atlas.find(name + "-turret");
-        baseOutline = Core.atlas.find(name + "-base-outline");
+        turretRegion = atlas.find(name + "-turret");
+        baseOutline = atlas.find(name + "-base-outline");
         cellRegions = new TextureRegion[cells.size];
         capRegions = new TextureRegion[cells.size];
         outlineRegions = new TextureRegion[cells.size];
         heatRegions = new TextureRegion[cells.size];
         for(int i = 0; i < cells.size; i++){
-            cellRegions[i] = Core.atlas.find(name + "-cell-" + i);
-            capRegions[i] = Core.atlas.find(name + "-cap-" + i);
-            outlineRegions[i] = Core.atlas.find(name + "-outline-" + i);
-            heatRegions[i] = Core.atlas.find(name + "-cell-heat-" + i);
+            cellRegions[i] = atlas.find(name + "-cell-" + i);
+            capRegions[i] = atlas.find(name + "-cap-" + i);
+            outlineRegions[i] = atlas.find(name + "-outline-" + i);
+            heatRegions[i] = atlas.find(name + "-cell-heat-" + i);
         }
     }
 
@@ -87,7 +88,7 @@ public class EruptorTurret extends PowerTurret{
     public TextureRegion[] icons(){
         return new TextureRegion[]{
             baseRegion,
-            Core.atlas.find(name + "-icon")
+            atlas.find(name + "-icon")
         };
     }
 
@@ -99,7 +100,22 @@ public class EruptorTurret extends PowerTurret{
         stats.add(Stat.input, new BoosterListValue(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, false, l -> consumes.liquidfilters.get(l.id)));
     }
 
-    public class EruptorCell implements Cloneable{
+    @Override
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-reload", (EruptorTurretBuild entity) -> new Bar(
+            () -> bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp((reloadTime - entity.reload) / reloadTime) * 100f)),
+            () -> entity.team.color,
+            () -> (reloadTime - entity.reload) / reloadTime
+        ));
+        bars.add("pm-bullet-life", (EruptorTurretBuild entity) -> new Bar(
+            () -> bundle.format("bar.pm-lifetime", Strings.fixed((entity.bulletLife <= 0 ? shootDuration : entity.bulletLife) * entity.efficiency() / 60f, 1)),
+            () -> lightningColor,
+            () -> (entity.bulletLife <= 0 ? shootDuration : entity.bulletLife) / shootDuration
+        ));
+    }
+
+    public class EruptorCell{
         public int layer = 1;
         public float xOffset, yOffset;
 
@@ -113,18 +129,10 @@ public class EruptorTurret extends PowerTurret{
             yOffset = y;
             this.layer = layer;
         }
-
-        public EruptorCell copy(){
-            try{
-                return (EruptorCell)clone();
-            }catch(CloneNotSupportedException suck){
-                throw new RuntimeException("very good language design", suck);
-            }
-        }
     }
 
     public class EruptorTurretBuild extends PowerTurretBuild{
-        Bullet bullet;
+        protected Bullet bullet;
         protected float bulletLife, length;
         protected float[] layerOpen = new float[layers];
 

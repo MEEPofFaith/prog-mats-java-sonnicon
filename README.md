@@ -10,9 +10,9 @@ Progressed Materials, but now has been ported to Java, and all subsequent work w
 - Extra Sand in the Sandbox
 - Progressed Materials
 
-THis adds a bunch of ~~overly animated~~ turrets that probably aren't balanced because I suck at balancing, as well as some sandbox only items for fun and/or testing purposes.
+This adds a bunch of ~~overly animated~~ turrets that probably aren't balanced because I suck at balancing, as well as some sandbox-only items for fun and/or testing purposes.
 
-If you want to play the old JS version for some reason, install `MEEPofFaith/prog-mats-js`. The `modName` on that is the same as this, so do not install both the JS and Java versions or there will be conflicts.
+If you want to play the old JS version for some reason, install `MEEPofFaith/prog-mats-js`. The `modName` on that is the same as this, so do not install both the JS and Java versions at the same time or there will be conflicts.
 
 ## Download Now!   
 [![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=FCC21B&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)

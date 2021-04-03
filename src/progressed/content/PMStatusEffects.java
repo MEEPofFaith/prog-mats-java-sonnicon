@@ -9,7 +9,7 @@ public class PMStatusEffects implements ContentList{
 
     @Override
     public void load(){
-        emp = new ParalizeStatusEffect("strikedown-emp"){{
+        emp = new ParalyzeStatusEffect("strikedown-emp"){{
             damageMultiplier = 0.9f;
             speedMultiplier = 0.04f;
             reloadMultiplier = 0.55f;
@@ -25,7 +25,7 @@ public class PMStatusEffects implements ContentList{
             cooldown = 60f * 5f;
         }};
 
-        empStrong = new ParalizeStatusEffect("arbiter-emp"){{
+        empStrong = new ParalyzeStatusEffect("arbiter-emp"){{
             damageMultiplier = 0.8f;
             healthMultiplier = 0.9f;
             speedMultiplier = 0.02f;

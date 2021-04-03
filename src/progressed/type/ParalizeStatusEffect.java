@@ -9,11 +9,11 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 
-public class ParalizeStatusEffect extends StatusEffect{
+public class ParalyzeStatusEffect extends StatusEffect{
     public float cooldown, rotationRand;
     public Color effectColor = Pal.lancerLaser;
 
-    public ParalizeStatusEffect(String name){
+    public ParalyzeStatusEffect(String name){
         super(name);
         color = Pal.lancerLaser;
     }

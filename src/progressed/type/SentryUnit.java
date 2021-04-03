@@ -17,6 +17,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
 import progressed.entities.units.*;
+import progressed.util.*;
 
 public class SentryUnit extends UnitType{
     public int engines = 4;
@@ -115,7 +116,7 @@ public class SentryUnit extends UnitType{
             
             Sentry sentry = ((Sentry)unit);
             bars.add(new Bar(
-                () -> Core.bundle.format("bar.pm-lifetime", Strings.fixed(sentry.duration / 60f, 1)),
+                () -> Core.bundle.format("bar.pm-lifetime", PMUtls.stringsFixed(sentry.durationf() * 100f)),
                 () -> Pal.accent,
                 sentry::durationf
             ));

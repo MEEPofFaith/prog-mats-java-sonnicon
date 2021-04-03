@@ -28,8 +28,8 @@ public class EverythingTurret extends PowerTurret{
 
     public EverythingTurret(String name){
         super(name);
-        
         requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
+
         shootLength = 0f;
         targetInterval = 1;
         minRange = 0f;
@@ -88,8 +88,6 @@ public class EverythingTurret extends PowerTurret{
         });
 
         bullets.sort(b -> PMUtls.bulletDamage((BulletType)(b[0]), (float)(b[5])));
-
-        requirements = PMUtls.randomizedItems(new int[]{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3}, 0, 100000);
     }
 
     @Override

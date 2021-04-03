@@ -11,7 +11,6 @@ import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.util.*;
 
@@ -22,7 +21,6 @@ public class ChaosTurret extends PowerTurret{
 
     public ChaosTurret(String name){
         super(name);
-
         requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
 
         alwaysUnlocked = true;
@@ -41,13 +39,6 @@ public class ChaosTurret extends PowerTurret{
             Draw.blend();
             Draw.color();
         };
-    }
-
-    @Override
-    public void init(){
-        super.init();
-
-        requirements = PMUtls.randomizedItems(new int[]{0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3}, 0, 100000);
     }
 
     @Override
@@ -98,8 +89,6 @@ public class ChaosTurret extends PowerTurret{
 
         @Override
         protected void shoot(BulletType type){
-            requirements = PMUtls.randomizedItems(new int[]{0, 0, 0, 1, 1, 1, 2, 2, 4}, 0, 100000);
-            
             useAmmo();
 
             tr.trns(rotation, shootLength);

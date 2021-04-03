@@ -6,10 +6,8 @@ import arc.math.*;
 import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.*;
-import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.ui.*;
 import progressed.util.*;
@@ -57,9 +55,9 @@ public class SniperTurret extends ItemTurret{
         ));
 
         bars.add("pm-charge", (SniperTurretBuild entity) -> new Bar(
-            () -> Core.bundle.format("bar.pm-charge", Strings.fixed(Mathf.clamp(chargeTime - (entity.charge * chargeTime), 0f, chargeTime) / 60f, 1)),
-            () -> entity.team.color,
-            () -> (entity.charge * chargeTime) / chargeTime
+            () -> Core.bundle.format("bar.pm-charge", PMUtls.stringsFixed(Mathf.clamp(entity.charge) * 100f)),
+            () -> Pal.surge,
+            () -> entity.charge
         ));
     }
 

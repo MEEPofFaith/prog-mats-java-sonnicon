@@ -8,6 +8,7 @@ import arc.math.Interp.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.entities.bullet.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 import progressed.ui.*;
@@ -51,8 +52,24 @@ public class BlackHoleTurret extends PowerTurret{
         stats.add(Stat.ammo, new PMAmmoListValue<>(OrderedMap.of(this, shootType)));
     }
 
+    @Override
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-reload", (BlackHoleTurretBuild entity) -> new Bar(
+            () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
+            () -> entity.team.color,
+            () -> Mathf.clamp(entity.reload / reloadTime, 0f, reloadTime)
+        ));
+
+        bars.add("pm-charge", (BlackHoleTurretBuild entity) -> new Bar(
+            () -> Core.bundle.format("bar.pm-charge", PMUtls.stringsFixed(Mathf.clamp(entity.charge) * 100f)),
+            () -> Color.navy,
+            () -> entity.charge
+        ));
+    }
+
     public class BlackHoleTurretBuild extends PowerTurretBuild{
-        protected float alpha;
+        protected float alpha, charge;
 
         @Override
         public void draw(){
@@ -66,6 +83,12 @@ public class BlackHoleTurret extends PowerTurret{
         @Override
         public void updateTile(){
             alpha = Mathf.lerpDelta(alpha, Mathf.num(consValid()), 0.1f);
+
+            if(charging && hasAmmo() && consValid()){
+                charge = Mathf.clamp(charge + Time.delta / chargeTime);
+            }else{
+                charge = 0;
+            }
 
             super.updateTile();
         }

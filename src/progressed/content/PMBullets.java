@@ -533,13 +533,13 @@ public class PMBullets implements ContentList{
             public void hitTile(Bullet b, Building build, float initialHealth, boolean direct){
                 super.hitTile(b, build, initialHealth, direct);
                 if(build.team != b.team) build.kill();
-            };
+            }
 
             @Override
             public void hitEntity(Bullet b, Hitboxc other, float initialHealth){
                 super.hitEntity(b, other, initialHealth);
                 if(((Teamc)other).team() != b.team) ((Healthc)other).kill();
-            };
+            }
         };
 
         excaliburLaser = new CrossLaserBulletType(5000f){{

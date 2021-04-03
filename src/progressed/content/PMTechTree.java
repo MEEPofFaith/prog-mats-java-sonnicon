@@ -23,7 +23,6 @@ public class PMTechTree implements ContentList{
 
     @Override
     public void load(){
-        /*TODO STOP PROCRASTINATING AND PORT THE ERUPTORS ALREADY
         vanillaNode(fuse, () ->{
             node(flame, () -> {
                 node(blaze, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
@@ -31,7 +30,6 @@ public class PMTechTree implements ContentList{
                 });
             });
         });
-        */
 
         vanillaNode(salvo, () -> {
             //Miniguns

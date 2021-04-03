@@ -113,8 +113,8 @@ public class InfernoTurret extends PowerTurret{
             () -> entity.team.color,
             () -> (reloadTime - entity.reload) / reloadTime
         ));
-        bars.add("pm-bullet-life", (InfernoTurretBuild entity) -> new Bar(
-            () -> bundle.format("bar.pm-lifetime", Strings.fixed((entity.bulletLife <= 0 ? shootDuration : entity.bulletLife) * entity.efficiency() / 60f, 1)),
+        bars.add("pm-shoot-duration", (InfernoTurretBuild entity) -> new Bar(
+            () -> bundle.format("bar.pm-shoot-duration", PMUtls.stringsFixed(Mathf.clamp((entity.bulletLife <= 0 ? shootDuration : entity.bulletLife) / shootDuration) * 100f)),
             () -> lightningColor,
             () -> (entity.bulletLife <= 0 ? shootDuration : entity.bulletLife) / shootDuration
         ));

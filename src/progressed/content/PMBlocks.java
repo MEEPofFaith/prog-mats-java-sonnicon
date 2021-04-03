@@ -631,6 +631,7 @@ public class PMBlocks implements ContentList{
                 ));
                 size = 6;
                 health = 4610;
+                reloadTime = 450f;
                 range = 740f;
                 shootEffect = smokeEffect = Fx.none;
                 shootLength = 0f;

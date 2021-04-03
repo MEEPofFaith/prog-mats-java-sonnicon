@@ -6,7 +6,9 @@ import arc.math.*;
 import arc.util.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
+import progressed.util.*;
 
 import static arc.Core.*;
 
@@ -61,8 +63,24 @@ public class PopeshadowTurret extends PowerTurret{
         };
     }
 
+    @Override
+    public void setBars(){
+        super.setBars();
+        bars.add("pm-reload", (PopeshadowTurretBuild entity) -> new Bar(
+            () -> bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
+            () -> entity.team.color,
+            () -> Mathf.clamp(entity.reload / reloadTime, 0f, reloadTime)
+        ));
+
+        bars.add("pm-charge", (PopeshadowTurretBuild entity) -> new Bar(
+            () -> bundle.format("bar.pm-charge", PMUtls.stringsFixed(Mathf.clamp(entity.charge) * 100f)),
+            () -> Color.gold,
+            () -> entity.charge
+        ));
+    }
+
     public class PopeshadowTurretBuild extends PowerTurretBuild{
-        protected float chargeTimer;
+        protected float chargeTimer, charge;
         protected boolean animation;
 
         @Override
@@ -117,12 +135,12 @@ public class PopeshadowTurret extends PowerTurret{
                 for(int i = 0; i < 5; i++){
                     if(cellLights[i] > 0.001f){
                         Draw.alpha(cellLights[i]);
-                        Draw.rect(cellRegions[i], x, y, rotation - 90f);
+                        Draw.rect(cellRegions[i], tx, ty, rotation - 90f);
                         for(int j = 0; j < 2; j++){
                             Tmp.v1.trns(rotation - 90f, lightCoordsSet1[i][0] * Mathf.signs[j], lightCoordsSet1[i][1]);
-                            Tmp.v1.add(x, y);
+                            Tmp.v1.add(tx, ty);
                             Tmp.v2.trns(rotation - 90f, lightCoordsSet1[i][2] * Mathf.signs[j], lightCoordsSet1[i][3]);
-                            Tmp.v2.add(x, y);
+                            Tmp.v2.add(tx, ty);
                             Drawf.light(team, Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, lightCoordsSet1[i][4], heatColor, cellLights[i] * lightOpactiy);
                         }
                     }
@@ -165,6 +183,12 @@ public class PopeshadowTurret extends PowerTurret{
             }else if(animation && chargeTimer >= totalTime){
                 chargeTimer = 0;
                 animation = false;
+            }
+
+            if(charging && hasAmmo() && consValid()){
+                charge = Mathf.clamp(charge + Time.delta / chargeTime);
+            }else{
+                charge = 0;
             }
         }
 

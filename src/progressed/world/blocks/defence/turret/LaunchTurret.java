@@ -14,7 +14,6 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.consumers.*;
 import progressed.util.*;
 
 public class LaunchTurret extends ItemTurret{

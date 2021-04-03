@@ -6,10 +6,14 @@ import multilib.*;
 
 public class MissileCrafter extends MultiCrafter{
     protected TextureRegion colorRegion;
+
+    public MissileCrafter(String name, Recipe[] recs){
+        super(name, recs);
+        isSmelter = false;
+    }
     
     public MissileCrafter(String name, int recLen){
-        super(name, recLen);
-        isSmelter = false;
+        this(name, new Recipe[recLen]);
     }
 
     @Override

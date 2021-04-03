@@ -99,10 +99,12 @@ public class PMTechTree implements ContentList{
         });
 
         vanillaNode(cyclone, () -> {
+            //Sniper
             node(caliber);
         });
 
         vanillaNode(foreshadow, () -> {
+            //P o p e s h a d o w
             node(excalibur, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
         });
 

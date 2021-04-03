@@ -3,11 +3,16 @@ package progressed.world.blocks.crafting;
 import arc.graphics.g2d.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
+import multilib.*;
 import progressed.type.*;
 
 public class SentryCrafter extends MissileCrafter{
+    public SentryCrafter(String name, Recipe[] recs){
+        super(name, recs);
+    }
+    
     public SentryCrafter(String name, int recLen){
-        super(name, recLen);
+        this(name, new Recipe[recLen]);
     }
     
     public class SentryCrafterBuild extends MissileCrafterBuild{

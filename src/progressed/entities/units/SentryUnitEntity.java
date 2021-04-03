@@ -3,17 +3,16 @@ package progressed.entities.units;
 import arc.math.*;
 import mindustry.gen.*;
 import progressed.content.*;
-import progressed.type.*;
 
-public class Sentry extends UnitEntity{
+public class SentryUnitEntity extends UnitEntity{
     public float duration;
 
     public float durationf(){
-        return duration / ((SentryUnit)type).duration;
+        return duration / ((SentryUnitType)type).duration;
     }
 
     public void clampDuration(){
-        duration = Mathf.clamp(duration, 0f, ((SentryUnit)type).duration);
+        duration = Mathf.clamp(duration, 0f, ((SentryUnitType)type).duration);
     }
 
     @Override

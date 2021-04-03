@@ -1,4 +1,4 @@
-package progressed.type;
+package progressed.entities.units;
 
 import arc.*;
 import arc.graphics.*;
@@ -16,14 +16,13 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
-import progressed.entities.units.*;
 import progressed.util.*;
 
-public class SentryUnit extends UnitType{
+public class SentryUnitType extends UnitType{
     public int engines = 4;
     public float engineRotOffset = 45f, duration = 600f, riseSpeed = 0.016f;
 
-    public SentryUnit(String name){
+    public SentryUnitType(String name){
         super(name);
         speed = accel = 0f;
         drag = 0.025f;
@@ -67,7 +66,7 @@ public class SentryUnit extends UnitType{
     public void update(Unit unit){
         if(!unit.dead && unit.health > 0) unit.elevation = Mathf.clamp(unit.elevation + riseSpeed * Time.delta);
 
-        Sentry sentry = ((Sentry)unit);
+        SentryUnitEntity sentry = ((SentryUnitEntity)unit);
         sentry.duration -= Time.delta;
         sentry.clampDuration();
         if(sentry.duration <= 0f){
@@ -85,7 +84,7 @@ public class SentryUnit extends UnitType{
         unit.ammo = ammoCapacity; //fill up on ammo upon creation
         unit.elevation = 0;
         unit.health = unit.maxHealth;
-        ((Sentry)unit).duration = duration;
+        ((SentryUnitEntity)unit).duration = duration;
         return unit;
     }
 
@@ -114,7 +113,7 @@ public class SentryUnit extends UnitType{
             bars.add(new Bar("stat.health", Pal.health, unit::healthf).blink(Color.white));
             bars.row();
             
-            Sentry sentry = ((Sentry)unit);
+            SentryUnitEntity sentry = ((SentryUnitEntity)unit);
             bars.add(new Bar(
                 () -> Core.bundle.format("bar.pm-lifetime", PMUtls.stringsFixed(sentry.durationf() * 100f)),
                 () -> Pal.accent,

@@ -12,12 +12,11 @@ import progressed.ai.*;
 import progressed.entities.bullet.*;
 import progressed.entities.units.*;
 import progressed.graphics.PMFx;
-import progressed.type.*;
 
 public class PMUnitTypes implements ContentList{
     //Steal from Project Unity
     private static final Prov<?>[] constructors = new Prov[]{
-        Sentry::new
+        SentryUnitEntity::new
     };
 
     //Steal from Project Unity
@@ -49,8 +48,8 @@ public class PMUnitTypes implements ContentList{
         }
 
         //Region Sentry Units
-        setEntity("basic-sentry", Sentry::new);
-        basicSentry = new SentryUnit("basic-sentry"){{
+        setEntity("basic-sentry", SentryUnitEntity::new);
+        basicSentry = new SentryUnitType("basic-sentry"){{
             defaultController = SentryAI::new;
 
             duration = 16f * 60f;
@@ -78,8 +77,8 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        setEntity("strike-sentry", Sentry::new);
-        strikeSentry = new SentryUnit("strike-sentry"){{
+        setEntity("strike-sentry", SentryUnitEntity::new);
+        strikeSentry = new SentryUnitType("strike-sentry"){{
             health = 150f;
 
             weapons.add(new Weapon(name + "-hole"){{
@@ -116,13 +115,13 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        setEntity("dash-sentry", Sentry::new);
-        dashSentry = new SentryUnit("dash-sentry"){
-            float len = 56f;
+        setEntity("dash-sentry", SentryUnitEntity::new);
+        dashSentry = new SentryUnitType("dash-sentry"){
+            float len = 56f, rangeMul = 16f;
             {
                 health = 450f;
                 rotateSpeed = 30f;
-                range = len * 6f;
+                range = len * rangeMul;
                 duration = 12f * 60f;
                 itemCapacity = 15;
 
@@ -146,8 +145,8 @@ public class PMUnitTypes implements ContentList{
 
                         @Override
                         public float range(){
-                            return length * 6f;
-                        };
+                            return length * rangeMul;
+                        }
                     };
                 }});
             }

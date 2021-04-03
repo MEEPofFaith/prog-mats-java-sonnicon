@@ -5,8 +5,13 @@
 # Progressed Materials
 (I definitely didn't steal this README format from BetaMindy)
 
-Progressed Materials, but now has been ported to Java, and all subsequent work will be in Java.
-Adds a bunch of ~~overly animated~~ turrets that probably aren't balanced because I suck at balancing.
+Progressed Materials, but now has been ported to Java, and all subsequent work will be in Java. Progressed Materials is a combination of three of my previous v5 mods:
+- Ohno Missiles
+- Extra Sand in the Sandbox
+- Progressed Materials
+
+THis adds a bunch of ~~overly animated~~ turrets that probably aren't balanced because I suck at balancing, as well as some sandbox only items for fun and/or testing purposes.
+
 If you want to play the old JS version for some reason, install `MEEPofFaith/prog-mats-js`. The `modName` on that is the same as this, so do not install both the JS and Java versions or there will be conflicts.
 
 ## Download Now!   

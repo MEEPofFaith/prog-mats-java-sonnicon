@@ -443,10 +443,15 @@ public class PMBlocks implements ContentList{
                 Items.copper, 220,
                 Items.titanium, 200,
                 Items.thorium, 150,
-                Items.plastanium, 110
+                Items.plastanium, 110,
+                PMItems.techtanite, 60
             ));
             ammo(
-                Items.thorium, PMBullets.sniperBoltThorium
+                Items.metaglass, PMBullets.sniperBoltGlass,
+                Items.titanium, PMBullets.sniperBoltTitanium,
+                Items.thorium, PMBullets.sniperBoltThorium,
+                Items.silicon, PMBullets.sniperBoltSilicon,
+                Items.surgeAlloy, PMBullets.sniperBoltSurge
             );
             size = 3;
             reloadTime = 450f;

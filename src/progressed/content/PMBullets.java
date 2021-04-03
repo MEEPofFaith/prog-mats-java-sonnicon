@@ -18,7 +18,7 @@ public class PMBullets implements ContentList{
 
     shockZap, sparkZap, stormZap,
 
-    sniperBoltThorium,
+    sniperBoltSilicon, sniperBoltGlassFrag, sniperBoltGlass, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge,
 
     pixel,
     
@@ -138,12 +138,76 @@ public class PMBullets implements ContentList{
             backMove = false;
         }};
 
+        sniperBoltSilicon = new CritBulletType(25f, 300f){{
+            lifetime = 25f;
+            knockback = 5f;
+            width = 5f;
+            trailWidth = width / 4f;
+            height = 8f;
+            reloadMultiplier = 1.2f;
+            critChance = 0.2f;
+            critMultiplier = 2f;
+            homingRange = 200f;
+            homingPower = 0.8f;
+        }};
+
+        sniperBoltGlassFrag = new CritBulletType(15f, 50f){{
+            lifetime = 2f;
+            width = 2f;
+            trailWidth = width / 4f;
+            height = 3f;
+            pierceCap = 4;
+            critMultiplier = 10f;
+            trailLength = 0;
+        }};
+
+        sniperBoltGlass = new CritBulletType(17f, 200f){{
+            lifetime = 35f;
+            knockback = 5f;
+            width = 6f;
+            trailWidth = width / 4f;
+            height = 10f;
+            pierceCap = 15;
+            fragBullets = 5;
+            fragBullet = sniperBoltGlassFrag;
+            critChance = 0.05f;
+            critMultiplier = 10f;
+        }};
+
+        sniperBoltTitanium = new CritBulletType(22f, 500f){{
+            lifetime = 30f;
+            knockback = 5f;
+            width = 7f;
+            trailWidth = width / 4f;
+            height = 12f;
+            pierceCap = 26;
+            reloadMultiplier = 1.7f;
+            critMultiplier = 3.5f;
+        }};
+
         sniperBoltThorium = new CritBulletType(20f, 800f){{
             lifetime = 30f;
-            knockback = 50f;
-            trailWidth = 2f;
+            knockback = 5f;
             width = 8f;
+            trailWidth = width / 4f;
             height = 14f;
+            pierceCap = 30;
+        }};
+
+        sniperBoltSurge = new CritBulletType(27f, 1000f){{
+            lifetime = 22f;
+            knockback = 5f;
+            width = 10f;
+            trailWidth = width / 4f;
+            height = 19f;
+            pierceCap = 40;
+            reloadMultiplier = 0.4f;
+            lightning = 5;
+            lightningLength = 3;
+            lightningLengthRand = 2;
+            lightningDamage = 40f;
+            critChance = 0.2f;
+            critMultiplier = 6f;
         }};
 
         pixel = new BitBulletType(2f, 5f){{

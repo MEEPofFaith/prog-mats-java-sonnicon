@@ -52,7 +52,7 @@ public class CritBulletType extends BasicBulletType{
 
     @Override
     public void draw(Bullet b){
-        if(((CritBulletData)b.data).trail instanceof Trail tr) tr.draw(backColor, trailWidth);
+        if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.draw(backColor, trailWidth);
         super.draw(b);
     }
 
@@ -62,7 +62,7 @@ public class CritBulletType extends BasicBulletType{
             critEffect.at(b.x, b.y, b.rotation(), b.team.color);
         }
 
-        if(((CritBulletData)b.data).trail instanceof Trail tr) tr.update(b.x, b.y);
+        if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.update(b.x, b.y);
 
         super.update(b);
     }

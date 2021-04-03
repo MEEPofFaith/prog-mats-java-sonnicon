@@ -10,7 +10,7 @@ Adds a bunch of ~~overly animated~~ turrets that probably aren't balanced becaus
 If you want to play the old JS version for some reason, install `MEEPofFaith/prog-mats-js`. The `modName` on that is the same as this, so do not install both the JS and Java versions or there will be conflicts.
 
 ## Download Now!   
-[![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=green&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)
+[![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=FCC21B&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)
 
 __Or find it in the in-game mod browser, were installation is automatic and you can ignore everything under this message!__
 

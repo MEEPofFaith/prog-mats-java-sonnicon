@@ -7,7 +7,7 @@
 
 Progressed Materials, but now has been ported to Java, and all subsequent work will be in Java.
 Adds a bunch of ~~overly animated~~ turrets that probably aren't balanced because I suck at balancing.
-If you want to play the old JS version for some reason, install `MEEPofFaith/progressed-materials-js`. The `modName` on that is the same as this, so do not install both the JS and Java versions or there will be conflicts.
+If you want to play the old JS version for some reason, install `MEEPofFaith/prog-mats-js`. The `modName` on that is the same as this, so do not install both the JS and Java versions or there will be conflicts.
 
 ## Download Now!   
 [![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=green&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)

@@ -207,4 +207,29 @@ public class PMUtls{
 
         return from;
     }
+
+    public static void godHood(UnitType target){
+        content.units().each(u -> {
+            if(u != target){
+                u.weapons.each(w -> {
+                    if(!w.bullet.killShooter){
+                        Weapon copy = w.copy();
+                        target.weapons.add(copy);
+                        if(w.otherSide != -1){
+                            int diff = u.weapons.get(w.otherSide).otherSide - w.otherSide;
+                            copy.otherSide = target.weapons.indexOf(copy) + diff;
+                        }
+                    }
+                });
+            }
+        });
+          
+        content.units().each(u -> {
+            if(u != target){
+                u.abilities.each(a -> {
+                    target.abilities.add(a);
+                });
+            }
+        });
+    }
 }

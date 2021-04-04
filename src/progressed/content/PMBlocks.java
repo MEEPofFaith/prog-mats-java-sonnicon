@@ -721,6 +721,7 @@ public class PMBlocks implements ContentList{
             speed = 0.08f;
             displayedSpeed = 11f;
             drawShallow = true;
+            researchCostMultiplier = 500f;
         }};
 
         // endregion

@@ -194,6 +194,11 @@ public class SwordTurret extends BaseTurret{
             };
         }
 
+        @Override
+        public boolean isControlled(){
+            return unit().isPlayer();
+        }
+
         public boolean isAttacking(){
             return (isControlled() ? unit.isShooting() : logicControlled() ? logicShooting : target != null);
         }

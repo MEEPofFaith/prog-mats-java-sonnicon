@@ -85,6 +85,9 @@ public class PMTechTree implements ContentList{
         });
 
         vanillaNode(arc, () -> {
+            //Pixel
+            node(bit);
+            
             //Coil
             node(shock, () -> {
                 node(spark, Seq.with(new Objectives.Research(differentialGenerator)), () -> {
@@ -94,8 +97,10 @@ public class PMTechTree implements ContentList{
         });
 
         vanillaNode(lancer, () -> {
-            //Pixel
-            node(bit);
+            //Sword
+            node(masquerade, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
+                node(violet, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
+            });
         });
 
         vanillaNode(cyclone, () -> {

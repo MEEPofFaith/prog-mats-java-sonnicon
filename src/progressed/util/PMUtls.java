@@ -232,4 +232,15 @@ public class PMUtls{
             }
         });
     }
+
+    public static float multiLerp(float[] values, float progress){ //No idea how this works, just stole it from Color
+        int l = values.length;
+        float s = Mathf.clamp(progress);
+        float a = values[(int)(s * (l - 1))];
+        float b = values[Mathf.clamp((int)(s * (l - 1) + 1), 0, l - 1)];
+
+        float n = s * (l - 1) - (int)(s * (l - 1));
+        float i = 1f - n;
+        return a * i + b * n;
+    }
 }

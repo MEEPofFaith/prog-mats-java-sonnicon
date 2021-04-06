@@ -5,7 +5,6 @@ plugins{
 group pGroup
 apply plugin: 'idea'
 
-sourceCompatibility = 1.8
 sourceSets.main{
     java.srcDir("src/")
     resources.srcDir("assets/")
@@ -55,7 +54,12 @@ task dexify(type: Jar){
     from(zipTree(jarArtifact), zipTree(dexedArtifact))
 }
 
+sourceCompatibility = 8
+targetCompatibility = 8
+
 tasks.withType(JavaCompile){
+    targetCompatibility = 8
+    sourceCompatibility = 8
     doFirst{
         options.compilerArgs = options.compilerArgs.findAll{ it != '--enable-preview' }
     }

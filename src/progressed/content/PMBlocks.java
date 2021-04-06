@@ -9,6 +9,7 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.consumers.*;
+import mindustry.world.meta.BuildVisibility;
 import multilib.*;
 import multilib.Recipe.*;
 import progressed.graphics.*;
@@ -46,6 +47,9 @@ public class PMBlocks implements ContentList{
 
     //Missiles
     firestorm, strikedown, arbiter,
+    
+    //Swords
+    masquerade, violet,
 
     //Misc
     blackhole, excalibur,
@@ -591,6 +595,58 @@ public class PMBlocks implements ContentList{
             maxAmmo = 2;
             unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
         }};
+
+        masquerade = new SwordTurret("masquerade"){{
+            requirements(Category.turret, with(
+                Items.copper, 500,
+                Items.graphite, 250,
+                Items.silicon, 350,
+                Items.titanium, 200,
+                Items.phaseFabric, 50,
+                PMItems.techtanite, 150
+            ));
+            size = 3;
+            range = 180f;
+            powerUse = 6.5f;
+            minRadius = 16.5f;
+        }};
+
+        violet = new SwordTurret("violet"){
+            {
+                requirements(Category.turret, with(
+                    Items.copper, 1400,
+                    Items.graphite, 350,
+                    Items.silicon, 400,
+                    Items.surgeAlloy, 400,
+                    Items.phaseFabric, 200,
+                    PMItems.techtanite, 450
+                ));
+                size = 5;
+                range = 260f;
+                powerUse = 13.5f;
+                damage = 650f;
+                float attackScl = 2f;
+                damageRadius *= attackScl;
+                attackRadius *= attackScl;
+                swords = 8;
+                minRadius = 33.25f;
+                radius = 10f * tilesize;
+                float timeScl = 1.2f;
+                expandTime *= timeScl;
+                pauseTime *= timeScl;
+                stabTime *= timeScl;
+                totalTime *= timeScl;
+                speed = 3f;
+                rotateSpeed *= 0.75f;
+            }
+
+            @Override
+            public void load(){
+                super.load();
+
+                baseRegion = Core.atlas.find("prog-mats-block-" + size);
+            }
+        };
 
         blackhole = new BlackHoleTurret("blackhole"){{
             requirements(Category.turret, with(

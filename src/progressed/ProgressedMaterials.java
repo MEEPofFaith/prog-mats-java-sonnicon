@@ -42,6 +42,7 @@ public class ProgressedMaterials extends Mod{
 
             progM.meta.displayName = stringf.get(progM.meta.name + ".name");
             progM.meta.author = stringf.get(progM.meta.name + ".author");
+            progM.meta.version = stringf.get(progM.meta.name + ".version");
             progM.meta.description = stringf.get(progM.meta.name + ".description");
         }
     }

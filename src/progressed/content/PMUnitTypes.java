@@ -9,14 +9,16 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import progressed.ai.*;
+import progressed.entities.*;
 import progressed.entities.bullet.*;
 import progressed.entities.units.*;
-import progressed.graphics.PMFx;
+import progressed.graphics.*;
 
 public class PMUnitTypes implements ContentList{
     //Steal from Project Unity
     private static final Prov<?>[] constructors = new Prov[]{
-        SentryUnitEntity::new
+        SentryUnitEntity::new,
+        Extension::create
     };
 
     //Steal from Project Unity

@@ -1,4 +1,4 @@
-name: Java CI with Gradle
+name: BOB THE BUILDER
 
 on:
   push:
@@ -11,21 +11,24 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Set up JDK 15
+    - name: Gather construction materials
       uses: actions/setup-java@v1
       with:
         java-version: 15
 
-    - name: Set up PATH
+    - name: Building roads
       run: echo "${ANDROID_HOME}/build-tools/30.0.1" >> $GITHUB_PATH
 
-    - name: Grant permissions
-      run: chmod +x gradlew
+    - name: Double-checking construction permit
+      run: |
+        chmod +x gradlew
+        chmod +x alpha-bleed
+        chmod +x alpha-bleeding-linux.exe
 
-    - name: BOB THE BUILDER CAN HE BUILD THIS BOB THE BUILDER NO HE CAN'T BUT THE JAVA CI CAN :D (Builds and dexifies mod jar file)
-      run: ./gradlew buildDex
+    - name: BOB THE BUILDER CAN HE FIX IT! BOB THE BUILDER YES HE CAN! (Builds and dexifies mod jar file)
+      run: ./gradlew alphableed buildDex
 
-    - name: Upload Build Artifact
+    - name: New building's grand opening.
       uses: actions/upload-artifact@v2.2.1
       with:
         name: Dexed Progressed Materials-ed

@@ -179,7 +179,7 @@ public class BlackHoleBulletType extends BulletType{
         }
     }
 
-    public class BlackHoleData{
+    public static class BlackHoleData{
         //suctionRadius, size, damageRadius, swirlSize, force, scaledForce, bulletForce, bulletScaledForce
         public float sR, s, dR, sS, f, sF, bF, bSF, cFR;
 
@@ -198,7 +198,7 @@ public class BlackHoleBulletType extends BulletType{
         }
     }
 
-    public class CataclysmData{
+    public static class CataclysmData{
         //radius, uForce, uScaledForce, bForce, bScaledForce, range
         protected float r, f, sF, bF, bSF, rg;
         //color 1, color 2

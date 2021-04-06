@@ -40,9 +40,9 @@ public class ProgressedMaterials extends Mod{
             Func<String, String> stringf = value -> Core.bundle.get("mod." + value);
             LoadedMod progM = mods.locateMod("prog-mats");
 
-            progM.meta.displayName = stringf.get(progM.meta.name + ".name");
+            progM.meta.displayName = "[#FCC21B]" + progM.meta.displayName + "[]";
             progM.meta.author = stringf.get(progM.meta.name + ".author");
-            progM.meta.version = stringf.get(progM.meta.name + ".version");
+            progM.meta.version = "[#FCC21B]" + progM.meta.version + "[]";
             progM.meta.description = stringf.get(progM.meta.name + ".description");
         }
     }

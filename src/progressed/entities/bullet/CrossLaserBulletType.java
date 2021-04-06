@@ -118,7 +118,7 @@ public class CrossLaserBulletType extends LaserBulletType{
         // Light is drawn in draw(b)
     }
 
-    public class CrossLaserData{
+    public static class CrossLaserData{
         public float[] lengths;
 
         public CrossLaserData(){

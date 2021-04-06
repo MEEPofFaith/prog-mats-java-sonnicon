@@ -300,7 +300,12 @@ public class SwordTurret extends BaseTurret{
             }
 
             if(consValid()){
-                if(validateTarget() && isAttacking()){
+
+                if(!ready && !validateTarget() && timer(timerTarget, targetInterval)){
+                    findTarget();
+                }
+
+                if(validateTarget()){
                     boolean canAttack = true;
 
                     if(isControlled()){ //player behavior
@@ -326,10 +331,6 @@ public class SwordTurret extends BaseTurret{
                         reset();
                     }
                 }else if(!ready){
-                    if(timer(timerTarget, targetInterval)){
-                        findTarget(); //only retarget if current target is invalid.
-                    }
-
                     reset();
                 }
             }else if(!ready){

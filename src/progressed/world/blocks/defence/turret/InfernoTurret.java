@@ -18,6 +18,7 @@ import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
 import progressed.graphics.*;
 import progressed.util.*;
+import progressed.world.blocks.defence.turret.EruptorTurret.*;
 
 import static arc.Core.*;
 import static mindustry.Vars.*;
@@ -28,7 +29,7 @@ public class InfernoTurret extends PowerTurret{
     public Color lightningColor = Color.valueOf("ff9c5a");
 
     public int layers = 1;
-    public Seq<InfernoCell> cells = new Seq<>();
+    public Seq<EruptorCell> cells = new Seq<>();
     public float windUp = 0.1f, windDown = 0.01f;
     public float rangeExtention = 32f;
     public float shootDuration = 60f;
@@ -120,22 +121,6 @@ public class InfernoTurret extends PowerTurret{
         ));
     }
 
-    public class InfernoCell{
-        public int layer = 1;
-        public float xOffset, yOffset;
-
-        public InfernoCell(float x, float y){
-            xOffset = x;
-            yOffset = y;
-        }
-        
-        public InfernoCell(float x, float y, int layer){
-            xOffset = x;
-            yOffset = y;
-            this.layer = layer;
-        }
-    }
-
     public class InfernoTurretBuild extends PowerTurretBuild{
         protected Seq<Teamc> targets = new Seq<>();
         protected Seq<Bullet> bullets = new Seq<>();
@@ -154,7 +139,7 @@ public class InfernoTurret extends PowerTurret{
                 Drawf.shadow(sideOutline, x + tr3.x - elevation, y + tr3.y - elevation, rotation - 90f + i * 90f);
             }
             for(int i = 0; i < cells.size; i++){
-                InfernoCell cell = cells.get(i);
+                EruptorCell cell = cells.get(i);
                 for(int j = 0; j < 4; j++){
                     tr2.trns(rotation - 90f + j * 90f, cell.xOffset * layerOpen[cell.layer - 1], cell.yOffset * layerOpen[cell.layer - 1]);
                     tr3.trns(rotation + j * 90f, recoil);
@@ -164,7 +149,7 @@ public class InfernoTurret extends PowerTurret{
 
             Draw.rect(bottomRegion, x, y);
             for(int i = 0; i < cells.size; i++){
-                InfernoCell cell = cells.get(i);
+                EruptorCell cell = cells.get(i);
                 for(int j = 0; j < 4; j++){
                     tr2.trns(rotation - 90f + j * 90f, cell.xOffset * layerOpen[cell.layer - 1], cell.yOffset * layerOpen[cell.layer - 1]);
                     tr3.trns(rotation + j * 90f, recoil);
@@ -200,7 +185,7 @@ public class InfernoTurret extends PowerTurret{
 
             for(int i = 0; i < layers; i++){
                 for(int j = 0; j < cells.size; j++){
-                    InfernoCell cell = cells.get(j);
+                    EruptorCell cell = cells.get(j);
                     if((cell.layer - 1) != i) continue;
                     for(int k = 0; k < 4; k++){
                         tr3.trns(rotation + k * 90f, recoil);
@@ -215,7 +200,7 @@ public class InfernoTurret extends PowerTurret{
                     }
                 }
                 for(int j = 0; j < cells.size; j++){
-                    InfernoCell cell = cells.get(j);
+                    EruptorCell cell = cells.get(j);
                     if((cell.layer - 1) != i) continue;
                     for(int k = 0; k < 4; k++){
                         tr2.trns(rotation - 90f + k * 90f, cell.xOffset * layerOpen[cell.layer - 1], cell.yOffset * layerOpen[cell.layer - 1]);

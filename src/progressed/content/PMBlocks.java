@@ -9,12 +9,12 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.consumers.*;
-import mindustry.world.meta.BuildVisibility;
 import multilib.*;
 import multilib.Recipe.*;
 import progressed.graphics.*;
 import progressed.world.blocks.crafting.*;
 import progressed.world.blocks.defence.turret.*;
+import progressed.world.blocks.defence.turret.EruptorTurret.*;
 import progressed.world.blocks.defence.wall.*;
 import progressed.world.blocks.distribution.*;
 import progressed.world.blocks.power.*;
@@ -169,10 +169,10 @@ public class PMBlocks implements ContentList{
             ));
             float h = 0.5f;
             cells.add(
-                new InfernoCell(-h, h),
-                new InfernoCell(h, h),
-                new InfernoCell(-h, h, 2),
-                new InfernoCell(h, h, 2)
+                new EruptorCell(-h, h),
+                new EruptorCell(h, h),
+                new EruptorCell(-h, h, 2),
+                new EruptorCell(h, h, 2)
             );
             size = 4;
             health = 2430;

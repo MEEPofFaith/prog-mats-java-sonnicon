@@ -12,6 +12,7 @@ import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
+import progressed.entities.bullet.StrikeBulletType.*;
 import progressed.util.*;
 
 import static mindustry.Vars.*;
@@ -148,7 +149,7 @@ public class MissileTurret extends ItemTurret{
                     float tx = shootLocs[sel][0] + x;
                     float ty = shootLocs[sel][1] + y;
                     
-                    type.create(this, team, tx, ty, rotation + Mathf.range(inaccuracy), -1f, 1f + Mathf.range(velocityInaccuracy), 1f, new Object[]{tx, ty, 0f, false});
+                    type.create(this, team, tx, ty, rotation + Mathf.range(inaccuracy), -1f, 1f + Mathf.range(velocityInaccuracy), 1f, new StrikeBulletData(tx, ty));
                     effects();
                     useAmmo();
                     heats[sel] = 1;

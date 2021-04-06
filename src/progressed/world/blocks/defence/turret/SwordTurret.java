@@ -194,9 +194,19 @@ public class SwordTurret extends BaseTurret{
             };
         }
 
-        @Override
+        /** @return whether this block is being controlled by a player. */
         public boolean isControlled(){
             return unit().isPlayer();
+        }
+
+        /** @return whether this block can be controlled at all. */
+        public boolean canControl(){
+            return true;
+        }
+
+        /** @return whether targets should automatically be selected (on mobile) */
+        public boolean shouldAutoTarget(){
+            return true;
         }
 
         public boolean isAttacking(){

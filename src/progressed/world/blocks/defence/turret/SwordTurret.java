@@ -7,8 +7,7 @@ import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
-import arc.util.io.Reads;
-import arc.util.io.Writes;
+import arc.util.io.*;
 import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.entities.*;
@@ -25,6 +24,7 @@ import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
 import progressed.content.*;
 import progressed.entities.*;
+import progressed.graphics.*;
 import progressed.util.*;
 
 import static mindustry.Vars.*;
@@ -46,6 +46,10 @@ public class SwordTurret extends BaseTurret{
     public Color heatColor = Pal.lancerLaser;
     public float cooldown = 0.05f;
 
+    public float bladeCenter, trailWidth = 8f;
+    public Color trailColor = Color.white;
+    public int trailLength = 8;
+
     public float damage = 300f, damageRadius = tilesize;
     public StatusEffect status = StatusEffects.none;
     public float statusDuration = 10 * 60;
@@ -62,7 +66,7 @@ public class SwordTurret extends BaseTurret{
 
     public float elevation = -1f, swordElevation = -1f;
 
-    protected TextureRegion baseRegion, swordRegion, energyRegion;
+    protected TextureRegion baseRegion, outlineRegion, swordRegion, heatRegion;
 
     public SwordTurret(String name){
         super(name);
@@ -87,7 +91,8 @@ public class SwordTurret extends BaseTurret{
 
         baseRegion = Core.atlas.find(name + "-base", "block-" + size);
         swordRegion = Core.atlas.find(name + "-sword");
-        energyRegion = Core.atlas.find(name + "-heat");
+        outlineRegion = Core.atlas.find(name + "-sword-outline");
+        heatRegion = Core.atlas.find(name + "-sword-heat");
     }
 
     @Override
@@ -145,6 +150,7 @@ public class SwordTurret extends BaseTurret{
         protected float animationTime, coolantScl = 1f, logicControlTime = -1, lookAngle, heat;
         public BlockUnitc unit = Nulls.blockUnit;
         protected boolean logicShooting, wasAttacking, ready, traveling, hit;
+        protected FixedTrail[] trails = new FixedTrail[swords];
 
         @Override
         public void created(){
@@ -155,6 +161,9 @@ public class SwordTurret extends BaseTurret{
             ext.holder = this;
             ext.set(x, y);
             ext.add();
+            for(int i = 0; i < swords; i++){
+                trails[i] = new FixedTrail(trailLength);
+            }
         }
 
         @Override
@@ -246,29 +255,52 @@ public class SwordTurret extends BaseTurret{
         public void drawExt(){
             Draw.mixcol();
 
+            Tmp.c1.set(trailColor).lerp(heatColor, heat);
+            Draw.z(Layer.flyingUnit + 0.002f);
+
+            for(FixedTrail t : trails){
+                t.draw(Tmp.c1, trailWidth);
+            }
+
             for(int i = 0; i < swords; i++){
                 float rot = rotation + i * (360f / swords);
-                float expand = Mathf.curve(animationTime, 0f, expandTime);
-                float endRot = Mathf.curve(animationTime, stabTime + (totalTime - stabTime) * 0.2f, totalTime);
-                float drawRot = -90 * expand + -270f * endRot;
+
                 Tmp.v1.trns(rot, -getRadius());
 
                 float sX = currentPos.x + Tmp.v1.x, sY = currentPos.y + Tmp.v1.y;
 
                 Draw.z(Layer.flyingUnit + 0.001f);
-                Drawf.shadow(swordRegion, sX - swordElevation, sY - swordElevation, rot + drawRot);
+                Drawf.shadow(outlineRegion, sX - swordElevation, sY - swordElevation, rot + getRotation(i));
 
-                Draw.z(Layer.flyingUnit + 0.002f);
-                Draw.rect(swordRegion, sX, sY, rot + drawRot);
+                Draw.z(Layer.flyingUnit + 0.003f);
+                Draw.rect(outlineRegion, sX, sY, rot + getRotation(i));
+            }
+
+            for(int i = 0; i < swords; i++){
+                float rot = rotation + i * (360f / swords);
+
+                Tmp.v1.trns(rot, -getRadius());
+
+                float sX = currentPos.x + Tmp.v1.x, sY = currentPos.y + Tmp.v1.y;
+
+                Draw.z(Layer.flyingUnit + 0.004f);
+                Draw.rect(swordRegion, sX, sY, rot + getRotation(i));
 
                 if(ready && heat > 0f){
                     Draw.color(heatColor, heat);
                     Draw.blend(Blending.additive);
-                    Draw.rect(energyRegion, sX, sY, rot + drawRot);
+                    Draw.rect(heatRegion, sX, sY, rot + getRotation(i));
                     Draw.color();
                     Draw.blend();
                 }
             }
+        }
+
+        protected float getRotation(int sword){
+            float expand = Mathf.curve(animationTime, 0f, expandTime);
+            float endRot = Mathf.curve(animationTime, stabTime + (totalTime - stabTime) * 0.2f, totalTime);
+            float drawRot = -90 * expand + -270f * endRot;
+            return drawRot;
         }
 
         protected float getRadius(){
@@ -315,12 +347,6 @@ public class SwordTurret extends BaseTurret{
                         canAttack = logicShooting;
                     }else{ //default AI behavior
                         targetPosition(target);
-
-                        float dist = dst(targetPos);
-                        if(dist > range){
-                            canAttack = false;
-                            target = null;
-                        }
                     }
 
                     if(canAttack){
@@ -336,9 +362,6 @@ public class SwordTurret extends BaseTurret{
             }else if(!ready){
                 reset();
             }
-
-            if(dst(currentPos) > size / 2f || isAttacking()) turnTo(angleTo(currentPos));
-            rotation = (rotation - rotateSpeed * cdelta() * (0.1f + efficiency() * 0.9f)) % 360f;
 
             if(ready){
                 animationTime += cdelta() * efficiency();
@@ -369,6 +392,21 @@ public class SwordTurret extends BaseTurret{
             }else{
                 heat = Mathf.lerpDelta(heat, 0f, cooldown);
                 animationTime = 0f;
+            }
+
+            if(dst(currentPos) > size / 2f || isAttacking()) turnTo(angleTo(currentPos));
+            rotation = (rotation - rotateSpeed * cdelta() * (0.1f + efficiency() * 0.9f)) % 360f;
+
+            for(int i = 0; i < swords; i++){
+                float rot = rotation + i * (360f / swords);
+
+                Tmp.v1.trns(rot, -getRadius());
+
+                float sX = currentPos.x + Tmp.v1.x, sY = currentPos.y + Tmp.v1.y;
+
+                Tmp.v2.trns(rot + getRotation(i) + 90f, bladeCenter);
+
+                trails[i].update(sX + Tmp.v2.x, sY + Tmp.v2.y, rot + getRotation(i));
             }
         }
 

@@ -129,7 +129,7 @@ public class PMUtls{
         return Strings.fixed(value, statPrecision(value));
     }
 
-    //For anything that isn't a block or unit
+    /** Research costs for anything that isn't a block or unit */
     public static ItemStack[] researchRequirements(ItemStack[] requirements, float mul){
         ItemStack[] out = new ItemStack[requirements.length];
         for(int i = 0; i < out.length; i++){
@@ -145,7 +145,7 @@ public class PMUtls{
         return researchRequirements(requirements, 1f);
     }
 
-    //Adds `ItemStack[]`s together
+    /** Adds ItemStack arrayws together. Combines duplicate items into one stack. */
     public static ItemStack[] addItemStacks(ItemStack[][] stacks){
         Seq<ItemStack> rawStacks = new Seq<>();
         for(ItemStack[] arr : stacks){
@@ -176,6 +176,7 @@ public class PMUtls{
         return (r1 / r2) * length;
     }
 
+    /** Like Damage.findLaserLength, but uses an (x, y) coord instead of bullet position */
     public static float findLaserLength(float x, float y, float angle, Team team, float length){
         Tmp.v1.trns(angle, length);
 

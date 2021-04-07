@@ -609,6 +609,8 @@ public class PMBlocks implements ContentList{
             range = 180f;
             powerUse = 6.5f;
             minRadius = 16.5f;
+            bladeCenter = 9f;
+            trailWidth = 30f / 4f;
         }};
 
         violet = new SwordTurret("violet"){
@@ -625,6 +627,9 @@ public class PMBlocks implements ContentList{
                 range = 260f;
                 powerUse = 13.5f;
                 damage = 650f;
+                bladeCenter = 122f / 8f;
+                trailWidth = 18f;
+                trailLength = 8;
                 float attackScl = 2f;
                 damageRadius *= attackScl;
                 attackRadius *= attackScl;

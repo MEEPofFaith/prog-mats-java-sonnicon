@@ -122,8 +122,6 @@ public class StrikeBulletType extends BasicBulletType{
                     }
                 }
             }
-
-            b.data = data;
         }
     }
 

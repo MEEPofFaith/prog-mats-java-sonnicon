@@ -614,6 +614,7 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 150
             ));
             size = 3;
+            health = 2140;
             range = 180f;
             powerUse = 6.5f;
             minRadius = 16.5f;
@@ -632,25 +633,27 @@ public class PMBlocks implements ContentList{
                     PMItems.techtanite, 450
                 ));
                 size = 5;
+                health = 5830;
                 range = 260f;
                 powerUse = 13.5f;
                 damage = 650f;
                 bladeCenter = 122f / 8f;
                 trailWidth = 18f;
-                trailLength = 8;
+                trailLength = 6;
                 float attackScl = 2f;
                 damageRadius *= attackScl;
                 attackRadius *= attackScl;
                 swords = 5;
                 minRadius = 33.25f;
-                radius = 10f * tilesize;
+                radius = 6.25f * tilesize;
                 float timeScl = 0.9f;
                 expandTime *= timeScl;
                 pauseTime *= timeScl;
                 stabTime *= timeScl;
                 totalTime *= timeScl;
+                cooldown *= timeScl;
                 speed = 3f;
-                rotateSpeed = 6f;
+                rotateSpeed = 4.5f;
             }
 
             @Override

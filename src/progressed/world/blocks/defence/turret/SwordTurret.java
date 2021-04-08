@@ -22,7 +22,6 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
-import progressed.ProgressedMaterials;
 import progressed.content.*;
 import progressed.entities.*;
 import progressed.graphics.*;
@@ -41,16 +40,16 @@ public class SwordTurret extends BaseTurret{
     public boolean targetGround = true;
 
     public int swords = 3;
-    public float minRadius = tilesize, radius = 4f * tilesize, expandedRadius = -1;
+    public float minRadius = tilesize, radius = 3f * tilesize, expandedRadius = -1;
     public float expandTime = 9f, pauseTime = 15f, stabTime = 18f, totalTime = 30f;
     public float attackRadius = 2f * tilesize, speed = 2f;
-    public Color heatColor = Pal.lancerLaser;
+    public Color heatColor = Pal.surge;
     public float cooldown = 0.05f;
     public float minSpeed = 0.05f;
 
     public float bladeCenter, trailWidth = 8f;
-    public Color trailColor = Color.white;
-    public int trailLength = 7;
+    public Color trailColor = Color.violet;
+    public int trailLength = 8;
 
     public float damage = 300f, damageRadius = tilesize;
     public StatusEffect status = StatusEffects.none;
@@ -82,7 +81,7 @@ public class SwordTurret extends BaseTurret{
         consumes.powerCond(powerUse, SwordTurretBuild::isActive);
         if(elevation < 0) elevation = size / 2f;
         if(swordElevation < 0) swordElevation = elevation * 2f;
-        if(expandedRadius < 0) expandedRadius = radius * 1.5f;
+        if(expandedRadius < 0) expandedRadius = radius * 2.5f;
 
         super.init();
     }
@@ -140,7 +139,7 @@ public class SwordTurret extends BaseTurret{
         super.drawRequestRegion(req, list);
 
         for(int i = 0; i < swords; i++){
-            float rot = (i + (swords % 4f) / 4f) * (360f / swords);
+            float rot = 90f + i * (360f / swords);
             Tmp.v1.trns(rot, -radius);
             Draw.rect(outlineRegion, req.drawx() + Tmp.v1.x, req.drawy() + Tmp.v1.y, rot);
         }
@@ -167,7 +166,6 @@ public class SwordTurret extends BaseTurret{
             for(int i = 0; i < swords; i++){
                 trails[i] = new FixedTrail(trailLength);
             }
-            ProgressedMaterials.print(rotation);
         }
 
         @Override
@@ -302,8 +300,9 @@ public class SwordTurret extends BaseTurret{
 
         protected float getRotation(int sword){
             float expand = Mathf.curve(animationTime, 0f, expandTime);
+            float attack = Mathf.curve(animationTime, pauseTime, stabTime);
             float endRot = Mathf.curve(animationTime, stabTime + (totalTime - stabTime) * 0.2f, totalTime);
-            float drawRot = -90 * expand + -270f * endRot;
+            float drawRot = -270 * expand + -180f * attack + -270f * endRot;
             return drawRot;
         }
 

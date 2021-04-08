@@ -121,7 +121,7 @@ public class SwordTurret extends BaseTurret{
             stat.table(t -> {
                 t.left().defaults().padRight(3).left();
 
-                t.add(Core.bundle.format("bullet.splashdamage", damage, PMUtls.stringsFixed(damageRadius / tilesize, 1)));
+                t.add(Core.bundle.format("bullet.splashdamage", damage, PMUtls.stringsFixed(damageRadius / tilesize)));
                 t.row();
 
                 if(buildingDamageMultiplier != 1f){

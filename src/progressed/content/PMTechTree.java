@@ -23,10 +23,16 @@ public class PMTechTree implements ContentList{
 
     @Override
     public void load(){
-        vanillaNode(fuse, () ->{
+        vanillaNode(meltdown, () ->{
+            // Eruptors
             node(flame, () -> {
                 node(blaze, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
                     node(inferno, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
+
+                    //Sword
+                    node(masquerade, () -> {
+                        node(violet, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
+                    });
                 });
             });
         });
@@ -93,13 +99,6 @@ public class PMTechTree implements ContentList{
                 node(spark, Seq.with(new Objectives.Research(differentialGenerator)), () -> {
                     node(storm, Seq.with(new Objectives.Research(thoriumReactor)));
                 });
-            });
-        });
-
-        vanillaNode(lancer, () -> {
-            //Sword
-            node(masquerade, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
-                node(violet, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
             });
         });
 

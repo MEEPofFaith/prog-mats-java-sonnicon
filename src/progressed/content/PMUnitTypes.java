@@ -2,12 +2,14 @@ package progressed.content;
 
 import arc.func.*;
 import arc.graphics.*;
+import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.world.meta.*;
 import progressed.ai.*;
 import progressed.entities.*;
 import progressed.entities.bullet.*;
@@ -24,8 +26,13 @@ public class PMUnitTypes implements ContentList{
     //Steal from Project Unity
     private static final int[] classIDs = new int[constructors.length];
 
+    public static UnitType 
+    
     //sentry
-    public static UnitType basicSentry, strikeSentry, dashSentry;
+    basicSentry, strikeSentry, dashSentry,
+    
+    //sandy
+    everythingUnit;
 
     //Steal from Project Unity
     public static int getClassId(int index){
@@ -151,6 +158,40 @@ public class PMUnitTypes implements ContentList{
                         }
                     };
                 }});
+            }
+        };
+
+        everythingUnit = new UnitType("god"){
+            {
+                constructor = UnitEntity::create;
+                defaultController = FlyingAI::new;
+
+                alwaysUnlocked = true;
+                flying = true;
+                lowAltitude = true;
+                mineSpeed = 100f;
+                mineTier = 10000;
+                buildSpeed = 10000f;
+                drag = 0.05f;
+                speed = 3.55f;
+                rotateSpeed = 19f;
+                accel = 0.11f;
+                itemCapacity = 20000;
+                health = 200000f;
+                engineOffset = 4f;
+                engineSize = 1f;
+                hitSize = 11f;
+                commandLimit = 100;
+            }
+
+            @Override
+            public void setStats(){
+                super.setStats();
+
+                stats.remove(Stat.abilities);
+                stats.add(Stat.abilities, "Everything");
+                stats.remove(Stat.weapons);
+                stats.add(Stat.weapons, "Everything");
             }
         };
     }

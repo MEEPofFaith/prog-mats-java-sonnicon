@@ -6,6 +6,7 @@ import arc.math.Interp.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
+import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
@@ -220,13 +221,16 @@ public class PMUtls{
                             int diff = u.weapons.get(w.otherSide).otherSide - w.otherSide;
                             copy.otherSide = target.weapons.indexOf(copy) + diff;
                         }
+
+                        copy.rotateSpeed = 360f;
+                        copy.shootCone = 360f;
+
+                        if(copy.shootStatus == StatusEffects.unmoving || copy.shootStatus == StatusEffects.slow){
+                            copy.shootStatus = StatusEffects.none;
+                        }
                     }
                 });
-            }
-        });
-          
-        content.units().each(u -> {
-            if(u != target){
+
                 u.abilities.each(a -> {
                     target.abilities.add(a);
                 });

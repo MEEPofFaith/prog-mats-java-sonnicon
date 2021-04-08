@@ -8,6 +8,7 @@ import mindustry.game.EventType.*;
 import mindustry.mod.*;
 import mindustry.mod.Mods.*;
 import progressed.content.*;
+import progressed.util.*;
 
 import static mindustry.Vars.*;
 
@@ -36,7 +37,8 @@ public class ProgressedMaterials extends Mod{
     @Override
     public void init(){
         enableConsole = true;
-        if(!headless){
+
+        Core.app.post(() -> {
             Func<String, String> stringf = value -> Core.bundle.get("mod." + value);
             LoadedMod progM = mods.locateMod("prog-mats");
 
@@ -44,7 +46,9 @@ public class ProgressedMaterials extends Mod{
             progM.meta.author = stringf.get(progM.meta.name + ".author");
             progM.meta.version = "[#FCC21B]" + progM.meta.version + "[]";
             progM.meta.description = stringf.get(progM.meta.name + ".description");
-        }
+            
+            PMUtls.godHood(PMUnitTypes.everythingUnit);
+        });
     }
 
     @Override

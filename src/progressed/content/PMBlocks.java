@@ -2,13 +2,16 @@ package progressed.content;
 
 import arc.*;
 import arc.math.*;
+import arc.struct.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.units.*;
 import mindustry.world.consumers.*;
+import mindustry.world.meta.*;
 import multilib.*;
 import multilib.Recipe.*;
 import progressed.graphics.*;
@@ -77,7 +80,12 @@ public class PMBlocks implements ContentList{
     // Region Crafting
 
     //Crafters
-    mindronCollider, shellPress, missileFactory, sentryBuilder;
+    mindronCollider, shellPress, missileFactory, sentryBuilder,
+
+    // endregion
+    // Region Unit
+
+    godFactory;
 
     // endregion
 
@@ -633,16 +641,16 @@ public class PMBlocks implements ContentList{
                 float attackScl = 2f;
                 damageRadius *= attackScl;
                 attackRadius *= attackScl;
-                swords = 8;
+                swords = 5;
                 minRadius = 33.25f;
                 radius = 10f * tilesize;
-                float timeScl = 1.2f;
+                float timeScl = 0.9f;
                 expandTime *= timeScl;
                 pauseTime *= timeScl;
                 stabTime *= timeScl;
                 totalTime *= timeScl;
                 speed = 3f;
-                rotateSpeed *= 0.75f;
+                rotateSpeed = 6f;
             }
 
             @Override
@@ -781,7 +789,6 @@ public class PMBlocks implements ContentList{
             health = 15;
             speed = 0.08f;
             displayedSpeed = 11f;
-            drawShallow = true;
             researchCostMultiplier = 500f;
         }};
 
@@ -950,6 +957,21 @@ public class PMBlocks implements ContentList{
             itemCapacity = 100;
             craftEffect = updateEffect = Fx.none;
             dumpToggle = true;
+        }};
+
+        // endregion
+        // Region Unit
+
+        godFactory = new UnitFactory("god-factory"){{
+            requirements(Category.units, BuildVisibility.sandboxOnly, empty);
+            alwaysUnlocked = true;
+            size = 3;
+            health = 10000;
+            plans = Seq.with(
+                new UnitPlan(PMUnitTypes.everythingUnit, 60f * 10f, empty)
+            );
+
+            consumes.power(1f);
         }};
 
         // endregion

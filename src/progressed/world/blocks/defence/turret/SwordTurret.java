@@ -22,6 +22,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
+import progressed.ProgressedMaterials;
 import progressed.content.*;
 import progressed.entities.*;
 import progressed.graphics.*;
@@ -39,16 +40,17 @@ public class SwordTurret extends BaseTurret{
     public boolean targetAir = true;
     public boolean targetGround = true;
 
-    public int swords = 6;
+    public int swords = 3;
     public float minRadius = tilesize, radius = 4f * tilesize, expandedRadius = -1;
-    public float expandTime = 15f, pauseTime = 25f, stabTime = 30f, totalTime = 50f;
+    public float expandTime = 9f, pauseTime = 15f, stabTime = 18f, totalTime = 30f;
     public float attackRadius = 2f * tilesize, speed = 2f;
     public Color heatColor = Pal.lancerLaser;
     public float cooldown = 0.05f;
+    public float minSpeed = 0.05f;
 
     public float bladeCenter, trailWidth = 8f;
     public Color trailColor = Color.white;
-    public int trailLength = 8;
+    public int trailLength = 7;
 
     public float damage = 300f, damageRadius = tilesize;
     public StatusEffect status = StatusEffects.none;
@@ -71,7 +73,7 @@ public class SwordTurret extends BaseTurret{
     public SwordTurret(String name){
         super(name);
         hasPower = true;
-        rotateSpeed = 3f;
+        rotateSpeed = 4f;
         expanded = true;
     }
 
@@ -136,10 +138,11 @@ public class SwordTurret extends BaseTurret{
     @Override
     public void drawRequestRegion(BuildPlan req, Eachable<BuildPlan> list){
         super.drawRequestRegion(req, list);
+
         for(int i = 0; i < swords; i++){
-            float rot = (i + 0.5f) * (360f / swords);
+            float rot = (i + (swords % 4f) / 4f) * (360f / swords);
             Tmp.v1.trns(rot, -radius);
-            Draw.rect(swordRegion, req.drawx() + Tmp.v1.x, req.drawy() + Tmp.v1.y, rot);
+            Draw.rect(outlineRegion, req.drawx() + Tmp.v1.x, req.drawy() + Tmp.v1.y, rot);
         }
     }
 
@@ -164,6 +167,7 @@ public class SwordTurret extends BaseTurret{
             for(int i = 0; i < swords; i++){
                 trails[i] = new FixedTrail(trailLength);
             }
+            ProgressedMaterials.print(rotation);
         }
 
         @Override
@@ -379,13 +383,17 @@ public class SwordTurret extends BaseTurret{
                     if(hitShake > 0f){
                         Effect.shake(hitShake, hitShake, this);
                     }
-                    Damage.damage(team, currentPos.x, currentPos.y, damageRadius, damage, true, targetAir, targetGround);
+                    //Slow speed, weak hit -> * efficiency()
+                    Damage.damage(team, currentPos.x, currentPos.y, damageRadius, damage * efficiency(), true, targetAir, targetGround);
                     if(status != StatusEffects.none){
-                        Damage.status(team, currentPos.x, currentPos.y, damageRadius, status, statusDuration, targetAir, targetGround);
+                        Damage.status(team, currentPos.x, currentPos.y, damageRadius, status, statusDuration * efficiency(), targetAir, targetGround);
                     }
                 }
                 if(animationTime > totalTime){
-                    if(!validateTarget() || !isAttacking() || currentPos.dst(targetPos) > attackRadius) ready = false; //do not stop until dead or too far away or cannot attack
+                    if(!validateTarget() || !isAttacking() || currentPos.dst(targetPos) > attackRadius || !consValid()){
+                        ready = false; //do not stop until dead or unable to attack
+                        target = null;
+                    }
                     hit = false;
                     animationTime = 0f;
                 }
@@ -395,7 +403,7 @@ public class SwordTurret extends BaseTurret{
             }
 
             if(dst(currentPos) > size / 2f || isAttacking()) turnTo(angleTo(currentPos));
-            rotation = (rotation - rotateSpeed * cdelta() * (0.1f + efficiency() * 0.9f)) % 360f;
+            rotation = (rotation - rotateSpeed * cdelta() * efficiency()) % 360f;
 
             for(int i = 0; i < swords; i++){
                 float rot = rotation + i * (360f / swords);
@@ -459,6 +467,13 @@ public class SwordTurret extends BaseTurret{
 
         protected float cdelta(){
             return delta() * coolantScl;
+        }
+
+        @Override
+        public float efficiency(){
+            //disabled -> 0.1f efficiency
+            if(!enabled) return 0.1f;
+            return power != null && (block.consumes.has(ConsumeType.power) && !block.consumes.getPower().buffered) ? (0.1f + power.status * 0.9f) : 1f;
         }
 
         @Override

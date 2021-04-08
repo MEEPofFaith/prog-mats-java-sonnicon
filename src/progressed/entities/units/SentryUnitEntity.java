@@ -47,6 +47,6 @@ public class SentryUnitEntity extends UnitEntity{
 
     @Override
     public int classId(){
-        return PMUnitTypes.getClassId(0);
+        return PMUnitTypes.classID(SentryUnitEntity.class);
     }
 }

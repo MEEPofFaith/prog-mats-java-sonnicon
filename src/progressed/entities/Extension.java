@@ -40,7 +40,7 @@ public final class Extension implements Drawc{
 
     @Override
     public int classId(){
-        return PMUnitTypes.getClassId(1);
+        return PMUnitTypes.classID(Extension.class);
     }
 
     @Override

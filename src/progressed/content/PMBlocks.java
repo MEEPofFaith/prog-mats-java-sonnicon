@@ -30,29 +30,29 @@ public class PMBlocks implements ContentList{
 
     // Region Turrets
 
-    //Eruptors
-    flame, blaze, inferno,
-
     //Miniguns
     minigun, miinigun, mivnigun,
 
     //Teslas
     shock, spark, storm,
 
-    //Crit Snipers
-    caliber,
+    //Eruptors
+    flame, blaze, inferno,
+    
+    //Swords
+    masquerade, violet,
 
     //Pixel Turrets
     bit,
+
+    //Crit Snipers
+    caliber,
 
     //Misc
     tinker,
 
     //Missiles
     firestorm, strikedown, arbiter,
-    
-    //Swords
-    masquerade, violet,
 
     //Misc
     blackhole, excalibur,
@@ -93,110 +93,6 @@ public class PMBlocks implements ContentList{
     public void load(){
 
         // Region Turrets
-
-        flame = new EruptorTurret("flame"){{
-            requirements(Category.turret, ItemStack.with(
-                Items.copper, 200,
-                Items.lead, 300,
-                Items.graphite, 300,
-                Items.silicon, 325,
-                Items.titanium, 200,
-                Items.thorium, 200
-            ));
-            float h = 0.75f;
-            cells.add(
-                new EruptorCell(-h, -h),
-                new EruptorCell(h, -h),
-                new EruptorCell(-h, h),
-                new EruptorCell(h, h)
-            );
-            size = 3;
-            health = 1800;
-            powerUse = 14f;
-            shootCone = 10f;
-            range = 240f;
-            rangeExtention = 40f;
-            reloadTime = 90f;
-            shootLength = 5f / 4f;
-            recoilAmount = 3f;
-            rotateSpeed = 3f;
-            shootDuration = 180f;
-            shootType = PMBullets.flameMagma;
-
-            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 1f/3f)).update(false);
-        }};
-
-        blaze = new EruptorTurret("blaze"){{
-            requirements(Category.turret, with(
-                Items.copper, 350,
-                Items.lead, 550,
-                Items.graphite, 550,
-                Items.silicon, 600,
-                Items.titanium, 350,
-                Items.surgeAlloy, 200,
-                PMItems.techtanite, 200
-            ));
-            float h = 0.9f;
-            cells.addAll(
-                new EruptorCell(-h, -h),
-                new EruptorCell(h, -h),
-                new EruptorCell(-h, h),
-                new EruptorCell(h, h),
-                new EruptorCell(-h, 0f, 2),
-                new EruptorCell(h, 0f, 2),
-                new EruptorCell(-h, h, 2),
-                new EruptorCell(h, h, 2)
-            );
-            size = 4;
-            health = 2140;
-            powerUse = 17f;
-            shootDuration = 240f;
-            range = 280f;
-            rangeExtention = 60f;
-            reloadTime = 150f;
-            shootLength = 11f / 4f;
-            rotateSpeed = 2.25f;
-            recoilAmount = 4f;
-            lightningStroke = 6f;
-            layers = 2;
-            shootType = PMBullets.blazeMagma;
-
-            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 0.75f)).update(false);
-        }};
-
-        inferno = new InfernoTurret("inferno"){{
-            requirements(Category.turret, with(
-                Items.copper, 700,
-                Items.lead, 950,
-                Items.graphite, 750,
-                Items.silicon, 800,
-                Items.titanium, 600,
-                Items.thorium, 800,
-                Items.surgeAlloy, 650,
-                PMItems.techtanite, 600
-            ));
-            float h = 0.5f;
-            cells.add(
-                new EruptorCell(-h, h),
-                new EruptorCell(h, h),
-                new EruptorCell(-h, h, 2),
-                new EruptorCell(h, h, 2)
-            );
-            size = 4;
-            health = 2430;
-            powerUse = 23f;
-            recoilAmount = 8f;
-            range = 200f;
-            rangeExtention = 60f;
-            reloadTime = 240f;
-            shootLength = 42/4;
-            shootDuration = 60f;
-            rotateSpeed = 8f;
-            layers = 2;
-            shootType = PMBullets.inerfnoMagma;
-
-            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 1f)).update(false);
-        }};
 
         minigun = new MinigunTurret("minigun"){{
             requirements(Category.turret, with(
@@ -450,6 +346,186 @@ public class PMBlocks implements ContentList{
             shootType = PMBullets.stormZap;
         }};
 
+        flame = new EruptorTurret("flame"){{
+            requirements(Category.turret, ItemStack.with(
+                Items.copper, 200,
+                Items.lead, 300,
+                Items.graphite, 300,
+                Items.silicon, 325,
+                Items.titanium, 200,
+                Items.thorium, 200
+            ));
+            float h = 0.75f;
+            cells.add(
+                new EruptorCell(-h, -h),
+                new EruptorCell(h, -h),
+                new EruptorCell(-h, h),
+                new EruptorCell(h, h)
+            );
+            size = 3;
+            health = 1800;
+            powerUse = 14f;
+            shootCone = 10f;
+            range = 240f;
+            rangeExtention = 40f;
+            reloadTime = 90f;
+            shootLength = 5f / 4f;
+            recoilAmount = 3f;
+            rotateSpeed = 3f;
+            shootDuration = 180f;
+            shootType = PMBullets.flameMagma;
+
+            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 1f/3f)).update(false);
+        }};
+
+        blaze = new EruptorTurret("blaze"){{
+            requirements(Category.turret, with(
+                Items.copper, 350,
+                Items.lead, 550,
+                Items.graphite, 550,
+                Items.silicon, 600,
+                Items.titanium, 350,
+                Items.surgeAlloy, 200,
+                PMItems.techtanite, 200
+            ));
+            float h = 0.9f;
+            cells.addAll(
+                new EruptorCell(-h, -h),
+                new EruptorCell(h, -h),
+                new EruptorCell(-h, h),
+                new EruptorCell(h, h),
+                new EruptorCell(-h, 0f, 2),
+                new EruptorCell(h, 0f, 2),
+                new EruptorCell(-h, h, 2),
+                new EruptorCell(h, h, 2)
+            );
+            size = 4;
+            health = 2140;
+            powerUse = 17f;
+            shootDuration = 240f;
+            range = 280f;
+            rangeExtention = 60f;
+            reloadTime = 150f;
+            shootLength = 11f / 4f;
+            rotateSpeed = 2.25f;
+            recoilAmount = 4f;
+            lightningStroke = 6f;
+            layers = 2;
+            shootType = PMBullets.blazeMagma;
+
+            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 0.75f)).update(false);
+        }};
+
+        inferno = new InfernoTurret("inferno"){{
+            requirements(Category.turret, with(
+                Items.copper, 700,
+                Items.lead, 950,
+                Items.graphite, 750,
+                Items.silicon, 800,
+                Items.titanium, 600,
+                Items.thorium, 800,
+                Items.surgeAlloy, 650,
+                PMItems.techtanite, 600
+            ));
+            float h = 0.5f;
+            cells.add(
+                new EruptorCell(-h, h),
+                new EruptorCell(h, h),
+                new EruptorCell(-h, h, 2),
+                new EruptorCell(h, h, 2)
+            );
+            size = 4;
+            health = 2430;
+            powerUse = 23f;
+            recoilAmount = 8f;
+            range = 200f;
+            rangeExtention = 60f;
+            reloadTime = 240f;
+            shootLength = 42/4;
+            shootDuration = 60f;
+            rotateSpeed = 8f;
+            layers = 2;
+            shootType = PMBullets.inerfnoMagma;
+
+            consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 1f)).update(false);
+        }};
+
+        masquerade = new SwordTurret("masquerade"){{
+            requirements(Category.turret, with(
+                Items.copper, 500,
+                Items.graphite, 250,
+                Items.silicon, 350,
+                Items.titanium, 200,
+                Items.phaseFabric, 50,
+                PMItems.techtanite, 150
+            ));
+            size = 3;
+            health = 2140;
+            range = 180f;
+            powerUse = 6.5f;
+            minRadius = 16.5f;
+            bladeCenter = 9f;
+            trailWidth = 30f / 4f;
+        }};
+
+        violet = new SwordTurret("violet"){
+            {
+                requirements(Category.turret, with(
+                    Items.copper, 1400,
+                    Items.graphite, 350,
+                    Items.silicon, 400,
+                    Items.surgeAlloy, 400,
+                    Items.phaseFabric, 200,
+                    PMItems.techtanite, 450
+                ));
+                size = 5;
+                health = 5830;
+                range = 260f;
+                powerUse = 13.5f;
+                damage = 1000f;
+                bladeCenter = 122f / 8f;
+                trailWidth = 18f;
+                trailLength = 6;
+                float attackScl = 2f;
+                damageRadius *= attackScl;
+                attackRadius *= attackScl;
+                swords = 5;
+                minRadius = 33.25f;
+                radius = 6.25f * tilesize;
+                float timeScl = 0.9f;
+                expandTime *= timeScl;
+                pauseTime *= timeScl;
+                stabTime *= timeScl;
+                totalTime *= timeScl;
+                cooldown *= timeScl;
+                speed = 3f;
+                rotateSpeed = 4.5f;
+            }
+
+            @Override
+            public void load(){
+                super.load();
+
+                baseRegion = Core.atlas.find("prog-mats-block-" + size);
+            }
+        };
+
+        bit = new BitTurret("bit"){{
+            requirements(Category.turret, with(
+                Items.copper, 50,
+                Items.lead, 60,
+                Items.silicon, 40,
+                Items.titanium, 30
+            ));
+            size = 2;
+            reloadTime = 70f;
+            recoilAmount = 4f;
+            inaccuracy = 15f;
+            range = 140f;
+            powerUse = 1.35f;
+            shootType = PMBullets.pixel;
+        }};
+
         caliber = new SniperTurret("caliber"){{
             requirements(Category.turret, with(
                 Items.copper, 220,
@@ -473,22 +549,6 @@ public class PMBlocks implements ContentList{
             chargeTime = 300f;
             shootLength = 18f;
             shootSound = Sounds.railgun;
-        }};
-
-        bit = new BitTurret("bit"){{
-            requirements(Category.turret, with(
-                Items.copper, 50,
-                Items.lead, 60,
-                Items.silicon, 40,
-                Items.titanium, 30
-            ));
-            size = 2;
-            reloadTime = 70f;
-            recoilAmount = 4f;
-            inaccuracy = 15f;
-            range = 140f;
-            powerUse = 1.35f;
-            shootType = PMBullets.pixel;
         }};
 
         tinker = new LaunchTurret("tinker"){{
@@ -603,66 +663,6 @@ public class PMBlocks implements ContentList{
             maxAmmo = 2;
             unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
         }};
-
-        masquerade = new SwordTurret("masquerade"){{
-            requirements(Category.turret, with(
-                Items.copper, 500,
-                Items.graphite, 250,
-                Items.silicon, 350,
-                Items.titanium, 200,
-                Items.phaseFabric, 50,
-                PMItems.techtanite, 150
-            ));
-            size = 3;
-            health = 2140;
-            range = 180f;
-            powerUse = 6.5f;
-            minRadius = 16.5f;
-            bladeCenter = 9f;
-            trailWidth = 30f / 4f;
-        }};
-
-        violet = new SwordTurret("violet"){
-            {
-                requirements(Category.turret, with(
-                    Items.copper, 1400,
-                    Items.graphite, 350,
-                    Items.silicon, 400,
-                    Items.surgeAlloy, 400,
-                    Items.phaseFabric, 200,
-                    PMItems.techtanite, 450
-                ));
-                size = 5;
-                health = 5830;
-                range = 260f;
-                powerUse = 13.5f;
-                damage = 1000f;
-                bladeCenter = 122f / 8f;
-                trailWidth = 18f;
-                trailLength = 6;
-                float attackScl = 2f;
-                damageRadius *= attackScl;
-                attackRadius *= attackScl;
-                swords = 5;
-                minRadius = 33.25f;
-                radius = 6.25f * tilesize;
-                float timeScl = 0.9f;
-                expandTime *= timeScl;
-                pauseTime *= timeScl;
-                stabTime *= timeScl;
-                totalTime *= timeScl;
-                cooldown *= timeScl;
-                speed = 3f;
-                rotateSpeed = 4.5f;
-            }
-
-            @Override
-            public void load(){
-                super.load();
-
-                baseRegion = Core.atlas.find("prog-mats-block-" + size);
-            }
-        };
 
         blackhole = new BlackHoleTurret("blackhole"){{
             requirements(Category.turret, with(

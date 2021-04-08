@@ -33,3 +33,6 @@ jobs:
       with:
         name: Dexed Progressed Materials-ed
         path: build/libs/[!raw-]*.jar
+  Rick-Roll:
+    - name: It's Showtime
+      run: ./gradlew rickroll

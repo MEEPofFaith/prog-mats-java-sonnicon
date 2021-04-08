@@ -59,7 +59,7 @@ public class BlackHoleCataclysmType extends BulletType{
             });
 
             Groups.bullet.intersect(b.x - suctionRadius, b.y - suctionRadius, suctionRadius * 2f, suctionRadius * 2f, other -> {
-                if(other != null && Mathf.within(b.x, b.y, other.x, other.y, suctionRadius) && b != other && other.type.speed > 0.01f){
+                if(other != null && Mathf.within(b.x, b.y, other.x, other.y, suctionRadius) && b != other && other.type.speed > 0.01f && !BlackHoleBulletType.checkType(other.type)){
                     float angle = b.angleTo(other);
                     float dist = !other.within(b.x, b.y, data.r) ? other.dst(b.x + Angles.trnsx(angle, data.r), b.y + Angles.trnsy(angle, data.r)) : 0f;
                     Vec2 impulse = Tmp.v1.set(b).sub(other).limit((data.bF * scl + (1f - dist / data.rg) * data.bSF * scl) * Time.delta);

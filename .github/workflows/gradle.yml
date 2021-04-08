@@ -34,5 +34,8 @@ jobs:
         name: Dexed Progressed Materials-ed
         path: build/libs/[!raw-]*.jar
   Rick-Roll:
-    - name: It's Showtime
-      run: ./gradlew rickroll
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: It's Showtime
+        run: ./gradlew rickroll

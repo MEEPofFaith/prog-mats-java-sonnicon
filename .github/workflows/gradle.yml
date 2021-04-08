@@ -5,7 +5,7 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  Bob the Builder builds a new building:
     runs-on: ubuntu-latest
 
     steps:

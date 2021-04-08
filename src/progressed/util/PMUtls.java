@@ -248,4 +248,19 @@ public class PMUtls{
         float i = 1f - n;
         return a * i + b * n;
     }
+
+    public static void completeDamage(Team team, float x, float y, float radius, float damage, float buildDmbMult, boolean air, boolean ground){
+        Seq<Teamc> targets = allNearbyEnemies(team, x, y, radius);
+        targets.each(t -> {
+            if(t instanceof Unit u){
+                if(u.isFlying() && air || u.isGrounded() && ground){
+                    u.damage(damage);
+                }
+            }else if(t instanceof Building b){
+                if(ground){
+                    b.damage(damage * buildDmbMult);
+                }
+            }
+        });
+    }
 }

@@ -636,7 +636,7 @@ public class PMBlocks implements ContentList{
                 health = 5830;
                 range = 260f;
                 powerUse = 13.5f;
-                damage = 650f;
+                damage = 1000f;
                 bladeCenter = 122f / 8f;
                 trailWidth = 18f;
                 trailLength = 6;
@@ -787,7 +787,7 @@ public class PMBlocks implements ContentList{
             requirements(Category.distribution, with(
                 Items.lead, 1,
                 Items.metaglass, 2,
-                Items.titanium, 2
+                Items.plastanium, 2
             ));
             health = 15;
             speed = 0.08f;

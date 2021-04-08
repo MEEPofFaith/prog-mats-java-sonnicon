@@ -51,14 +51,14 @@ public class SwordTurret extends BaseTurret{
     public Color trailColor = Color.violet;
     public int trailLength = 8;
 
-    public float damage = 300f, damageRadius = tilesize;
+    public float damage = 450f, buildingDamageMultiplier = 0.25f, damageRadius = tilesize;
     public StatusEffect status = StatusEffects.none;
     public float statusDuration = 10 * 60;
     public Sound hitSound = PMSounds.swordStab;
     public float minVolume = 1f, maxVolume = 1f;
     public float minPitch = 0.9f, maxPitch = 1.1f;
-    public Effect hitEffect = Fx.none;
-    public Color hitColor = Color.white;
+    public Effect hitEffect = PMFx.swordStab;
+    public Color hitColor = Pal.surge;
     public float hitShake;
 
     public float powerUse = 1f;
@@ -121,8 +121,13 @@ public class SwordTurret extends BaseTurret{
             stat.table(t -> {
                 t.left().defaults().padRight(3).left();
 
-                t.add(Core.bundle.format("bullet.pm-sword-damage", damage, Strings.fixed(damageRadius / tilesize, 1)));
+                t.add(Core.bundle.format("bullet.splashdamage", damage, PMUtls.stringsFixed(damageRadius / tilesize, 1)));
                 t.row();
+
+                if(buildingDamageMultiplier != 1f){
+                    t.add(Core.bundle.format("bullet.buildingdamage", PMUtls.stringsFixed(buildingDamageMultiplier * 100f)));
+                    t.row();
+                }
 
                 if(status != StatusEffects.none){
                     t.add((status.minfo.mod == null ? status.emoji() : "") + "[stat]" + status.localizedName);
@@ -383,7 +388,7 @@ public class SwordTurret extends BaseTurret{
                         Effect.shake(hitShake, hitShake, this);
                     }
                     //Slow speed, weak hit -> * efficiency()
-                    Damage.damage(team, currentPos.x, currentPos.y, damageRadius, damage * efficiency(), true, targetAir, targetGround);
+                    PMUtls.completeDamage(team, currentPos.x, currentPos.y, damageRadius, damage * efficiency(), buildingDamageMultiplier, targetAir, targetGround);
                     if(status != StatusEffects.none){
                         Damage.status(team, currentPos.x, currentPos.y, damageRadius, status, statusDuration * efficiency(), targetAir, targetGround);
                     }

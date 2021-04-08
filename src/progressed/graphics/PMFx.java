@@ -349,7 +349,7 @@ public class PMFx{
         color(Color.gray);
         e.scaled(15f, s -> {
             stroke(s.fout());
-            Lines.circle(e.x, e.y, 3f * e.fout());
+            Lines.circle(e.x, e.y, 3f * s.fout());
         });
         
         stroke(1f);
@@ -358,5 +358,19 @@ public class PMFx{
             float ang = angle(x, y, 0f, 0f);
             Lines.lineAngle(e.x + x, e.y + y, ang, e.fslope() * 5f);
         });
-    }).layer(32.5f);
+    }).layer(32.5f),
+    
+    swordStab = new Effect(24f, e -> {
+        color(e.color, Color.violet, e.fin());
+        stroke(1f);
+
+        e.scaled(15f, s -> {
+            Lines.circle(e.x, e.y, 8f * s.fin());
+        });
+
+        randLenVectors(e.id, 16, 8f * e.fin(), e.rotation, 180f, (x, y) -> {
+            float ang = angle(x, y);
+            Lines.lineAngle(e.x + x, e.y + y, ang, e.fslope() * 4f);
+        });
+    });
 }

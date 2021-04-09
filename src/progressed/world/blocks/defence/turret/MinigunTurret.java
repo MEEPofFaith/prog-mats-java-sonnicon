@@ -53,7 +53,7 @@ public class MinigunTurret extends ItemTurret{
         super.setBars();
         bars.add("pm-minigun-speed", (MinigunTurretBuild entity) -> new Bar(
             () -> Core.bundle.format("bar.pm-minigun-speed", PMUtls.stringsFixed(entity.frameSpeed * 100f)),
-            () -> entity.frameSpeed > minFiringSpeed ? entity.team.color : c1.cpy().lerp(entity.team.color, Mathf.curve(entity.frameSpeed, 0f, minFiringSpeed) / 2f),
+            () -> entity.frameSpeed > minFiringSpeed ? entity.team.color : Tmp.c1.set(c1).lerp(entity.team.color, Mathf.curve(entity.frameSpeed, 0f, minFiringSpeed) / 2f),
             () -> entity.frameSpeed
         ));
     }
@@ -87,7 +87,7 @@ public class MinigunTurret extends ItemTurret{
             }
 
             if(frameSpeed > 0f){
-                Draw.color(frameSpeed > minFiringSpeed ? team.color : c1.cpy().lerp(team.color, Mathf.curve(frameSpeed, 0f, minFiringSpeed) / 2f));
+                Draw.color(frameSpeed > minFiringSpeed ? team.color : Tmp.c1.set(c1).lerp(team.color, Mathf.curve(frameSpeed, 0f, minFiringSpeed) / 2f));
                 Lines.stroke(barStroke);
                 for(int i = 0; i < 2; i++){
                     tr2.trns(rotation - 90f, barX * Mathf.signs[i], barY - recoil);

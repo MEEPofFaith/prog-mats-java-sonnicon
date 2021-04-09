@@ -27,6 +27,7 @@ import progressed.entities.*;
 import progressed.graphics.*;
 import progressed.util.*;
 
+import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class SwordTurret extends BaseTurret{
@@ -50,6 +51,10 @@ public class SwordTurret extends BaseTurret{
     public float bladeCenter, trailWidth = 8f;
     public Color trailColor = Color.violet;
     public int trailLength = 8;
+
+    public float baseLength = -1f;
+    public Color lineColor = Color.violet;
+    public float baseWidth = 2f, connectWidth = 4f, widthRnd = 2f;
 
     public float damage = 450f, buildingDamageMultiplier = 0.25f, damageRadius = tilesize;
     public StatusEffect status = StatusEffects.none;
@@ -82,6 +87,7 @@ public class SwordTurret extends BaseTurret{
         if(elevation < 0) elevation = size / 2f;
         if(swordElevation < 0) swordElevation = elevation * 2f;
         if(expandedRadius < 0) expandedRadius = radius * 2.5f;
+        if(baseLength < 0) baseLength = size * tilesize / 2f;
 
         super.init();
     }
@@ -90,10 +96,10 @@ public class SwordTurret extends BaseTurret{
     public void load(){
         super.load();
 
-        baseRegion = Core.atlas.find(name + "-base", "block-" + size);
-        swordRegion = Core.atlas.find(name + "-sword");
-        outlineRegion = Core.atlas.find(name + "-sword-outline");
-        heatRegion = Core.atlas.find(name + "-sword-heat");
+        baseRegion = atlas.find(name + "-base", "block-" + size);
+        swordRegion = atlas.find(name + "-sword");
+        outlineRegion = atlas.find(name + "-sword-outline");
+        heatRegion = atlas.find(name + "-sword-heat");
     }
 
     @Override
@@ -121,11 +127,11 @@ public class SwordTurret extends BaseTurret{
             stat.table(t -> {
                 t.left().defaults().padRight(3).left();
 
-                t.add(Core.bundle.format("bullet.splashdamage", damage, PMUtls.stringsFixed(damageRadius / tilesize)));
+                t.add(bundle.format("bullet.splashdamage", damage, PMUtls.stringsFixed(damageRadius / tilesize)));
                 t.row();
 
                 if(buildingDamageMultiplier != 1f){
-                    t.add(Core.bundle.format("bullet.buildingdamage", PMUtls.stringsFixed(buildingDamageMultiplier * 100f)));
+                    t.add(bundle.format("bullet.buildingdamage", PMUtls.stringsFixed(buildingDamageMultiplier * 100f)));
                     t.row();
                 }
 
@@ -134,7 +140,7 @@ public class SwordTurret extends BaseTurret{
                     t.row();
                 }
 
-                t.add(Core.bundle.format("bullet.pm-sword-speed", speed));
+                t.add(bundle.format("bullet.pm-sword-speed", speed));
             }).padTop(-9).left().get().background(Tex.underline);;
         });
     }
@@ -262,9 +268,32 @@ public class SwordTurret extends BaseTurret{
         public void drawExt(){
             Draw.mixcol();
 
-            Tmp.c1.set(trailColor).lerp(heatColor, heat);
-            Draw.z(Layer.flyingUnit + 0.002f);
+            float swordOpacity = settings.getInt("pm-swordopacity") / 100f;
 
+            Tmp.c1.set(lineColor).lerp(heatColor, heat).mul(1f, 1f, 1f, swordOpacity);
+
+            Vec2 v1 = Tmp.v1.trns(lookAngle + 90f, baseLength);
+
+            Draw.z(Layer.flyingUnit + 0.002f);
+            for(int i = 0; i < swords; i++){
+                float rot = rotation + i * (360f / swords);
+
+                Vec2 v2 = Tmp.v2.trns(rot, -getRadius()).add(currentPos).sub(this);
+
+                Vec2 v3 = Tmp.v3.trns(v1.angleTo(v2) - 90f, -(connectWidth + Mathf.range(widthRnd)) / 2f, v1.dst(v2)).add(v1).add(this);
+                Vec2 v4 = Tmp.v4.trns(v1.angleTo(v2) - 90f, (connectWidth + Mathf.range(widthRnd)) / 2f, v1.dst(v2)).add(v1).add(this);
+                
+                Vec2 v5 = Tmp.v5.trns(v1.angleTo(v2) - 90f, -baseWidth / 2f, 0f);
+                Vec2 v6 = Tmp.v6.trns(v1.angleTo(v2) - 90f, baseWidth / 2f, 0f);
+
+                Draw.color(Tmp.c1);
+                Fill.quad(x + v1.x + v5.x, y + v1.y + v5.y, v3.x, v3.y, v4.x, v4.y, x + v1.x + v6.x, y + v1.y + v6.y);
+            }
+            Fill.circle(x + v1.x, y + v1.y, baseWidth / 2f);
+
+            Tmp.c1.set(trailColor).lerp(heatColor, heat).mul(1f, 1f, 1f, swordOpacity);
+
+            Draw.z(Layer.flyingUnit + 0.003f);
             for(FixedTrail t : trails){
                 t.draw(Tmp.c1, trailWidth);
             }
@@ -277,9 +306,10 @@ public class SwordTurret extends BaseTurret{
                 float sX = currentPos.x + Tmp.v1.x, sY = currentPos.y + Tmp.v1.y;
 
                 Draw.z(Layer.flyingUnit + 0.001f);
-                Drawf.shadow(outlineRegion, sX - swordElevation, sY - swordElevation, rot + getRotation(i));
+                PMDrawf.shadowAlpha(outlineRegion, sX - swordElevation, sY - swordElevation, rot + getRotation(i), swordOpacity);
 
-                Draw.z(Layer.flyingUnit + 0.003f);
+                Draw.alpha(swordOpacity);
+                Draw.z(Layer.flyingUnit + 0.004f);
                 Draw.rect(outlineRegion, sX, sY, rot + getRotation(i));
             }
 
@@ -290,11 +320,12 @@ public class SwordTurret extends BaseTurret{
 
                 float sX = currentPos.x + Tmp.v1.x, sY = currentPos.y + Tmp.v1.y;
 
-                Draw.z(Layer.flyingUnit + 0.004f);
+                Draw.alpha(swordOpacity);
+                Draw.z(Layer.flyingUnit + 0.005f);
                 Draw.rect(swordRegion, sX, sY, rot + getRotation(i));
 
                 if(ready && heat > 0f){
-                    Draw.color(heatColor, heat);
+                    Draw.color(heatColor, heat * swordOpacity);
                     Draw.blend(Blending.additive);
                     Draw.rect(heatRegion, sX, sY, rot + getRotation(i));
                     Draw.color();

@@ -138,7 +138,7 @@ public class BlackHoleBulletType extends BulletType{
     public void draw(Bullet b){
         Draw.z(Layer.max - 0.01f);
         Fill.light(b.x, b.y, 60, ((BlackHoleData)b.data).s,
-            b.team.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 0.4f)), Color.black);
+            Tmp.c1.set(b.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 0.4f)), Color.black);
     }
 
     @Override

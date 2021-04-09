@@ -97,7 +97,7 @@ public class BlackHoleCataclysmType extends BulletType{
         CataclysmData data = (CataclysmData)b.data;
 
         Color[] colors = new Color[]{data.c1, data.c2};
-        Color[] darkenedColors = new Color[]{colors[0].cpy().lerp(Color.black, 0.5f), colors[1].cpy().lerp(Color.black, 0.5f)};
+        Color[] darkenedColors = new Color[]{Tmp.c1.set(colors[0]).lerp(Color.black, 0.5f), Tmp.c2.set(colors[1]).lerp(Color.black, 0.5f)};
 
         float shrink = 1 - Mathf.curve(b.time, b.lifetime - fadeTime, b.lifetime);
         float scl = Mathf.curve(b.time, 0f, growTime) * shrink;
@@ -105,13 +105,13 @@ public class BlackHoleCataclysmType extends BulletType{
         float radius = data.r * scl;
 
         Draw.z(Layer.max);
-        Fill.light(b.x, b.y, 60, radius, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 1f)), Color.black);
+        Fill.light(b.x, b.y, 60, radius, Tmp.c1.set(darkenedColors[0]).lerp(darkenedColors[1], Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 1f)), Color.black);
 
         Angles.randLenVectors(b.id * 2, Mathf.round((data.r + data.rg) / 3f), (data.r + data.rg), (x, y) -> {
             float offset = Mathf.randomSeed((long)(b.id * Mathf.randomSeed((long)x) * Mathf.randomSeed((long)y)));
             float tx = x * grow2;
             float ty = y * grow2;
-            Fill.light(b.x + tx + Mathf.range(1f), b.y + ty + Mathf.range(1f), 60, data.r / 10f * grow2 * shrink, darkenedColors[0].cpy().lerp(darkenedColors[1], Mathf.absin(Time.time + offset, 10f, 1f)), Color.black);
+            Fill.light(b.x + tx + Mathf.range(1f), b.y + ty + Mathf.range(1f), 60, data.r / 10f * grow2 * shrink, Tmp.c1.set(darkenedColors[0]).lerp(darkenedColors[1], Mathf.absin(Time.time + offset, 10f, 1f)), Color.black);
         });
     }
 

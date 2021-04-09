@@ -21,7 +21,7 @@ public class PMFx{
 
     bitTrail = new Effect(75f, e -> {
         float offset = Mathf.randomSeed(e.id);
-        Color c = PMPal.pixelFront.cpy().lerp(PMPal.pixelBack, Mathf.absin(Time.time * 0.05f + offset, 1f, 1f));
+        Color c = Tmp.c1.set(PMPal.pixelFront).lerp(PMPal.pixelBack, Mathf.absin(Time.time * 0.05f + offset, 1f, 1f));
         color(c);
         Fill.square(e.x, e.y, e.rotation * e.fout());
     }),
@@ -29,7 +29,7 @@ public class PMFx{
     bitBurst = new Effect(30f, e -> {
         float[] set = {Mathf.curve(e.time, 0, e.lifetime * 2/3), Mathf.curve(e.time, e.lifetime * 1/3, e.lifetime)};
         float offset = Mathf.randomSeed(e.id);
-        Color c = PMPal.pixelFront.cpy().lerp(PMPal.pixelBack, Mathf.absin(Time.time * 0.05f + offset, 1f, 1f));
+        Color c = Tmp.c1.set(PMPal.pixelFront).lerp(PMPal.pixelBack, Mathf.absin(Time.time * 0.05f + offset, 1f, 1f));
         color(c);
         stroke(2.5f);
 
@@ -156,7 +156,7 @@ public class PMFx{
         });
 
         randLenVectors(e.id * 2, 200, 60f * slopeFin, (x, y) -> {
-            color(Color.orange.cpy().lerp(new Color[]{Color.orange, Color.red, Color.crimson, Color.darkGray}, colorFin));
+            color(Tmp.c1.set(Color.orange).lerp(new Color[]{Color.orange, Color.red, Color.crimson, Color.darkGray}, colorFin));
             Fill.circle(e.x + x, e.y + y, 8f * slopeFout);
         });
     }),
@@ -179,11 +179,11 @@ public class PMFx{
     
     kugelblitzChargeBegin = new Effect(80f, e -> {
         Draw.z(Layer.max - 0.01f);
-        Fill.light(e.x, e.y, 60, 5f * e.fin(), e.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(10f, 0.4f)), Color.black);
+        Fill.light(e.x, e.y, 60, 5f * e.fin(), Tmp.c1.set(e.color).lerp(Color.black, 0.5f + Mathf.absin(10f, 0.4f)), Color.black);
     }),
     
     kugelblitzCharge = new Effect(38f, e -> {
-        color(e.color.cpy().lerp(Color.black, 0.5f), Color.black, e.fin());
+        color(Tmp.c1.set(e.color).lerp(Color.black, 0.5f), Color.black, e.fin());
         randLenVectors(e.id, 2, 45f * e.fout(), e.rotation, 180f, (x, y) -> {
             float ang = Mathf.angle(x, y);
             Lines.lineAngle(e.x + x, e.y + y, ang, e.fslope() * 5f);
@@ -196,7 +196,7 @@ public class PMFx{
         if(b != null && b.type instanceof BlackHoleBulletType){
             BlackHoleData data = (BlackHoleData)b.data;
 
-            color(b.team.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
+            color(Tmp.c1.set(b.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
             float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
 
             Fill.light(b.x + trnsx(e.rotation + startAngle * e.fout(), data.sR * e.fout()),

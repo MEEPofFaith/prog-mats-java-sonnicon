@@ -40,8 +40,8 @@ public class StrobeNode extends PowerNode{
 
     @Override
     protected void setupColor(float satisfaction){
-        Color c1 = laserColor1.cpy().lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1, 1));
-        Draw.color(c1.shiftHue(Time.time * speed), laserColor2.cpy().shiftHue(Time.time * speed), 1 - satisfaction);
+        Color c1 = Tmp.c1.set(laserColor1).lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1, 1));
+        Draw.color(c1.shiftHue(Time.time * speed), Tmp.c1.set(laserColor2).shiftHue(Time.time * speed), 1 - satisfaction);
         Draw.alpha(Renderer.laserOpacity);
     }
 
@@ -50,8 +50,8 @@ public class StrobeNode extends PowerNode{
         public void draw(){
             super.draw();
             Draw.z(Layer.block);
-            Color c1 = laserColor1.cpy().lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1, 1));
-            Draw.color(c1.shiftHue(Time.time * speed), laserColor2.cpy().shiftHue(Time.time * speed), 1 - this.power.graph.getSatisfaction());
+            Color c1 = Tmp.c1.set(laserColor1).lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1, 1));
+            Draw.color(c1.shiftHue(Time.time * speed), Tmp.c1.set(laserColor2).shiftHue(Time.time * speed), 1 - this.power.graph.getSatisfaction());
             Draw.alpha(1);
             Draw.rect(colorRegion, this.x, this.y);
             Draw.reset();

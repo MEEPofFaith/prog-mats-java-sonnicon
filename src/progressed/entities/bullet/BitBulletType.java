@@ -41,7 +41,7 @@ public class BitBulletType extends BulletType{
     @Override
     public void draw(Bullet b){
         float offset = Mathf.randomSeed(b.id);
-        Color c = PMPal.pixelFront.cpy().lerp(PMPal.pixelBack, Mathf.absin(Time.time * 0.05f + offset, 1f, 1f));
+        Color c = Tmp.c1.set(PMPal.pixelFront).lerp(PMPal.pixelBack, Mathf.absin(Time.time * 0.05f + offset, 1f, 1f));
         Draw.color(c);
         Fill.rect(b.x, b.y, size, size);
     }

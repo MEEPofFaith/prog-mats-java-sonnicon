@@ -68,13 +68,13 @@ public class SandboxWall extends Wall{
         public void draw(){
             if(variants == 0){
                 Draw.rect(region, x, y);
-                Draw.color(Color.red.cpy().shiftHue(Time.time * speed), 1f);
+                Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * speed), 1f);
                 Draw.rect(colorRegion, x, y);
                 Draw.reset();
             }else{
                 int variant = Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1));
                 Draw.rect(variantRegions[variant], x, y);
-                Draw.color(Color.red.cpy().shiftHue(Time.time * speed), 1f);
+                Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * speed), 1f);
                 Draw.rect(colorVariantRegions[variant], x, y);
                 Draw.reset();
             }

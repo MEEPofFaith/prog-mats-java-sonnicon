@@ -8,10 +8,12 @@ import mindustry.game.EventType.*;
 import mindustry.mod.*;
 import mindustry.mod.Mods.*;
 import progressed.content.*;
+import progressed.util.*;
 
 import static mindustry.Vars.*;
 
 public class ProgressedMaterials extends Mod{
+    public static SettingAdder settingAdder = new SettingAdder();
 
     private final ContentList[] pmContent = {
         new PMStatusEffects(),
@@ -31,18 +33,27 @@ public class ProgressedMaterials extends Mod{
         Events.on(DisposeEvent.class, e -> {
             PMSounds.dispose();
         });
+
+        Core.settings.defaults("pm-swordopacity", 100);
+        Events.on(ClientLoadEvent.class, e -> {
+            settingAdder.init();
+        });
     }
 
     @Override
     public void init(){
         enableConsole = true;
-        if(!headless){
-            Func<String, String> stringf = value -> Core.bundle.get("mod." + value);
-            LoadedMod progM = mods.locateMod("prog-mats");
 
-            progM.meta.displayName = stringf.get(progM.meta.name + ".name");
+        if(!headless){
+            LoadedMod progM = mods.locateMod("prog-mats");
+            Func<String, String> stringf = value -> Core.bundle.get("mod." + value);
+
+            progM.meta.displayName = "[#FCC21B]" + progM.meta.displayName + "[]";
             progM.meta.author = stringf.get(progM.meta.name + ".author");
+            progM.meta.version = "[#FCC21B]" + progM.meta.version + "[]";
             progM.meta.description = stringf.get(progM.meta.name + ".description");
+            
+            PMUtls.godHood(PMUnitTypes.everythingUnit);
         }
     }
 

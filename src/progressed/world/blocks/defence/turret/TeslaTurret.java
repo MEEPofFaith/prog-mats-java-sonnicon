@@ -75,7 +75,7 @@ public class TeslaTurret extends PowerTurret{
         }
     }
 
-    public class TeslaRing{ //Create different rings out of this
+    public static class TeslaRing{ //Create different rings out of this
         public boolean drawUnder, hasSprite;
         public float rotationMul, radius, xOffset, yOffset;
 

@@ -8,8 +8,8 @@ import mindustry.*;
 
 //Don't mind me just stealing from BetaMindy.
 public class PMSounds{
-    public static Sound pixelShoot, pixelHit, harbingerCharge, harbingerBlast, popeshadowCharge, popeshadowBlast;
-    public static final String[] soundFiles = {"pixelShoot", "pixelHit", "harbingerCharge", "harbingerBlast", "popeshadowCharge", "popeshadowBlast"};
+    public static Sound pixelShoot, pixelHit, harbingerCharge, harbingerBlast, popeshadowCharge, popeshadowBlast, swordStab;
+    public static final String[] soundFiles = {"pixelShoot", "pixelHit", "harbingerCharge", "harbingerBlast", "popeshadowCharge", "popeshadowBlast", "swordStab"};
     private static int num = 0;
     
     public static void load(){
@@ -20,6 +20,7 @@ public class PMSounds{
         harbingerBlast = l();
         popeshadowCharge = l();
         popeshadowBlast = l();
+        swordStab = l();
     }
 
     public static void dispose(){
@@ -30,6 +31,7 @@ public class PMSounds{
         harbingerBlast = d();
         popeshadowCharge = d();
         popeshadowBlast = d();
+        swordStab = d();
     }
 
     protected static Sound l(){

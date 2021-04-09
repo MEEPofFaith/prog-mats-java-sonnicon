@@ -6,6 +6,7 @@ import arc.math.Interp.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.*;
+import mindustry.content.*;
 import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
@@ -129,7 +130,7 @@ public class PMUtls{
         return Strings.fixed(value, statPrecision(value));
     }
 
-    //For anything that isn't a block or unit
+    /** Research costs for anything that isn't a block or unit */
     public static ItemStack[] researchRequirements(ItemStack[] requirements, float mul){
         ItemStack[] out = new ItemStack[requirements.length];
         for(int i = 0; i < out.length; i++){
@@ -145,7 +146,7 @@ public class PMUtls{
         return researchRequirements(requirements, 1f);
     }
 
-    //Adds `ItemStack[]`s together
+    /** Adds ItemStack arrayws together. Combines duplicate items into one stack. */
     public static ItemStack[] addItemStacks(ItemStack[][] stacks){
         Seq<ItemStack> rawStacks = new Seq<>();
         for(ItemStack[] arr : stacks){
@@ -176,6 +177,7 @@ public class PMUtls{
         return (r1 / r2) * length;
     }
 
+    /** Like Damage.findLaserLength, but uses an (x, y) coord instead of bullet position */
     public static float findLaserLength(float x, float y, float angle, Team team, float length){
         Tmp.v1.trns(angle, length);
 
@@ -219,16 +221,45 @@ public class PMUtls{
                             int diff = u.weapons.get(w.otherSide).otherSide - w.otherSide;
                             copy.otherSide = target.weapons.indexOf(copy) + diff;
                         }
+
+                        copy.rotateSpeed = 360f;
+                        copy.shootCone = 360f;
+
+                        if(copy.shootStatus == StatusEffects.unmoving || copy.shootStatus == StatusEffects.slow){
+                            copy.shootStatus = StatusEffects.none;
+                        }
                     }
                 });
-            }
-        });
-          
-        content.units().each(u -> {
-            if(u != target){
+
                 u.abilities.each(a -> {
                     target.abilities.add(a);
                 });
+            }
+        });
+    }
+
+    public static float multiLerp(float[] values, float progress){ //No idea how this works, just stole it from Color
+        int l = values.length;
+        float s = Mathf.clamp(progress);
+        float a = values[(int)(s * (l - 1))];
+        float b = values[Mathf.clamp((int)(s * (l - 1) + 1), 0, l - 1)];
+
+        float n = s * (l - 1) - (int)(s * (l - 1));
+        float i = 1f - n;
+        return a * i + b * n;
+    }
+
+    public static void completeDamage(Team team, float x, float y, float radius, float damage, float buildDmbMult, boolean air, boolean ground){
+        Seq<Teamc> targets = allNearbyEnemies(team, x, y, radius);
+        targets.each(t -> {
+            if(t instanceof Unit u){
+                if(u.isFlying() && air || u.isGrounded() && ground){
+                    u.damage(damage);
+                }
+            }else if(t instanceof Building b){
+                if(ground){
+                    b.damage(damage * buildDmbMult);
+                }
             }
         });
     }

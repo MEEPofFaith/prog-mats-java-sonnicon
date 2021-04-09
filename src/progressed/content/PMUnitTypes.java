@@ -2,53 +2,88 @@ package progressed.content;
 
 import arc.func.*;
 import arc.graphics.*;
+import arc.struct.*;
+import arc.struct.ObjectMap.*;
+import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.world.meta.*;
 import progressed.ai.*;
+import progressed.entities.*;
 import progressed.entities.bullet.*;
 import progressed.entities.units.*;
-import progressed.graphics.PMFx;
+import progressed.graphics.*;
 
+@SuppressWarnings("unchecked")
 public class PMUnitTypes implements ContentList{
-    //Steal from Project Unity
-    private static final Prov<?>[] constructors = new Prov[]{
-        SentryUnitEntity::new
+    //Steal from BetaMindy
+    private static Entry<Class<? extends Entityc>, Prov<? extends Entityc>>[] types = new Entry[]{
+        prov(SentryUnitEntity.class, SentryUnitEntity::new),
+        prov(Extension.class, Extension::create)
     };
 
-    //Steal from Project Unity
-    private static final int[] classIDs = new int[constructors.length];
+    private static ObjectIntMap<Class<? extends Entityc>> idMap = new ObjectIntMap<>();
 
+    /**
+     * Internal function to flatmap {@code Class -> Prov} into an {@link Entry}.
+     * @author GlennFolker
+     */
+    private static <T extends Entityc> Entry<Class<T>, Prov<T>> prov(Class<T> type, Prov<T> prov){
+        Entry<Class<T>, Prov<T>> entry = new Entry<>();
+        entry.key = type;
+        entry.value = prov;
+        return entry;
+    }
+
+    /**
+     * Setups all entity IDs and maps them into {@link EntityMapping}.
+     * @author GlennFolker
+     */
+    private static void setupID(){
+        for(
+            int i = 0,
+            j = 0,
+            len = EntityMapping.idMap.length;
+            
+            i < len;
+            
+            i++
+        ){
+            if(EntityMapping.idMap[i] == null){
+                idMap.put(types[j].key, i);
+                EntityMapping.idMap[i] = types[j].value;
+
+                if(++j >= types.length) break;
+            }
+        }
+    }
+
+    /**
+     * Retrieves the class ID for a certain entity type.
+     * @author GlennFolker
+     */
+    public static <T extends Entityc> int classID(Class<T> type){
+        return idMap.get(type, -1);
+    }
+
+    public static UnitType 
+    
     //sentry
-    public static UnitType basicSentry, strikeSentry, dashSentry;
-
-    //Steal from Project Unity
-    public static int getClassId(int index){
-        return classIDs[index];
-    }
-
-    //Steal from Project Unity
-    private static void setEntity(String name, Prov<?> c){
-        EntityMapping.nameMap.put(name, c);
-    }
+    basicSentry, strikeSentry, dashSentry,
+    
+    //sandy
+    everythingUnit;
 
     @Override
     public void load(){
-        //Steal from Project Unity
-        for(int i = 0, j = 0, len = EntityMapping.idMap.length; i < len; i++){
-            if(EntityMapping.idMap[i] == null){
-                classIDs[j] = i;
-                EntityMapping.idMap[i] = constructors[j++];
-
-                if(j >= constructors.length) break;
-            }
-        }
+        setupID(); // From BetaMindy
 
         //Region Sentry Units
-        setEntity("basic-sentry", SentryUnitEntity::new);
+        EntityMapping.nameMap.put("basic-sentry", SentryUnitEntity::new);
         basicSentry = new SentryUnitType("basic-sentry"){{
             defaultController = SentryAI::new;
 
@@ -77,7 +112,7 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        setEntity("strike-sentry", SentryUnitEntity::new);
+        EntityMapping.nameMap.put("strike-sentry", SentryUnitEntity::new);
         strikeSentry = new SentryUnitType("strike-sentry"){{
             health = 150f;
 
@@ -115,7 +150,7 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        setEntity("dash-sentry", SentryUnitEntity::new);
+        EntityMapping.nameMap.put("dash-sentry", SentryUnitEntity::new);
         dashSentry = new SentryUnitType("dash-sentry"){
             float len = 56f, rangeMul = 16f;
             {
@@ -149,6 +184,38 @@ public class PMUnitTypes implements ContentList{
                         }
                     };
                 }});
+            }
+        };
+
+        EntityMapping.nameMap.put("god", UnitEntity::create);
+        everythingUnit = new UnitType("god"){
+            {
+                alwaysUnlocked = true;
+                flying = true;
+                lowAltitude = true;
+                mineSpeed = 100f;
+                mineTier = 10000;
+                buildSpeed = 10000f;
+                drag = 0.05f;
+                speed = 3.55f;
+                rotateSpeed = 19f;
+                accel = 0.11f;
+                itemCapacity = 20000;
+                health = 200000f;
+                engineOffset = 4f;
+                engineSize = 1f;
+                hitSize = 11f;
+                commandLimit = 100;
+            }
+
+            @Override
+            public void setStats(){
+                super.setStats();
+
+                stats.remove(Stat.abilities);
+                stats.add(Stat.abilities, "Everything");
+                stats.remove(Stat.weapons);
+                stats.add(Stat.weapons, "Everything");
             }
         };
     }

@@ -138,7 +138,7 @@ public class BlackHoleBulletType extends BulletType{
     public void draw(Bullet b){
         Draw.z(Layer.max - 0.01f);
         Fill.light(b.x, b.y, 60, ((BlackHoleData)b.data).s,
-            b.team.color.cpy().lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 0.4f)), Color.black);
+            Tmp.c1.set(b.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(b.id), 10f, 0.4f)), Color.black);
     }
 
     @Override
@@ -159,11 +159,12 @@ public class BlackHoleBulletType extends BulletType{
         }
     }
 
-    public boolean checkType(BulletType type){ //Returns true for bullets immune to suction.
+    public static boolean checkType(BulletType type){ //Returns true for bullets immune to suction.
         return (type instanceof StrikeBulletType) ||
             (type instanceof UnitSpawnStrikeBulletType) ||
             (type instanceof ParticleBulletType) ||
-            (type instanceof BlackHoleCataclysmType);
+            (type instanceof BlackHoleCataclysmType) ||
+            (type instanceof MagmaBulletType);
     }
 
     public void absorbBullet(Bullet b, Bullet other, boolean cataclysm){
@@ -179,7 +180,7 @@ public class BlackHoleBulletType extends BulletType{
         }
     }
 
-    public class BlackHoleData{
+    public static class BlackHoleData{
         //suctionRadius, size, damageRadius, swirlSize, force, scaledForce, bulletForce, bulletScaledForce
         public float sR, s, dR, sS, f, sF, bF, bSF, cFR;
 
@@ -198,7 +199,7 @@ public class BlackHoleBulletType extends BulletType{
         }
     }
 
-    public class CataclysmData{
+    public static class CataclysmData{
         //radius, uForce, uScaledForce, bForce, bScaledForce, range
         protected float r, f, sF, bF, bSF, rg;
         //color 1, color 2

@@ -1,9 +1,9 @@
 plugins{
-    id 'java'
+    id "java"
+    id "idea"
 }
 
 group pGroup
-apply plugin: 'idea'
 
 sourceCompatibility = 1.8
 sourceSets.main{
@@ -11,10 +11,9 @@ sourceSets.main{
     resources.srcDir("assets/")
 }
 
-
 repositories{
     mavenCentral()
-    maven { url "https://jitpack.io" }
+    maven{url "https://jitpack.io"}
 }
 
 dependencies{
@@ -23,6 +22,12 @@ dependencies{
     implementation "com.github.Anuken.Mindustry:core:$mindustryVersion"
     implementation "com.squareup:javapoet:$javapoetVersion"
     implementation "com.github.Anuken:jabel:$jabelVersion"
+}
+
+ext{
+    isWindows = {
+        return System.getProperty("os.name").toLowerCase(Locale.ROOT).contains("windows")
+    }
 }
 
 jar{
@@ -35,27 +40,15 @@ jar{
     }
 }
 
-task dexify(type: Jar){
-    archiveName "$pArtifactFilename"
+tasks.withType(JavaCompile){
+    sourceCompatibility = 15
+    targetCompatibility = 8
 
-    final File jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "raw-$pArtifactFilename"),
-               dexedArtifact = new File(tasks.dexify.getTemporaryDir(), "dexed.jar")
-    doFirst{
-        exec{
-            workingDir dexedArtifact.parent
-            def command = ["d8", "--min-api", pMinApi, "--output", dexedArtifact, jarArtifact]
-            if (System.getProperty('os.name').toLowerCase(Locale.ROOT).contains('windows'))
-                commandLine("cmd", "/c", *command)
-            else
-                commandLine(*command)
-
-        }
+    options.encoding("UTF-8")
+    if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+        options.compilerArgs.addAll(['--release', '8', '--enable-preview'])
     }
 
-    from(zipTree(jarArtifact), zipTree(dexedArtifact))
-}
-
-tasks.withType(JavaCompile){
     doFirst{
         options.compilerArgs = options.compilerArgs.findAll{ it != '--enable-preview' }
     }
@@ -63,6 +56,108 @@ tasks.withType(JavaCompile){
 
 tasks.withType(JavaExec){
     jvmArgs += "--enable-preview"
+}
+
+task alphableed doFirst{
+    exec{
+        workingDir "$rootDir"
+
+        println "Alpha-bleeding sprites..."
+        if(isWindows()){
+            commandLine("cmd", "/c", "alpha-bleeding-windows.exe", "--replace", "./assets/sprites/")
+        }else{
+            commandLine("./alpha-bleed", "./assets/sprites/")
+        }
+    }
+}
+
+task dexify(type: Jar){
+    archiveName "$pArtifactFilename"
+
+    final File  jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "raw-$pArtifactFilename"),
+                dexedArtifact = new File(tasks.dexify.getTemporaryDir(), "dexed.jar")
+
+    doFirst{
+        exec{
+            workingDir dexedArtifact.parent
+            def command = ["d8", "--min-api", pMinApi, "--output", dexedArtifact, jarArtifact]
+            if(isWindows()){
+                commandLine("cmd", "/c", *command)
+            }else{
+                commandLine(*command)
+            }
+        }
+    }
+
+    from(zipTree(jarArtifact), zipTree(dexedArtifact))
+}
+
+task rickroll doFirst{
+    printf("We're no strangers to love\n")
+    printf("You know the rules and so do I\n")
+    printf("A full commitment's what I'm thinking of\n")
+    printf("You wouldn't get this from any other guy\n")
+    printf("\n")
+    printf("I just wanna tell you how I'm feeling\n")
+    printf("Gotta make you understand\n")
+    printf("\n")
+    printf("Never gonna give you up\n")
+    printf("Never gonna let you down\n")
+    printf("Never gonna run around and desert you\n")
+    printf("Never gonna make you cry\n")
+    printf("Never gonna say goodbye\n")
+    printf("Never gonna tell a lie and hurt you\n")
+    printf("\n")
+    printf("We've known each other for so long\n")
+    printf("Your heart's been aching but you're too shy to say it\n")
+    printf("Inside we both know what's been going on\n")
+    printf("We know the game and we're gonna play it\n")
+    printf("\n")
+    printf("And if you ask me how I'm feeling\n")
+    printf("Don't tell me you're too blind to see\n")
+    printf("\n")
+    printf("Never gonna give you up\n")
+    printf("Never gonna let you down\n")
+    printf("Never gonna run around and desert you\n")
+    printf("Never gonna make you cry\n")
+    printf("Never gonna say goodbye\n")
+    printf("Never gonna tell a lie and hurt you\n")
+    printf("Never gonna give you up\n")
+    printf("Never gonna let you down\n")
+    printf("Never gonna run around and desert you\n")
+    printf("Never gonna make you cry\n")
+    printf("Never gonna say goodbye\n")
+    printf("Never gonna tell a lie and hurt you\n")
+    printf("\n")
+    printf("Never gonna give, never gonna give\n")
+    printf("(Give you up)\n")
+    printf("(Ooh) Never gonna give, never gonna give\n")
+    printf("(Give you up)\n")
+    printf("\n")
+    printf("We've known each other for so long\n")
+    printf("Your heart's been aching but you're too shy to say it\n")
+    printf("Inside we both know what's been going on\n")
+    printf("We know the game and we're gonna play it\n")
+    printf("\n")
+    printf("And if you ask me how I'm feeling\n")
+    printf("Don't tell me you're too blind to see\n")
+    printf("\n")
+    printf("Never gonna give you up\n")
+    printf("Never gonna let you down\n")
+    printf("Never gonna run around and desert you\n")
+    printf("Never gonna make you cry\n")
+    printf("Never gonna say goodbye\n")
+    printf("Never gonna tell a lie and hurt you\n")
+    printf("Never gonna give you up\n")
+    printf("Never gonna let you down\n")
+    printf("Never gonna run around and desert you\n")
+    printf("Never gonna make you cry\n")
+    printf("Never gonna say goodbye\n")
+    printf("Never gonna tell a lie and hurt you\n")
+    printf("Never gonna give you up\n")
+    printf("Never gonna let you down\n")
+    printf("Never gonna run around and desert you\n")
+    printf("Never gonna make you cry\n")
 }
 
 task buildDex dependsOn "build", "dexify"

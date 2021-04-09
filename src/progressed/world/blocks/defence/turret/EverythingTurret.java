@@ -7,6 +7,8 @@ import arc.math.*;
 import arc.math.Interp.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.io.Reads;
+import arc.util.io.Writes;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
@@ -23,7 +25,7 @@ import static mindustry.Vars.*;
 public class EverythingTurret extends PowerTurret{
     public float startingBias = 0.1f, maxBias = 6000f, growSpeed = 1.004f, shrinkSpeed = 0.05f;
 
-    protected Seq<Object[]> bullets = new Seq<>();
+    protected Seq<BulletData> bullets = new Seq<>();
     protected PowOut pow = PMUtls.customPowOut(20);
 
     public EverythingTurret(String name){
@@ -46,7 +48,7 @@ public class EverythingTurret extends PowerTurret{
             u.weapons.each(w -> {
                 if(w.bullet != null && !w.bullet.killShooter){
                     BulletType bul = w.bullet;
-                    Object[] data = new Object[]{bul, w.shootSound, bul.shootEffect, bul.smokeEffect, w.shake, bul.lifetime, false};
+                    BulletData data = new BulletData(bul, w.shootSound, bul.shootEffect, bul.smokeEffect, w.shake, bul.lifetime);
                     if(!bullets.contains(data)){
                         bullets.add(data);
                     }
@@ -59,7 +61,7 @@ public class EverythingTurret extends PowerTurret{
                     BulletType bul = block.shootType;
                     Effect fshootEffect = block.shootEffect == Fx.none ? bul.shootEffect : block.shootEffect;
                     Effect fsmokeEffect = block.smokeEffect == Fx.none ? bul.smokeEffect : block.smokeEffect;
-                    Object[] data = new Object[]{bul, block.shootSound, fshootEffect, fsmokeEffect, block.shootShake, bul.lifetime + block.shootDuration, true};
+                    BulletData data = new BulletData(bul, block.shootSound, fshootEffect, fsmokeEffect, block.shootShake, bul.lifetime + block.shootDuration, true);
                     if(!bullets.contains(data)){
                         bullets.add(data);
                     }
@@ -67,7 +69,7 @@ public class EverythingTurret extends PowerTurret{
                     BulletType bul = block.shootType;
                     Effect fshootEffect = block.shootEffect == Fx.none ? bul.shootEffect : shootEffect;
                     Effect fsmokeEffect = block.smokeEffect == Fx.none ? bul.smokeEffect : smokeEffect;
-                    Object[] data = new Object[]{bul, block.shootSound, fshootEffect, fsmokeEffect, block.shootShake, bul.lifetime, false};
+                    BulletData data = new BulletData(bul, block.shootSound, fshootEffect, fsmokeEffect, block.shootShake, bul.lifetime);
                     if(!bullets.contains(data)){
                         bullets.add(data);
                     }
@@ -77,7 +79,7 @@ public class EverythingTurret extends PowerTurret{
                             BulletType bul = block.ammoTypes.get(i);
                             Effect fshootEffect = block.shootEffect == Fx.none ? bul.shootEffect : shootEffect;
                             Effect fsmokeEffect = block.smokeEffect == Fx.none ? bul.smokeEffect : smokeEffect;
-                            Object[] data = new Object[]{bul, block.shootSound, fshootEffect, fsmokeEffect, block.shootShake, bul.lifetime, false};
+                            BulletData data = new BulletData(bul, block.shootSound, fshootEffect, fsmokeEffect, block.shootShake, bul.lifetime);
                             if(!bullets.contains(data)){
                                 bullets.add(data);
                             }
@@ -87,7 +89,7 @@ public class EverythingTurret extends PowerTurret{
             }
         });
 
-        bullets.sort(b -> PMUtls.bulletDamage((BulletType)(b[0]), (float)(b[5])));
+        bullets.sort(b -> PMUtls.bulletDamage(b.bullet, b.lifetime));
     }
 
     @Override
@@ -164,19 +166,21 @@ public class EverythingTurret extends PowerTurret{
 
         @Override
         protected void bullet(BulletType type, float angle){
+            BulletData data = bullets.get(selectedBullet);
             float lifeScl = type.scaleVelocity ? Mathf.clamp(Mathf.dst(x + tr.x, y + tr.y, targetPos.x, targetPos.y) / type.range(), minRange / type.range(), range / type.range()) : 1f;
-            float laserLifeScl = ((boolean)bullets.get(selectedBullet)[6]) ? ((float)bullets.get(selectedBullet)[5]) / type.lifetime : 1f;
+            float laserLifeScl = data.continuousBlock ? data.lifetime / type.lifetime : 1f;
 
             type.create(this, team, x + tr.x, y + tr.y, angle, 1f + Mathf.range(velocityInaccuracy), lifeScl * laserLifeScl);
         }
 
         @Override
         protected void effects(){
-            ((Effect)bullets.get(selectedBullet)[2]).at(x, y, rotation, team.color);
-            ((Effect)bullets.get(selectedBullet)[3]).at(x, y, rotation, team.color);
-            ((Sound)bullets.get(selectedBullet)[1]).at(x, y, Mathf.random(0.9f, 1.1f));
+            BulletData data = bullets.get(selectedBullet);
+            data.shootEffect.at(x, y, rotation, team.color);
+            data.smokeEffect.at(x, y, rotation, team.color);
+            data.shootSound.at(x, y, Mathf.random(0.9f, 1.1f));
 
-            float shake = ((float)bullets.get(selectedBullet)[4]);
+            float shake = data.shake;
             if(shake > 0){
                 Effect.shake(shake, shake, this);
             }
@@ -189,12 +193,49 @@ public class EverythingTurret extends PowerTurret{
 
         @Override
         public BulletType useAmmo(){
-            return ((BulletType)bullets.get(selectedBullet)[0]);
+            return bullets.get(selectedBullet).bullet;
         }
 
         @Override
         public BulletType peekAmmo(){
-            return ((BulletType)bullets.get(selectedBullet)[0]);
+            return bullets.get(selectedBullet).bullet;
+        }
+
+        @Override
+        public void write(Writes write){
+            super.write(write);
+            write.f(bias);
+        }
+
+        @Override
+        public void read(Reads read, byte revision){
+            super.read(read, revision);
+
+            if(revision >= 1){
+                bias = read.f();
+            }
+        }
+    }
+
+    public static class BulletData{
+        BulletType bullet;
+        Sound shootSound;
+        Effect shootEffect, smokeEffect;
+        float shake, lifetime;
+        boolean continuousBlock;
+
+        public BulletData(BulletType b, Sound s, Effect shE, Effect smE, float shake, float lifetime, boolean cont){
+            bullet = b;
+            shootSound = s;
+            shootEffect = shE;
+            smokeEffect = smE;
+            this.shake = shake;
+            this.lifetime = lifetime;
+            continuousBlock = cont;
+        }
+
+        public BulletData(BulletType b, Sound s, Effect shE, Effect smE, float shake, float lifetime){
+            this(b, s, shE, smE, shake, lifetime, false);
         }
     }
 }

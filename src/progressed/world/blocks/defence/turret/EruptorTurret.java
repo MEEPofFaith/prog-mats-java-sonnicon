@@ -115,7 +115,7 @@ public class EruptorTurret extends PowerTurret{
         ));
     }
 
-    public class EruptorCell{
+    public static class EruptorCell{
         public int layer = 1;
         public float xOffset, yOffset;
 

@@ -12,7 +12,7 @@ import progressed.graphics.*;
 
 public class PMBullets implements ContentList{
     public static BulletType
-    flameMagma, blazeMagma, inerfnoMagma,
+    flameMagma, blazeMagma, infernoMagma,
 
     standardCopperMini, standardDenseMini, standardHomingMini, standardIncendiaryMini, standardThoriumMini, standardExplosiveMini,
 
@@ -48,7 +48,7 @@ public class PMBullets implements ContentList{
             shake = 2f;
         }};
 
-        inerfnoMagma = new MagmaBulletType(62.5f, 7f){{
+        infernoMagma = new MagmaBulletType(62.5f, 13f){{
             shake = 0.1f;
         }};
 

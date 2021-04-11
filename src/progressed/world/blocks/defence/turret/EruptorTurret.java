@@ -16,6 +16,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
+import progressed.entities.bullet.MagmaBulletType;
 import progressed.graphics.*;
 import progressed.util.*;
 
@@ -77,7 +78,13 @@ public class EruptorTurret extends PowerTurret{
     public void init(){
         super.init();
 
-        if(minRange < 0) minRange = size * tilesize * 2f;
+        if(minRange < 0){
+            if(shootType instanceof MagmaBulletType m){
+                minRange = size * tilesize + m.radius + 12f;
+            }else{
+                minRange = size * tilesize * 2f;
+            }
+        }
 
         if(cells.size == 0){
             throw new RuntimeException(name + " does not have any cells!");

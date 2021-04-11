@@ -25,7 +25,7 @@ import static mindustry.Vars.*;
 
 public class InfernoTurret extends PowerTurret{
     public final int lightningTimer = timers++;
-    public float lightningInterval = 2f, lightningStroke = 2f;
+    public float lightningInterval = 2f, lightningStroke = 3f;
     public Color lightningColor = Color.valueOf("ff9c5a");
 
     public int layers = 1;
@@ -236,7 +236,8 @@ public class InfernoTurret extends PowerTurret{
                     b.time(0f);
                     if(lightning){
                         tr.trns(rotation + Mathf.random(3) * 90f, shootLength + recoil);
-                        PMFx.fakeLightning.at(x + tr.x, y + tr.y, angleTo(b), lightningColor, new Object[]{Mathf.dst(x + tr2.x, y + tr2.y, b.x, b.y), lightningStroke, team});
+                        Vec2 tmp1 = Tmp.v1.set(x + tr.x, y + tr.y);
+                        PMFx.fakeLightning.at(tmp1.x, tmp1.y, tmp1.angleTo(b), lightningColor, new Object[]{Mathf.dst(tmp1.x, tmp1.y, b.x, b.y), lightningStroke, team});
                     }
                     if(bulletLife <= 0f){
                         bullets.remove(b);

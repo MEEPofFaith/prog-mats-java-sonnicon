@@ -26,7 +26,7 @@ After you have the `ProgressedMaterials.jar`, paste it into your mod folder (loc
 ### Bleeding Edge Builds?
 (Just gonna steal this term from Mindustry don't mind me)
 
-Go to the Actions tab and open the latest workflow with a green ☑️ on it. The zip file at the bottom will contain the latest build of Progressed Materials, though due to it being still in deveopement and my own stupidity you probably shouldn't do that. Anyways unzip that zip to get a `ProgressedMaterials.jar` file and follow the instal steps in **Releases**.
+Go to the Actions tab and open the latest workflow with a green ☑️ on it. The zip file at the bottom will contain the latest build of Progressed Materials, though due to it being still in deveopement and my own stupidity you probably shouldn't do that. Anyways unzip that zip to get a `ProgressedMaterials.jar` file and follow the install steps in **Releases**.
 
 ## Compiling
 JDK 8.

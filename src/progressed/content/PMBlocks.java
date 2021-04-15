@@ -445,7 +445,7 @@ public class PMBlocks implements ContentList{
             shootDuration = 60f;
             rotateSpeed = 8f;
             layers = 2;
-            shootType = PMBullets.inerfnoMagma;
+            shootType = PMBullets.infernoMagma;
 
             consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 1f)).update(false);
         }};

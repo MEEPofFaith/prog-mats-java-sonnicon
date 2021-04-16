@@ -17,7 +17,7 @@ If you want to play the old JS version for some reason, install `MEEPofFaith/pro
 ## Download Now!   
 [![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=FCC21B&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)
 
-__Or find it in the in-game mod browser, were installation is automatic and you can ignore everything under this message!__
+__Or find it in the in-game mod browser, where installation is automatic and you can ignore everything under this message!__
 
 ### Releases   
 Go to the releases, the latest release will have a `ProgressedMaterials.jar` attached to it that you can download. If it does not have it, follow the steps below(recommended) or bother me with a new issue so I can attach the compiled mod.   
@@ -26,7 +26,7 @@ After you have the `ProgressedMaterials.jar`, paste it into your mod folder (loc
 ### Bleeding Edge Builds?
 (Just gonna steal this term from Mindustry don't mind me)
 
-Go to the Actions tab and open the latest workflow with a green ☑️ on it. The zip file at the bottom will contain the latest build of Progressed Materials, though due to it being still in deveopement and my own stupidity you probably shouldn't do that. Anyways unzip that zip to get a `ProgressedMaterials.jar` file and follow the instal steps in **Releases**.
+Go to the Actions tab and open the latest workflow with a green ☑️ on it. The zip file at the bottom will contain the latest build of Progressed Materials, though due to it being still in deveopement and my own stupidity you probably shouldn't do that. Anyways unzip that zip to get a `ProgressedMaterials.jar` file and follow the install steps in **Releases**.
 
 ## Compiling
 JDK 8.

@@ -787,11 +787,15 @@ public class PMBlocks implements ContentList{
             requirements(Category.distribution, with(
                 Items.lead, 1,
                 Items.metaglass, 2,
-                Items.plastanium, 2
+                Items.plastanium, 2,
+                Items.surgeAlloy, 1
             ));
             health = 15;
             speed = 0.08f;
+            deepSpeed = 0.06f;
             displayedSpeed = 11f;
+            deepDisplayedSpeed = 8.4f;
+            buildCostMultiplier = 0.5f;
             researchCostMultiplier = 500f;
         }};
 

@@ -19,8 +19,8 @@ public class PMItems implements ContentList{
 
     @Override
     public void load(){
-        techtanite = new Item("techtanite", Color.valueOf("8C8C8C")){{
-            cost = 2.5f;
+        techtanite = new Item("techtanite", Color.valueOf("B0BAC0")){{
+            cost = 1.6f;
         }};
 
         missileShell = new Item("missile-shell", Color.valueOf("FEB380"));

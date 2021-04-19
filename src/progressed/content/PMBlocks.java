@@ -788,14 +788,14 @@ public class PMBlocks implements ContentList{
                 Items.lead, 1,
                 Items.metaglass, 2,
                 Items.plastanium, 2,
-                Items.surgeAlloy, 1
+                PMItems.techtanite, 2
             ));
             health = 15;
             speed = 0.08f;
             deepSpeed = 0.06f;
             displayedSpeed = 11f;
             deepDisplayedSpeed = 8.4f;
-            buildCostMultiplier = 0.5f;
+            buildCostMultiplier = 0.41f;
             researchCostMultiplier = 500f;
         }};
 

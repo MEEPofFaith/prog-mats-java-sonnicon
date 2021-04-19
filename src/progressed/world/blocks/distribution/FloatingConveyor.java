@@ -23,11 +23,10 @@ public class FloatingConveyor extends Conveyor{
     final Vec2 tr2 = new Vec2();
 
     public boolean drawShallow;
-    public float coverOpacity = 0.5f;
     public float deepSpeed = -1f;
     public float deepDisplayedSpeed = 0f;
 
-    protected TextureRegion[] topRegions = new TextureRegion[5], coverRegions = new TextureRegion[5];
+    protected TextureRegion[] topRegions = new TextureRegion[5];
 
     public FloatingConveyor(String name){
         super(name);
@@ -47,7 +46,6 @@ public class FloatingConveyor extends Conveyor{
         super.load();
         for(int i = 0; i < 5; i++){
             topRegions[i] = Core.atlas.find(name + "-top-" + i);
-            coverRegions[i] = Core.atlas.find(name + "-cover-" + i);
         }
     }
 
@@ -66,11 +64,7 @@ public class FloatingConveyor extends Conveyor{
 
             if(bits == null) return;
 
-            Draw.color(world.tileWorld(req.drawx(), req.drawy()).floor().mapColor, coverOpacity);
-            TextureRegion region = coverRegions[bits[0]];
-            Draw.rect(region, req.drawx(), req.drawy(), region.width * bits[1] * Draw.scl, region.height * bits[2] * Draw.scl, req.rotation * 90);
-            Draw.color();
-            region = topRegions[bits[0]];
+            TextureRegion region = topRegions[bits[0]];
             Draw.rect(region, req.drawx(), req.drawy(), region.width * bits[1] * Draw.scl, region.height * bits[2] * Draw.scl, req.rotation * 90);
         }
     }
@@ -92,7 +86,31 @@ public class FloatingConveyor extends Conveyor{
         public void placed(){
             super.placed();
 
-            deep = checkDeep(x, y);
+            deep = buildDeep();
+        }
+
+        @Override
+        public void onProximityUpdate(){
+            super.onProximityUpdate();
+
+            @Nullable ConveyorBuild prevc = back() instanceof ConveyorBuild && back().team == team ? (ConveyorBuild)back() : null;
+
+            if(nextc instanceof FloatingConveyorBuild n && prevc instanceof FloatingConveyorBuild p){
+                boolean nDeep = n.buildDeep();
+                boolean pDeep = p.buildDeep();
+
+                if(p.nextc == self()){
+                    if(nDeep && pDeep){
+                        deep = buildDeep();
+                    }else{
+                        deep = false;
+                    }
+                }else{
+                    deep = buildDeep();
+                }
+            }else{
+                deep = buildDeep();
+            }
         }
 
         @Override
@@ -128,11 +146,6 @@ public class FloatingConveyor extends Conveyor{
             }
             
             if(deep){
-                Draw.z(Layer.block - 0.09f);
-                Draw.color(world.tileWorld(x, y).floor().mapColor, coverOpacity);
-                Draw.rect(coverRegions[blendbits], x, y, coverRegions[blendbits].width / 4f * blendsclx, coverRegions[blendbits].height / 4f * blendscly, rotation * 90);
-                Draw.color();
-
                 Draw.z(Layer.block - 0.08f);
                 Draw.rect(topRegions[blendbits], x, y, topRegions[blendbits].width / 4f * blendsclx, topRegions[blendbits].height / 4f * blendscly, rotation * 90);
             }
@@ -190,6 +203,10 @@ public class FloatingConveyor extends Conveyor{
             }
 
             noSleep();
+        }
+
+        public boolean buildDeep(){
+            return checkDeep(x, y);
         }
     }
 }

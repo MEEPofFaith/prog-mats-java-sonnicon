@@ -4,6 +4,7 @@ import arc.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
+import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
@@ -13,6 +14,7 @@ import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.meta.*;
+import progressed.util.*;
 
 import static mindustry.Vars.*;
 
@@ -22,7 +24,7 @@ public class FloatingConveyor extends Conveyor{
     final Vec2 tr1 = new Vec2();
     final Vec2 tr2 = new Vec2();
 
-    public boolean drawShallow;
+    public boolean shallowDeep;
     public float deepSpeed = -1f;
     public float deepDisplayedSpeed = 0f;
 
@@ -56,9 +58,18 @@ public class FloatingConveyor extends Conveyor{
     public void setStats(){
         super.setStats();
 
-        if(deepDisplayedSpeed != displayedSpeed){
-            stats.add(Stat.itemsMoved, Core.bundle.format("stat.pm-floating-speed", deepDisplayedSpeed, StatUnit.itemsSecond.localized()));
-        }
+        stats.remove(Stat.itemsMoved);
+        stats.add(Stat.itemsMoved, s -> {
+            Table t = new Table();
+            t.add(Core.bundle.get("stat.pm-land-speed") + PMUtls.stringsFixed(displayedSpeed) + " " + StatUnit.itemsSecond.localized()).left();
+            t.row();
+            if(deepDisplayedSpeed != displayedSpeed){
+                String l = shallowDeep ? Core.bundle.get("stat.pm-liquid-speed") : Core.bundle.get("stat.pm-deep-speed");
+                t.add(l + PMUtls.stringsFixed(deepDisplayedSpeed) + " " + StatUnit.itemsSecond.localized()).left();
+            }
+
+            s.add(t);
+        });
     }
 
     @Override
@@ -76,12 +87,7 @@ public class FloatingConveyor extends Conveyor{
 
     public boolean checkDeep(float x, float y){
         Tile t = world.tileWorld(x, y);
-        if(t != null && t.floor().isLiquid){
-            if(drawShallow || t.floor().isDeep()){
-                return true;
-            }
-        }
-        return false;
+        return t != null && t.floor().isLiquid && (shallowDeep || t.floor().isDeep());
     }
 
     public class FloatingConveyorBuild extends ConveyorBuild{

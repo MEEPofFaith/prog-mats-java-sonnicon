@@ -92,14 +92,14 @@ public class StrikeBulletType extends BasicBulletType{
             if(target != null && stopRadius > 0f){
                 boolean inRange = Mathf.within(b.x, b.y, target.x(), target.y(), stopRadius);
                 if(inRange && !data.stopped){
-                    data.vel = b.vel;
+                    data.setVel(b.vel);
                     data.stopped = true;
                     b.vel.trns(b.vel.angle(), 0.001f);
                 }else if(resumeSeek && (!inRange || ((Healthc)target).dead() || ((Healthc)target).health() < 0f) && data.stopped){
                     b.vel.set(data.vel);
                     data.stopped = false;
                 }
-            }else if(resumeSeek && data.stopped){
+            }else if((resumeSeek || target == null) && data.stopped){
                 b.vel.set(data.vel);
                 data.stopped = false;
             }
@@ -285,13 +285,17 @@ public class StrikeBulletType extends BasicBulletType{
     }
 
     public static class StrikeBulletData{
-        float x, y;
-        Vec2 vel;
-        boolean stopped;
+        public float x, y;
+        public Vec2 vel;
+        public boolean stopped;
 
         public StrikeBulletData(float x, float y){
             this.x = x;
             this.y = y;
+        }
+
+        public void setVel(Vec2 vel){
+            this.vel = vel.cpy();
         }
     }
 }

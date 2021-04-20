@@ -218,11 +218,11 @@ public class EverythingTurret extends PowerTurret{
     }
 
     public static class BulletData{
-        BulletType bullet;
-        Sound shootSound;
-        Effect shootEffect, smokeEffect;
-        float shake, lifetime;
-        boolean continuousBlock;
+        public BulletType bullet;
+        public Sound shootSound;
+        public Effect shootEffect, smokeEffect;
+        public float shake, lifetime;
+        public boolean continuousBlock;
 
         public BulletData(BulletType b, Sound s, Effect shE, Effect smE, float shake, float lifetime, boolean cont){
             bullet = b;

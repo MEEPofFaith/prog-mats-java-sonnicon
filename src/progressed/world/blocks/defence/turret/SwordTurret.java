@@ -22,7 +22,6 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
-import progressed.ProgressedMaterials;
 import progressed.content.*;
 import progressed.entities.*;
 import progressed.graphics.*;
@@ -430,7 +429,6 @@ public class SwordTurret extends BaseTurret{
                         ready = false; //do not stop until dead or unable to attack
                         target = null;
                     }
-                    ProgressedMaterials.print("Distance: " + currentPos.dst(targetPos) + " | Radius: " + attackRadius);
                     hit = false;
                     animationTime = 0f;
                 }

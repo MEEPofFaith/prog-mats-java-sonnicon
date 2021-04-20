@@ -22,6 +22,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
+import progressed.ProgressedMaterials;
 import progressed.content.*;
 import progressed.entities.*;
 import progressed.graphics.*;
@@ -357,7 +358,7 @@ public class SwordTurret extends BaseTurret{
 
         @Override
         public void updateTile(){
-            if(!validateTarget()) target = null;
+            if(!validateTarget() || aiTargetDistCheck()) target = null;
 
             wasAttacking = false;
 
@@ -372,7 +373,7 @@ public class SwordTurret extends BaseTurret{
 
             if(consValid()){
 
-                if(!ready && !validateTarget() && timer(timerTarget, targetInterval)){
+                if(!ready && (!validateTarget() || aiTargetDistCheck()) && timer(timerTarget, targetInterval)){
                     findTarget();
                 }
 
@@ -425,10 +426,11 @@ public class SwordTurret extends BaseTurret{
                     }
                 }
                 if(animationTime > totalTime){
-                    if(!validateTarget() || !isAttacking() || currentPos.dst(targetPos) > attackRadius || !consValid()){
+                    if(!validateTarget() || !isAttacking() || !consValid() || aiTargetDistCheck() || currentPos.dst(targetPos) > attackRadius){
                         ready = false; //do not stop until dead or unable to attack
                         target = null;
                     }
+                    ProgressedMaterials.print("Distance: " + currentPos.dst(targetPos) + " | Radius: " + attackRadius);
                     hit = false;
                     animationTime = 0f;
                 }
@@ -490,6 +492,10 @@ public class SwordTurret extends BaseTurret{
 
         protected boolean validateTarget(){
             return (!Units.invalidateTarget(target, team, x, y) || isControlled() || logicControlled());
+        }
+
+        protected boolean aiTargetDistCheck(){ //Returns true if the turret is not controlled and the target it out of range.
+            return (!isControlled() && !logicControlled()) && dst(target) > range;
         }
 
         protected void findTarget(){

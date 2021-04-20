@@ -38,7 +38,10 @@ public class FloatingConveyor extends Conveyor{
     public void init(){
         super.init();
 
-        if(deepSpeed < 0f) deepSpeed = speed;
+        if(deepSpeed < 0f){
+            deepSpeed = speed;
+            deepDisplayedSpeed = displayedSpeed;
+        }
     }
 
     @Override
@@ -53,7 +56,9 @@ public class FloatingConveyor extends Conveyor{
     public void setStats(){
         super.setStats();
 
-        stats.add(Stat.itemsMoved, "(" + deepDisplayedSpeed + " " + StatUnit.itemsSecond.localized() + " when on deep liquid)");
+        if(deepDisplayedSpeed != displayedSpeed){
+            stats.add(Stat.itemsMoved, Core.bundle.format("stat.pm-floating-speed", deepDisplayedSpeed, StatUnit.itemsSecond.localized()));
+        }
     }
 
     @Override

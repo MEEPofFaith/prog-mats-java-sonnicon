@@ -785,18 +785,18 @@ public class PMBlocks implements ContentList{
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{
             requirements(Category.distribution, with(
-                Items.lead, 1,
-                Items.metaglass, 2,
-                Items.plastanium, 2,
-                PMItems.techtanite, 2
+                Items.lead, 3,
+                Items.metaglass, 3,
+                Items.plastanium, 3,
+                PMItems.techtanite, 3
             ));
             health = 15;
             speed = 0.08f;
             deepSpeed = 0.06f;
             displayedSpeed = 11f;
             deepDisplayedSpeed = 8.4f;
-            buildCostMultiplier = 0.41f;
-            researchCostMultiplier = 500f;
+            buildCostMultiplier = 0.25f;
+            researchCostMultiplier = 300f;
         }};
 
         // endregion

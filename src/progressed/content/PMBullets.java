@@ -53,44 +53,49 @@ public class PMBullets implements ContentList{
         }};
 
         standardCopperMini = new BasicBulletType(2.5f, 5f){{
-            width = height = 3f;
-            lifetime = 90f;
+            width = 5f;
+            height = 7f;
+            lifetime = 110f;
         }};
 
         standardDenseMini = new BasicBulletType(3.5f, 10f){{
-            width = height = 3.5f;
+            width = 5.5f;
+            height = 9f;
             reloadMultiplier = 0.6f;
             ammoMultiplier = 4;
             pierce = true;
             pierceCap = 2;
-            lifetime = 90f;
+            lifetime = 76f;
         }};
 
         standardHomingMini = new BasicBulletType(3f, 6f){{
-            width = height = 2.5f;
+            width = 4f;
+            height = 6f;
             homingPower = 0.07f;
-            reloadMultiplier = 1.4f;
+            reloadMultiplier = 1.3f;
             ammoMultiplier = 5f;
-            lifetime = 90f;
+            lifetime = 92f;
         }};
 
         standardIncendiaryMini = new BasicBulletType(3.2f, 7f){{
-            width = height = 3f;
+            width = 5f;
+            height = 8f;
             frontColor = Pal.lightishOrange;
             backColor = Pal.lightOrange;
             inaccuracy = 5f;
             makeFire = true;
-            lifetime = 90f;
+            lifetime = 86f;
         }};
 
         standardThoriumMini = new BasicBulletType(4f, 13f){{
-            width = height = 3f;
+            width = 6f;
+            height = 11f;
             shootEffect = Fx.shootBig;
             smokeEffect = Fx.shootBigSmoke;
             ammoMultiplier = 4f;
             pierce = true;
-            pierceCap = 3;
-            lifetime = 90f;
+            pierceCap = 2;
+            lifetime = 66f;
         }};
 
         shockZap = new LightningBulletType(){{

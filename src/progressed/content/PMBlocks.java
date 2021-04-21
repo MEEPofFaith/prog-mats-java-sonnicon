@@ -110,6 +110,7 @@ public class PMBlocks implements ContentList{
             );
             size = 4;
             range = 255f;
+            maxSpeed = 0.75f;
             health = 1800;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
@@ -150,6 +151,7 @@ public class PMBlocks implements ContentList{
             );
             size = 4;
             range = 255f;
+            maxSpeed = 0.73f;
             health = 1800;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
@@ -191,6 +193,7 @@ public class PMBlocks implements ContentList{
             );
             size = 4;
             range = 255f;
+            maxSpeed = 0.71f;
             health = 1800;
             shootCone = 20f;
             shootSound = Sounds.shootBig;

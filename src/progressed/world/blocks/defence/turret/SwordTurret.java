@@ -141,7 +141,7 @@ public class SwordTurret extends BaseTurret{
                 }
 
                 t.add(bundle.format("bullet.pm-sword-speed", speed));
-            }).padTop(-9).left().get().background(Tex.underline);;
+            }).padTop(-9).left().get().background(Tex.underline);
         });
     }
 

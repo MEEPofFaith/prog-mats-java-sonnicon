@@ -106,8 +106,7 @@ public class PMBlocks implements ContentList{
                 Items.graphite, PMBullets.standardDenseMini,
                 Items.silicon, PMBullets.standardHomingMini,
                 Items.pyratite, PMBullets.standardIncendiaryMini,
-                Items.thorium, PMBullets.standardThoriumMini,
-                Items.blastCompound, PMBullets.standardExplosiveMini
+                Items.thorium, PMBullets.standardThoriumMini
             );
             size = 4;
             range = 255f;
@@ -147,8 +146,7 @@ public class PMBlocks implements ContentList{
                 Items.graphite, PMBullets.standardDenseMini,
                 Items.silicon, PMBullets.standardHomingMini,
                 Items.pyratite, PMBullets.standardIncendiaryMini,
-                Items.thorium, PMBullets.standardThoriumMini,
-                Items.blastCompound, PMBullets.standardExplosiveMini
+                Items.thorium, PMBullets.standardThoriumMini
             );
             size = 4;
             range = 255f;
@@ -189,8 +187,7 @@ public class PMBlocks implements ContentList{
                 Items.graphite, PMBullets.standardDenseMini,
                 Items.silicon, PMBullets.standardHomingMini,
                 Items.pyratite, PMBullets.standardIncendiaryMini,
-                Items.thorium, PMBullets.standardThoriumMini,
-                Items.blastCompound, PMBullets.standardExplosiveMini
+                Items.thorium, PMBullets.standardThoriumMini
             );
             size = 4;
             range = 255f;

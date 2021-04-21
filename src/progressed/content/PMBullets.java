@@ -14,7 +14,7 @@ public class PMBullets implements ContentList{
     public static BulletType
     flameMagma, blazeMagma, infernoMagma,
 
-    standardCopperMini, standardDenseMini, standardHomingMini, standardIncendiaryMini, standardThoriumMini, standardExplosiveMini,
+    standardCopperMini, standardDenseMini, standardHomingMini, standardIncendiaryMini, standardThoriumMini,
 
     shockZap, sparkZap, stormZap,
 
@@ -52,12 +52,12 @@ public class PMBullets implements ContentList{
             shake = 0.1f;
         }};
 
-        standardCopperMini = new BasicBulletType(2.5f, 21f){{
+        standardCopperMini = new BasicBulletType(2.5f, 5f){{
             width = height = 3f;
             lifetime = 90f;
         }};
 
-        standardDenseMini = new BasicBulletType(3.5f, 28f){{
+        standardDenseMini = new BasicBulletType(3.5f, 10f){{
             width = height = 3.5f;
             reloadMultiplier = 0.6f;
             ammoMultiplier = 4;
@@ -66,7 +66,7 @@ public class PMBullets implements ContentList{
             lifetime = 90f;
         }};
 
-        standardHomingMini = new BasicBulletType(3f, 23f){{
+        standardHomingMini = new BasicBulletType(3f, 6f){{
             width = height = 2.5f;
             homingPower = 0.07f;
             reloadMultiplier = 1.4f;
@@ -74,7 +74,7 @@ public class PMBullets implements ContentList{
             lifetime = 90f;
         }};
 
-        standardIncendiaryMini = new BasicBulletType(3.2f, 25f){{
+        standardIncendiaryMini = new BasicBulletType(3.2f, 7f){{
             width = height = 3f;
             frontColor = Pal.lightishOrange;
             backColor = Pal.lightOrange;
@@ -83,25 +83,13 @@ public class PMBullets implements ContentList{
             lifetime = 90f;
         }};
 
-        standardThoriumMini = new BasicBulletType(4f, 46f){{
+        standardThoriumMini = new BasicBulletType(4f, 13f){{
             width = height = 3f;
             shootEffect = Fx.shootBig;
             smokeEffect = Fx.shootBigSmoke;
             ammoMultiplier = 4f;
             pierce = true;
             pierceCap = 3;
-            lifetime = 90f;
-        }};
-
-        standardExplosiveMini = new BasicBulletType(3.5f, 24f){{
-            width = height = 3f;
-            shootEffect = Fx.shootBig;
-            smokeEffect = Fx.shootBigSmoke;
-            hitEffect = despawnEffect = Fx.blastExplosion;
-            splashDamage = 34f;
-            splashDamageRadius = 12f;
-            inaccuracy = 6f;
-            ammoMultiplier = 3;
             lifetime = 90f;
         }};
 

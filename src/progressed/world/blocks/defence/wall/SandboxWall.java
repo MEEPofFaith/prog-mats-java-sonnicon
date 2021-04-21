@@ -8,6 +8,7 @@ import arc.scene.style.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
+import arc.util.io.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
@@ -211,6 +212,28 @@ public class SandboxWall extends Wall{
         @Override
         public boolean[] config(){
             return modes;
+        }
+
+        @Override
+        public void write(Writes write){
+            super.write(write);
+            for(int i = 0; i < 3; i++){
+                write.bool(modes[i]);
+            }
+        }
+
+        @Override
+        public void read(Reads read, byte revision){
+            super.read(read, revision);
+
+            if(revision >= 1){
+                modes = new boolean[]{read.bool(), read.bool(), read.bool()};
+            }
+        }
+
+        @Override
+        public byte version(){
+            return 1;
         }
     }
 }

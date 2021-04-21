@@ -5,6 +5,7 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
+import arc.util.io.*;
 import mindustry.entities.bullet.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
@@ -157,6 +158,26 @@ public class MinigunTurret extends ItemTurret{
         @Override
         protected void updateCooling(){
             //Do nothing, cooling is already in `updateShooting()`
+        }
+
+        @Override
+        public void write(Writes write){
+            super.write(write);
+            write.f(frameSpeed);
+        }
+
+        @Override
+        public void read(Reads read, byte revision){
+            super.read(read, revision);
+
+            if(revision >= 1){
+                frameSpeed = read.f();
+            }
+        }
+
+        @Override
+        public byte version(){
+            return 1;
         }
     }
 }

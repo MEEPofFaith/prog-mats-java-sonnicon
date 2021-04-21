@@ -673,8 +673,9 @@ public class PMBlocks implements ContentList{
             ));
             size = 4;
             health = 2140;
+            canOverdrive = false;
             reloadTime = 520f;
-            range = 128f;
+            range = 256f;
             shootEffect = smokeEffect = Fx.none;
             chargeBeginEffect = PMFx.kugelblitzChargeBegin;
             chargeEffect = PMFx.kugelblitzCharge;

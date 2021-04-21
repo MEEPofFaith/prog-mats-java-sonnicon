@@ -215,8 +215,8 @@ public class PMBullets implements ContentList{
         strikeSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.strikeSentry);
         dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
 
-        blackHole = new BlackHoleBulletType(0.5f, 575f / 30f){{
-            lifetime = 420f;
+        blackHole = new BlackHoleBulletType(0.5f, 1400f / 30f){{
+            lifetime = 630f;
             backMove = false;
             lightRadius = 8f;
             lightOpacity = 0.7f;

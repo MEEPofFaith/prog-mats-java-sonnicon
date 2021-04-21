@@ -263,4 +263,8 @@ public class PMUtls{
             }
         });
     }
+
+    public static void completeDamage(Team team, float x, float y, float radius, float damage){
+        completeDamage(team, x, y, radius, damage, 1f, true, true);
+    }
 }

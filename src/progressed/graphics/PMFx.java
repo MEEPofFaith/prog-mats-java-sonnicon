@@ -179,7 +179,7 @@ public class PMFx{
     
     kugelblitzChargeBegin = new Effect(80f, e -> {
         Draw.z(Layer.max - 0.01f);
-        Fill.light(e.x, e.y, 60, 5f * e.fin(), Tmp.c1.set(e.color).lerp(Color.black, 0.5f + Mathf.absin(10f, 0.4f)), Color.black);
+        Fill.light(e.x, e.y, 60, 6f * e.fin(), Tmp.c1.set(e.color).lerp(Color.black, 0.5f + Mathf.absin(10f, 0.4f)), Color.black);
     }),
     
     kugelblitzCharge = new Effect(38f, e -> {

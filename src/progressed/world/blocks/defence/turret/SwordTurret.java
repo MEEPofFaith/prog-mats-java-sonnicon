@@ -78,7 +78,7 @@ public class SwordTurret extends BaseTurret{
         super(name);
         hasPower = true;
         rotateSpeed = 4f;
-        expanded = true;
+        acceptCoolant = canOverdrive = false;
     }
 
     @Override
@@ -127,7 +127,7 @@ public class SwordTurret extends BaseTurret{
             stat.table(t -> {
                 t.left().defaults().padRight(3).left();
 
-                t.add(bundle.format("bullet.splashdamage", damage, PMUtls.stringsFixed(damageRadius / tilesize)));
+                t.add(bundle.format("bullet.splashdamage", damage, Strings.fixed(damageRadius / tilesize, 1)));
                 t.row();
 
                 if(buildingDamageMultiplier != 1f){
@@ -391,7 +391,9 @@ public class SwordTurret extends BaseTurret{
                     if(canAttack){
                         wasAttacking = true;
                         moveTo(targetPos, true);
-                        updateCooling();
+                        if(acceptCoolant){
+                            updateCooling();
+                        }
                     }else if(!ready){
                         reset();
                     }
@@ -531,6 +533,7 @@ public class SwordTurret extends BaseTurret{
             super.write(write);
             write.bool(ready);
             write.bool(hit);
+            write.f(lookAngle);
             write.f(animationTime);
             write.f(currentPos.x);
             write.f(currentPos.y);
@@ -543,6 +546,7 @@ public class SwordTurret extends BaseTurret{
             if(revision >= 1){
                 ready = read.bool();
                 hit = read.bool();
+                lookAngle = read.f();
                 animationTime = read.f();
                 currentPos.set(read.f(), read.f());
             }

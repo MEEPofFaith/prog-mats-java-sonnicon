@@ -483,7 +483,7 @@ public class PMBlocks implements ContentList{
                 bladeCenter = 122f / 8f;
                 trailWidth = 18f;
                 trailLength = 6;
-                float attackScl = 2f;
+                float attackScl = 1.25f;
                 damageRadius *= attackScl;
                 attackRadius *= attackScl;
                 swords = 5;

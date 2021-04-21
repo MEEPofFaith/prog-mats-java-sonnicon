@@ -126,8 +126,8 @@ public class PMBullets implements ContentList{
             backMove = false;
         }};
 
-        sniperBoltSilicon = new CritBulletType(25f, 300f){{
-            lifetime = 25f;
+        sniperBoltSilicon = new CritBulletType(12f, 300f){{
+            lifetime = 48f;
             knockback = 5f;
             width = 5f;
             trailWidth = width / 4f;
@@ -136,21 +136,25 @@ public class PMBullets implements ContentList{
             critChance = 0.2f;
             critMultiplier = 2f;
             homingRange = 200f;
-            homingPower = 0.8f;
+            homingPower = 0.4f;
         }};
 
-        sniperBoltGlassFrag = new CritBulletType(15f, 50f){{
-            lifetime = 2f;
+        sniperBoltGlassFrag = new CritBulletType(8f, 50f){{
+            frontColor = Color.white;
+            backColor = Color.valueOf("D0D0E0");
+            lifetime = 3f;
             width = 2f;
             trailWidth = width / 4f;
             height = 3f;
-            pierceCap = 4;
+            pierceCap = 2;
             critMultiplier = 10f;
             trailLength = 0;
         }};
 
-        sniperBoltGlass = new CritBulletType(17f, 200f){{
-            lifetime = 35f;
+        sniperBoltGlass = new CritBulletType(11f, 200f){{
+            frontColor = Color.white;
+            backColor = Color.valueOf("D0D0E0");
+            lifetime = 53f;
             knockback = 5f;
             width = 6f;
             trailWidth = width / 4f;
@@ -162,8 +166,8 @@ public class PMBullets implements ContentList{
             critMultiplier = 10f;
         }};
 
-        sniperBoltTitanium = new CritBulletType(22f, 500f){{
-            lifetime = 30f;
+        sniperBoltTitanium = new CritBulletType(13f, 500f){{
+            lifetime = 45f;
             knockback = 5f;
             width = 7f;
             trailWidth = width / 4f;
@@ -173,8 +177,8 @@ public class PMBullets implements ContentList{
             critMultiplier = 3.5f;
         }};
 
-        sniperBoltThorium = new CritBulletType(20f, 800f){{
-            lifetime = 30f;
+        sniperBoltThorium = new CritBulletType(12f, 800f){{
+            lifetime = 51f;
             knockback = 5f;
             width = 8f;
             trailWidth = width / 4f;
@@ -182,8 +186,10 @@ public class PMBullets implements ContentList{
             pierceCap = 30;
         }};
 
-        sniperBoltSurge = new CritBulletType(27f, 1000f){{
-            lifetime = 22f;
+        sniperBoltSurge = new CritBulletType(14f, 1000f){{
+            frontColor = Color.valueOf("F3E979");
+            backColor = Color.valueOf("D99F6B");
+            lifetime = 42f;
             knockback = 5f;
             width = 10f;
             trailWidth = width / 4f;

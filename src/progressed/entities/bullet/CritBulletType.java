@@ -1,6 +1,7 @@
 package progressed.entities.bullet;
 
 import arc.math.*;
+import arc.util.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
@@ -65,7 +66,22 @@ public class CritBulletType extends BasicBulletType{
 
         if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.update(b.x, b.y);
 
-        super.update(b);
+        if(homingPower > 0.0001f && b.time >= homingDelay){
+            Teamc target = Units.closestTarget(b.team, b.x, b.y, homingRange, e -> ((e.isGrounded() && collidesGround) || (e.isFlying() && collidesAir)) && !b.collided.contains(e.id), t -> collidesGround && !b.collided.contains(t.id));
+            if(target != null){
+                b.vel.setAngle(Angles.moveToward(b.rotation(), b.angleTo(target), homingPower * Time.delta * 50f));
+            }
+        }
+
+        if(weaveMag > 0){
+            b.vel.rotate(Mathf.sin(b.time + Mathf.PI * weaveScale/2f, weaveScale, weaveMag * (Mathf.randomSeed(b.id, 0, 1) == 1 ? -1 : 1)) * Time.delta);
+        }
+
+        if(trailChance > 0){
+            if(Mathf.chanceDelta(trailChance)){
+                trailEffect.at(b.x, b.y, trailParam, trailColor);
+            }
+        }
     }
 
     @Override

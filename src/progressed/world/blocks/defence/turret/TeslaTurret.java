@@ -43,7 +43,21 @@ public class TeslaTurret extends PowerTurret{
 
         stats.remove(Stat.inaccuracy);
         if(inaccuracy > 0f) stats.add(Stat.inaccuracy, inaccuracy / Vars.tilesize, StatUnit.blocks);
-        stats.add(Stat.reload, "[lightgray](" + zaps + " arcs per shot)");
+
+        stats.remove(Stat.ammo);
+        stats.add(Stat.ammo, stat -> {
+            stat.row();
+            stat.table(t -> {
+                t.left().defaults().padRight(3).left();
+
+                t.add(Core.bundle.format("bullet.lightning", zaps, shootType.damage));
+                t.row();
+
+                if(shootType.status != StatusEffects.none){
+                    t.add((shootType.minfo.mod == null ? shootType.status.emoji() : "") + "[stat]" + shootType.status.localizedName);
+                }
+            }).padTop(-9).left().get().background(Tex.underline);
+        });
     }
 
     @Override

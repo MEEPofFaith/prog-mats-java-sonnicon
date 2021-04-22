@@ -12,7 +12,7 @@ import progressed.util.*;
 
 import static mindustry.Vars.*;
 
-public class ProgressedMaterials extends Mod{
+public class ProgMats extends Mod{
     public static SettingAdder settingAdder = new SettingAdder();
 
     private final ContentList[] pmContent = {
@@ -26,7 +26,7 @@ public class ProgressedMaterials extends Mod{
         new PMTechTree()
     };
 
-    public ProgressedMaterials(){
+    public ProgMats(){
         super();
         PMSounds.load();
 

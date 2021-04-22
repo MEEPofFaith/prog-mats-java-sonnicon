@@ -28,11 +28,11 @@ public class PMTechTree implements ContentList{
             node(flame, () -> {
                 node(blaze, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
                     node(inferno, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
+                });
 
-                    //Sword
-                    node(masquerade, () -> {
-                        node(violet, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
-                    });
+                //Sword
+                node(masquerade, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
+                    node(violet, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
                 });
             });
         });

@@ -106,16 +106,16 @@ public class PMBlocks implements ContentList{
                 Items.graphite, PMBullets.standardDenseMini,
                 Items.silicon, PMBullets.standardHomingMini,
                 Items.pyratite, PMBullets.standardIncendiaryMini,
-                Items.thorium, PMBullets.standardThoriumMini,
-                Items.blastCompound, PMBullets.standardExplosiveMini
+                Items.thorium, PMBullets.standardThoriumMini
             );
             size = 4;
             range = 255f;
+            maxSpeed = 0.75f;
             health = 1800;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 4f;
+            rotateSpeed = 10f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -147,16 +147,16 @@ public class PMBlocks implements ContentList{
                 Items.graphite, PMBullets.standardDenseMini,
                 Items.silicon, PMBullets.standardHomingMini,
                 Items.pyratite, PMBullets.standardIncendiaryMini,
-                Items.thorium, PMBullets.standardThoriumMini,
-                Items.blastCompound, PMBullets.standardExplosiveMini
+                Items.thorium, PMBullets.standardThoriumMini
             );
             size = 4;
             range = 255f;
+            maxSpeed = 0.73f;
             health = 1800;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 4f;
+            rotateSpeed = 8f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -189,16 +189,16 @@ public class PMBlocks implements ContentList{
                 Items.graphite, PMBullets.standardDenseMini,
                 Items.silicon, PMBullets.standardHomingMini,
                 Items.pyratite, PMBullets.standardIncendiaryMini,
-                Items.thorium, PMBullets.standardThoriumMini,
-                Items.blastCompound, PMBullets.standardExplosiveMini
+                Items.thorium, PMBullets.standardThoriumMini
             );
             size = 4;
             range = 255f;
+            maxSpeed = 0.71f;
             health = 1800;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 4f;
+            rotateSpeed = 6f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -371,7 +371,6 @@ public class PMBlocks implements ContentList{
             reloadTime = 90f;
             shootLength = 5f / 4f;
             recoilAmount = 3f;
-            rotateSpeed = 3f;
             shootDuration = 180f;
             shootType = PMBullets.flameMagma;
 
@@ -407,7 +406,7 @@ public class PMBlocks implements ContentList{
             rangeExtention = 60f;
             reloadTime = 150f;
             shootLength = 11f / 4f;
-            rotateSpeed = 2.25f;
+            rotateSpeed = 3.5f;
             recoilAmount = 4f;
             lightningStroke = 6f;
             layers = 2;
@@ -486,7 +485,7 @@ public class PMBlocks implements ContentList{
                 bladeCenter = 122f / 8f;
                 trailWidth = 18f;
                 trailLength = 6;
-                float attackScl = 2f;
+                float attackScl = 1.25f;
                 damageRadius *= attackScl;
                 attackRadius *= attackScl;
                 swords = 5;
@@ -519,6 +518,7 @@ public class PMBlocks implements ContentList{
             ));
             size = 2;
             reloadTime = 70f;
+            rotateSpeed = 10f;
             recoilAmount = 4f;
             inaccuracy = 15f;
             range = 140f;
@@ -539,15 +539,17 @@ public class PMBlocks implements ContentList{
                 Items.titanium, PMBullets.sniperBoltTitanium,
                 Items.thorium, PMBullets.sniperBoltThorium,
                 Items.silicon, PMBullets.sniperBoltSilicon,
-                Items.surgeAlloy, PMBullets.sniperBoltSurge
+                Items.surgeAlloy, PMBullets.sniperBoltSurge,
+                PMItems.techtanite, PMBullets.sniperBoltTechtanite
             );
             size = 3;
             reloadTime = 450f;
             inaccuracy = 0f;
             range = 544f;
+            rotateSpeed = 2.5f;
+            recoilAmount = 5f;
             split = 3f;
             chargeTime = 300f;
-            shootLength = 18f;
             shootSound = Sounds.railgun;
         }};
 
@@ -676,19 +678,20 @@ public class PMBlocks implements ContentList{
             ));
             size = 4;
             health = 2140;
+            canOverdrive = false;
             reloadTime = 520f;
-            range = 128f;
+            range = 256f;
             shootEffect = smokeEffect = Fx.none;
             chargeBeginEffect = PMFx.kugelblitzChargeBegin;
             chargeEffect = PMFx.kugelblitzCharge;
             chargeMaxDelay = 30f;
             chargeEffects = 16;
             chargeTime = PMFx.kugelblitzChargeBegin.lifetime;
+            rotateSpeed = 2f;
             recoilAmount = 2f;
             restitution = 0.015f;
             cooldown = 0.005f;
             shootLength = 0f;
-            rotateSpeed = 1.25f;
             shootSound = Sounds.release;
             shootType = PMBullets.blackHole;
         }};
@@ -717,6 +720,7 @@ public class PMBlocks implements ContentList{
                 chargeTime = 180f;
                 chargeSound = PMSounds.popeshadowCharge;
                 shootSound = PMSounds.popeshadowBlast;
+                rotateSpeed = 2f;
                 recoilAmount = 8f;
                 restitution = 0.05f;
                 shootType = PMBullets.excaliburLaser;
@@ -785,14 +789,18 @@ public class PMBlocks implements ContentList{
 
         floatingConveyor = new FloatingConveyor("floating-conveyor"){{
             requirements(Category.distribution, with(
-                Items.lead, 1,
-                Items.metaglass, 2,
-                Items.plastanium, 2
+                Items.lead, 3,
+                Items.metaglass, 3,
+                Items.plastanium, 3,
+                PMItems.techtanite, 3
             ));
             health = 15;
             speed = 0.08f;
+            deepSpeed = 0.06f;
             displayedSpeed = 11f;
-            researchCostMultiplier = 500f;
+            deepDisplayedSpeed = 8.4f;
+            buildCostMultiplier = 0.25f;
+            researchCostMultiplier = 300f;
         }};
 
         // endregion

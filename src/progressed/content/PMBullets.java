@@ -4,6 +4,7 @@ import arc.graphics.*;
 import arc.math.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -14,11 +15,11 @@ public class PMBullets implements ContentList{
     public static BulletType
     flameMagma, blazeMagma, infernoMagma,
 
-    standardCopperMini, standardDenseMini, standardHomingMini, standardIncendiaryMini, standardThoriumMini, standardExplosiveMini,
+    standardCopperMini, standardDenseMini, standardHomingMini, standardIncendiaryMini, standardThoriumMini,
 
     shockZap, sparkZap, stormZap,
 
-    sniperBoltSilicon, sniperBoltGlassFrag, sniperBoltGlass, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge,
+    sniperBoltSilicon, sniperBoltGlassFrag, sniperBoltGlass, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
 
     pixel,
     
@@ -52,57 +53,50 @@ public class PMBullets implements ContentList{
             shake = 0.1f;
         }};
 
-        standardCopperMini = new BasicBulletType(2.5f, 21f){{
-            width = height = 3f;
-            lifetime = 90f;
+        standardCopperMini = new BasicBulletType(2.5f, 5f){{
+            width = 5f;
+            height = 7f;
+            lifetime = 110f;
         }};
 
-        standardDenseMini = new BasicBulletType(3.5f, 28f){{
-            width = height = 3.5f;
+        standardDenseMini = new BasicBulletType(3.5f, 10f){{
+            width = 5.5f;
+            height = 9f;
             reloadMultiplier = 0.6f;
             ammoMultiplier = 4;
             pierce = true;
             pierceCap = 2;
-            lifetime = 90f;
+            lifetime = 76f;
         }};
 
-        standardHomingMini = new BasicBulletType(3f, 23f){{
-            width = height = 2.5f;
+        standardHomingMini = new BasicBulletType(3f, 6f){{
+            width = 4f;
+            height = 6f;
             homingPower = 0.07f;
-            reloadMultiplier = 1.4f;
+            reloadMultiplier = 1.3f;
             ammoMultiplier = 5f;
-            lifetime = 90f;
+            lifetime = 92f;
         }};
 
-        standardIncendiaryMini = new BasicBulletType(3.2f, 25f){{
-            width = height = 3f;
+        standardIncendiaryMini = new BasicBulletType(3.2f, 7f){{
+            width = 5f;
+            height = 8f;
             frontColor = Pal.lightishOrange;
             backColor = Pal.lightOrange;
             inaccuracy = 5f;
             makeFire = true;
-            lifetime = 90f;
+            lifetime = 86f;
         }};
 
-        standardThoriumMini = new BasicBulletType(4f, 46f){{
-            width = height = 3f;
+        standardThoriumMini = new BasicBulletType(4f, 13f){{
+            width = 6f;
+            height = 11f;
             shootEffect = Fx.shootBig;
             smokeEffect = Fx.shootBigSmoke;
             ammoMultiplier = 4f;
             pierce = true;
-            pierceCap = 3;
-            lifetime = 90f;
-        }};
-
-        standardExplosiveMini = new BasicBulletType(3.5f, 24f){{
-            width = height = 3f;
-            shootEffect = Fx.shootBig;
-            smokeEffect = Fx.shootBigSmoke;
-            hitEffect = despawnEffect = Fx.blastExplosion;
-            splashDamage = 34f;
-            splashDamageRadius = 12f;
-            inaccuracy = 6f;
-            ammoMultiplier = 3;
-            lifetime = 90f;
+            pierceCap = 2;
+            lifetime = 66f;
         }};
 
         shockZap = new LightningBulletType(){{
@@ -138,34 +132,39 @@ public class PMBullets implements ContentList{
             backMove = false;
         }};
 
-        sniperBoltSilicon = new CritBulletType(25f, 300f){{
-            lifetime = 25f;
+        sniperBoltSilicon = new CritBulletType(12f, 300f){{
+            lifetime = 48f;
             knockback = 5f;
             width = 5f;
-            trailWidth = width / 4f;
             height = 8f;
+            pierceCap = 20;
             reloadMultiplier = 1.2f;
             critChance = 0.2f;
             critMultiplier = 2f;
             homingRange = 200f;
-            homingPower = 0.8f;
+            homingPower = 0.4f;
         }};
 
-        sniperBoltGlassFrag = new CritBulletType(15f, 50f){{
-            lifetime = 2f;
-            width = 2f;
-            trailWidth = width / 4f;
-            height = 3f;
-            pierceCap = 4;
+        sniperBoltGlassFrag = new CritBulletType(8f, 50f){{
+            frontColor = Color.white;
+            backColor = hitColor = Color.valueOf("D0D0E0");
+            lifetime = 3f;
+            width = 3f;
+            height = 4f;
+            pierceCap = 2;
             critMultiplier = 10f;
             trailLength = 0;
+            critEffect = Fx.none;
+            hitEffect = Fx.hitBulletSmall;
+            despawnEffect = Fx.none;
         }};
 
-        sniperBoltGlass = new CritBulletType(17f, 200f){{
-            lifetime = 35f;
+        sniperBoltGlass = new CritBulletType(11f, 200f){{
+            frontColor = Color.white;
+            backColor = hitColor = Color.valueOf("D0D0E0");
+            lifetime = 53f;
             knockback = 5f;
             width = 6f;
-            trailWidth = width / 4f;
             height = 10f;
             pierceCap = 15;
             fragBullets = 5;
@@ -174,41 +173,94 @@ public class PMBullets implements ContentList{
             critMultiplier = 10f;
         }};
 
-        sniperBoltTitanium = new CritBulletType(22f, 500f){{
-            lifetime = 30f;
+        sniperBoltTitanium = new CritBulletType(13f, 500f){{
+            lifetime = 45f;
             knockback = 5f;
             width = 7f;
-            trailWidth = width / 4f;
             height = 12f;
             pierceCap = 26;
             reloadMultiplier = 1.7f;
             critMultiplier = 3.5f;
         }};
 
-        sniperBoltThorium = new CritBulletType(20f, 800f){{
-            lifetime = 30f;
+        sniperBoltThorium = new CritBulletType(12f, 800f){{
+            lifetime = 51f;
             knockback = 5f;
             width = 8f;
-            trailWidth = width / 4f;
             height = 14f;
             pierceCap = 30;
+            critMultiplier = 4.5f;
         }};
 
-        sniperBoltSurge = new CritBulletType(27f, 1000f){{
-            lifetime = 22f;
+        sniperBoltSurge = new CritBulletType(14f, 1000f){{
+            frontColor = Color.valueOf("F3E979");
+            backColor = hitColor = Color.valueOf("D99F6B");
+            lifetime = 42f;
             knockback = 5f;
             width = 10f;
-            trailWidth = width / 4f;
             height = 19f;
             pierceCap = 40;
-            reloadMultiplier = 0.4f;
+            reloadMultiplier = 0.7f;
             lightning = 5;
             lightningLength = 3;
             lightningLengthRand = 2;
             lightningDamage = 40f;
-            critChance = 0.2f;
-            critMultiplier = 6f;
+            critChance = 0.25f;
+            critMultiplier = 5f;
         }};
+
+        sniperBoltTechtaniteFrag = new CritBulletType(13f, 160f){{
+            lifetime = 23f;
+            knockback = 2f;
+            width = 6f;
+            height = 14f;
+            trailLength = 10;
+            pierceCap = 12;
+            critMultiplier = 3f;
+        }};
+
+        sniperBoltTechtanite = new CritBulletType(13f, 800f){
+            float fragInacc = 5f;
+
+            {
+                lifetime = 23f;
+                knockback = 3f;
+                width = 9f;
+                height = 16f;
+                trailLength = 10;
+                pierceCap = 15;
+                fragBullets = 5;
+                fragBullet = sniperBoltTechtaniteFrag;
+                fragVelocityMin = 0.8f;
+                fragVelocityMax = 1.2f;
+                fragCone = 30f;
+                critChance = 0.25f;
+                critMultiplier = 3f;
+            }
+
+            @Override
+            public void hit(Bullet b, float x, float y){
+                b.hit = true;
+                if(!((CritBulletData)b.data).despawned){
+                    hitEffect.at(x, y, b.rotation(), hitColor);
+                    hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
+                }
+
+                Effect.shake(hitShake, hitShake, b);
+            }
+
+            @Override
+            public void despawned(Bullet b){ //Only frag on despawn
+                for(int i = 0; i < fragBullets; i++){
+                    float a = b.rotation() + ((fragCone / fragBullets) * (i - (fragBullets - 1f) / 2f)) + Mathf.range(fragInacc);
+                    if(fragBullet instanceof CritBulletType critB){
+                        critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(((CritBulletData)b.data).crit, new Trail(critB.trailLength)));
+                    }
+                }
+
+                super.despawned(b);
+            }
+        };
 
         pixel = new BitBulletType(2f, 5f){{
             lifetime = 90f;
@@ -227,8 +279,8 @@ public class PMBullets implements ContentList{
         strikeSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.strikeSentry);
         dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
 
-        blackHole = new BlackHoleBulletType(0.5f, 575f / 30f){{
-            lifetime = 420f;
+        blackHole = new BlackHoleBulletType(0.5f, 1400f / 30f){{
+            lifetime = 630f;
             backMove = false;
             lightRadius = 8f;
             lightOpacity = 0.7f;

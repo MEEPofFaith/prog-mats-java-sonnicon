@@ -1,6 +1,7 @@
 package progressed.entities.bullet;
 
 import arc.math.*;
+import arc.util.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
@@ -15,8 +16,8 @@ import static mindustry.Vars.*;
 public class CritBulletType extends BasicBulletType{
     public float critChance = 0.15f, critMultiplier = 5f;
     public Effect critEffect = PMFx.sniperCrit;
-    public int trailLength = 6; 
-    public float trailWidth = 4f;
+    public int trailLength = 20;
+    public float trailWidth = -1f;
 
     public CritBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
@@ -27,6 +28,7 @@ public class CritBulletType extends BasicBulletType{
         smokeEffect = Fx.shootBigSmoke;
         hitEffect = PMFx.critPierce;
         drawSize = 300f;
+        hitColor = Pal.lightOrange;
     }
 
     public CritBulletType(float speed, float damage){
@@ -35,6 +37,13 @@ public class CritBulletType extends BasicBulletType{
 
     public CritBulletType(){
         this(1f, 1f);
+    }
+
+    @Override
+    public void init(){
+        super.init();
+
+        if(trailWidth < 0f) trailWidth = width * (10f / 52f); //Should match up with normal bullet sprite
     }
 
     @Override
@@ -65,22 +74,43 @@ public class CritBulletType extends BasicBulletType{
 
         if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.update(b.x, b.y);
 
-        super.update(b);
+        if(homingPower > 0.0001f && b.time >= homingDelay){
+            Teamc target = Units.closestTarget(b.team, b.x, b.y, homingRange, e -> ((e.isGrounded() && collidesGround) || (e.isFlying() && collidesAir)) && !b.collided.contains(e.id), t -> collidesGround && !b.collided.contains(t.id));
+            if(target != null){
+                b.vel.setAngle(Angles.moveToward(b.rotation(), b.angleTo(target), homingPower * Time.delta * 50f));
+            }
+        }
+
+        if(weaveMag > 0){
+            b.vel.rotate(Mathf.sin(b.time + Mathf.PI * weaveScale/2f, weaveScale, weaveMag * (Mathf.randomSeed(b.id, 0, 1) == 1 ? -1 : 1)) * Time.delta);
+        }
+
+        if(trailChance > 0){
+            if(Mathf.chanceDelta(trailChance)){
+                trailEffect.at(b.x, b.y, trailParam, trailColor);
+            }
+        }
     }
 
     @Override
     public void despawned(Bullet b){
-        if(((CritBulletData)b.data).trail instanceof Trail tr) tr.clear();
+        if(b.data instanceof CritBulletData data){
+            if(data.trail instanceof Trail tr) tr.clear();
+            data.despawned = true;
+        }
         super.despawned(b);
     }
 
     @Override
     public void hit(Bullet b, float x, float y){
-        boolean crit = ((CritBulletData)b.data).crit;
+        CritBulletData data = (CritBulletData)b.data;
+        boolean crit = data.crit;
         float critBonus = crit ? this.critMultiplier : 1f;
         b.hit = true;
-        hitEffect.at(x, y, b.rotation(), hitColor);
-        hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
+        if(!data.despawned){
+            hitEffect.at(x, y, b.rotation(), hitColor);
+            hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
+        }
 
         Effect.shake(hitShake, hitShake, b);
 
@@ -136,7 +166,7 @@ public class CritBulletType extends BasicBulletType{
     }
 
     public static class CritBulletData{
-        protected boolean crit;
+        public boolean crit, despawned;
         protected Trail trail;
 
         public CritBulletData(boolean crit, Trail trail){

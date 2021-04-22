@@ -16,7 +16,7 @@ import static mindustry.Vars.*;
 public class CritBulletType extends BasicBulletType{
     public float critChance = 0.15f, critMultiplier = 5f;
     public Effect critEffect = PMFx.sniperCrit;
-    public int trailLength = 20; 
+    public int trailLength = 20;
     public float trailWidth = -1f;
 
     public CritBulletType(float speed, float damage, String sprite){
@@ -94,17 +94,23 @@ public class CritBulletType extends BasicBulletType{
 
     @Override
     public void despawned(Bullet b){
-        if(((CritBulletData)b.data).trail instanceof Trail tr) tr.clear();
+        if(b.data instanceof CritBulletData data){
+            if(data.trail instanceof Trail tr) tr.clear();
+            data.despawned = true;
+        }
         super.despawned(b);
     }
 
     @Override
     public void hit(Bullet b, float x, float y){
-        boolean crit = ((CritBulletData)b.data).crit;
+        CritBulletData data = (CritBulletData)b.data;
+        boolean crit = data.crit;
         float critBonus = crit ? this.critMultiplier : 1f;
         b.hit = true;
-        hitEffect.at(x, y, b.rotation(), hitColor);
-        hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
+        if(!data.despawned){
+            hitEffect.at(x, y, b.rotation(), hitColor);
+            hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
+        }
 
         Effect.shake(hitShake, hitShake, b);
 
@@ -160,7 +166,7 @@ public class CritBulletType extends BasicBulletType{
     }
 
     public static class CritBulletData{
-        protected boolean crit;
+        public boolean crit, despawned;
         protected Trail trail;
 
         public CritBulletData(boolean crit, Trail trail){

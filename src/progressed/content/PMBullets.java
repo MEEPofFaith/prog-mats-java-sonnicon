@@ -4,6 +4,7 @@ import arc.graphics.*;
 import arc.math.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
+import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -18,7 +19,7 @@ public class PMBullets implements ContentList{
 
     shockZap, sparkZap, stormZap,
 
-    sniperBoltSilicon, sniperBoltGlassFrag, sniperBoltGlass, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge,
+    sniperBoltSilicon, sniperBoltGlassFrag, sniperBoltGlass, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
 
     pixel,
     
@@ -136,6 +137,7 @@ public class PMBullets implements ContentList{
             knockback = 5f;
             width = 5f;
             height = 8f;
+            pierceCap = 20;
             reloadMultiplier = 1.2f;
             critChance = 0.2f;
             critMultiplier = 2f;
@@ -187,6 +189,7 @@ public class PMBullets implements ContentList{
             width = 8f;
             height = 14f;
             pierceCap = 30;
+            critMultiplier = 4.5f;
         }};
 
         sniperBoltSurge = new CritBulletType(14f, 1000f){{
@@ -203,8 +206,61 @@ public class PMBullets implements ContentList{
             lightningLengthRand = 2;
             lightningDamage = 40f;
             critChance = 0.25f;
-            critMultiplier = 6f;
+            critMultiplier = 5f;
         }};
+
+        sniperBoltTechtaniteFrag = new CritBulletType(13f, 160f){{
+            lifetime = 23f;
+            knockback = 2f;
+            width = 6f;
+            height = 14f;
+            trailLength = 10;
+            pierceCap = 12;
+            critMultiplier = 3f;
+        }};
+
+        sniperBoltTechtanite = new CritBulletType(13f, 800f){
+            float fragInacc = 5f;
+
+            {
+                lifetime = 23f;
+                knockback = 3f;
+                width = 9f;
+                height = 16f;
+                trailLength = 10;
+                pierceCap = 15;
+                fragBullets = 5;
+                fragBullet = sniperBoltTechtaniteFrag;
+                fragVelocityMin = 0.8f;
+                fragVelocityMax = 1.2f;
+                fragCone = 30f;
+                critChance = 0.25f;
+                critMultiplier = 3f;
+            }
+
+            @Override
+            public void hit(Bullet b, float x, float y){
+                b.hit = true;
+                if(!((CritBulletData)b.data).despawned){
+                    hitEffect.at(x, y, b.rotation(), hitColor);
+                    hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
+                }
+
+                Effect.shake(hitShake, hitShake, b);
+            }
+
+            @Override
+            public void despawned(Bullet b){ //Only frag on despawn
+                for(int i = 0; i < fragBullets; i++){
+                    float a = b.rotation() + ((fragCone / fragBullets) * (i - (fragBullets - 1f) / 2f)) + Mathf.range(fragInacc);
+                    if(fragBullet instanceof CritBulletType critB){
+                        critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(((CritBulletData)b.data).crit, new Trail(critB.trailLength)));
+                    }
+                }
+
+                super.despawned(b);
+            }
+        };
 
         pixel = new BitBulletType(2f, 5f){{
             lifetime = 90f;

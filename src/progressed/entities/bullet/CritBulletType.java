@@ -16,8 +16,8 @@ import static mindustry.Vars.*;
 public class CritBulletType extends BasicBulletType{
     public float critChance = 0.15f, critMultiplier = 5f;
     public Effect critEffect = PMFx.sniperCrit;
-    public int trailLength = 6; 
-    public float trailWidth = 4f;
+    public int trailLength = 20; 
+    public float trailWidth = -1f;
 
     public CritBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
@@ -28,6 +28,7 @@ public class CritBulletType extends BasicBulletType{
         smokeEffect = Fx.shootBigSmoke;
         hitEffect = PMFx.critPierce;
         drawSize = 300f;
+        hitColor = Pal.lightOrange;
     }
 
     public CritBulletType(float speed, float damage){
@@ -36,6 +37,13 @@ public class CritBulletType extends BasicBulletType{
 
     public CritBulletType(){
         this(1f, 1f);
+    }
+
+    @Override
+    public void init(){
+        super.init();
+
+        if(trailWidth < 0f) trailWidth = width * (10f / 52f); //Should match up with normal bullet sprite
     }
 
     @Override

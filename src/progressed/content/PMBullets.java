@@ -135,7 +135,6 @@ public class PMBullets implements ContentList{
             lifetime = 48f;
             knockback = 5f;
             width = 5f;
-            trailWidth = width / 4f;
             height = 8f;
             reloadMultiplier = 1.2f;
             critChance = 0.2f;
@@ -146,23 +145,24 @@ public class PMBullets implements ContentList{
 
         sniperBoltGlassFrag = new CritBulletType(8f, 50f){{
             frontColor = Color.white;
-            backColor = Color.valueOf("D0D0E0");
+            backColor = hitColor = Color.valueOf("D0D0E0");
             lifetime = 3f;
-            width = 2f;
-            trailWidth = width / 4f;
-            height = 3f;
+            width = 3f;
+            height = 4f;
             pierceCap = 2;
             critMultiplier = 10f;
             trailLength = 0;
+            critEffect = Fx.none;
+            hitEffect = Fx.hitBulletSmall;
+            despawnEffect = Fx.none;
         }};
 
         sniperBoltGlass = new CritBulletType(11f, 200f){{
             frontColor = Color.white;
-            backColor = Color.valueOf("D0D0E0");
+            backColor = hitColor = Color.valueOf("D0D0E0");
             lifetime = 53f;
             knockback = 5f;
             width = 6f;
-            trailWidth = width / 4f;
             height = 10f;
             pierceCap = 15;
             fragBullets = 5;
@@ -175,7 +175,6 @@ public class PMBullets implements ContentList{
             lifetime = 45f;
             knockback = 5f;
             width = 7f;
-            trailWidth = width / 4f;
             height = 12f;
             pierceCap = 26;
             reloadMultiplier = 1.7f;
@@ -186,26 +185,24 @@ public class PMBullets implements ContentList{
             lifetime = 51f;
             knockback = 5f;
             width = 8f;
-            trailWidth = width / 4f;
             height = 14f;
             pierceCap = 30;
         }};
 
         sniperBoltSurge = new CritBulletType(14f, 1000f){{
             frontColor = Color.valueOf("F3E979");
-            backColor = Color.valueOf("D99F6B");
+            backColor = hitColor = Color.valueOf("D99F6B");
             lifetime = 42f;
             knockback = 5f;
             width = 10f;
-            trailWidth = width / 4f;
             height = 19f;
             pierceCap = 40;
-            reloadMultiplier = 0.4f;
+            reloadMultiplier = 0.7f;
             lightning = 5;
             lightningLength = 3;
             lightningLengthRand = 2;
             lightningDamage = 40f;
-            critChance = 0.2f;
+            critChance = 0.25f;
             critMultiplier = 6f;
         }};
 

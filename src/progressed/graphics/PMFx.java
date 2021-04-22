@@ -54,16 +54,17 @@ public class PMFx{
     critPierce = new Effect(20f, e -> {
         float rot = e.rotation - 90f;
         float fin = e.fin(Interp.pow5Out);
-        float fout = 1f - Interp.pow2Out.apply(Mathf.curve(e.time, e.lifetime - 6f, e.lifetime));
+        float end = e.lifetime - 6f;
+        float fout = 1f - Interp.pow2Out.apply(Mathf.curve(e.time, end, e.lifetime));
         float width = fin * fout;
 
         e.scaled(7f, s -> {
             stroke(0.5f + s.fout());
-            color(Color.white, Pal.lightOrange, s.fin());
+            color(Color.white, e.color, s.fin());
             Lines.circle(e.x + trnsx(rot, 0f, 5f * fin), e.y + trnsy(rot, 0f, 5f * fin), s.fin() * 6f);
         });
 
-        color(Color.white, Pal.lightOrange, Mathf.curve(e.time, 0f, e.lifetime - 6f));
+        color(Color.white, e.color, Mathf.curve(e.time, 0f, end));
 
         Fill.quad(
             e.x + trnsx(rot, 0f, 2f * fin), e.y + trnsy(rot, 0f, 2f * fin),

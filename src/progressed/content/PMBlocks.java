@@ -545,9 +545,9 @@ public class PMBlocks implements ContentList{
             reloadTime = 450f;
             inaccuracy = 0f;
             range = 544f;
+            recoilAmount = 5f;
             split = 3f;
             chargeTime = 300f;
-            shootLength = 18f;
             shootSound = Sounds.railgun;
         }};
 

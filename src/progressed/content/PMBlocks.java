@@ -549,7 +549,7 @@ public class PMBlocks implements ContentList{
             rotateSpeed = 2.5f;
             recoilAmount = 5f;
             split = 3f;
-            chargeTime = 300f;
+            chargeTime = 150f;
             shootSound = Sounds.railgun;
         }};
 

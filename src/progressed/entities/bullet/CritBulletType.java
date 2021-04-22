@@ -50,9 +50,9 @@ public class CritBulletType extends BasicBulletType{
     public void init(Bullet b){
         if(b.data == null){
             if(Mathf.chance(critChance)){
-                b.data = new CritBulletData(true, new Trail(trailLength));
+                b.data = new CritBulletData(true, new FixedTrail(trailLength));
             }else{
-                b.data = new CritBulletData(false, new Trail(trailLength));
+                b.data = new CritBulletData(false, new FixedTrail(trailLength));
             }
         }
         if(((CritBulletData)b.data).crit) b.damage *= critMultiplier;
@@ -62,7 +62,7 @@ public class CritBulletType extends BasicBulletType{
 
     @Override
     public void draw(Bullet b){
-        if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.draw(backColor, trailWidth);
+        if(((CritBulletData)b.data).trail instanceof FixedTrail tr && trailLength > 0) tr.draw(backColor, trailWidth);
         super.draw(b);
     }
 
@@ -71,8 +71,6 @@ public class CritBulletType extends BasicBulletType{
         if(Mathf.chanceDelta(1) && ((CritBulletData)b.data).crit){
             critEffect.at(b.x, b.y, b.rotation(), b.team.color);
         }
-
-        if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.update(b.x, b.y);
 
         if(homingPower > 0.0001f && b.time >= homingDelay){
             Teamc target = Units.closestTarget(b.team, b.x, b.y, homingRange, e -> ((e.isGrounded() && collidesGround) || (e.isFlying() && collidesAir)) && !b.collided.contains(e.id), t -> collidesGround && !b.collided.contains(t.id));
@@ -90,12 +88,14 @@ public class CritBulletType extends BasicBulletType{
                 trailEffect.at(b.x, b.y, trailParam, trailColor);
             }
         }
+
+        if(((CritBulletData)b.data).trail instanceof FixedTrail tr && trailLength > 0) tr.update(b.x, b.y, b.rotation());
     }
 
     @Override
     public void despawned(Bullet b){
         if(b.data instanceof CritBulletData data){
-            if(data.trail instanceof Trail tr) tr.clear();
+            if(data.trail instanceof FixedTrail tr) tr.clear();
             data.despawned = true;
         }
         super.despawned(b);
@@ -121,7 +121,7 @@ public class CritBulletType extends BasicBulletType{
                 if(fragBullet instanceof StrikeBulletType missle){
                     missle.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new StrikeBulletData(x, y));
                 }else if(fragBullet instanceof CritBulletType critB){
-                    critB.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new CritBulletData(crit, new Trail(critB.trailLength)));
+                    critB.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new CritBulletData(crit, new FixedTrail(critB.trailLength)));
                 }else{
                     fragBullet.create(b, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax));
                 }
@@ -167,9 +167,9 @@ public class CritBulletType extends BasicBulletType{
 
     public static class CritBulletData{
         public boolean crit, despawned;
-        protected Trail trail;
+        protected FixedTrail trail;
 
-        public CritBulletData(boolean crit, Trail trail){
+        public CritBulletData(boolean crit, FixedTrail trail){
             this.crit = crit;
             this.trail = trail;
         }

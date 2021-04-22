@@ -162,10 +162,21 @@ public class PMFx{
         });
     }),
     
+    sniperCritMini = new Effect(90f, e -> {
+        Tmp.v1.trns(e.rotation + 90f, 0f, 32f * e.fin(Interp.pow2Out));
+        
+        randLenVectors(e.id, 2, 18f, (x, y) -> {
+            float rot = Mathf.randomSeed((long)(e.id + x + y), 360);
+            float tx = x * e.fin(Interp.pow2Out);
+            float ty = y * e.fin(Interp.pow2Out);
+            PMDrawf.plus(e.x + tx + Tmp.v1.x, e.y + ty + Tmp.v1.y, 3f, rot, e.color, e.fout());
+        });
+    }),
+    
     sniperCrit = new Effect(120f, e -> {
         Tmp.v1.trns(e.rotation + 90f, 0f, 48f * e.fin(Interp.pow2Out));
         
-        randLenVectors(e.id, 12, 24f, (x, y) -> {
+        randLenVectors(e.id, 6, 24f, (x, y) -> {
             float rot = Mathf.randomSeed((long)(e.id + x + y), 360);
             float tx = x * e.fin(Interp.pow2Out);
             float ty = y * e.fin(Interp.pow2Out);

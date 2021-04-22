@@ -138,7 +138,7 @@ public class PMBullets implements ContentList{
             critChance = 0.2f;
             critMultiplier = 2f;
             homingRange = 200f;
-            homingPower = 0.4f;
+            homingPower = 0.6f;
         }};
 
         sniperBoltGlassFrag = new CritBulletType(8f, 50f){{
@@ -211,8 +211,9 @@ public class PMBullets implements ContentList{
             width = 6f;
             height = 14f;
             trailLength = 10;
-            pierceCap = 12;
+            pierceCap = 13;
             critMultiplier = 3f;
+            critEffect = PMFx.sniperCritMini;
         }};
 
         sniperBoltTechtanite = new CritBulletType(13f, 800f){
@@ -250,7 +251,8 @@ public class PMBullets implements ContentList{
                 for(int i = 0; i < fragBullets; i++){
                     float a = b.rotation() + ((fragCone / fragBullets) * (i - (fragBullets - 1f) / 2f)) + Mathf.range(fragInacc);
                     if(fragBullet instanceof CritBulletType critB){
-                        critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(((CritBulletData)b.data).crit, new Trail(critB.trailLength)));
+                        Bullet bullet = critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(((CritBulletData)b.data).crit, new FixedTrail(critB.trailLength)));
+                        bullet.collided.add(b.collided.peek());
                     }
                 }
 

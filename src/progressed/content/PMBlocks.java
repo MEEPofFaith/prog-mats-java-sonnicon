@@ -115,7 +115,7 @@ public class PMBlocks implements ContentList{
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 4f;
+            rotateSpeed = 10f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -156,7 +156,7 @@ public class PMBlocks implements ContentList{
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 4f;
+            rotateSpeed = 8f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -198,7 +198,7 @@ public class PMBlocks implements ContentList{
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 4f;
+            rotateSpeed = 6f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
@@ -371,7 +371,6 @@ public class PMBlocks implements ContentList{
             reloadTime = 90f;
             shootLength = 5f / 4f;
             recoilAmount = 3f;
-            rotateSpeed = 3f;
             shootDuration = 180f;
             shootType = PMBullets.flameMagma;
 
@@ -407,7 +406,7 @@ public class PMBlocks implements ContentList{
             rangeExtention = 60f;
             reloadTime = 150f;
             shootLength = 11f / 4f;
-            rotateSpeed = 2.25f;
+            rotateSpeed = 3.5f;
             recoilAmount = 4f;
             lightningStroke = 6f;
             layers = 2;
@@ -519,6 +518,7 @@ public class PMBlocks implements ContentList{
             ));
             size = 2;
             reloadTime = 70f;
+            rotateSpeed = 10f;
             recoilAmount = 4f;
             inaccuracy = 15f;
             range = 140f;
@@ -546,6 +546,7 @@ public class PMBlocks implements ContentList{
             reloadTime = 450f;
             inaccuracy = 0f;
             range = 544f;
+            rotateSpeed = 2.5f;
             recoilAmount = 5f;
             split = 3f;
             chargeTime = 300f;
@@ -686,11 +687,11 @@ public class PMBlocks implements ContentList{
             chargeMaxDelay = 30f;
             chargeEffects = 16;
             chargeTime = PMFx.kugelblitzChargeBegin.lifetime;
+            rotateSpeed = 2f;
             recoilAmount = 2f;
             restitution = 0.015f;
             cooldown = 0.005f;
             shootLength = 0f;
-            rotateSpeed = 1.25f;
             shootSound = Sounds.release;
             shootType = PMBullets.blackHole;
         }};
@@ -719,6 +720,7 @@ public class PMBlocks implements ContentList{
                 chargeTime = 180f;
                 chargeSound = PMSounds.popeshadowCharge;
                 shootSound = PMSounds.popeshadowBlast;
+                rotateSpeed = 2f;
                 recoilAmount = 8f;
                 restitution = 0.05f;
                 shootType = PMBullets.excaliburLaser;

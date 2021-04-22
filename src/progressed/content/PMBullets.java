@@ -64,8 +64,6 @@ public class PMBullets implements ContentList{
             height = 9f;
             reloadMultiplier = 0.6f;
             ammoMultiplier = 4;
-            pierce = true;
-            pierceCap = 2;
             lifetime = 76f;
         }};
 
@@ -94,8 +92,6 @@ public class PMBullets implements ContentList{
             shootEffect = Fx.shootBig;
             smokeEffect = Fx.shootBigSmoke;
             ammoMultiplier = 4f;
-            pierce = true;
-            pierceCap = 2;
             lifetime = 66f;
         }};
 

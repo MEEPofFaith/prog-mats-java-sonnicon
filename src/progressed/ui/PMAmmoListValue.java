@@ -15,6 +15,7 @@ import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 import progressed.entities.bullet.*;
+import progressed.entities.units.*;
 
 import static mindustry.Vars.*;
 
@@ -60,6 +61,12 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
                     sep(bt, Core.bundle.format("bullet.pm-crit-multiplier", (int)stype.critMultiplier));
                 }
 
+                if(type instanceof SignalFlareBulletType stype && stype.spawn instanceof FlareUnitType u){
+                    sep(bt, Core.bundle.format("bullet.pm-flare-health", u.health));
+                    sep(bt, Core.bundle.format("bullet.pm-flare-attraction", u.attraction));
+                    sep(bt, Core.bundle.format("bullet.pm-flare-lifetime", (int)(u.duration / 60f)));
+                }
+
                 if(type.buildingDamageMultiplier != 1){
                     sep(bt, Core.bundle.format("bullet.buildingdamage", (int)(type.buildingDamageMultiplier * 100)));
                 }
@@ -102,6 +109,20 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
 
                 if(type.lightning > 0){
                     sep(bt, Core.bundle.format("bullet.lightning", type.lightning, type.lightningDamage < 0 ? type.damage : type.lightningDamage));
+                }
+
+                if(type instanceof UnitSpawnBulletType stype){
+                    bt.row();
+                    UnitType s = stype.spawn;
+                    bt.image(s.icon(Cicon.full)).size(3 * 8);
+                    bt.add("[stat]" + s.localizedName);
+                }
+
+                if(type instanceof UnitSpawnStrikeBulletType stype){
+                    bt.row();
+                    UnitType s = stype.spawn;
+                    bt.image(s.icon(Cicon.full)).size(3 * 8);   
+                    bt.add("[stat]" + s.localizedName);
                 }
 
                 if(type.fragBullet != null){

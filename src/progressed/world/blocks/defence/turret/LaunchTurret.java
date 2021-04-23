@@ -14,6 +14,8 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.meta.*;
+import progressed.ui.*;
 import progressed.util.*;
 
 public class LaunchTurret extends ItemTurret{
@@ -41,6 +43,14 @@ public class LaunchTurret extends ItemTurret{
             arrowRegions[i] = Core.atlas.find(name + "-arrow-" + i);
         }
         topRegion = Core.atlas.find(name + "-top");
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.ammo);
+        stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
     }
 
     @Override

@@ -4,7 +4,6 @@ import arc.func.*;
 import arc.graphics.*;
 import arc.struct.*;
 import arc.struct.ObjectMap.*;
-import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
@@ -22,8 +21,9 @@ import progressed.graphics.*;
 public class PMUnitTypes implements ContentList{
     //Steal from BetaMindy
     private static Entry<Class<? extends Entityc>, Prov<? extends Entityc>>[] types = new Entry[]{
+        prov(Extension.class, Extension::create),
         prov(SentryUnitEntity.class, SentryUnitEntity::new),
-        prov(Extension.class, Extension::create)
+        prov(FlareUnitEntity.class, FlareUnitEntity::new)
     };
 
     private static ObjectIntMap<Class<? extends Entityc>> idMap = new ObjectIntMap<>();
@@ -74,6 +74,9 @@ public class PMUnitTypes implements ContentList{
     
     //sentry
     basicSentry, strikeSentry, dashSentry,
+
+    //signal flare
+    flareSmall, flareMedium, flareLarge,
     
     //sandy
     everythingUnit;
@@ -186,6 +189,29 @@ public class PMUnitTypes implements ContentList{
                 }});
             }
         };
+
+        EntityMapping.nameMap.put("small-flare", FlareUnitEntity::new);
+        flareSmall = new FlareUnitType("small-flare"){{
+            health = 300f;
+            attraction = 800f;
+            flareY = 29f / 4f;
+        }};
+
+        EntityMapping.nameMap.put("medium-flare", FlareUnitEntity::new);
+        flareMedium = new FlareUnitType("medium-flare", 360f){{
+            health = 1000f;
+            attraction = 11000f;
+            flareY = 45f / 4f;
+            flareEffectSize = 1.5f;
+        }};
+
+        EntityMapping.nameMap.put("large-flare", FlareUnitEntity::new);
+        flareLarge = new FlareUnitType("large-flare", 420f){{
+            health = 4000f;
+            attraction = 26000f;
+            flareY = 61f / 4f;
+            flareEffectSize = 2f;
+        }};
 
         EntityMapping.nameMap.put("god", UnitEntity::create);
         everythingUnit = new UnitType("god"){

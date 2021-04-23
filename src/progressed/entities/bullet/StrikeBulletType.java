@@ -12,6 +12,7 @@ import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
+import progressed.graphics.*;
 
 import static mindustry.Vars.*;
 
@@ -34,7 +35,7 @@ public class StrikeBulletType extends BasicBulletType{
     public StrikeBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
         ammoMultiplier = 1;
-        backMove = collides = hittable = absorbable = keepVelocity = false;
+        backMove = collides = hittable = absorbable = reflectable = keepVelocity = false;
         hitEffect = Fx.blockExplosionSmoke;
         shootEffect = smokeEffect = Fx.none;
         lightRadius = 32f;
@@ -196,7 +197,7 @@ public class StrikeBulletType extends BasicBulletType{
             float a = fadeOut + Interp.pow5Out.apply(fadeIn);
             float rRocket = Interp.pow5In.apply(Mathf.curve(b.time, 0f, riseEngineTime)) - Interp.pow5In.apply(Mathf.curve(b.time, riseEngineTime, riseTime));
             float fRocket = Interp.pow5In.apply(Mathf.curve(b.time, b.lifetime - fallTime, b.lifetime - fallTime + fallEngineTime));
-            float target = Mathf.curve(b.time, 0f, 8f) - Mathf.curve(b.time, b.lifetime - 8f, b.lifetime);
+            float target = Mathf.curve(b.time, 0f, riseTime / 2f) - Mathf.curve(b.time, b.lifetime - fallTime / 2f, b.lifetime);
             float rot = snapRot ? b.rotation() + 90f : rise * riseSpin + fadeIn * fallSpin;
             Tmp.v1.trns(225f, rise * elevation * 2f);
             Tmp.v2.trns(225f, fall * elevation * 2f);
@@ -237,9 +238,7 @@ public class StrikeBulletType extends BasicBulletType{
                     Draw.z(Layer.effect + 0.001f);
                     Draw.color(engineLightColor);
                     Fill.light(rX, rY, 10, riseEngineSize * 1.5625f * rRocket, Tmp.c1.set(Pal.engine).mul(1f, 1f, 1f, rRocket), Tmp.c2.set(Pal.engine).mul(1, 1f, 1f, 0f));
-                    for(int i = 0; i < 4; i++){
-                        Drawf.tri(rX, rY, riseEngineSize * 0.375f, riseEngineSize * 2.5f * rRocket, i * 90f + (Time.time * 1.5f + Mathf.randomSeed(b.id, 360f)));
-                    }
+                    PMDrawf.cross(rX, rY, riseEngineSize * 0.375f, riseEngineSize * 2.5f * rRocket, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f));
                     Drawf.light(b.team, rX, rY, riseEngineLightRadius * rRocket, engineLightColor, engineLightOpacity * rRocket);
                 }
                 //Missile itself
@@ -264,9 +263,7 @@ public class StrikeBulletType extends BasicBulletType{
                     Draw.z(Layer.weather - 1f);
                     Draw.color(engineLightColor);
                     Fill.light(fX, fY, 10, fallEngineSize * 1.5625f * fRocket, Tmp.c1.set(Pal.engine).mul(1f, 1f, 1f, fRocket), Tmp.c2.set(Pal.engine).mul(1f, 1f, 1f, 0f));
-                    for(int i = 0; i < 4; i++){
-                        Drawf.tri(fX, fY, fallEngineSize * 0.375f, fallEngineSize * 2.5f * fRocket, i * 90f + (Time.time * 1.5f + Mathf.randomSeed(b.id + 2, 360f)));
-                    }
+                    PMDrawf.cross(fX, fY, riseEngineSize * 0.375f, riseEngineSize * 2.5f * fRocket, Time.time * 1.5f + Mathf.randomSeed(b.id + 2, 360f));
                     Drawf.light(b.team, fX, fY, fallEngineLightRadius * fRocket, engineLightColor, engineLightOpacity * fRocket);
                 }
                 //Missile shadow

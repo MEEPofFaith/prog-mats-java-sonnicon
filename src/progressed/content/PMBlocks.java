@@ -49,7 +49,7 @@ public class PMBlocks implements ContentList{
     caliber,
 
     //Misc
-    tinker,
+    tinker, signal,
 
     //Missiles
     firestorm, strikedown, arbiter,
@@ -577,6 +577,28 @@ public class PMBlocks implements ContentList{
             shootLength = 16f;
         }};
 
+        signal = new SignalFlareTurret("signal"){{
+            requirements(Category.turret, with(
+                Items.lead, 80,
+                Items.silicon, 130,
+                Items.plastanium, 110,
+                PMItems.techtanite, 90
+            ));
+            ammo(
+                Items.silicon, PMBullets.smallFlare,
+                PMItems.techtanite, PMBullets.mediumFlare,
+                Items.surgeAlloy, PMBullets.largeFlare
+            );
+            size = 2;
+            minRange = 5f * tilesize;
+            range = 60f * tilesize;
+            shootLength = 23f / 4f;
+            reloadTime = 900f;
+            inaccuracy = 10f;
+            velocityInaccuracy = 0.2f;
+            shootSound = Sounds.shootSnap;
+        }};
+
         firestorm = new MissileTurret("firestorm"){{
             requirements(Category.turret, with(
                 Items.copper, 180,
@@ -847,12 +869,12 @@ public class PMBlocks implements ContentList{
             size = 5;
             craftTime = 300f;
             itemCapacity = 15;
-            consumes.power(14f);
+            consumes.power(8f);
             consumes.items(with(
-                Items.titanium, 7,
-                Items.thorium, 7
+                Items.titanium, 3,
+                Items.thorium, 3
             ));
-            outputItem = new ItemStack(PMItems.techtanite, 4);
+            outputItem = new ItemStack(PMItems.techtanite, 2);
         }};
 
         shellPress = new MultiCrafter("shell-press", 2){{

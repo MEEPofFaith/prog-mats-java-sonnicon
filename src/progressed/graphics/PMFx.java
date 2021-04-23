@@ -203,23 +203,21 @@ public class PMFx{
     }),
     
     blackHoleSwirl = new Effect(90f, e -> {
-        Bullet b = (Bullet)e.data;
+        Bullet bullet = (Bullet)e.data;
 
-        if(b != null && b.type instanceof BlackHoleBulletType){
-            BlackHoleData data = (BlackHoleData)b.data;
-
-            color(Tmp.c1.set(b.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
+        if(bullet != null && e.data instanceof BlackHoleBulletType b){
+            color(Tmp.c1.set(bullet.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
             float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
 
-            Fill.light(b.x + trnsx(e.rotation + startAngle * e.fout(), data.sR * e.fout()),
-                b.y + trnsy(e.rotation + startAngle * e.fout(), data.sR * e.fout()),
-                60,  data.sS * e.fout(),
+            Fill.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
+            bullet.y + trnsy(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
+                60,  b.swirlSize * e.fout(),
                 Draw.getColor(), Color.black
             );
 
-            Drawf.light(b.x + trnsx(e.rotation + startAngle * e.fout(), data.sR * e.fout()),
-                b.y + trnsy(e.rotation + startAngle * e.fout(),
-                data.sR * e.fout()), data.sS * e.fout(),
+            Drawf.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
+            bullet.y + trnsy(e.rotation + startAngle * e.fout(),
+                b.suctionRadius * e.fout()), b.swirlSize * e.fout(),
                 Draw.getColor(), 0.7f
             );
         }
@@ -384,5 +382,17 @@ public class PMFx{
             float ang = angle(x, y);
             Lines.lineAngle(e.x + x, e.y + y, ang, e.fslope() * 4f);
         });
+    }),
+    
+    flare = new Effect(50f, e -> {
+        color(e.color, Color.gray, e.fin());
+
+        randLenVectors(e.id, 2, e.fin() * 4f * e.rotation, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, 0.1f + e.fslope() * 0.6f * e.rotation);
+        });
+
+        color();
+
+        Drawf.light(Team.derelict, e.x, e.y, 20f * e.fslope(), Pal.lightFlame, 0.5f);
     });
 }

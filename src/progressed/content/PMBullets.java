@@ -24,6 +24,8 @@ public class PMBullets implements ContentList{
     pixel,
     
     basicSentryLaunch, strikeSentryLaunch, dashSentryLaunch,
+
+    smallFlare, mediumFlare, largeFlare,
     
     blackHole, cataclysm, absorbed,
     
@@ -276,6 +278,21 @@ public class PMBullets implements ContentList{
         basicSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.basicSentry);
         strikeSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.strikeSentry);
         dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
+
+        smallFlare = new SignalFlareBulletType(8f, 60f, PMUnitTypes.flareSmall){{
+            size = 4f;
+            spinSpeed = 3f;
+        }};
+
+        mediumFlare = new SignalFlareBulletType(7f, 70f, PMUnitTypes.flareMedium){{
+            size = 8f;
+            spinSpeed = 5f;
+        }};
+
+        largeFlare = new SignalFlareBulletType(6f, 80f, PMUnitTypes.flareLarge){{
+            size = 12f;
+            spinSpeed = 8f;
+        }};
 
         blackHole = new BlackHoleBulletType(0.5f, 1400f / 30f){{
             lifetime = 630f;

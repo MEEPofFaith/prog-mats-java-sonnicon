@@ -645,7 +645,8 @@ public class PMBlocks implements ContentList{
             ammo(
                 PMItems.basicMissile, PMBullets.strikedownBasic,
                 PMItems.empMissile, PMBullets.strikedownEmp,
-                PMItems.quantiumMissile, PMBullets.strikedownQuantum
+                PMItems.quantiumMissile, PMBullets.strikedownQuantum,
+                PMItems.recursiveMissile, PMBullets.strikedownRecursive
             );
             reloadBar = true;
             size = 4;
@@ -902,7 +903,7 @@ public class PMBlocks implements ContentList{
             dumpToggle = true;
         }};
 
-        missileFactory = new MissileCrafter("missile-factory", 7){{
+        missileFactory = new MissileCrafter("missile-factory", 8){{
             requirements(Category.crafting, with(
                 Items.copper, 300,
                 Items.lead, 200,
@@ -911,6 +912,7 @@ public class PMBlocks implements ContentList{
                 Items.thorium, 100,
                 Items.surgeAlloy, 110
             ));
+            
             // Region Missiles
 
             addRecipe(//Baisc Missile
@@ -927,6 +929,11 @@ public class PMBlocks implements ContentList{
                 new InputContents(with(PMItems.missileShell, 1, Items.thorium, 8, Items.phaseFabric, 13, Items.silicon, 10), 7f),
                 new OutputContents(with(PMItems.quantiumMissile, 1)),
                 90f, true
+            );
+            addRecipe(//Recursive Missile
+                new InputContents(with(PMItems.missileShell, 1, PMItems.basicMissile, 2, Items.copper, 15, Items.plastanium, 10, Items.silicon, 10), 5f),
+                new OutputContents(with(PMItems.recursiveMissile, 1)),
+                80f, true
             );
 
             // endregion

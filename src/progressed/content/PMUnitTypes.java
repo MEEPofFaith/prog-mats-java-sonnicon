@@ -199,7 +199,7 @@ public class PMUnitTypes implements ContentList{
 
         EntityMapping.nameMap.put("medium-flare", FlareUnitEntity::new);
         flareMedium = new FlareUnitType("medium-flare", 360f){{
-            health = 1000f;
+            health = 900f;
             attraction = 11000f;
             flareY = 45f / 4f;
             flareEffectSize = 1.5f;
@@ -207,7 +207,7 @@ public class PMUnitTypes implements ContentList{
 
         EntityMapping.nameMap.put("large-flare", FlareUnitEntity::new);
         flareLarge = new FlareUnitType("large-flare", 420f){{
-            health = 4000f;
+            health = 2700f;
             attraction = 26000f;
             flareY = 61f / 4f;
             flareEffectSize = 2f;

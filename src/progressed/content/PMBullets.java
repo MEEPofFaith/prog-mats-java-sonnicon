@@ -31,11 +31,13 @@ public class PMBullets implements ContentList{
     
     empParticle, quantumParticle, empParticleStrong,
     
-    basicSentryDrop, strikeSentryDrop, dashSentryDrop,
-    
     firestormMissile,
+
+    recursionTwo, recursionOne,
     
-    strikedownBasic, strikedownEmp, strikedownQuantum,
+    strikedownBasic, strikedownEmp, strikedownQuantum, strikedownRecursive,
+    
+    basicSentryDrop, strikeSentryDrop, dashSentryDrop,
     
     arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
@@ -471,6 +473,100 @@ public class PMBullets implements ContentList{
             fallSpin = 90f;
         }};
 
+        recursionTwo = new StrikeBulletType(4f, 80f, "prog-mats-arbiter-cluster-frag"){{
+            splashDamage = 150f;
+            splashDamageRadius = 32f;
+            homingPower = 0.1f;
+            homingRange = 330f;
+            lifetime = 70f;
+            hitSound = Sounds.bang;
+            hitShake = 5f;
+            despawnEffect = PMFx.nuclearExplosion;
+
+            trailParam = 5f;
+            trailChance = 0.2f;
+            trailEffect = PMFx.missileTrailMedium;
+
+            autoDropRadius = 15f;
+            stopRadius = 10f;
+            riseEngineSize = 16f;
+            fallEngineSize = 8f;
+            elevation = 230f;
+            riseTime = 25f;
+            fallTime = 15f;
+            trailSize = 0.7f;
+            riseSpin = 190f;
+            fallSpin = 110f;
+
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+        }};
+
+        recursionOne = new StrikeBulletType(3f, 80f, "prog-mats-arbiter-cluster-frag"){{
+            splashDamage = 250f;
+            splashDamageRadius = 40f;
+            homingPower = 0.07f;
+            homingRange = 330f;
+            lifetime = 90f;
+            hitSound = Sounds.bang;
+            hitShake = 5f;
+            despawnEffect = PMFx.nuclearExplosion;
+
+            trailParam = 5f;
+            trailChance = 0.2f;
+            trailEffect = PMFx.missileTrailMedium;
+
+            autoDropRadius = 15f;
+            stopRadius = 10f;
+            riseEngineSize = 16f;
+            fallEngineSize = 8f;
+            elevation = 260f;
+            riseTime = 35f;
+            fallTime = 20f;
+            trailSize = 0.7f;
+            riseSpin = 230f;
+            fallSpin = 120f;
+
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+
+            fragBullets = 3;
+            fragVelocityMin = 0.8f;
+            fragVelocityMax = 1.2f;
+            fragBullet = recursionTwo;
+        }};
+
+        strikedownRecursive = new StrikeBulletType(2f, 80f, "prog-mats-arbiter-cluster-frag"){{
+            splashDamage = 400f;
+            splashDamageRadius = 48f;
+            homingPower = 0.05f;
+            homingRange = 330f;
+            lifetime = 135f;
+            hitSound = Sounds.bang;
+            hitShake = 5f;
+            despawnEffect = PMFx.nuclearExplosion;
+
+            trailParam = 5f;
+            trailChance = 0.2f;
+            trailEffect = PMFx.missileTrailMedium;
+
+            autoDropRadius = 15f;
+            stopRadius = 10f;
+            riseEngineSize = 16f;
+            fallEngineSize = 8f;
+            elevation = 300f;
+            riseTime = 45f;
+            fallTime = 25f;
+            trailSize = 0.7f;
+            riseSpin = 300f;
+            fallSpin = 135f;
+
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+
+            fragBullets = 3;
+            fragVelocityMin = 0.8f;
+            fragVelocityMax = 1.2f;
+            fragBullet = recursionOne;
+        }};
+
         arbiterBasic = new StrikeBulletType(1f, 300f, "prog-mats-arbiter-basic"){{
             splashDamage = 27000f;
             splashDamageRadius = 240f;
@@ -534,7 +630,7 @@ public class PMBullets implements ContentList{
             targetRadius = 2f;
         }};
 
-        arbiterClusterFrag = new StrikeBulletType(1f, 80f, "prog-mats-arbiter-cluser-frag"){{
+        arbiterClusterFrag = new StrikeBulletType(1f, 80f, "prog-mats-arbiter-cluster-frag"){{
             splashDamage = 3000f;
             splashDamageRadius = 40f;
             lifetime = 150f;

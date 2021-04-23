@@ -138,8 +138,8 @@ public class StrikeBulletType extends BasicBulletType{
             for(int i = 0; i < fragBullets; i++){
                 float len = Mathf.random(1f, 7f);
                 float a = b.rotation() + Mathf.range(fragCone/2) + fragAngle;
-                if(fragBullet instanceof MissileBulletType missle){
-                    missle.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new StrikeBulletData(x, y));
+                if(fragBullet instanceof StrikeBulletType strike){
+                    strike.create(b.owner, b.team, x, y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new StrikeBulletData(x, y));
                 }else{
                     fragBullet.create(b, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax));
                 }
@@ -284,7 +284,7 @@ public class StrikeBulletType extends BasicBulletType{
     public static class StrikeBulletData{
         public float x, y;
         public Vec2 vel;
-        public boolean stopped;
+        protected boolean stopped;
 
         public StrikeBulletData(float x, float y){
             this.x = x;
@@ -293,6 +293,12 @@ public class StrikeBulletType extends BasicBulletType{
 
         public void setVel(Vec2 vel){
             this.vel = vel.cpy();
+        }
+
+        public String toString(){
+            return "x : " + x +
+            "\ny: " + y +
+            "\nstopped: " + stopped;
         }
     }
 }

@@ -41,6 +41,9 @@ public class SignalFlareTurret extends ItemTurret{
     }
 
     public class SignalFlareTurretBuild extends ItemTurretBuild{
+        public float tX, tY;
+        public int count;
+        public boolean targetFound;
         public Bullet bullet;
         public Seq<FlareUnitEntity> flares = new Seq<>();
 
@@ -87,20 +90,10 @@ public class SignalFlareTurret extends ItemTurret{
 
             if(hasAmmo()){
                 if(timer(timerTarget, targetInterval)){
-                    target = Groups.bullet.intersect(x - range, y - range, range * 2f, range * 2f).min(
-                        b -> b.team != team && within(b, range) && !(b.type instanceof SignalFlareBulletType) && b.type().speed > 0.01f,
-                        b -> b.dst2(this)
-                    );
+                    findTarget();
                 }
 
-                //pooled flares
-                if(target != null && !target.isAdded()){
-                    target = null;
-                }
-
-                if(target != null){
-                    targetPosition(target);
-
+                if(count > 0){
                     float targetRot = angleTo(targetPos);
 
                     if(shouldTurn()){
@@ -127,8 +120,32 @@ public class SignalFlareTurret extends ItemTurret{
                 shoot(type);
 
                 reload = 0f;
+
+                targetFound = false;
             }else{
                 reload += delta() * peekAmmo().reloadMultiplier * baseReloadSpeed();
+            }
+        }
+
+        @Override
+        protected void findTarget(){
+            tX = 0f;
+            tY = 0f;
+            count = 0;
+
+            Groups.bullet.intersect(x - range, y - range, range * 2f, range * 2f, b -> {
+                if(b.team != team && within(b, range) && !(b.type instanceof SignalFlareBulletType) && b.type().speed > 0.01f){
+                    tX += b.x;
+                    tY += b.y;
+                    count ++;
+                }
+            });
+
+            if(count > 0 && !targetFound){
+                targetPos.set(tX / count, tY / count);
+                targetFound = true;
+            }else{
+                targetFound = false;
             }
         }
 

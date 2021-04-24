@@ -33,6 +33,3 @@ jobs:
       with:
         name: Dexed Progressed Materials-ed
         path: build/libs/[!raw-]*.jar
-        
-    - name: Live Performance by Rick Astley
-      run: ./gradlew rickroll

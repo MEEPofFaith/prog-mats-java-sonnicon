@@ -165,7 +165,7 @@ public class CritBulletType extends BasicBulletType{
 
     public static class CritBulletData{
         public boolean crit, despawned;
-        protected FixedTrail trail;
+        public FixedTrail trail;
 
         public CritBulletData(boolean crit, FixedTrail trail){
             this.crit = crit;

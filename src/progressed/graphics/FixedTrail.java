@@ -43,4 +43,12 @@ public class FixedTrail{ //Taken from Project Unity
 
         points.add(Pools.obtain(Vec3.class, Vec3::new).set(x, y, -rotation * Mathf.degRad));
     }
+
+    public FixedTrail copy(){ // Not this though, this I make myself
+        FixedTrail trail = new FixedTrail(length);
+        points.each(p -> {
+            trail.update(p.x, p.y, p.z);
+        });
+        return trail;
+    }
 }

@@ -252,11 +252,12 @@ public class PMBullets implements ContentList{
 
             @Override
             public void despawned(Bullet b){ //Only frag on despawn
+                CritBulletData data = (CritBulletData)b.data;
                 for(int i = 0; i < fragBullets; i++){
                     float a = b.rotation() + ((fragCone / fragBullets) * (i - (fragBullets - 1f) / 2f)) + Mathf.range(fragInacc);
                     if(fragBullet instanceof CritBulletType critB){
-                        Bullet bullet = critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(((CritBulletData)b.data).crit, new FixedTrail(critB.trailLength)));
-                        bullet.collided.add(b.collided.peek());
+                        Bullet bullet = critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(data.crit, data.trail.copy()));
+                        if(b.collided.size > 0) bullet.collided.add(b.collided.peek());
                     }
                 }
 

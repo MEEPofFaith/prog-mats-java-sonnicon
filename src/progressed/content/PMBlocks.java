@@ -614,7 +614,7 @@ public class PMBlocks implements ContentList{
             range = 160f;
             reloadTime = 75f;
             shootSound = Sounds.missile;
-            cooldown = 0.001f;
+            cooldown = 0.01f;
             shootShake = 1f;
             targetAir = false;
             burstSpacing = 7f;

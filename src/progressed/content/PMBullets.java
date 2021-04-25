@@ -475,7 +475,7 @@ public class PMBullets implements ContentList{
         }};
 
         recursionTwo = new StrikeBulletType(4f, 80f, "prog-mats-arbiter-cluster-frag"){{
-            splashDamage = 150f;
+            splashDamage = 50f;
             splashDamageRadius = 32f;
             homingPower = 0.1f;
             homingRange = 330f;
@@ -503,7 +503,7 @@ public class PMBullets implements ContentList{
         }};
 
         recursionOne = new StrikeBulletType(3f, 80f, "prog-mats-arbiter-cluster-frag"){{
-            splashDamage = 250f;
+            splashDamage = 100f;
             splashDamageRadius = 40f;
             homingPower = 0.07f;
             homingRange = 330f;
@@ -536,7 +536,7 @@ public class PMBullets implements ContentList{
         }};
 
         strikedownRecursive = new StrikeBulletType(2f, 80f, "prog-mats-arbiter-cluster-frag"){{
-            splashDamage = 400f;
+            splashDamage = 200f;
             splashDamageRadius = 48f;
             homingPower = 0.05f;
             homingRange = 330f;

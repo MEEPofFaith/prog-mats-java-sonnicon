@@ -205,7 +205,7 @@ public class PMFx{
     blackHoleSwirl = new Effect(90f, e -> {
         Bullet bullet = (Bullet)e.data;
 
-        if(bullet != null && e.data instanceof BlackHoleBulletType b){
+        if(bullet != null && bullet.type instanceof BlackHoleBulletType b){
             color(Tmp.c1.set(bullet.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
             float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
 

@@ -151,9 +151,9 @@ public class PMBullets implements ContentList{
             lifetime = 3f;
             width = 3f;
             height = 4f;
+            trailLength = 0;
             pierceCap = 2;
             critMultiplier = 10f;
-            trailLength = 0;
             critEffect = Fx.none;
             hitEffect = Fx.hitBulletSmall;
             despawnEffect = Fx.none;
@@ -166,6 +166,7 @@ public class PMBullets implements ContentList{
             knockback = 5f;
             width = 6f;
             height = 10f;
+            trailLength = 9;
             pierceCap = 15;
             fragBullets = 5;
             fragBullet = sniperBoltGlassFrag;
@@ -199,6 +200,7 @@ public class PMBullets implements ContentList{
             knockback = 5f;
             width = 10f;
             height = 19f;
+            trailLength = 11;
             pierceCap = 40;
             reloadMultiplier = 0.7f;
             lightning = 5;
@@ -214,7 +216,6 @@ public class PMBullets implements ContentList{
             knockback = 2f;
             width = 6f;
             height = 14f;
-            trailLength = 10;
             pierceCap = 13;
             critMultiplier = 3f;
             critEffect = PMFx.sniperCritMini;
@@ -228,7 +229,6 @@ public class PMBullets implements ContentList{
                 knockback = 3f;
                 width = 9f;
                 height = 16f;
-                trailLength = 10;
                 pierceCap = 15;
                 fragBullets = 5;
                 fragBullet = sniperBoltTechtaniteFrag;

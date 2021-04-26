@@ -16,7 +16,7 @@ import static mindustry.Vars.*;
 public class CritBulletType extends BasicBulletType{
     public float critChance = 0.15f, critMultiplier = 5f;
     public Effect critEffect = PMFx.sniperCrit;
-    public int trailLength = 20;
+    public int trailLength = 10;
     public float trailWidth = -1f;
 
     public CritBulletType(float speed, float damage, String sprite){

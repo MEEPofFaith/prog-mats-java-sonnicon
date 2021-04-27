@@ -49,7 +49,7 @@ public class PMBlocks implements ContentList{
     caliber,
 
     //Misc
-    tinker, signal,
+    signal, tinker,
 
     //Missiles
     firestorm, strikedown, arbiter,
@@ -111,7 +111,7 @@ public class PMBlocks implements ContentList{
             size = 4;
             range = 255f;
             maxSpeed = 0.75f;
-            health = 1800;
+            health = 140 * size * size;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
@@ -152,7 +152,7 @@ public class PMBlocks implements ContentList{
             size = 4;
             range = 255f;
             maxSpeed = 0.73f;
-            health = 1800;
+            health = 150 * size * size;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
@@ -194,7 +194,7 @@ public class PMBlocks implements ContentList{
             size = 4;
             range = 255f;
             maxSpeed = 0.71f;
-            health = 1800;
+            health = 160 * size * size;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
@@ -229,7 +229,7 @@ public class PMBlocks implements ContentList{
                 new TeslaRing(2.5f)
             );
             size = 1;
-            health = 260;
+            health = 310;
             powerUse = 3.6f;
             reloadTime = 30f;
             range = 72f;
@@ -254,7 +254,7 @@ public class PMBlocks implements ContentList{
                 new TeslaRing(6f)
             );
             size = 2;
-            health = 870;
+            health = 200 * size * size;
             powerUse = 4.8f;
             reloadTime = 20f;
             range = 130f;
@@ -330,7 +330,7 @@ public class PMBlocks implements ContentList{
                 }}
             );
             size = 3;
-            health = 1540;
+            health = 180 * size * size;
             powerUse = 8.9f;
             reloadTime = 10f;
             range = 210f;
@@ -363,7 +363,7 @@ public class PMBlocks implements ContentList{
                 new EruptorCell(h, h)
             );
             size = 3;
-            health = 1800;
+            health = 210 * size * size;
             powerUse = 14f;
             shootCone = 10f;
             range = 240f;
@@ -399,7 +399,7 @@ public class PMBlocks implements ContentList{
                 new EruptorCell(h, h, 2)
             );
             size = 4;
-            health = 2140;
+            health = 190 * size * size;
             powerUse = 17f;
             shootDuration = 240f;
             range = 280f;
@@ -434,7 +434,7 @@ public class PMBlocks implements ContentList{
                 new EruptorCell(h, h, 2)
             );
             size = 4;
-            health = 2430;
+            health = 200 * size * size;
             powerUse = 23f;
             recoilAmount = 8f;
             range = 200f;
@@ -459,7 +459,7 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 150
             ));
             size = 3;
-            health = 2140;
+            health = 340 * size * size;
             range = 180f;
             powerUse = 6.5f;
             minRadius = 16.5f;
@@ -478,7 +478,7 @@ public class PMBlocks implements ContentList{
                     PMItems.techtanite, 450
                 ));
                 size = 5;
-                health = 5830;
+                health = 230 * size * size;
                 range = 260f;
                 powerUse = 13.5f;
                 damage = 1000f;
@@ -517,6 +517,7 @@ public class PMBlocks implements ContentList{
                 Items.titanium, 30
             ));
             size = 2;
+            health = 300 * size * size;
             reloadTime = 70f;
             rotateSpeed = 10f;
             recoilAmount = 4f;
@@ -543,6 +544,7 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, PMBullets.sniperBoltTechtanite
             );
             size = 3;
+            health = 120 * size * size;
             reloadTime = 450f;
             inaccuracy = 0f;
             range = 544f;
@@ -551,30 +553,6 @@ public class PMBlocks implements ContentList{
             split = 3f;
             chargeTime = 150f;
             shootSound = Sounds.railgun;
-        }};
-
-        tinker = new LaunchTurret("tinker"){{
-            requirements(Category.turret, with(
-                Items.copper, 125,
-                Items.lead, 75,
-                Items.silicon, 30,
-                Items.titanium, 50
-            ));
-            ammo(
-                PMItems.basicSentryBox, PMBullets.basicSentryLaunch,
-                PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch,
-                PMItems.dashSentryBox, PMBullets.dashSentryLaunch
-            );
-            size = 3;
-            reloadTime = 60f * 10f;
-            minRange = 5f * tilesize;
-            range = 40 * tilesize;
-            velocityInaccuracy = 0.2f;
-            cooldown = 0.03f;
-            recoilAmount = 6f;
-            restitution = 0.02f;
-            shootShake = 2f;
-            shootLength = 16f;
         }};
 
         signal = new SignalFlareTurret("signal"){{
@@ -590,6 +568,7 @@ public class PMBlocks implements ContentList{
                 Items.surgeAlloy, PMBullets.largeFlare
             );
             size = 2;
+            health = 250 * size * size;
             minRange = 5f * tilesize;
             range = 60f * tilesize;
             shootLength = 23f / 4f;
@@ -597,8 +576,33 @@ public class PMBlocks implements ContentList{
             inaccuracy = 10f;
             velocityInaccuracy = 0.2f;
             shootSound = Sounds.shootSnap;
-            maxAmmo = 24 * 3;
-            ammoPerShot = 24;
+            maxAmmo = 30;
+            ammoPerShot = 10;
+        }};
+
+        tinker = new LaunchTurret("tinker"){{
+            requirements(Category.turret, with(
+                Items.copper, 125,
+                Items.lead, 75,
+                Items.silicon, 30,
+                Items.titanium, 50
+            ));
+            ammo(
+                PMItems.basicSentryBox, PMBullets.basicSentryLaunch,
+                PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch,
+                PMItems.dashSentryBox, PMBullets.dashSentryLaunch
+            );
+            size = 3;
+            health = 140 * size * size;
+            reloadTime = 60f * 10f;
+            minRange = 5f * tilesize;
+            range = 40 * tilesize;
+            velocityInaccuracy = 0.2f;
+            cooldown = 0.03f;
+            recoilAmount = 6f;
+            restitution = 0.02f;
+            shootShake = 2f;
+            shootLength = 16f;
         }};
 
         firestorm = new MissileTurret("firestorm"){{
@@ -612,7 +616,7 @@ public class PMBlocks implements ContentList{
                 Items.blastCompound, PMBullets.firestormMissile
             );
             size = 3;
-            health = 1430;
+            health = 120 * size * size;
             range = 160f;
             reloadTime = 75f;
             shootSound = Sounds.missile;
@@ -652,7 +656,7 @@ public class PMBlocks implements ContentList{
             );
             reloadBar = true;
             size = 4;
-            health = 2870;
+            health = 160 * size * size;
             range = 330f;
             reloadTime = 180f;
             shootSound = Sounds.artillery;
@@ -681,7 +685,7 @@ public class PMBlocks implements ContentList{
             );
             reloadBar = true;
             size = 7;
-            health = 5950;
+            health = 170 * size * size;
             range = 4400f;
             shootSound = Sounds.explosionbig;
             cooldown = 0.001f;
@@ -702,7 +706,7 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 500
             ));
             size = 4;
-            health = 2140;
+            health = 230 * size * size;
             canOverdrive = false;
             reloadTime = 520f;
             range = 256f;
@@ -735,7 +739,7 @@ public class PMBlocks implements ContentList{
                     PMItems.techtanite, 800
                 ));
                 size = 6;
-                health = 4610;
+                health = 140 * size * size;
                 reloadTime = 450f;
                 range = 740f;
                 shootEffect = smokeEffect = Fx.none;
@@ -762,6 +766,7 @@ public class PMBlocks implements ContentList{
         harbinger = new ChaosTurret("harbinger"){
             {
                 size = 8;
+                health = 999999999;
                 shots = 100;
                 inaccuracy = 45f;
                 shootShake = 150f;
@@ -795,8 +800,8 @@ public class PMBlocks implements ContentList{
 
         everythingGun = new EverythingTurret("everything-gun"){
             {
-                health = 5000000;
                 size = 6;
+                health = 999999999;
                 reloadTime = 1f;
                 range = 4400f;
                 shootCone = 360f;
@@ -846,14 +851,14 @@ public class PMBlocks implements ContentList{
         // Region Walls
 
         sandboxWall = new SandboxWall("sandbox-wall"){{
-            health = 150000000;
+            health = 999999999;
             iconSize = 3f;
             rotateRadius = 2.5f;
         }};
 
         sandboxWallLarge = new SandboxWall("sandbox-wall-large"){{
             size = 2;
-            health = 600000000;
+            health = 999999999;
             iconSize = 6f;
             rotateRadius = 5f;
         }};
@@ -898,7 +903,6 @@ public class PMBlocks implements ContentList{
                 90f, true
             );
             size = 3;
-            health = 135;
             itemCapacity = 30;
             craftEffect = Fx.pulverizeMedium;
             updateEffect = Fx.none;
@@ -965,7 +969,6 @@ public class PMBlocks implements ContentList{
             // endregion
 
             size = 4;
-            health = 215;
             itemCapacity = 50;
             craftEffect = Fx.pulverizeMedium;
             updateEffect = Fx.none;
@@ -995,7 +998,6 @@ public class PMBlocks implements ContentList{
                 105f
             );
             size = 4;
-            health = 265;
             itemCapacity = 100;
             craftEffect = updateEffect = Fx.none;
             dumpToggle = true;
@@ -1008,7 +1010,7 @@ public class PMBlocks implements ContentList{
             requirements(Category.units, BuildVisibility.sandboxOnly, empty);
             alwaysUnlocked = true;
             size = 3;
-            health = 10000;
+            health = 999999999;
             plans = Seq.with(
                 new UnitPlan(PMUnitTypes.everythingUnit, 60f * 10f, empty)
             );

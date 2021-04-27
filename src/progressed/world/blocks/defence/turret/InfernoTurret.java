@@ -103,7 +103,7 @@ public class InfernoTurret extends PowerTurret{
         stats.remove(Stat.booster);
         stats.add(Stat.input, new BoosterListValue(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, false, l -> consumes.liquidfilters.get(l.id)));
         stats.remove(Stat.inaccuracy);
-        stats.add(Stat.shots, "Everything in range");
+        stats.add(Stat.shots, "@stat.pm-inferno");
     }
 
     @Override

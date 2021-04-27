@@ -53,11 +53,12 @@ public class MissileTurret extends ItemTurret{
     @Override
     public void setBars(){
         super.setBars();
+        
         if(reloadBar){
             bars.add("pm-reload", (MissileTurretBuild entity) -> new Bar(
                 () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
                 () -> entity.team.color,
-                () -> entity.reload / reloadTime
+                () -> Mathf.clamp(entity.reload / reloadTime)
             ));
         }
     }

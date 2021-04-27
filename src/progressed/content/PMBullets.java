@@ -287,16 +287,19 @@ public class PMBullets implements ContentList{
         smallFlare = new SignalFlareBulletType(8f, 60f, PMUnitTypes.flareSmall){{
             size = 4f;
             spinSpeed = 3f;
+            ammoMultiplier = 2;
         }};
 
         mediumFlare = new SignalFlareBulletType(7f, 70f, PMUnitTypes.flareMedium){{
             size = 8f;
             spinSpeed = 5f;
+            ammoMultiplier = 3;
         }};
 
         largeFlare = new SignalFlareBulletType(6f, 80f, PMUnitTypes.flareLarge){{
             size = 12f;
             spinSpeed = 8f;
+            ammoMultiplier = 4;
         }};
 
         blackHole = new BlackHoleBulletType(0.5f, 1400f / 30f){{

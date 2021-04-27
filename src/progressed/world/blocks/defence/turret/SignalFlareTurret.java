@@ -4,6 +4,7 @@ import arc.*;
 import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
+import mindustry.content.Bullets;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
@@ -13,6 +14,7 @@ import mindustry.world.meta.*;
 import progressed.entities.bullet.*;
 import progressed.entities.units.*;
 import progressed.ui.*;
+import progressed.util.*;
 
 public class SignalFlareTurret extends ItemTurret{
     public int flareLimit = 1;
@@ -33,10 +35,16 @@ public class SignalFlareTurret extends ItemTurret{
     public void setBars(){
         super.setBars();
 
+        bars.add("pm-reload", (SignalFlareTurretBuild entity) -> new Bar(
+            () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
+            () -> entity.team.color,
+            () -> Mathf.clamp(entity.reload / reloadTime)
+        ));
+
         bars.add("pm-flare-limit", (SignalFlareTurretBuild entity) -> new Bar(
             () -> Core.bundle.format("bar.pm-flare-limit", entity.flares.size, flareLimit),
             () -> entity.team.color,
-            () -> (float)entity.flares.size / (float)flareLimit
+            entity::countf
         ));
     }
 
@@ -79,7 +87,7 @@ public class SignalFlareTurret extends ItemTurret{
             }
 
             flares.each(b -> {
-                if(!b.isAdded() || b.dead || b.health < 0f){
+                if(!b.isValid()){
                     flares.remove(b);
                 }
             });
@@ -114,16 +122,25 @@ public class SignalFlareTurret extends ItemTurret{
 
         @Override
         protected void updateShooting(){
-            if(reload >= reloadTime && !charging && flares.size < flareLimit && bullet == null){
-                BulletType type = peekAmmo();
+            if(flares.size < flareLimit && bullet == null){
+                if(reload >= reloadTime && !charging){
+                    BulletType type = peekAmmo();
 
-                shoot(type);
+                    shoot(type);
 
-                reload = 0f;
+                    reload = 0f;
 
-                targetFound = false;
-            }else{
-                reload += delta() * peekAmmo().reloadMultiplier * baseReloadSpeed();
+                    targetFound = false;
+                }else{
+                    reload += delta() * peekAmmo().reloadMultiplier * baseReloadSpeed();
+                }
+            }
+        }
+
+        @Override
+        protected void updateCooling(){
+            if(flares.size < flareLimit && bullet == null){
+                super.updateCooling();
             }
         }
 
@@ -134,7 +151,7 @@ public class SignalFlareTurret extends ItemTurret{
             count = 0;
 
             Groups.bullet.intersect(x - range, y - range, range * 2f, range * 2f, b -> {
-                if(b.team != team && within(b, range) && !(b.type instanceof SignalFlareBulletType) && b.type().speed > 0.01f){
+                if(b.team != team && within(b, range) && !checkType(b.type) && b.type().speed > 0.01f){
                     tX += b.x;
                     tY += b.y;
                     count ++;
@@ -149,6 +166,10 @@ public class SignalFlareTurret extends ItemTurret{
             }
         }
 
+        protected boolean checkType(BulletType b){
+            return (b instanceof SignalFlareBulletType) || (b == Bullets.fireball);
+        }
+
         @Override
         protected void bullet(BulletType type, float angle){
             float lifeScl = type.scaleVelocity ? Mathf.clamp(Mathf.dst(x + tr.x, y + tr.y, targetPos.x, targetPos.y) / type.range(), minRange / type.range(), range / type.range()) : 1f;
@@ -159,6 +180,10 @@ public class SignalFlareTurret extends ItemTurret{
         @Override
         public BlockStatus status(){
             return (flares.size >= flareLimit || bullet != null) ? BlockStatus.noOutput : super.status();
+        }
+
+        public float countf(){
+            return (float)(flares.size + (bullet != null ? 1 : 0)) / (float)flareLimit;
         }
     }
 }

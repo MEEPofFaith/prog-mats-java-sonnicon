@@ -53,8 +53,7 @@ public class SwordTurret extends BaseTurret{
     public int trailLength = 8;
 
     public float baseLength = -1f;
-    public Color lineColor = Color.violet;
-    public float baseWidth = 2f, connectWidth = 4f, widthRnd = 2f;
+    public float baseWidth = 2f, connectWidth = 4f;
 
     public float damage = 450f, buildingDamageMultiplier = 0.25f, damageRadius = tilesize;
     public StatusEffect status = StatusEffects.none;
@@ -270,7 +269,7 @@ public class SwordTurret extends BaseTurret{
 
             float swordOpacity = settings.getInt("pm-swordopacity") / 100f;
 
-            Tmp.c1.set(lineColor).lerp(heatColor, heat).mul(1f, 1f, 1f, swordOpacity);
+            Tmp.c1.set(trailColor).lerp(heatColor, heat).mul(1f, 1f, 1f, 0.5f * swordOpacity);
 
             Vec2 v1 = Tmp.v1.trns(lookAngle + 90f, baseLength);
 
@@ -280,8 +279,8 @@ public class SwordTurret extends BaseTurret{
 
                 Vec2 v2 = Tmp.v2.trns(rot, -getRadius()).add(currentPos).sub(this);
 
-                Vec2 v3 = Tmp.v3.trns(v1.angleTo(v2) - 90f, -(connectWidth + Mathf.range(widthRnd)) / 2f, v1.dst(v2)).add(v1).add(this);
-                Vec2 v4 = Tmp.v4.trns(v1.angleTo(v2) - 90f, (connectWidth + Mathf.range(widthRnd)) / 2f, v1.dst(v2)).add(v1).add(this);
+                Vec2 v3 = Tmp.v3.trns(v1.angleTo(v2) - 90f, -connectWidth / 2f, v1.dst(v2)).add(v1).add(this);
+                Vec2 v4 = Tmp.v4.trns(v1.angleTo(v2) - 90f, connectWidth / 2f, v1.dst(v2)).add(v1).add(this);
                 
                 Vec2 v5 = Tmp.v5.trns(v1.angleTo(v2) - 90f, -baseWidth / 2f, 0f);
                 Vec2 v6 = Tmp.v6.trns(v1.angleTo(v2) - 90f, baseWidth / 2f, 0f);

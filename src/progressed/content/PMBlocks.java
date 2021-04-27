@@ -597,6 +597,8 @@ public class PMBlocks implements ContentList{
             inaccuracy = 10f;
             velocityInaccuracy = 0.2f;
             shootSound = Sounds.shootSnap;
+            maxAmmo = 24 * 3;
+            ammoPerShot = 24;
         }};
 
         firestorm = new MissileTurret("firestorm"){{

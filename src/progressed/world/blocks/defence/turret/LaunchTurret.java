@@ -56,10 +56,11 @@ public class LaunchTurret extends ItemTurret{
     @Override
     public void setBars(){
         super.setBars();
+        
         bars.add("pm-reload", (LaunchTurretBuild entity) -> new Bar(
             () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
             () -> entity.team.color,
-            () -> entity.reload / reloadTime
+            () -> Mathf.clamp(entity.reload / reloadTime)
         ));
     }
 

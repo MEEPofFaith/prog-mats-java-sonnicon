@@ -32,6 +32,7 @@ public class StrobeSource extends StrobeNode{
     @Override
     public void setBars(){
         super.setBars();
+        
         if(boost){
             bars.add("pm-gay", (StrobeSourceBuild entity) -> new Bar(
                 () -> Core.bundle.format("bar.pm-gay", PMUtls.stringsFixed(speedBoost * 100f)),

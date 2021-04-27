@@ -81,7 +81,7 @@ public class StrikeBulletType extends BasicBulletType{
                 rocketEffect.at(x + weave + Mathf.range(trailRnd * rRocket), y + rise * elevation + Mathf.range(trailRnd * rRocket), trailSize * rRocket);
             }
 
-            Teamc target = Units.bestTarget(b.team, b.x, b.y, homingRange, e -> !e.dead() && (e.isGrounded() && collidesGround) || (e.isFlying() && collidesAir), build -> !build.dead() && collidesGround, unitSort);
+            Teamc target = Units.bestTarget(b.team, b.x, b.y, homingRange, e -> !e.dead() && e.checkTarget(collidesAir, collidesGround), build -> !build.dead() && collidesGround, unitSort);
 
             //Instant drop
             float dropTime = (1f - Mathf.curve(b.time, 0, riseTime)) + Mathf.curve(b.time, b.lifetime - fallTime, b.lifetime);

@@ -18,6 +18,7 @@ public class CritBulletType extends BasicBulletType{
     public Effect critEffect = PMFx.sniperCrit;
     public int trailLength = 10;
     public float trailWidth = -1f;
+    public boolean bouncing;
 
     public CritBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
@@ -73,7 +74,7 @@ public class CritBulletType extends BasicBulletType{
         }
 
         if(homingPower > 0.0001f && b.time >= homingDelay){
-            Teamc target = Units.closestTarget(b.team, b.x, b.y, homingRange, e -> ((e.isGrounded() && collidesGround) || (e.isFlying() && collidesAir)) && !b.collided.contains(e.id), t -> collidesGround && !b.collided.contains(t.id));
+            Teamc target = Units.closestTarget(b.team, b.x, b.y, homingRange, e -> e.checkTarget(collidesAir, collidesGround) && !b.collided.contains(e.id), t -> collidesGround && !b.collided.contains(t.id));
             if(target != null){
                 b.vel.setAngle(Angles.moveToward(b.rotation(), b.angleTo(target), homingPower * Time.delta * 50f));
             }
@@ -90,6 +91,22 @@ public class CritBulletType extends BasicBulletType{
         }
 
         if(((CritBulletData)b.data).trail instanceof FixedTrail tr && trailLength > 0) tr.update(b.x, b.y, b.rotation());
+    }
+
+    @Override
+    public void hitEntity(Bullet b, Hitboxc other, float initialHealth){
+        super.hitEntity(b, other, initialHealth);
+
+        bounce(b);
+    }
+
+    @Override
+    public void hitTile(Bullet b, Building build, float initialHealth, boolean direct){
+        super.hitTile(b, build, initialHealth, direct);
+
+        if(direct){
+            bounce(b);
+        }
     }
 
     @Override
@@ -160,6 +177,18 @@ public class CritBulletType extends BasicBulletType{
 
         for(int i = 0; i < lightning; i++){
             Lightning.create(b, lightningColor, (lightningDamage < 0 ? damage : lightningDamage) * critBonus, b.x, b.y, b.rotation() + Mathf.range(lightningCone/2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
+        }
+    }
+
+    public void bounce(Bullet b){
+        if(bouncing){
+            Teamc target = Units.closestTarget(b.team, b.x, b.y, range() * b.fout(),
+                e -> e.isValid() && e.checkTarget(collidesAir, collidesGround) && !b.collided.contains(e.id),
+                t -> t.isValid() && collidesGround && !b.collided.contains(t.id)
+            );
+            if(target != null){
+                b.vel.setAngle(b.angleTo(target));
+            }
         }
     }
 

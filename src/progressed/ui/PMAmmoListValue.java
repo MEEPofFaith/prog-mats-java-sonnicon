@@ -14,6 +14,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
+import progressed.content.*;
 import progressed.entities.bullet.*;
 import progressed.entities.units.*;
 
@@ -105,6 +106,10 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
 
                 if(type.homingPower > 0.01f){
                     sep(bt, "@bullet.homing");
+                }
+
+                if(type instanceof CritBulletType stype && stype.bouncing){
+                    sep(bt, "@bullet.pm-bouncing");
                 }
 
                 if(type.lightning > 0){

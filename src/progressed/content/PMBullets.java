@@ -2,12 +2,15 @@ package progressed.content;
 
 import arc.graphics.*;
 import arc.math.*;
+import arc.struct.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
+import mindustry.entities.*;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import progressed.ProgMats;
 import progressed.entities.bullet.*;
 import progressed.graphics.*;
 
@@ -141,8 +144,7 @@ public class PMBullets implements ContentList{
             reloadMultiplier = 1.2f;
             critChance = 0.2f;
             critMultiplier = 2f;
-            homingRange = 200f;
-            homingPower = 0.6f;
+            bouncing = true;
         }};
 
         sniperBoltGlassFrag = new CritBulletType(8f, 50f){{

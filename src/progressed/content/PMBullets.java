@@ -10,7 +10,6 @@ import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import progressed.ProgMats;
 import progressed.entities.bullet.*;
 import progressed.graphics.*;
 
@@ -22,7 +21,7 @@ public class PMBullets implements ContentList{
 
     shockZap, sparkZap, stormZap,
 
-    sniperBoltSilicon, sniperBoltGlassFrag, sniperBoltGlass, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
+    sniperBoltSilicon, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
 
     pixel,
     
@@ -137,7 +136,7 @@ public class PMBullets implements ContentList{
 
         sniperBoltSilicon = new CritBulletType(12f, 300f){{
             lifetime = 48f;
-            knockback = 5f;
+            knockback = 4f;
             width = 5f;
             height = 8f;
             pierceCap = 20;
@@ -147,35 +146,6 @@ public class PMBullets implements ContentList{
             bouncing = true;
         }};
 
-        sniperBoltGlassFrag = new CritBulletType(8f, 50f){{
-            frontColor = Color.white;
-            backColor = hitColor = Color.valueOf("D0D0E0");
-            lifetime = 3f;
-            width = 3f;
-            height = 4f;
-            trailLength = 0;
-            pierceCap = 2;
-            critMultiplier = 10f;
-            critEffect = Fx.none;
-            hitEffect = Fx.hitBulletSmall;
-            despawnEffect = Fx.none;
-        }};
-
-        sniperBoltGlass = new CritBulletType(11f, 200f){{
-            frontColor = Color.white;
-            backColor = hitColor = Color.valueOf("D0D0E0");
-            lifetime = 53f;
-            knockback = 5f;
-            width = 6f;
-            height = 10f;
-            trailLength = 9;
-            pierceCap = 15;
-            fragBullets = 5;
-            fragBullet = sniperBoltGlassFrag;
-            critChance = 0.05f;
-            critMultiplier = 10f;
-        }};
-
         sniperBoltTitanium = new CritBulletType(13f, 500f){{
             lifetime = 45f;
             knockback = 5f;
@@ -183,7 +153,8 @@ public class PMBullets implements ContentList{
             height = 12f;
             pierceCap = 26;
             reloadMultiplier = 1.7f;
-            critMultiplier = 3.5f;
+            critChance = 0.15f;
+            critMultiplier = 2.5f;
         }};
 
         sniperBoltThorium = new CritBulletType(12f, 800f){{
@@ -192,6 +163,7 @@ public class PMBullets implements ContentList{
             width = 8f;
             height = 14f;
             pierceCap = 30;
+            critChance = 0.1f;
             critMultiplier = 4.5f;
         }};
 
@@ -204,21 +176,22 @@ public class PMBullets implements ContentList{
             height = 19f;
             trailLength = 11;
             pierceCap = 40;
+            knockback = 7f;
             reloadMultiplier = 0.7f;
             lightning = 5;
             lightningLength = 3;
             lightningLengthRand = 2;
             lightningDamage = 40f;
-            critChance = 0.25f;
+            critChance = 0.20f;
             critMultiplier = 5f;
         }};
 
         sniperBoltTechtaniteFrag = new CritBulletType(13f, 160f){{
             lifetime = 23f;
-            knockback = 2f;
+            knockback = 3f;
             width = 6f;
             height = 14f;
-            pierceCap = 13;
+            pierceCap = 12;
             critMultiplier = 3f;
             critEffect = PMFx.sniperCritMini;
         }};
@@ -228,16 +201,16 @@ public class PMBullets implements ContentList{
 
             {
                 lifetime = 23f;
-                knockback = 3f;
+                knockback = 4f;
                 width = 9f;
                 height = 16f;
-                pierceCap = 15;
+                pierceCap = 13;
                 fragBullets = 5;
                 fragBullet = sniperBoltTechtaniteFrag;
                 fragVelocityMin = 0.8f;
                 fragVelocityMax = 1.2f;
                 fragCone = 30f;
-                critChance = 0.25f;
+                critChance = 0.1f;
                 critMultiplier = 3f;
             }
 
@@ -287,19 +260,16 @@ public class PMBullets implements ContentList{
         smallFlare = new SignalFlareBulletType(8f, 60f, PMUnitTypes.flareSmall){{
             size = 4f;
             spinSpeed = 3f;
-            ammoMultiplier = 2;
         }};
 
         mediumFlare = new SignalFlareBulletType(7f, 70f, PMUnitTypes.flareMedium){{
             size = 8f;
             spinSpeed = 5f;
-            ammoMultiplier = 3;
         }};
 
         largeFlare = new SignalFlareBulletType(6f, 80f, PMUnitTypes.flareLarge){{
             size = 12f;
             spinSpeed = 8f;
-            ammoMultiplier = 4;
         }};
 
         blackHole = new BlackHoleBulletType(0.5f, 1400f / 30f){{

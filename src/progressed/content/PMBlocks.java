@@ -536,12 +536,11 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 60
             ));
             ammo(
-                Items.metaglass, PMBullets.sniperBoltGlass,
                 Items.titanium, PMBullets.sniperBoltTitanium,
                 Items.thorium, PMBullets.sniperBoltThorium,
                 Items.silicon, PMBullets.sniperBoltSilicon,
-                Items.surgeAlloy, PMBullets.sniperBoltSurge,
-                PMItems.techtanite, PMBullets.sniperBoltTechtanite
+                PMItems.techtanite, PMBullets.sniperBoltTechtanite,
+                Items.surgeAlloy, PMBullets.sniperBoltSurge
             );
             size = 3;
             health = 120 * size * size;

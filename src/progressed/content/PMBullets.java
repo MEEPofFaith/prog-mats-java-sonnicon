@@ -212,6 +212,7 @@ public class PMBullets implements ContentList{
                 fragCone = 30f;
                 critChance = 0.1f;
                 critMultiplier = 3f;
+                despawnHitEffects = false;
             }
 
             @Override

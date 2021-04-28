@@ -18,7 +18,7 @@ public class CritBulletType extends BasicBulletType{
     public Effect critEffect = PMFx.sniperCrit;
     public int trailLength = 10;
     public float trailWidth = -1f;
-    public boolean bouncing;
+    public boolean bouncing, despawnHitEffects = true;
 
     public CritBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
@@ -124,7 +124,7 @@ public class CritBulletType extends BasicBulletType{
         boolean crit = data.crit;
         float critBonus = crit ? this.critMultiplier : 1f;
         b.hit = true;
-        if(!data.despawned){
+        if(!data.despawned || despawnHitEffects){
             hitEffect.at(x, y, b.rotation(), hitColor);
             hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
         }

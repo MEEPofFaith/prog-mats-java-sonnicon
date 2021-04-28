@@ -16,6 +16,7 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
+import progressed.ai.*;
 import progressed.util.*;
 
 public class SentryUnitType extends UnitType{
@@ -24,10 +25,13 @@ public class SentryUnitType extends UnitType{
 
     public SentryUnitType(String name){
         super(name);
+        defaultController = SentryAI::new;
+        
         speed = accel = 0f;
         drag = 0.025f;
         flying = lowAltitude = true;
         engineOffset = 6f;
+        engineSize = 2f;
         isCounted = false;
         itemCapacity = 10;
         health = 200;
@@ -66,11 +70,13 @@ public class SentryUnitType extends UnitType{
     public void update(Unit unit){
         if(!unit.dead && unit.health > 0) unit.elevation = Mathf.clamp(unit.elevation + riseSpeed * Time.delta);
 
-        SentryUnitEntity sentry = ((SentryUnitEntity)unit);
-        sentry.duration -= Time.delta;
-        sentry.clampDuration();
-        if(sentry.duration <= 0f){
-            sentry.kill();
+        if(unit.health < Float.POSITIVE_INFINITY){ //I want my invincibility to work.
+            SentryUnitEntity sentry = ((SentryUnitEntity)unit);
+            sentry.duration -= Time.delta;
+            sentry.clampDuration();
+            if(sentry.duration <= 0f){
+                sentry.kill();
+            }
         }
 
         super.update(unit);

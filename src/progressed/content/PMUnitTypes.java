@@ -88,8 +88,7 @@ public class PMUnitTypes implements ContentList{
         //Region Sentry Units
         EntityMapping.nameMap.put("basic-sentry", SentryUnitEntity::new);
         basicSentry = new SentryUnitType("basic-sentry"){{
-            defaultController = SentryAI::new;
-
+            health = 500f;
             duration = 16f * 60f;
 
             weapons.add(new Weapon("large-weapon"){{
@@ -117,7 +116,7 @@ public class PMUnitTypes implements ContentList{
 
         EntityMapping.nameMap.put("strike-sentry", SentryUnitEntity::new);
         strikeSentry = new SentryUnitType("strike-sentry"){{
-            health = 150f;
+            health = 300f;
 
             weapons.add(new Weapon(name + "-hole"){{
                 rotate = mirror = alternate = top = false;
@@ -157,10 +156,11 @@ public class PMUnitTypes implements ContentList{
         dashSentry = new SentryUnitType("dash-sentry"){
             float len = 56f, rangeMul = 16f;
             {
-                health = 450f;
+                health = 800f;
+                duration = 12f * 60f;
+
                 rotateSpeed = 30f;
                 range = len * rangeMul;
-                duration = 12f * 60f;
                 itemCapacity = 15;
 
                 weapons.add(new Weapon(name + "-laser"){{

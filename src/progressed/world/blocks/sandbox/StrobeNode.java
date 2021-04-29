@@ -1,4 +1,4 @@
-package progressed.world.blocks.power;
+package progressed.world.blocks.sandbox;
 
 import arc.*;
 import arc.graphics.*;
@@ -20,13 +20,13 @@ public class StrobeNode extends PowerNode{
     public StrobeNode(String name){
         super(name);
         requirements(Category.power, BuildVisibility.sandboxOnly, ItemStack.empty);
+        alwaysUnlocked = true;
         
         health = 999999999;
         laserRange = 200;
         maxNodes = 65535;
         laserColor1 = Color.valueOf("FFCCCC");
         laserColor2 = Color.valueOf("fb6767");
-        alwaysUnlocked = true;
     }
 
     @Override

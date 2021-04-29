@@ -18,9 +18,8 @@ import progressed.graphics.*;
 import progressed.world.blocks.crafting.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
-import progressed.world.blocks.defence.wall.*;
 import progressed.world.blocks.distribution.*;
-import progressed.world.blocks.power.*;
+import progressed.world.blocks.sandbox.*;
 
 import static mindustry.type.ItemStack.*;
 import static mindustry.Vars.*;
@@ -57,24 +56,10 @@ public class PMBlocks implements ContentList{
     //Misc
     blackhole, excalibur,
 
-    //Sandbox
-    harbinger, everythingGun,
-
     // endregion
     // Region Distribution
     
     floatingConveyor,
-
-    // endregion
-    // Region Power
-    
-    //Sandbox Power
-    strobeNode, strobeInf, strobeBoost,
-
-    // endregion
-    // Region Walls
-
-    sandboxWall, sandboxWallLarge,
 
     // endregion
     // Region Crafting
@@ -83,9 +68,22 @@ public class PMBlocks implements ContentList{
     mindronCollider, shellPress, missileFactory, sentryBuilder,
 
     // endregion
-    // Region Unit
+    // Region Sandbox
 
-    godFactory;
+    //Turret
+    harbinger, everythingGun,
+    
+    //Power
+    strobeNode, strobeInf, strobeBoost, 
+
+    //Defense
+    sandboxWall, sandboxWallLarge,
+
+    //Unit
+    godFactory,
+
+    //Effect
+    multiSource, multiVoid;
 
     // endregion
 
@@ -761,57 +759,6 @@ public class PMBlocks implements ContentList{
                 baseRegion = Core.atlas.find("prog-mats-block-" + size);
             }
         };
-
-        harbinger = new ChaosTurret("harbinger"){
-            {
-                size = 8;
-                health = 999999999;
-                shots = 100;
-                inaccuracy = 45f;
-                shootShake = 150f;
-                powerUse = 300f;
-                range = 560f;
-                recoilAmount = 8f;
-                rotateSpeed = 0.3f;
-                shootCone = 20f;
-                cooldown = 0.0015f;
-                restitution = 0.008f;
-                reloadTime = 450f;
-                chargeTime = PMFx.harbingerCharge.lifetime;
-                chargeBeginEffect = PMFx.harbingerCharge;
-                chargeSound = PMSounds.harbingerCharge;
-                shootSound = PMSounds.harbingerBlast;
-                shootType = PMBullets.harbingerLaser;
-            }
-
-            @Override
-            public void init(){
-                super.init();
-                shootLength -= 16f;
-            }
-
-            @Override
-            public void load(){
-                super.load();
-                baseRegion = Core.atlas.find("prog-mats-block-" + size);
-            }
-        };
-
-        everythingGun = new EverythingTurret("everything-gun"){
-            {
-                size = 6;
-                health = 999999999;
-                reloadTime = 1f;
-                range = 4400f;
-                shootCone = 360f;
-            }
-
-            @Override
-            public void load(){
-                super.load();
-                baseRegion = Core.atlas.find("prog-mats-block-" + size);
-            }
-        };
         
         // endregion
         // Region Distribution
@@ -830,36 +777,6 @@ public class PMBlocks implements ContentList{
             deepDisplayedSpeed = 8.4f;
             buildCostMultiplier = 0.25f;
             researchCostMultiplier = 300f;
-        }};
-
-        // endregion
-        // Region Power
-
-        strobeNode = new StrobeNode("rainbow-power-node");
-
-        strobeInf = new StrobeSource("rainbow-power-source");
-
-        strobeBoost = new StrobeSource("rainbow-power-boost"){{
-            size = 2;
-            boost = true;
-            speedBoost = 100f;
-        }};
-
-
-        // endregion
-        // Region Walls
-
-        sandboxWall = new SandboxWall("sandbox-wall"){{
-            health = 999999999;
-            iconSize = 3f;
-            rotateRadius = 2.5f;
-        }};
-
-        sandboxWallLarge = new SandboxWall("sandbox-wall-large"){{
-            size = 2;
-            health = 999999999;
-            iconSize = 6f;
-            rotateRadius = 5f;
         }};
 
         // endregion
@@ -1003,11 +920,90 @@ public class PMBlocks implements ContentList{
         }};
 
         // endregion
-        // Region Unit
+        // Region Sandbox
 
+        //Turret
+        harbinger = new ChaosTurret("harbinger"){
+            {
+                size = 8;
+                health = 999999999;
+                shots = 100;
+                inaccuracy = 45f;
+                shootShake = 150f;
+                powerUse = 300f;
+                range = 560f;
+                recoilAmount = 8f;
+                rotateSpeed = 0.3f;
+                shootCone = 20f;
+                cooldown = 0.0015f;
+                restitution = 0.008f;
+                reloadTime = 450f;
+                chargeTime = PMFx.harbingerCharge.lifetime;
+                chargeBeginEffect = PMFx.harbingerCharge;
+                chargeSound = PMSounds.harbingerCharge;
+                shootSound = PMSounds.harbingerBlast;
+                shootType = PMBullets.harbingerLaser;
+            }
+
+            @Override
+            public void init(){
+                super.init();
+                shootLength -= 16f;
+            }
+
+            @Override
+            public void load(){
+                super.load();
+                baseRegion = Core.atlas.find("prog-mats-block-" + size);
+            }
+        };
+
+        everythingGun = new EverythingTurret("everything-gun"){
+            {
+                size = 6;
+                health = 999999999;
+                reloadTime = 1f;
+                range = 4400f;
+                shootCone = 360f;
+            }
+
+            @Override
+            public void load(){
+                super.load();
+                baseRegion = Core.atlas.find("prog-mats-block-" + size);
+            }
+        };
+
+        //Power
+        strobeNode = new StrobeNode("rainbow-power-node");
+
+        strobeInf = new StrobeSource("rainbow-power-source");
+
+        strobeBoost = new StrobeSource("rainbow-power-boost"){{
+            size = 2;
+            boost = true;
+            speedBoost = 100f;
+        }};
+
+        //Wall
+        sandboxWall = new SandboxWall("sandbox-wall"){{
+            health = 999999999;
+            iconSize = 3f;
+            rotateRadius = 2.5f;
+        }};
+
+        sandboxWallLarge = new SandboxWall("sandbox-wall-large"){{
+            size = 2;
+            health = 999999999;
+            iconSize = 6f;
+            rotateRadius = 5f;
+        }};
+
+        //Unit
         godFactory = new UnitFactory("god-factory"){{
             requirements(Category.units, BuildVisibility.sandboxOnly, empty);
             alwaysUnlocked = true;
+
             size = 3;
             health = 999999999;
             plans = Seq.with(
@@ -1016,6 +1012,10 @@ public class PMBlocks implements ContentList{
 
             consumes.power(1f);
         }};
+
+        //Effect
+        multiSource = new MultiSource("multi-source");
+        multiVoid = new MultiVoid("multi-void");
 
         // endregion
     }

@@ -31,13 +31,13 @@ public class EverythingTurret extends PowerTurret{
     public EverythingTurret(String name){
         super(name);
         requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
+        alwaysUnlocked = true;
 
         shootLength = 0f;
         targetInterval = 1;
         minRange = 0f;
         shootType = Bullets.standardCopper;
         powerUse = 246810f/60f;
-        alwaysUnlocked = true;
     }
 
     @Override

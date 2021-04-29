@@ -22,7 +22,6 @@ public class ChaosTurret extends PowerTurret{
     public ChaosTurret(String name){
         super(name);
         requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
-
         alwaysUnlocked = true;
 
         heatDrawer = tile -> {

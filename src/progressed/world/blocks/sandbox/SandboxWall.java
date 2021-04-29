@@ -1,4 +1,4 @@
-package progressed.world.blocks.defence.wall;
+package progressed.world.blocks.sandbox;
 
 import arc.*;
 import arc.graphics.*;
@@ -31,6 +31,7 @@ public class SandboxWall extends Wall{
     public SandboxWall(String name){
         super(name);
         requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
+        alwaysUnlocked = true;
         
         lightningChance = 1f;
         lightningDamage = 5000f;
@@ -38,7 +39,6 @@ public class SandboxWall extends Wall{
         chanceDeflect = 100000000f;
         flashHit = insulated = absorbLasers = true;
         schematicPriority = 10;
-        alwaysUnlocked = true;
         configurable = saveConfig = update = noUpdateDisabled = true;
 
         config(boolean[].class, (SandboxWallBuild tile, boolean[] arr) -> tile.modes = arr.clone());

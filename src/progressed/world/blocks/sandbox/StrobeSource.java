@@ -1,4 +1,4 @@
-package progressed.world.blocks.power;
+package progressed.world.blocks.sandbox;
 
 import arc.*;
 import arc.math.*;

@@ -31,7 +31,7 @@ ext{
 }
 
 jar{
-    archiveFileName.set "raw-$pArtifactFilename"
+    archiveFileName.set "${pArtifactFilename}Desktop.jar"
 
     from{
         configurations.runtimeClasspath.collect{
@@ -72,9 +72,9 @@ task alphableed doFirst{
 }
 
 task dexify(type: Jar){
-    archiveName "$pArtifactFilename"
+    archiveName "${pArtifactFilename}Dexed.jar"
 
-    final File  jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "raw-$pArtifactFilename"),
+    final File  jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "${pArtifactFilename}Desktop.jar"),
                 dexedArtifact = new File(tasks.dexify.getTemporaryDir(), "dexed.jar")
 
     doFirst{

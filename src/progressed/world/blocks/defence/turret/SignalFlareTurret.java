@@ -4,10 +4,11 @@ import arc.*;
 import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
-import mindustry.content.Bullets;
+import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.logic.*;
+import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
@@ -50,7 +51,7 @@ public class SignalFlareTurret extends ItemTurret{
 
     public class SignalFlareTurretBuild extends ItemTurretBuild{
         public float tX, tY;
-        public int count;
+        public int count, amount;
         public boolean targetFound;
         public Bullet bullet;
         public Seq<FlareUnitEntity> flares = new Seq<>();
@@ -184,6 +185,34 @@ public class SignalFlareTurret extends ItemTurret{
 
         public float countf(){
             return (float)(flares.size + (bullet != null ? 1 : 0)) / (float)flareLimit;
+        }
+
+        @Override
+        public int acceptStack(Item item, int amount, Teamc source){
+            BulletType type = ammoTypes.get(item);
+
+            int a = getAmount(item);
+
+            if(type == null || a >= ammoPerShot) return 0;
+
+            return Math.min((int)((ammoPerShot - a) / ammoTypes.get(item).ammoMultiplier), amount);
+        }
+
+        @Override
+        public boolean acceptItem(Building source, Item item){
+            return (totalAmmo == 0 || getAmount(item) < ammoPerShot) && super.acceptItem(source, item);
+        }
+
+        public int getAmount(Item item){
+            BulletType type = ammoTypes.get(item);
+
+            amount = 0;
+            ammo.each(a -> {
+                if(a.type() == type){
+                    amount = a.amount;
+                }
+            });
+            return amount;
         }
     }
 }

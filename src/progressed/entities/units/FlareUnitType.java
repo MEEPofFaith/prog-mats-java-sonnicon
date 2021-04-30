@@ -14,6 +14,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
+import mindustry.world.meta.*;
 import progressed.ai.*;
 import progressed.graphics.*;
 import progressed.util.*;
@@ -22,7 +23,7 @@ public class FlareUnitType extends UnitType{
     public Effect flareEffect = PMFx.flare;
     public float flareX, flareY;
     public float flareEffectChance = 0.5f, flareEffectSize = 1f;
-    public float duration;
+    public float duration, growSpeed = 0.05f;
     public float shadowSize = -1f;
     public float attraction;
 
@@ -58,10 +59,12 @@ public class FlareUnitType extends UnitType{
         flare.duration -= Time.delta;
         flare.clampDuration();
 
+        flare.height = Mathf.lerpDelta(flare.height, 1f, growSpeed);
+
         if(Mathf.chanceDelta(flareEffectChance) && flareEffect != Fx.none && !(unit.dead || unit.health < 0f)){
             flareEffect.at(
                 unit.x + flareX,
-                unit.y + flareY,
+                unit.y + flareY * flare.height,
                 flareEffectSize,
                 unit.team.color
             );
@@ -75,10 +78,12 @@ public class FlareUnitType extends UnitType{
 
     @Override
     public void drawSoftShadow(Unit unit){
-        Draw.color(0, 0, 0, 0.4f * ((FlareUnitEntity)unit).animation);
+        FlareUnitEntity flare = (FlareUnitEntity)unit;
+
+        Draw.color(0, 0, 0, 0.4f * flare.animation);
         float rad = 1.6f;
         float size = shadowSize * Draw.scl * 16f;
-        Draw.rect(softShadowRegion, unit, size * rad, size * rad);
+        Draw.rect(softShadowRegion, unit, size * rad * flare.height, size * rad * flare.height);
         Draw.color();
     }
 
@@ -87,8 +92,10 @@ public class FlareUnitType extends UnitType{
         Draw.reset();
 
         if(Core.atlas.isFound(outlineRegion)){
-            Draw.alpha(((FlareUnitEntity)unit).animation);
-            Draw.rect(outlineRegion, unit.x, unit.y, unit.rotation - 90f);
+            FlareUnitEntity flare = (FlareUnitEntity)unit;
+
+            Draw.alpha(flare.animation);
+            Draw.rect(outlineRegion, unit.x, unit.y, outlineRegion.width / 4f, outlineRegion.height / 4f * flare.height, unit.rotation - 90f);
             Draw.reset();
         }
     }
@@ -96,9 +103,20 @@ public class FlareUnitType extends UnitType{
     @Override
     public void drawBody(Unit unit){
         applyColor(unit);
+        FlareUnitEntity flare = (FlareUnitEntity)unit;
 
-        Draw.alpha(((FlareUnitEntity)unit).animation);
-        Draw.rect(region, unit.x, unit.y, unit.rotation - 90f);
+        Draw.alpha(flare.animation);
+        Draw.rect(region, unit.x, unit.y, region.width / 4f, region.height / 4f * flare.height, unit.rotation - 90f);
+        Draw.reset();
+    }
+
+    @Override
+    public void drawCell(Unit unit){
+        applyColor(unit);
+        FlareUnitEntity flare = (FlareUnitEntity)unit;
+
+        Draw.color(cellColor(unit));
+        Draw.rect(cellRegion, unit.x, unit.y, cellRegion.width / 4f, cellRegion.height / 4f * flare.height, unit.rotation - 90);
         Draw.reset();
     }
 
@@ -117,6 +135,32 @@ public class FlareUnitType extends UnitType{
         unit.rotation = 90f;
         ((FlareUnitEntity)unit).duration = duration;
         return unit;
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.flying);
+        stats.remove(Stat.speed);
+        stats.remove(Stat.commandLimit);
+        stats.remove(Stat.canBoost);
+        stats.remove(Stat.itemCapacity);
+        stats.remove(Stat.range);
+
+        stats.remove(Stat.health);
+        stats.add(Stat.health, t -> {
+            t.row();
+            t.table(ht -> {
+                ht.left().defaults().padRight(3).left();
+                
+                ht.add(Core.bundle.format("bullet.pm-flare-health", health));
+                ht.row();
+                ht.add(Core.bundle.format("bullet.pm-flare-attraction", attraction));
+                ht.row();
+                ht.add(Core.bundle.format("bullet.pm-flare-lifetime", (int)(duration / 60f)));
+            }).padTop(-9f).left().get().background(Tex.underline);
+        });
     }
 
     @Override

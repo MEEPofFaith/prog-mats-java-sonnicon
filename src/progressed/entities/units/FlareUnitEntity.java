@@ -7,7 +7,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import progressed.content.*;
 
 public class FlareUnitEntity extends SentryUnitEntity{
-    public float animation = 1f;
+    public float animation = 1f, height = 0f;
 
     @Override
     public float durationf(){

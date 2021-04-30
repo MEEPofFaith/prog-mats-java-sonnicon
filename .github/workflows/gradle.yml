@@ -32,4 +32,4 @@ jobs:
       uses: actions/upload-artifact@v2.2.1
       with:
         name: Dexed Progressed Materials-ed
-        path: build/libs/[!raw-]*.jar
+        path: build/libs/*[Dexed].jar

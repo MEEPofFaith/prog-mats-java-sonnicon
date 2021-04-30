@@ -108,6 +108,11 @@ public class MultiSource extends Block{
 
         @Override
         public void buildConfiguration(Table table){
+            ImageButtonStyle style = new ImageButtonStyle(Styles.clearTransi);
+            style.imageDisabledColor = Color.gray;
+            Cell<ImageButton> b = table.button(Icon.cancel, style, () -> data.clear()).top().size(40f);
+            b.get().setDisabled(data::invalid);
+
             table.table(t -> {
                 PMItemSelection.buildTable(t, content.items(), () -> data.item, this::configure, false, true).top();
                 t.row();
@@ -115,10 +120,6 @@ public class MultiSource extends Block{
                 t.row();
                 PMItemSelection.buildTable(t, content.liquids(), () -> data.liquid, this::configure, false, true).top();
             });
-
-            ImageButtonStyle style = new ImageButtonStyle(Styles.clearTransi);
-            style.over = Styles.flatDown;
-            table.button(Icon.trash, style, () -> data.clear()).top().size(48f);
         }
 
         @Override
@@ -165,8 +166,8 @@ public class MultiSource extends Block{
         public void write(Writes write){
             super.write(write);
 
-            write.s(data.geti() == null ? -1 : data.geti().id);
-            write.s(data.getl() == null ? -1 : data.getl().id);
+            write.s(data.item == null ? -1 : data.item.id);
+            write.s(data.liquid == null ? -1 : data.liquid.id);
         }
 
         @Override
@@ -205,12 +206,16 @@ public class MultiSource extends Block{
             set(data.item, data.liquid);
         }
 
-        public Item geti(){
-            return item;
+        public void set(Object[] arr){
+            set((Item)arr[0], (Liquid)arr[1]);
         }
 
-        public Liquid getl(){
-            return liquid;
+        public Object[] toArray(){
+            return new Object[]{item, liquid};
+        }
+
+        public boolean invalid(){
+            return item == null && liquid == null;
         }
 
         public void clear(){

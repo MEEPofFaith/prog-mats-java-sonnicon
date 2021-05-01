@@ -163,6 +163,24 @@ public class MultiSource extends Block{
         }
 
         @Override
+        public void configureAny(Object value){
+            if(value instanceof Item i){
+                if(data.item == i){
+                    data.item = null;
+                }else{
+                    data.set(i);
+                }
+            }else if(value instanceof Liquid l){
+                if(data.liquid == l){
+                    data.liquid = null;
+                }else{
+                    data.set(l);
+                }
+            }
+            Call.tileConfig(player, self(), value);
+        }
+
+        @Override
         public void write(Writes write){
             super.write(write);
 

@@ -204,7 +204,7 @@ public class SandboxWall extends Wall{
         public void configureAny(Object value){
             int sel = (int)value;
             modes[sel] = !modes[sel];
-            //reset hit
+            //reset hit for turning on phase;
             if(sel == 1 && modes[sel]) hit = 0f;
             Call.tileConfig(player, self(), value);
         }

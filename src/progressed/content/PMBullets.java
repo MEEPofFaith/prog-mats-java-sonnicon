@@ -236,6 +236,7 @@ public class PMBullets implements ContentList{
                         if(b.collided.size > 0) bullet.collided.add(b.collided.peek());
                     }
                 }
+                Sounds.missile.at(b, Mathf.random(0.9f, 1.1f));
 
                 super.despawned(b);
             }

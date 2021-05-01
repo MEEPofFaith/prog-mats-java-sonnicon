@@ -3,11 +3,13 @@ package progressed.world.blocks.sandbox;
 import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.math.geom.Point2;
 import arc.scene.ui.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import arc.util.io.*;
+import mindustry.Vars;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.type.*;
@@ -138,45 +140,27 @@ public class MultiSource extends Block{
         }
 
         @Override
-        public SourceData config(){
-            return data;
+        public Point2 config(){
+            return new Point2(data.item.id, data.liquid.id);
         }
 
         @Override
         public void configure(Object value){
-            if(value instanceof Item i){
-                if(data.item == i){
-                    data.item = null;
-                }else{
-                    data.set(i);
-                }
-            }else if(value instanceof Liquid l){
-                if(data.liquid == l){
-                    data.liquid = null;
-                }else{
-                    data.set(l);
-                }
+            if (value instanceof Point2 d) {
+                this.data = new SourceData(content.item(d.x), content.liquid(d.y));
             }
-            //save last used config
-            block.lastConfig = data;
+
+            block.lastConfig=value;
             Call.tileConfig(player, self(), value);
         }
 
         @Override
         public void configureAny(Object value){
-            if(value instanceof Item i){
-                if(data.item == i){
-                    data.item = null;
-                }else{
-                    data.set(i);
-                }
-            }else if(value instanceof Liquid l){
-                if(data.liquid == l){
-                    data.liquid = null;
-                }else{
-                    data.set(l);
-                }
+            if (value instanceof Point2 d) {
+                this.data = new SourceData(content.item(d.x), content.liquid(d.y));
             }
+
+            block.lastConfig=value;
             Call.tileConfig(player, self(), value);
         }
 

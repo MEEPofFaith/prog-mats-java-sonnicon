@@ -191,27 +191,47 @@ public class SandboxWall extends Wall{
 
         @Override
         public void configure(Object value){
-            int sel = (int)value;
-            modes[sel] = !modes[sel];
-            //save last used config
+            if (value instanceof Integer v) {
+                for (int i = 0; i < modes.length; i++) {
+                    modes[i] = getBit(v, i) == 1 ? true : false;
+                }
+            }
+
             block.lastConfig = value;
-            //reset hit for turning on phase;
-            if(sel == 1 && modes[sel]) hit = 0f;
             Call.tileConfig(player, self(), value);
         }
 
         @Override
         public void configureAny(Object value){
-            int sel = (int)value;
-            modes[sel] = !modes[sel];
-            //reset hit for turning on phase;
-            if(sel == 1 && modes[sel]) hit = 0f;
+            if (value instanceof Integer v) {
+                for (int i = 0; i < modes.length; i++) {
+                    modes[i] = getBit(v, i) == 1 ? true : false;
+                }
+            }
+
+            block.lastConfig = value;
             Call.tileConfig(player, self(), value);
         }
 
         @Override
-        public boolean[] config(){
-            return modes;
+        public Integer config() {
+            int rtn = 0;
+
+            for (int i = 0;i < modes.length;i++) {
+                rtn = setBit(rtn, i, modes[i]);
+            }
+            return rtn;
+        }
+
+        protected int setBit(int number, int pos, boolean set) {
+            if (set) {
+                return number | (1 << pos);
+            }
+            return number & ~(1 << pos);
+        }
+
+        protected byte getBit(int number, int pos) {
+            return (byte) ((number >> pos) & 1);
         }
 
         @Override

@@ -226,7 +226,7 @@ public class MultiSource extends Block{
         }
 
         public Point2 toPoint2(){
-            return new Point2(item.id, liquid.id);
+            return new Point2(item == null ? -1 : item.id, liquid == null ? -1 : liquid.id);
         }
 
         public boolean invalid(){

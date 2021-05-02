@@ -3,6 +3,7 @@ package progressed.world.blocks.sandbox;
 import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.math.geom.*;
 import arc.scene.ui.*;
 import arc.scene.ui.ImageButton.*;
 import arc.scene.ui.layout.*;
@@ -39,7 +40,7 @@ public class MultiSource extends Block{
         noUpdateDisabled = true;
         displayFlow = false;
 
-        config(SourceData.class, (MultiSourceBuild tile, SourceData m) -> tile.data.set(m));
+        config(Point2.class, (MultiSourceBuild tile, Point2 p) -> tile.data.set(p));
         configClear((MultiSourceBuild tile) -> tile.data.clear());
     }
 
@@ -62,9 +63,9 @@ public class MultiSource extends Block{
     @Override
     public void drawRequestConfig(BuildPlan req, Eachable<BuildPlan> list){
         Draw.rect(cross, req.drawx(), req.drawy());
-        if(req.config instanceof SourceData data){
-            drawRequestConfigCenter(req, data.item, name + "-center-0");
-            drawRequestConfigCenter(req, data.liquid, name + "-center-1");
+        if(req.config instanceof Point2 data){
+            drawRequestConfigCenter(req, content.item((short)data.x), name + "-center-0");
+            drawRequestConfigCenter(req, content.liquid((short)data.y), name + "-center-1");
         }
     }
 
@@ -138,8 +139,8 @@ public class MultiSource extends Block{
         }
 
         @Override
-        public SourceData config(){
-            return data;
+        public Point2 config(){
+            return data.toPoint2();
         }
 
         @Override
@@ -184,15 +185,15 @@ public class MultiSource extends Block{
         public void write(Writes write){
             super.write(write);
 
-            write.s(data.item == null ? -1 : data.item.id);
-            write.s(data.liquid == null ? -1 : data.liquid.id);
+            write.i(data.item == null ? -1 : data.item.id);
+            write.i(data.liquid == null ? -1 : data.liquid.id);
         }
 
         @Override
         public void read(Reads read, byte revision){
             super.read(read, revision);
 
-            data.set(content.item(read.s()), content.liquid(read.s()));
+            data.set(content.item((short)read.i()), content.liquid((short)read.i()));
         }
     }
 
@@ -213,23 +214,19 @@ public class MultiSource extends Block{
         }
 
         public void set(Item item){
-            set(item, this.liquid);
+            this.item = item;
         }
 
         public void set(Liquid liquid){
-            set(this.item, liquid);
+            this.liquid = liquid;
         }
 
-        public void set(SourceData data){
-            set(data.item, data.liquid);
+        public void set(Point2 data){
+            set(content.item((short)data.x), content.liquid((short)data.y));
         }
 
-        public void set(Object[] arr){
-            set((Item)arr[0], (Liquid)arr[1]);
-        }
-
-        public Object[] toArray(){
-            return new Object[]{item, liquid};
+        public Point2 toPoint2(){
+            return new Point2(item.id, liquid.id);
         }
 
         public boolean invalid(){

@@ -48,8 +48,8 @@ public class EruptorTurret extends PowerTurret{
         cooldown = restitution = 0.01f;
         ammoUseEffect = Fx.none;
         shootSound = Sounds.none;
-        ambientSound = Sounds.beam;
-        ambientSoundVolume = 2f;
+        loopSound = Sounds.beam;
+        loopSoundVolume = 2f;
         heatColor = Color.valueOf("f08913");
 
         consumes.add(new ConsumeLiquidFilter(liquid -> liquid.temperature <= 0.5f && liquid.flammability < 0.1f, 0.01f)).update(false);
@@ -110,10 +110,11 @@ public class EruptorTurret extends PowerTurret{
     @Override
     public void setBars(){
         super.setBars();
+        
         bars.add("pm-reload", (EruptorTurretBuild entity) -> new Bar(
             () -> bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp((reloadTime - entity.reload) / reloadTime) * 100f)),
             () -> entity.team.color,
-            () -> (reloadTime - entity.reload) / reloadTime
+            () -> 1f - Mathf.clamp(entity.reload / reloadTime)
         ));
         bars.add("pm-shoot-duration", (EruptorTurretBuild entity) -> new Bar(
             () -> bundle.format("bar.pm-shoot-duration", PMUtls.stringsFixed(Mathf.clamp((entity.bulletLife <= 0 ? shootDuration : entity.bulletLife) / shootDuration) * 100f)),
@@ -212,8 +213,8 @@ public class EruptorTurret extends PowerTurret{
                 tr.trns(rotation, length, 0f);
                 bullet.set(x + tr.x, y + tr.y);
                 bullet.time(0f);
-                heat = 1f;
                 recoil = recoilAmount;
+                heat = 1f;
                 bulletLife -= Time.delta / Math.max(efficiency(), 0.00001f);
                 for(int i = 0; i < layerOpen.length; i++){
                     float offset = Mathf.absin(bulletLife / 6f + Mathf.randomSeed(bullet.id * 2), 1f, 1f);

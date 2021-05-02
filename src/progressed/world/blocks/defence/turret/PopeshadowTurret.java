@@ -66,10 +66,11 @@ public class PopeshadowTurret extends PowerTurret{
     @Override
     public void setBars(){
         super.setBars();
+        
         bars.add("pm-reload", (PopeshadowTurretBuild entity) -> new Bar(
             () -> bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
             () -> entity.team.color,
-            () -> Mathf.clamp(entity.reload / reloadTime, 0f, reloadTime)
+            () -> Mathf.clamp(entity.reload / reloadTime)
         ));
 
         bars.add("pm-charge", (PopeshadowTurretBuild entity) -> new Bar(

@@ -22,7 +22,6 @@ public class ChaosTurret extends PowerTurret{
     public ChaosTurret(String name){
         super(name);
         requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.empty);
-
         alwaysUnlocked = true;
 
         heatDrawer = tile -> {
@@ -44,10 +43,11 @@ public class ChaosTurret extends PowerTurret{
     @Override
     public void setBars(){
         super.setBars();
+        
         bars.add("pm-reload", (ChaosTurretBuild entity) -> new Bar(
             () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
             () -> entity.team.color,
-            () -> entity.reload / reloadTime
+            () -> Mathf.clamp(entity.reload / reloadTime)
         ));
     }
 

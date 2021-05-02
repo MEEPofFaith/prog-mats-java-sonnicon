@@ -112,17 +112,24 @@ public class PMTechTree implements ContentList{
             node(excalibur, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
         });
 
+        vanillaNode(segment, () -> {
+            //Signal flare
+            node(signal);
+        });
+
+        // Distribution
         vanillaNode(armoredConveyor, () -> {
             //Floating Conveyor
             node(floatingConveyor, Seq.with(new Objectives.SectorComplete(SectorPresets.windsweptIslands)));
         });
 
+        // Crating
         vanillaNode(surgeSmelter, () -> {
             //Mindron Collider
             node(mindronCollider);
         });
 
-        //Items
+        // Items
         vanillaNode(surgeAlloy, () -> {
             nodeProduce(techtanite);
         });

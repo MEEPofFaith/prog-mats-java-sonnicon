@@ -58,18 +58,19 @@ public class FloatingConveyor extends Conveyor{
     public void setStats(){
         super.setStats();
 
-        stats.remove(Stat.itemsMoved);
-        stats.add(Stat.itemsMoved, s -> {
-            Table t = new Table();
-            t.add(Core.bundle.get("stat.pm-land-speed") + PMUtls.stringsFixed(displayedSpeed) + " " + StatUnit.itemsSecond.localized()).left();
-            t.row();
-            if(deepDisplayedSpeed != displayedSpeed){
+        if(deepDisplayedSpeed != displayedSpeed){
+            stats.remove(Stat.itemsMoved);
+            stats.add(Stat.itemsMoved, s -> {
+                Table t = new Table();
+                t.add(Core.bundle.get("stat.pm-land-speed") + PMUtls.stringsFixed(displayedSpeed) + " " + StatUnit.itemsSecond.localized()).left();
+                t.row();
                 String l = shallowDeep ? Core.bundle.get("stat.pm-liquid-speed") : Core.bundle.get("stat.pm-deep-speed");
                 t.add(l + PMUtls.stringsFixed(deepDisplayedSpeed) + " " + StatUnit.itemsSecond.localized()).left();
-            }
 
-            s.add(t);
-        });
+
+                s.add(t);
+            });
+        }
     }
 
     @Override

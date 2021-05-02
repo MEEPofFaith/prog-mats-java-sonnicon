@@ -10,6 +10,7 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
+import mindustry.gen.Building;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import progressed.entities.bullet.StrikeBulletType.*;
@@ -52,20 +53,22 @@ public class MissileTurret extends ItemTurret{
     @Override
     public void setBars(){
         super.setBars();
+        
         if(reloadBar){
             bars.add("pm-reload", (MissileTurretBuild entity) -> new Bar(
                 () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
                 () -> entity.team.color,
-                () -> entity.reload / reloadTime
+                () -> Mathf.clamp(entity.reload / reloadTime)
             ));
         }
     }
 
     public class MissileTurretBuild extends ItemTurretBuild{
         protected boolean firing;
-        protected boolean[] shot = new boolean[shots];
+        protected boolean[] hasShoot = new boolean[shots];
         protected float speedScl;
         protected float[] heats = new float[shots];
+        protected int currentAmmo;
 
         @Override
         public void draw(){
@@ -73,17 +76,15 @@ public class MissileTurret extends ItemTurret{
 
             if(hasAmmo() && peekAmmo() != null){
                 Draw.draw(Draw.z(), () -> {
-                    for(int i = 0; i < shots; i++){
-                        if(!shot[i]){
-                            float tx = shootLocs[i][0] + x;
-                            float ty = shootLocs[i][1] + y;
-                            Drawf.construct(tx, ty, ((BasicBulletType)peekAmmo()).frontRegion, team.color, 0f, reload / reloadTime, speedScl, reload);
+                    for(int i = 0; i < Math.min(shots, currentAmmo); i++){
+                        if(!hasShoot[i]){
+                            Drawf.construct(shootLocs[i][0] + x, shootLocs[i][1] + y, ((BasicBulletType)peekAmmo()).frontRegion, team.color, 0f, reload / reloadTime, speedScl, reload);
                         }
                     }
                 });
             }
 
-            for(int i = 0; i < shots; i++){
+            for(int i = 0; i < heats.length; i++){
                 if(Core.atlas.isFound(heatRegions[i]) && heats[i] > 0.001f){
                     Draw.color(heatColor, heats[i]);
                     Draw.blend(Blending.additive);
@@ -97,7 +98,7 @@ public class MissileTurret extends ItemTurret{
         @Override
         public void updateTile(){
             super.updateTile();
-            for(int i = 0; i < shots; i++){
+            for(int i = 0; i < heats.length; i++){
                 heats[i] = Mathf.lerpDelta(heats[i], 0f, cooldown);
             }
               
@@ -142,7 +143,7 @@ public class MissileTurret extends ItemTurret{
         protected void shoot(BulletType type){
             firing = true;
       
-            for(int i = 0; i < shots; i++){
+            for(int i = 0; i < Math.min(shots, totalAmmo); i++){
                 final int sel = i;
                 Time.run(burstSpacing * i, () -> {
                     if(!isValid() || !hasAmmo()) return;
@@ -152,19 +153,33 @@ public class MissileTurret extends ItemTurret{
                     type.create(this, team, tx, ty, rotation + Mathf.range(inaccuracy), -1f, 1f + Mathf.range(velocityInaccuracy), 1f, new StrikeBulletData(tx, ty));
                     effects();
                     useAmmo();
-                    heats[sel] = 1;
-                    shot[sel] = true;
+                    heats[sel] = 1f;
+                    hasShoot[sel] = true;
                 });
             }
             
-            Time.run(burstSpacing * shots, () -> {
+            Time.run(burstSpacing * Math.min(shots, totalAmmo), () -> {
                 reload = 0f;
                 firing = false;
-                for(int i = 0; i < shots; i++){
-                    shot[i] = false;
+                for(int i = 0; i < hasShoot.length; i++){
+                    hasShoot[i] = false;
                 }
+                currentAmmo = totalAmmo;
             });
-        }        
+        }
+
+        @Override
+        public boolean acceptItem(Building source, Item item){
+            return !firing && super.acceptItem(source, item);
+        }
+
+        @Override
+        public void handleItem(Building source, Item item){
+            super.handleItem(source, item);
+
+            reload = 0f;
+            if(!firing) currentAmmo += ammoTypes.get(item).ammoMultiplier;
+        }
 
         @Override
         protected void turnToTarget(float targetRot){

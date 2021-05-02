@@ -2,8 +2,10 @@ package progressed.content;
 
 import arc.graphics.*;
 import arc.math.*;
+import arc.struct.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
+import mindustry.entities.*;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
@@ -19,21 +21,25 @@ public class PMBullets implements ContentList{
 
     shockZap, sparkZap, stormZap,
 
-    sniperBoltSilicon, sniperBoltGlassFrag, sniperBoltGlass, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
+    sniperBoltSilicon, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
 
     pixel,
     
     basicSentryLaunch, strikeSentryLaunch, dashSentryLaunch,
+
+    smallFlare, mediumFlare, largeFlare,
     
     blackHole, cataclysm, absorbed,
     
     empParticle, quantumParticle, empParticleStrong,
     
-    basicSentryDrop, strikeSentryDrop, dashSentryDrop,
-    
     firestormMissile,
+
+    recursionTwo, recursionOne,
     
-    strikedownBasic, strikedownEmp, strikedownQuantum,
+    strikedownBasic, strikedownEmp, strikedownQuantum, strikedownRecursive,
+    
+    basicSentryDrop, strikeSentryDrop, dashSentryDrop,
     
     arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
@@ -64,8 +70,6 @@ public class PMBullets implements ContentList{
             height = 9f;
             reloadMultiplier = 0.6f;
             ammoMultiplier = 4;
-            pierce = true;
-            pierceCap = 2;
             lifetime = 76f;
         }};
 
@@ -94,8 +98,6 @@ public class PMBullets implements ContentList{
             shootEffect = Fx.shootBig;
             smokeEffect = Fx.shootBigSmoke;
             ammoMultiplier = 4f;
-            pierce = true;
-            pierceCap = 2;
             lifetime = 66f;
         }};
 
@@ -134,43 +136,14 @@ public class PMBullets implements ContentList{
 
         sniperBoltSilicon = new CritBulletType(12f, 300f){{
             lifetime = 48f;
-            knockback = 5f;
+            knockback = 4f;
             width = 5f;
             height = 8f;
             pierceCap = 20;
             reloadMultiplier = 1.2f;
             critChance = 0.2f;
             critMultiplier = 2f;
-            homingRange = 200f;
-            homingPower = 0.4f;
-        }};
-
-        sniperBoltGlassFrag = new CritBulletType(8f, 50f){{
-            frontColor = Color.white;
-            backColor = hitColor = Color.valueOf("D0D0E0");
-            lifetime = 3f;
-            width = 3f;
-            height = 4f;
-            pierceCap = 2;
-            critMultiplier = 10f;
-            trailLength = 0;
-            critEffect = Fx.none;
-            hitEffect = Fx.hitBulletSmall;
-            despawnEffect = Fx.none;
-        }};
-
-        sniperBoltGlass = new CritBulletType(11f, 200f){{
-            frontColor = Color.white;
-            backColor = hitColor = Color.valueOf("D0D0E0");
-            lifetime = 53f;
-            knockback = 5f;
-            width = 6f;
-            height = 10f;
-            pierceCap = 15;
-            fragBullets = 5;
-            fragBullet = sniperBoltGlassFrag;
-            critChance = 0.05f;
-            critMultiplier = 10f;
+            bouncing = true;
         }};
 
         sniperBoltTitanium = new CritBulletType(13f, 500f){{
@@ -180,7 +153,8 @@ public class PMBullets implements ContentList{
             height = 12f;
             pierceCap = 26;
             reloadMultiplier = 1.7f;
-            critMultiplier = 3.5f;
+            critChance = 0.15f;
+            critMultiplier = 2.5f;
         }};
 
         sniperBoltThorium = new CritBulletType(12f, 800f){{
@@ -189,6 +163,7 @@ public class PMBullets implements ContentList{
             width = 8f;
             height = 14f;
             pierceCap = 30;
+            critChance = 0.1f;
             critMultiplier = 4.5f;
         }};
 
@@ -199,24 +174,26 @@ public class PMBullets implements ContentList{
             knockback = 5f;
             width = 10f;
             height = 19f;
+            trailLength = 11;
             pierceCap = 40;
+            knockback = 7f;
             reloadMultiplier = 0.7f;
             lightning = 5;
             lightningLength = 3;
             lightningLengthRand = 2;
             lightningDamage = 40f;
-            critChance = 0.25f;
+            critChance = 0.20f;
             critMultiplier = 5f;
         }};
 
         sniperBoltTechtaniteFrag = new CritBulletType(13f, 160f){{
             lifetime = 23f;
-            knockback = 2f;
+            knockback = 3f;
             width = 6f;
             height = 14f;
-            trailLength = 10;
             pierceCap = 12;
             critMultiplier = 3f;
+            critEffect = PMFx.sniperCritMini;
         }};
 
         sniperBoltTechtanite = new CritBulletType(13f, 800f){
@@ -224,18 +201,18 @@ public class PMBullets implements ContentList{
 
             {
                 lifetime = 23f;
-                knockback = 3f;
+                knockback = 4f;
                 width = 9f;
                 height = 16f;
-                trailLength = 10;
-                pierceCap = 15;
+                pierceCap = 13;
                 fragBullets = 5;
                 fragBullet = sniperBoltTechtaniteFrag;
                 fragVelocityMin = 0.8f;
                 fragVelocityMax = 1.2f;
                 fragCone = 30f;
-                critChance = 0.25f;
+                critChance = 0.1f;
                 critMultiplier = 3f;
+                despawnHitEffects = false;
             }
 
             @Override
@@ -251,12 +228,15 @@ public class PMBullets implements ContentList{
 
             @Override
             public void despawned(Bullet b){ //Only frag on despawn
+                CritBulletData data = (CritBulletData)b.data;
                 for(int i = 0; i < fragBullets; i++){
                     float a = b.rotation() + ((fragCone / fragBullets) * (i - (fragBullets - 1f) / 2f)) + Mathf.range(fragInacc);
                     if(fragBullet instanceof CritBulletType critB){
-                        critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(((CritBulletData)b.data).crit, new Trail(critB.trailLength)));
+                        Bullet bullet = critB.create(b.owner, b.team, b.x, b.y, a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), 1f, new CritBulletData(data.crit, data.trail.copy()));
+                        if(b.collided.size > 0) bullet.collided.add(b.collided.peek());
                     }
                 }
+                Sounds.missile.at(b, Mathf.random(0.9f, 1.1f));
 
                 super.despawned(b);
             }
@@ -278,6 +258,21 @@ public class PMBullets implements ContentList{
         basicSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.basicSentry);
         strikeSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.strikeSentry);
         dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
+
+        smallFlare = new SignalFlareBulletType(8f, 60f, PMUnitTypes.flareSmall){{
+            size = 4f;
+            spinSpeed = 3f;
+        }};
+
+        mediumFlare = new SignalFlareBulletType(7f, 70f, PMUnitTypes.flareMedium){{
+            size = 8f;
+            spinSpeed = 5f;
+        }};
+
+        largeFlare = new SignalFlareBulletType(6f, 80f, PMUnitTypes.flareLarge){{
+            size = 12f;
+            spinSpeed = 8f;
+        }};
 
         blackHole = new BlackHoleBulletType(0.5f, 1400f / 30f){{
             lifetime = 630f;
@@ -456,6 +451,100 @@ public class PMBullets implements ContentList{
             fallSpin = 90f;
         }};
 
+        recursionTwo = new StrikeBulletType(4f, 80f, "prog-mats-arbiter-cluster-frag"){{
+            splashDamage = 50f;
+            splashDamageRadius = 32f;
+            homingPower = 0.1f;
+            homingRange = 330f;
+            lifetime = 70f;
+            hitSound = Sounds.bang;
+            hitShake = 5f;
+            despawnEffect = PMFx.nuclearExplosion;
+
+            trailParam = 5f;
+            trailChance = 0.2f;
+            trailEffect = PMFx.missileTrailMedium;
+
+            autoDropRadius = 15f;
+            stopRadius = 10f;
+            riseEngineSize = 16f;
+            fallEngineSize = 8f;
+            elevation = 230f;
+            riseTime = 25f;
+            fallTime = 15f;
+            trailSize = 0.7f;
+            riseSpin = 190f;
+            fallSpin = 110f;
+
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+        }};
+
+        recursionOne = new StrikeBulletType(3f, 80f, "prog-mats-arbiter-cluster-frag"){{
+            splashDamage = 100f;
+            splashDamageRadius = 40f;
+            homingPower = 0.07f;
+            homingRange = 330f;
+            lifetime = 90f;
+            hitSound = Sounds.bang;
+            hitShake = 5f;
+            despawnEffect = PMFx.nuclearExplosion;
+
+            trailParam = 5f;
+            trailChance = 0.2f;
+            trailEffect = PMFx.missileTrailMedium;
+
+            autoDropRadius = 15f;
+            stopRadius = 10f;
+            riseEngineSize = 16f;
+            fallEngineSize = 8f;
+            elevation = 260f;
+            riseTime = 35f;
+            fallTime = 20f;
+            trailSize = 0.7f;
+            riseSpin = 230f;
+            fallSpin = 120f;
+
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+
+            fragBullets = 3;
+            fragVelocityMin = 0.8f;
+            fragVelocityMax = 1.2f;
+            fragBullet = recursionTwo;
+        }};
+
+        strikedownRecursive = new StrikeBulletType(2f, 80f, "prog-mats-arbiter-cluster-frag"){{
+            splashDamage = 200f;
+            splashDamageRadius = 48f;
+            homingPower = 0.05f;
+            homingRange = 330f;
+            lifetime = 135f;
+            hitSound = Sounds.bang;
+            hitShake = 5f;
+            despawnEffect = PMFx.nuclearExplosion;
+
+            trailParam = 5f;
+            trailChance = 0.2f;
+            trailEffect = PMFx.missileTrailMedium;
+
+            autoDropRadius = 15f;
+            stopRadius = 10f;
+            riseEngineSize = 16f;
+            fallEngineSize = 8f;
+            elevation = 300f;
+            riseTime = 45f;
+            fallTime = 25f;
+            trailSize = 0.7f;
+            riseSpin = 300f;
+            fallSpin = 135f;
+
+            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+
+            fragBullets = 3;
+            fragVelocityMin = 0.8f;
+            fragVelocityMax = 1.2f;
+            fragBullet = recursionOne;
+        }};
+
         arbiterBasic = new StrikeBulletType(1f, 300f, "prog-mats-arbiter-basic"){{
             splashDamage = 27000f;
             splashDamageRadius = 240f;
@@ -519,7 +608,7 @@ public class PMBullets implements ContentList{
             targetRadius = 2f;
         }};
 
-        arbiterClusterFrag = new StrikeBulletType(1f, 80f, "prog-mats-arbiter-cluser-frag"){{
+        arbiterClusterFrag = new StrikeBulletType(1f, 80f, "prog-mats-arbiter-cluster-frag"){{
             splashDamage = 3000f;
             splashDamageRadius = 40f;
             lifetime = 150f;

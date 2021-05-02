@@ -14,6 +14,8 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.meta.*;
+import progressed.ui.*;
 import progressed.util.*;
 
 public class LaunchTurret extends ItemTurret{
@@ -44,12 +46,21 @@ public class LaunchTurret extends ItemTurret{
     }
 
     @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.ammo);
+        stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+    }
+
+    @Override
     public void setBars(){
         super.setBars();
+        
         bars.add("pm-reload", (LaunchTurretBuild entity) -> new Bar(
             () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
             () -> entity.team.color,
-            () -> entity.reload / reloadTime
+            () -> Mathf.clamp(entity.reload / reloadTime)
         ));
     }
 

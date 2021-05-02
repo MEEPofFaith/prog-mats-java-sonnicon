@@ -24,6 +24,7 @@ public class UnitSpawnBulletType extends BasicBulletType{
         lifetime = 120f;
         trailEffect = PMFx.sentryTrail;
         ammoMultiplier = 1;
+        collidesGround = collidesAir = collidesTiles = collides = false;
     }
 
     @Override

@@ -58,7 +58,7 @@ public class BlackHoleTurret extends PowerTurret{
         bars.add("pm-reload", (BlackHoleTurretBuild entity) -> new Bar(
             () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
             () -> entity.team.color,
-            () -> Mathf.clamp(entity.reload / reloadTime, 0f, reloadTime)
+            () -> Mathf.clamp(entity.reload / reloadTime)
         ));
 
         bars.add("pm-charge", (BlackHoleTurretBuild entity) -> new Bar(

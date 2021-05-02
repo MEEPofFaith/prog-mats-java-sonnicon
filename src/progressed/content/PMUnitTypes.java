@@ -4,7 +4,6 @@ import arc.func.*;
 import arc.graphics.*;
 import arc.struct.*;
 import arc.struct.ObjectMap.*;
-import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
@@ -22,8 +21,9 @@ import progressed.graphics.*;
 public class PMUnitTypes implements ContentList{
     //Steal from BetaMindy
     private static Entry<Class<? extends Entityc>, Prov<? extends Entityc>>[] types = new Entry[]{
+        prov(Extension.class, Extension::create),
         prov(SentryUnitEntity.class, SentryUnitEntity::new),
-        prov(Extension.class, Extension::create)
+        prov(FlareUnitEntity.class, FlareUnitEntity::new)
     };
 
     private static ObjectIntMap<Class<? extends Entityc>> idMap = new ObjectIntMap<>();
@@ -74,6 +74,9 @@ public class PMUnitTypes implements ContentList{
     
     //sentry
     basicSentry, strikeSentry, dashSentry,
+
+    //signal flare
+    flareSmall, flareMedium, flareLarge,
     
     //sandy
     everythingUnit;
@@ -85,8 +88,7 @@ public class PMUnitTypes implements ContentList{
         //Region Sentry Units
         EntityMapping.nameMap.put("basic-sentry", SentryUnitEntity::new);
         basicSentry = new SentryUnitType("basic-sentry"){{
-            defaultController = SentryAI::new;
-
+            health = 500f;
             duration = 16f * 60f;
 
             weapons.add(new Weapon("large-weapon"){{
@@ -114,7 +116,7 @@ public class PMUnitTypes implements ContentList{
 
         EntityMapping.nameMap.put("strike-sentry", SentryUnitEntity::new);
         strikeSentry = new SentryUnitType("strike-sentry"){{
-            health = 150f;
+            health = 300f;
 
             weapons.add(new Weapon(name + "-hole"){{
                 rotate = mirror = alternate = top = false;
@@ -154,10 +156,11 @@ public class PMUnitTypes implements ContentList{
         dashSentry = new SentryUnitType("dash-sentry"){
             float len = 56f, rangeMul = 16f;
             {
-                health = 450f;
+                health = 800f;
+                duration = 12f * 60f;
+
                 rotateSpeed = 30f;
                 range = len * rangeMul;
-                duration = 12f * 60f;
                 itemCapacity = 15;
 
                 weapons.add(new Weapon(name + "-laser"){{
@@ -186,6 +189,29 @@ public class PMUnitTypes implements ContentList{
                 }});
             }
         };
+
+        EntityMapping.nameMap.put("small-flare", FlareUnitEntity::new);
+        flareSmall = new FlareUnitType("small-flare"){{
+            health = 300f;
+            attraction = 800f;
+            flareY = 29f / 4f;
+        }};
+
+        EntityMapping.nameMap.put("medium-flare", FlareUnitEntity::new);
+        flareMedium = new FlareUnitType("medium-flare", 360f){{
+            health = 900f;
+            attraction = 11000f;
+            flareY = 45f / 4f;
+            flareEffectSize = 1.5f;
+        }};
+
+        EntityMapping.nameMap.put("large-flare", FlareUnitEntity::new);
+        flareLarge = new FlareUnitType("large-flare", 420f){{
+            health = 2700f;
+            attraction = 26000f;
+            flareY = 61f / 4f;
+            flareEffectSize = 2f;
+        }};
 
         EntityMapping.nameMap.put("god", UnitEntity::create);
         everythingUnit = new UnitType("god"){

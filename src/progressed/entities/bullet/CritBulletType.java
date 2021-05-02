@@ -16,8 +16,9 @@ import static mindustry.Vars.*;
 public class CritBulletType extends BasicBulletType{
     public float critChance = 0.15f, critMultiplier = 5f;
     public Effect critEffect = PMFx.sniperCrit;
-    public int trailLength = 20;
+    public int trailLength = 10;
     public float trailWidth = -1f;
+    public boolean bouncing, despawnHitEffects = true;
 
     public CritBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
@@ -50,9 +51,9 @@ public class CritBulletType extends BasicBulletType{
     public void init(Bullet b){
         if(b.data == null){
             if(Mathf.chance(critChance)){
-                b.data = new CritBulletData(true, new Trail(trailLength));
+                b.data = new CritBulletData(true, new FixedTrail(trailLength));
             }else{
-                b.data = new CritBulletData(false, new Trail(trailLength));
+                b.data = new CritBulletData(false, new FixedTrail(trailLength));
             }
         }
         if(((CritBulletData)b.data).crit) b.damage *= critMultiplier;
@@ -62,7 +63,7 @@ public class CritBulletType extends BasicBulletType{
 
     @Override
     public void draw(Bullet b){
-        if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.draw(backColor, trailWidth);
+        if(((CritBulletData)b.data).trail instanceof FixedTrail tr && trailLength > 0) tr.draw(backColor, trailWidth);
         super.draw(b);
     }
 
@@ -72,10 +73,8 @@ public class CritBulletType extends BasicBulletType{
             critEffect.at(b.x, b.y, b.rotation(), b.team.color);
         }
 
-        if(((CritBulletData)b.data).trail instanceof Trail tr && trailLength > 0) tr.update(b.x, b.y);
-
         if(homingPower > 0.0001f && b.time >= homingDelay){
-            Teamc target = Units.closestTarget(b.team, b.x, b.y, homingRange, e -> ((e.isGrounded() && collidesGround) || (e.isFlying() && collidesAir)) && !b.collided.contains(e.id), t -> collidesGround && !b.collided.contains(t.id));
+            Teamc target = Units.closestTarget(b.team, b.x, b.y, homingRange, e -> e.checkTarget(collidesAir, collidesGround) && !b.collided.contains(e.id), t -> collidesGround && !b.collided.contains(t.id));
             if(target != null){
                 b.vel.setAngle(Angles.moveToward(b.rotation(), b.angleTo(target), homingPower * Time.delta * 50f));
             }
@@ -90,12 +89,30 @@ public class CritBulletType extends BasicBulletType{
                 trailEffect.at(b.x, b.y, trailParam, trailColor);
             }
         }
+
+        if(((CritBulletData)b.data).trail instanceof FixedTrail tr && trailLength > 0) tr.update(b.x, b.y, b.rotation());
+    }
+
+    @Override
+    public void hitEntity(Bullet b, Hitboxc other, float initialHealth){
+        super.hitEntity(b, other, initialHealth);
+
+        bounce(b);
+    }
+
+    @Override
+    public void hitTile(Bullet b, Building build, float initialHealth, boolean direct){
+        super.hitTile(b, build, initialHealth, direct);
+
+        if(direct){
+            bounce(b);
+        }
     }
 
     @Override
     public void despawned(Bullet b){
         if(b.data instanceof CritBulletData data){
-            if(data.trail instanceof Trail tr) tr.clear();
+            if(data.trail instanceof FixedTrail tr) tr.clear();
             data.despawned = true;
         }
         super.despawned(b);
@@ -107,7 +124,7 @@ public class CritBulletType extends BasicBulletType{
         boolean crit = data.crit;
         float critBonus = crit ? this.critMultiplier : 1f;
         b.hit = true;
-        if(!data.despawned){
+        if(!data.despawned || despawnHitEffects){
             hitEffect.at(x, y, b.rotation(), hitColor);
             hitSound.at(x, y, hitSoundPitch, hitSoundVolume);
         }
@@ -118,10 +135,8 @@ public class CritBulletType extends BasicBulletType{
             for(int i = 0; i < fragBullets; i++){
                 float len = Mathf.random(1f, 7f);
                 float a = b.rotation() + Mathf.range(fragCone/2) + fragAngle;
-                if(fragBullet instanceof StrikeBulletType missle){
-                    missle.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new StrikeBulletData(x, y));
-                }else if(fragBullet instanceof CritBulletType critB){
-                    critB.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new CritBulletData(crit, new Trail(critB.trailLength)));
+                if(fragBullet instanceof CritBulletType critB){
+                    critB.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new CritBulletData(crit, new FixedTrail(critB.trailLength)));
                 }else{
                     fragBullet.create(b, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax));
                 }
@@ -165,11 +180,23 @@ public class CritBulletType extends BasicBulletType{
         }
     }
 
+    public void bounce(Bullet b){
+        if(bouncing){
+            Teamc target = Units.closestTarget(b.team, b.x, b.y, range() * b.fout(),
+                e -> e.isValid() && e.checkTarget(collidesAir, collidesGround) && !b.collided.contains(e.id),
+                t -> t.isValid() && collidesGround && !b.collided.contains(t.id)
+            );
+            if(target != null){
+                b.vel.setAngle(b.angleTo(target));
+            }
+        }
+    }
+
     public static class CritBulletData{
         public boolean crit, despawned;
-        protected Trail trail;
+        public FixedTrail trail;
 
-        public CritBulletData(boolean crit, Trail trail){
+        public CritBulletData(boolean crit, FixedTrail trail){
             this.crit = crit;
             this.trail = trail;
         }

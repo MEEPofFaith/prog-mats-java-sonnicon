@@ -18,9 +18,8 @@ import progressed.graphics.*;
 import progressed.world.blocks.crafting.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
-import progressed.world.blocks.defence.wall.*;
 import progressed.world.blocks.distribution.*;
-import progressed.world.blocks.power.*;
+import progressed.world.blocks.sandbox.*;
 
 import static mindustry.type.ItemStack.*;
 import static mindustry.Vars.*;
@@ -49,7 +48,7 @@ public class PMBlocks implements ContentList{
     caliber,
 
     //Misc
-    tinker,
+    signal, tinker,
 
     //Missiles
     firestorm, strikedown, arbiter,
@@ -57,24 +56,10 @@ public class PMBlocks implements ContentList{
     //Misc
     blackhole, excalibur,
 
-    //Sandbox
-    harbinger, everythingGun,
-
     // endregion
     // Region Distribution
     
     floatingConveyor,
-
-    // endregion
-    // Region Power
-    
-    //Sandbox Power
-    strobeNode, strobeInf, strobeBoost,
-
-    // endregion
-    // Region Walls
-
-    sandboxWall, sandboxWallLarge,
 
     // endregion
     // Region Crafting
@@ -83,9 +68,22 @@ public class PMBlocks implements ContentList{
     mindronCollider, shellPress, missileFactory, sentryBuilder,
 
     // endregion
-    // Region Unit
+    // Region Sandbox
 
-    godFactory;
+    //Turret
+    harbinger, everythingGun,
+    
+    //Power
+    strobeNode, strobeInf, strobeBoost, 
+
+    //Defense
+    sandboxWall, sandboxWallLarge,
+
+    //Unit
+    godFactory,
+
+    //Effect
+    multiSource, multiVoid;
 
     // endregion
 
@@ -111,7 +109,7 @@ public class PMBlocks implements ContentList{
             size = 4;
             range = 255f;
             maxSpeed = 0.75f;
-            health = 1800;
+            health = 140 * size * size;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
@@ -152,7 +150,7 @@ public class PMBlocks implements ContentList{
             size = 4;
             range = 255f;
             maxSpeed = 0.73f;
-            health = 1800;
+            health = 150 * size * size;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
@@ -194,7 +192,7 @@ public class PMBlocks implements ContentList{
             size = 4;
             range = 255f;
             maxSpeed = 0.71f;
-            health = 1800;
+            health = 160 * size * size;
             shootCone = 20f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
@@ -229,7 +227,7 @@ public class PMBlocks implements ContentList{
                 new TeslaRing(2.5f)
             );
             size = 1;
-            health = 260;
+            health = 310;
             powerUse = 3.6f;
             reloadTime = 30f;
             range = 72f;
@@ -254,7 +252,7 @@ public class PMBlocks implements ContentList{
                 new TeslaRing(6f)
             );
             size = 2;
-            health = 870;
+            health = 200 * size * size;
             powerUse = 4.8f;
             reloadTime = 20f;
             range = 130f;
@@ -330,7 +328,7 @@ public class PMBlocks implements ContentList{
                 }}
             );
             size = 3;
-            health = 1540;
+            health = 180 * size * size;
             powerUse = 8.9f;
             reloadTime = 10f;
             range = 210f;
@@ -363,7 +361,7 @@ public class PMBlocks implements ContentList{
                 new EruptorCell(h, h)
             );
             size = 3;
-            health = 1800;
+            health = 210 * size * size;
             powerUse = 14f;
             shootCone = 10f;
             range = 240f;
@@ -399,7 +397,7 @@ public class PMBlocks implements ContentList{
                 new EruptorCell(h, h, 2)
             );
             size = 4;
-            health = 2140;
+            health = 190 * size * size;
             powerUse = 17f;
             shootDuration = 240f;
             range = 280f;
@@ -434,7 +432,7 @@ public class PMBlocks implements ContentList{
                 new EruptorCell(h, h, 2)
             );
             size = 4;
-            health = 2430;
+            health = 200 * size * size;
             powerUse = 23f;
             recoilAmount = 8f;
             range = 200f;
@@ -459,7 +457,7 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 150
             ));
             size = 3;
-            health = 2140;
+            health = 340 * size * size;
             range = 180f;
             powerUse = 6.5f;
             minRadius = 16.5f;
@@ -478,7 +476,7 @@ public class PMBlocks implements ContentList{
                     PMItems.techtanite, 450
                 ));
                 size = 5;
-                health = 5830;
+                health = 230 * size * size;
                 range = 260f;
                 powerUse = 13.5f;
                 damage = 1000f;
@@ -517,6 +515,7 @@ public class PMBlocks implements ContentList{
                 Items.titanium, 30
             ));
             size = 2;
+            health = 300 * size * size;
             reloadTime = 70f;
             rotateSpeed = 10f;
             recoilAmount = 4f;
@@ -535,22 +534,47 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 60
             ));
             ammo(
-                Items.metaglass, PMBullets.sniperBoltGlass,
                 Items.titanium, PMBullets.sniperBoltTitanium,
                 Items.thorium, PMBullets.sniperBoltThorium,
                 Items.silicon, PMBullets.sniperBoltSilicon,
-                Items.surgeAlloy, PMBullets.sniperBoltSurge,
-                PMItems.techtanite, PMBullets.sniperBoltTechtanite
+                PMItems.techtanite, PMBullets.sniperBoltTechtanite,
+                Items.surgeAlloy, PMBullets.sniperBoltSurge
             );
             size = 3;
+            health = 120 * size * size;
             reloadTime = 450f;
             inaccuracy = 0f;
             range = 544f;
             rotateSpeed = 2.5f;
             recoilAmount = 5f;
             split = 3f;
-            chargeTime = 300f;
+            chargeTime = 150f;
             shootSound = Sounds.railgun;
+        }};
+
+        signal = new SignalFlareTurret("signal"){{
+            requirements(Category.turret, with(
+                Items.lead, 80,
+                Items.silicon, 130,
+                Items.plastanium, 110,
+                PMItems.techtanite, 90
+            ));
+            ammo(
+                Items.silicon, PMBullets.smallFlare,
+                PMItems.techtanite, PMBullets.mediumFlare,
+                Items.surgeAlloy, PMBullets.largeFlare
+            );
+            size = 2;
+            health = 250 * size * size;
+            minRange = 5f * tilesize;
+            range = 60f * tilesize;
+            shootLength = 23f / 4f;
+            reloadTime = 900f;
+            inaccuracy = 10f;
+            velocityInaccuracy = 0.2f;
+            shootSound = Sounds.shootSnap;
+            maxAmmo = 30;
+            ammoPerShot = 10;
         }};
 
         tinker = new LaunchTurret("tinker"){{
@@ -566,6 +590,7 @@ public class PMBlocks implements ContentList{
                 PMItems.dashSentryBox, PMBullets.dashSentryLaunch
             );
             size = 3;
+            health = 140 * size * size;
             reloadTime = 60f * 10f;
             minRange = 5f * tilesize;
             range = 40 * tilesize;
@@ -588,11 +613,11 @@ public class PMBlocks implements ContentList{
                 Items.blastCompound, PMBullets.firestormMissile
             );
             size = 3;
-            health = 1430;
+            health = 120 * size * size;
             range = 160f;
             reloadTime = 75f;
             shootSound = Sounds.missile;
-            cooldown = 0.001f;
+            cooldown = 0.01f;
             shootShake = 1f;
             targetAir = false;
             burstSpacing = 7f;
@@ -623,11 +648,12 @@ public class PMBlocks implements ContentList{
             ammo(
                 PMItems.basicMissile, PMBullets.strikedownBasic,
                 PMItems.empMissile, PMBullets.strikedownEmp,
-                PMItems.quantiumMissile, PMBullets.strikedownQuantum
+                PMItems.quantiumMissile, PMBullets.strikedownQuantum,
+                PMItems.recursiveMissile, PMBullets.strikedownRecursive
             );
             reloadBar = true;
             size = 4;
-            health = 2870;
+            health = 160 * size * size;
             range = 330f;
             reloadTime = 180f;
             shootSound = Sounds.artillery;
@@ -656,7 +682,7 @@ public class PMBlocks implements ContentList{
             );
             reloadBar = true;
             size = 7;
-            health = 5950;
+            health = 170 * size * size;
             range = 4400f;
             shootSound = Sounds.explosionbig;
             cooldown = 0.001f;
@@ -677,7 +703,7 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 500
             ));
             size = 4;
-            health = 2140;
+            health = 230 * size * size;
             canOverdrive = false;
             reloadTime = 520f;
             range = 256f;
@@ -710,7 +736,7 @@ public class PMBlocks implements ContentList{
                     PMItems.techtanite, 800
                 ));
                 size = 6;
-                health = 4610;
+                health = 140 * size * size;
                 reloadTime = 450f;
                 range = 740f;
                 shootEffect = smokeEffect = Fx.none;
@@ -733,10 +759,174 @@ public class PMBlocks implements ContentList{
                 baseRegion = Core.atlas.find("prog-mats-block-" + size);
             }
         };
+        
+        // endregion
+        // Region Distribution
 
+        floatingConveyor = new FloatingConveyor("floating-conveyor"){{
+            requirements(Category.distribution, with(
+                Items.lead, 3,
+                Items.metaglass, 3,
+                Items.plastanium, 3,
+                PMItems.techtanite, 3
+            ));
+            health = 15;
+            speed = 0.08f;
+            deepSpeed = 0.06f;
+            displayedSpeed = 11f;
+            deepDisplayedSpeed = 8.4f;
+            buildCostMultiplier = 0.25f;
+            researchCostMultiplier = 300f;
+        }};
+
+        // endregion
+        // Region Crafting
+
+        mindronCollider = new ColliderCrafter("mindron-collider"){{
+            requirements(Category.crafting, with(
+                Items.silicon, 150,
+                Items.metaglass, 50,
+                Items.plastanium, 80,
+                Items.thorium, 100,
+                Items.surgeAlloy, 110
+            ));
+            size = 5;
+            craftTime = 300f;
+            itemCapacity = 15;
+            consumes.power(8f);
+            consumes.items(with(
+                Items.titanium, 3,
+                Items.thorium, 3
+            ));
+            outputItem = new ItemStack(PMItems.techtanite, 2);
+        }};
+
+        shellPress = new MultiCrafter("shell-press", 2){{
+            requirements(Category.crafting, with(
+                Items.copper, 75,
+                Items.lead, 100,
+                Items.titanium, 100,
+                Items.silicon, 80
+            ));
+            addRecipe(
+                new InputContents(with(Items.copper, 5, Items.lead, 5, Items.titanium, 5), 3f),
+                new OutputContents(with(PMItems.missileShell, 2)),
+                60f
+            );
+            addRecipe(
+                new InputContents(with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10), 5f),
+                new OutputContents(with(PMItems.nukeShell, 1)),
+                90f, true
+            );
+            size = 3;
+            itemCapacity = 30;
+            craftEffect = Fx.pulverizeMedium;
+            updateEffect = Fx.none;
+            dumpToggle = true;
+        }};
+
+        missileFactory = new MissileCrafter("missile-factory", 8){{
+            requirements(Category.crafting, with(
+                Items.copper, 300,
+                Items.lead, 200,
+                Items.silicon, 200,
+                Items.plastanium, 150,
+                Items.thorium, 100,
+                Items.surgeAlloy, 110
+            ));
+            
+            // Region Missiles
+
+            addRecipe(//Baisc Missile
+                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 3, Items.blastCompound, 6), 3f),
+                new OutputContents(with(PMItems.basicMissile, 1)),
+                60f
+            );
+            addRecipe(//EMP Missile
+                new InputContents(with(PMItems.missileShell, 1, Items.lead, 12, Items.titanium, 10, Items.silicon, 10), 4f),
+                new OutputContents(with(PMItems.empMissile, 1)),
+                75f, true
+            );
+            addRecipe(//Quantium Missile
+                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 8, Items.phaseFabric, 13, Items.silicon, 10), 7f),
+                new OutputContents(with(PMItems.quantiumMissile, 1)),
+                90f, true
+            );
+            addRecipe(//Recursive Missile
+                new InputContents(with(PMItems.missileShell, 1, PMItems.basicMissile, 2, Items.copper, 15, Items.plastanium, 10, Items.silicon, 10), 5f),
+                new OutputContents(with(PMItems.recursiveMissile, 1)),
+                80f, true
+            );
+
+            // endregion
+            // Region Nukes
+
+            addRecipe(//Basic Nuke
+                new InputContents(with(PMItems.nukeShell, 1, Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25), 6f),
+                new OutputContents(with(PMItems.basicNuke, 1)),
+                90f, true
+            );
+            addRecipe(//EMP Nuke
+                new InputContents(with(PMItems.nukeShell, 1, Items.silicon, 30, Items.surgeAlloy, 20, PMItems.techtanite, 40), 8f),
+                new OutputContents(with(PMItems.empNuke, 1)),
+                105f, true
+            );
+            addRecipe(//Cluster Nuke
+                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicMissile, 5, Items.copper, 30, Items.plastanium, 15, PMItems.techtanite, 25), 6.25f),
+                new OutputContents(with(PMItems.clusterNuke, 1)),
+                120f, true
+            );
+            addRecipe(//Sentry Nuke
+                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicSentryBox, 3, PMItems.strikeSentryBox, 3, PMItems.dashSentryBox, 3, Items.pyratite, 10, Items.blastCompound, 5), 5.5f),
+                new OutputContents(with(PMItems.sentryNuke, 1)),
+                150f, true
+            );
+
+            // endregion
+
+            size = 4;
+            itemCapacity = 50;
+            craftEffect = Fx.pulverizeMedium;
+            updateEffect = Fx.none;
+            dumpToggle = true;
+        }};
+
+        sentryBuilder = new SentryCrafter("sentry-builder", 3){{
+            requirements(Category.crafting, with(
+                Items.copper, 90,
+                Items.lead, 80,
+                Items.titanium, 60,
+                Items.silicon, 150
+            ));
+            addRecipe(//Basic Sentry
+                new InputContents(with(Items.copper, 30, Items.lead, 35, Items.titanium, 15, Items.silicon, 25), 4f),
+                new OutputContents(with(PMItems.basicSentryBox, 3)),
+                90f, true
+            );
+            addRecipe(//Strike Sentry
+                new InputContents(with(Items.copper, 40, Items.lead, 40, Items.titanium, 20, Items.silicon, 30, Items.blastCompound, 10), 4.5f),
+                new OutputContents(with(PMItems.strikeSentryBox, 3)),
+                120f
+            );
+            addRecipe(//Dash Sentry
+                new InputContents(with(Items.copper, 30, Items.lead, 30, Items.titanium, 30, Items.graphite, 15, Items.silicon, 35), 5.25f),
+                new OutputContents(with(PMItems.dashSentryBox, 3)),
+                105f
+            );
+            size = 4;
+            itemCapacity = 100;
+            craftEffect = updateEffect = Fx.none;
+            dumpToggle = true;
+        }};
+
+        // endregion
+        // Region Sandbox
+
+        //Turret
         harbinger = new ChaosTurret("harbinger"){
             {
                 size = 8;
+                health = 999999999;
                 shots = 100;
                 inaccuracy = 45f;
                 shootShake = 150f;
@@ -770,8 +960,8 @@ public class PMBlocks implements ContentList{
 
         everythingGun = new EverythingTurret("everything-gun"){
             {
-                health = 5000000;
                 size = 6;
+                health = 999999999;
                 reloadTime = 1f;
                 range = 4400f;
                 shootCone = 360f;
@@ -783,29 +973,8 @@ public class PMBlocks implements ContentList{
                 baseRegion = Core.atlas.find("prog-mats-block-" + size);
             }
         };
-        
-        // endregion
-        // Region Distribution
 
-        floatingConveyor = new FloatingConveyor("floating-conveyor"){{
-            requirements(Category.distribution, with(
-                Items.lead, 3,
-                Items.metaglass, 3,
-                Items.plastanium, 3,
-                PMItems.techtanite, 3
-            ));
-            health = 15;
-            speed = 0.08f;
-            deepSpeed = 0.06f;
-            displayedSpeed = 11f;
-            deepDisplayedSpeed = 8.4f;
-            buildCostMultiplier = 0.25f;
-            researchCostMultiplier = 300f;
-        }};
-
-        // endregion
-        // Region Power
-
+        //Power
         strobeNode = new StrobeNode("rainbow-power-node");
 
         strobeInf = new StrobeSource("rainbow-power-source");
@@ -816,174 +985,37 @@ public class PMBlocks implements ContentList{
             speedBoost = 100f;
         }};
 
-
-        // endregion
-        // Region Walls
-
+        //Wall
         sandboxWall = new SandboxWall("sandbox-wall"){{
-            health = 150000000;
+            health = 999999999;
             iconSize = 3f;
             rotateRadius = 2.5f;
         }};
 
         sandboxWallLarge = new SandboxWall("sandbox-wall-large"){{
             size = 2;
-            health = 600000000;
+            health = 999999999;
             iconSize = 6f;
             rotateRadius = 5f;
         }};
 
-        // endregion
-        // Region Crafting
-
-        mindronCollider = new ColliderCrafter("mindron-collider"){{
-            requirements(Category.crafting, with(
-                Items.silicon, 150,
-                Items.metaglass, 50,
-                Items.plastanium, 80,
-                Items.thorium, 100,
-                Items.surgeAlloy, 110
-            ));
-            size = 5;
-            craftTime = 300f;
-            itemCapacity = 15;
-            consumes.power(14f);
-            consumes.items(with(
-                Items.titanium, 7,
-                Items.thorium, 7
-            ));
-            outputItem = new ItemStack(PMItems.techtanite, 4);
-        }};
-
-        shellPress = new MultiCrafter("shell-press", 2){{
-            requirements(Category.crafting, with(
-                Items.copper, 75,
-                Items.lead, 100,
-                Items.titanium, 100,
-                Items.silicon, 80
-            ));
-            addRecipe(
-                new InputContents(with(Items.copper, 5, Items.lead, 5, Items.titanium, 5), 3f),
-                new OutputContents(with(PMItems.missileShell, 2)),
-                60f
-            );
-            addRecipe(
-                new InputContents(with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10), 5f),
-                new OutputContents(with(PMItems.nukeShell, 1)),
-                90f, true
-            );
-            size = 3;
-            health = 135;
-            itemCapacity = 30;
-            craftEffect = Fx.pulverizeMedium;
-            updateEffect = Fx.none;
-            dumpToggle = true;
-        }};
-
-        missileFactory = new MissileCrafter("missile-factory", 7){{
-            requirements(Category.crafting, with(
-                Items.copper, 300,
-                Items.lead, 200,
-                Items.silicon, 200,
-                Items.plastanium, 150,
-                Items.thorium, 100,
-                Items.surgeAlloy, 110
-            ));
-            // Region Missiles
-
-            addRecipe(//Baisc Missile
-                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 3, Items.blastCompound, 6), 3f),
-                new OutputContents(with(PMItems.basicMissile, 1)),
-                60f
-            );
-            addRecipe(//EMP Missile
-                new InputContents(with(PMItems.missileShell, 1, Items.lead, 12, Items.titanium, 10, Items.silicon, 10), 4f),
-                new OutputContents(with(PMItems.empMissile, 1)),
-                75f, true
-            );
-            addRecipe(//Quantium Missile
-                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 8, Items.phaseFabric, 13, Items.silicon, 10), 7f),
-                new OutputContents(with(PMItems.quantiumMissile, 1)),
-                90f, true
-            );
-
-            // endregion
-            // Region Nukes
-
-            addRecipe(//Basic Nuke
-                new InputContents(with(PMItems.nukeShell, 1, Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25), 6f),
-                new OutputContents(with(PMItems.basicNuke, 1)),
-                90f, true
-            );
-            addRecipe(//EMP Nuke
-                new InputContents(with(PMItems.nukeShell, 1, Items.silicon, 30, Items.surgeAlloy, 20, PMItems.techtanite, 40), 8f),
-                new OutputContents(with(PMItems.empNuke, 1)),
-                105f, true
-            );
-            addRecipe(//Cluster Nuke
-                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicMissile, 5, Items.copper, 30, Items.plastanium, 15, PMItems.techtanite, 25), 6.25f),
-                new OutputContents(with(PMItems.clusterNuke, 1)),
-                120f, true
-            );
-            addRecipe(//Sentry Nuke
-                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicSentryBox, 3, PMItems.strikeSentryBox, 3, PMItems.dashSentryBox, 3, Items.pyratite, 10, Items.blastCompound, 5), 5.5f),
-                new OutputContents(with(PMItems.sentryNuke, 1)),
-                150f, true
-            );
-
-            // endregion
-
-            size = 4;
-            health = 215;
-            itemCapacity = 50;
-            craftEffect = Fx.pulverizeMedium;
-            updateEffect = Fx.none;
-            dumpToggle = true;
-        }};
-
-        sentryBuilder = new SentryCrafter("sentry-builder", 3){{
-            requirements(Category.crafting, with(
-                Items.copper, 90,
-                Items.lead, 80,
-                Items.titanium, 60,
-                Items.silicon, 150
-            ));
-            addRecipe(//Basic Sentry
-                new InputContents(with(Items.copper, 30, Items.lead, 35, Items.titanium, 15, Items.silicon, 25), 4f),
-                new OutputContents(with(PMItems.basicSentryBox, 3)),
-                90f, true
-            );
-            addRecipe(//Strike Sentry
-                new InputContents(with(Items.copper, 40, Items.lead, 40, Items.titanium, 20, Items.silicon, 30, Items.blastCompound, 10), 4.5f),
-                new OutputContents(with(PMItems.strikeSentryBox, 3)),
-                120f
-            );
-            addRecipe(//Dash Sentry
-                new InputContents(with(Items.copper, 30, Items.lead, 30, Items.titanium, 30, Items.graphite, 15, Items.silicon, 35), 5.25f),
-                new OutputContents(with(PMItems.dashSentryBox, 3)),
-                105f
-            );
-            size = 4;
-            health = 265;
-            itemCapacity = 100;
-            craftEffect = updateEffect = Fx.none;
-            dumpToggle = true;
-        }};
-
-        // endregion
-        // Region Unit
-
+        //Unit
         godFactory = new UnitFactory("god-factory"){{
             requirements(Category.units, BuildVisibility.sandboxOnly, empty);
             alwaysUnlocked = true;
+
             size = 3;
-            health = 10000;
+            health = 999999999;
             plans = Seq.with(
                 new UnitPlan(PMUnitTypes.everythingUnit, 60f * 10f, empty)
             );
 
             consumes.power(1f);
         }};
+
+        //Effect
+        multiSource = new MultiSource("multi-source");
+        multiVoid = new MultiVoid("multi-void");
 
         // endregion
     }

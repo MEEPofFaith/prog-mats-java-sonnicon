@@ -14,6 +14,16 @@ public class PMDrawf{
         }
     }
 
+    public static void cross(float x, float y, float width, float length, float angle){
+        for(int i = 0; i < 4; i++){
+            Drawf.tri(x, y, width, length, i * 90f + angle);
+        }
+    }
+
+    public static void cross(float x, float y, float size, float angle){
+        cross(x, y, size, size, angle);
+    }
+
     public static void shadowAlpha(TextureRegion region, float x, float y, float rotation, float alpha){
         Draw.color(Tmp.c1.set(Pal.shadow).mul(1f, 1f, 1f, alpha));
         Draw.rect(region, x, y, rotation);

@@ -260,16 +260,12 @@ public class SandboxWall extends Wall{
             this.plast = plast;
         }
 
-        public void set(byte[] data){
-            this.surge = data[0] == 1;
-            this.phase = data[1] == 1;
-            this.plast = data[2] == 1;
+        public void set(byte surge, byte phase, byte plast){
+            set(surge == 1, phase == 1, plast == 1);
         }
 
-        public void set(byte surge, byte phase, byte plast){
-            this.surge = surge == 1;
-            this.phase = phase == 1;
-            this.plast = plast == 1;
+        public void set(byte[] data){
+            set(data[0], data[1], data[2]);
         }
 
         public void toggle(int i){

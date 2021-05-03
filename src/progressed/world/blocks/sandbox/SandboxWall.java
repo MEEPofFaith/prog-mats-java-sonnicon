@@ -231,6 +231,7 @@ public class SandboxWall extends Wall{
         @Override
         public void write(Writes write){
             super.write(write);
+            
             write.b(modes.toByteArray());
         }
 

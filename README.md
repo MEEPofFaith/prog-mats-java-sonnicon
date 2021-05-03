@@ -1,6 +1,6 @@
 ![Logo](assets/icon.png)
 
-[![Java CI with Gradle](https://github.com/MEEPofFaith/prog-mats-java/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/MEEPofFaith/prog-mats-java/actions) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord)](https://discord.gg/RCCVQFW) [![Stars](https://img.shields.io/github/stars/MEEPofFaith/prog-mats-java?label=Star%20the%20mod%20here%21&style=social)]()
+[![Java CI with Gradle](https://github.com/MEEPofFaith/prog-mats-java/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/MEEPofFaith/prog-mats-java/actions) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord)](https://discord.gg/RCCVQFW) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=8a1a1a&label=Avant)](https://discord.gg/V6ygvgGVqE) [![Stars](https://img.shields.io/github/stars/MEEPofFaith/prog-mats-java?label=Star%20the%20mod%20here%21&style=social)]()
 
 # Progressed Materials
 (I definitely didn't steal this README format from BetaMindy)
@@ -10,23 +10,20 @@ Progressed Materials, but now has been ported to Java, and all subsequent work w
 - Extra Sand in the Sandbox
 - Progressed Materials
 
-This adds a bunch of ~~overly animated~~ turrets that probably aren't balanced because I suck at balancing, as well as some sandbox-only items for fun and/or testing purposes.
-
-If you want to play the old JS version for some reason, install `MEEPofFaith/prog-mats-js`. The `modName` on that is the same as this, so do not install both the JS and Java versions at the same time or there will be conflicts.
+Add a load of turrets ~~many of which need balancing~~, small minor things, and sandbox only items for fun and testing.
 
 ## Download Now!   
 [![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=FCC21B&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)
 
-__Or find it in the in-game mod browser, where installation is automatic and you can ignore everything under this message!__
+__Or find it in the in-game mod browser, where installation is almost completely automatic and you can ignore everything under this message!__
 
 ### Releases   
-Go to the releases, the latest release will have a `ProgMats.jar` attached to it that you can download. If it does not have it, follow the steps below(recommended) or bother me with a new issue so I can attach the compiled mod.   
-After you have the `ProgMats.jar`, paste it into your mod folder (locate your mod folder in the "open mod folder" of Mindustry).
+Go to the releases, the latest release will have a `ProgMatsDexed.jar` attached to it that you can download. If it does not have it, follow the steps below(recommended) or bother me with a new issue so I can attach the compiled mod.   
+After you have the `ProgMatsDexed.jar`, paste it into your mod folder (locate your mod folder in the "open mod folder" of Mindustry).
 
-### Bleeding Edge Builds?
-(Just gonna steal this term from Mindustry don't mind me)
+### Unreleased Builds?
 
-Go to the Actions tab and open the latest workflow with a green ☑️ on it. The zip file at the bottom will contain the latest build of Progressed Materials, though due to it being still in deveopement and my own stupidity you probably shouldn't do that. Anyways unzip that zip to get a `ProgMats.jar` file and follow the install steps in **Releases**.
+Go to the Actions tab and open the latest workflow with a green ☑️ on it. The zip file at the bottom will contain the latest build of Progressed Materials, though due to it being still in deveopement and my own stupidity you probably shouldn't do that. Anyways unzip that zip to get a `ProgMatsDexed.jar` file and follow the install steps in **Releases**.
 
 ## Compiling
 JDK 8.

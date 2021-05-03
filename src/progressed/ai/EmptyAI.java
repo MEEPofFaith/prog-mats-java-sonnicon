@@ -15,4 +15,23 @@ public class EmptyAI implements UnitController{
     public void unit(Unit unit){
         this.unit = unit;
     }
+
+    @Override
+    public boolean isValidController(){
+        return true;
+    }
+
+    @Override
+    public void command(UnitCommand command){}
+
+    @Override
+    public void updateUnit(){}
+
+    @Override
+    public void removed(Unit unit){}
+
+    @Override
+    public boolean isBeingControlled(Unit player){
+        return false;
+    }
 }

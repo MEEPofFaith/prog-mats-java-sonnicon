@@ -40,7 +40,7 @@ public class MultiSource extends Block{
         noUpdateDisabled = true;
         displayFlow = false;
 
-        config(Point2.class, (MultiSourceBuild tile, Point2 p) -> tile.data.set(p));
+        config(Integer.class, (MultiSourceBuild tile, Integer p) -> tile.data.set(p));
         configClear((MultiSourceBuild tile) -> tile.data.clear());
     }
 
@@ -63,7 +63,8 @@ public class MultiSource extends Block{
     @Override
     public void drawRequestConfig(BuildPlan req, Eachable<BuildPlan> list){
         Draw.rect(cross, req.drawx(), req.drawy());
-        if(req.config instanceof Point2 data){
+        if(req.config instanceof Integer input){
+            Point2 data = Point2.unpack(input);
             drawRequestConfigCenter(req, content.item((short)data.x), name + "-center-0");
             drawRequestConfigCenter(req, content.liquid((short)data.y), name + "-center-1");
         }
@@ -139,8 +140,8 @@ public class MultiSource extends Block{
         }
 
         @Override
-        public Point2 config(){
-            return data.toPoint2();
+        public Integer config(){
+            return data.pack();
         }
 
         @Override
@@ -185,15 +186,14 @@ public class MultiSource extends Block{
         public void write(Writes write){
             super.write(write);
 
-            write.i(data.item == null ? -1 : data.item.id);
-            write.i(data.liquid == null ? -1 : data.liquid.id);
+            write.i(data.pack());
         }
 
         @Override
         public void read(Reads read, byte revision){
             super.read(read, revision);
 
-            data.set(content.item((short)read.i()), content.liquid((short)read.i()));
+            data.set(read.i());
         }
     }
 
@@ -222,11 +222,19 @@ public class MultiSource extends Block{
         }
 
         public void set(Point2 data){
-            set(content.item((short)data.x), content.liquid((short)data.y));
+            set(content.item(data.x), content.liquid(data.y));
+        }
+
+        public void set(int data){
+            set(Point2.unpack(data));
         }
 
         public Point2 toPoint2(){
-            return new Point2(item.id, liquid.id);
+            return new Point2(item == null ? -1 : item.id, liquid == null ? -1 : liquid.id);
+        }
+
+        public int pack(){
+            return toPoint2().pack();
         }
 
         public boolean invalid(){

@@ -80,7 +80,7 @@ public class PMBlocks implements ContentList{
     sandboxWall, sandboxWallLarge,
 
     //Unit
-    godFactory,
+    godFactory, capBlock,
 
     //Effect
     multiSource, multiVoid;
@@ -1011,6 +1011,11 @@ public class PMBlocks implements ContentList{
             );
 
             consumes.power(1f);
+        }};
+
+        capBlock = new CapBlock("cap-block"){{
+            health = 10000;
+            unitCapModifier = 25;
         }};
 
         //Effect

@@ -420,7 +420,7 @@ public class SwordTurret extends BaseTurret{
                         Effect.shake(hitShake, hitShake, this);
                     }
                     //Slow speed, weak hit -> * efficiency()
-                    PMUtls.completeDamage(team, currentPos.x, currentPos.y, damageRadius, damage * efficiency(), buildingDamageMultiplier, targetAir, targetGround);
+                    PMDamage.completeDamage(team, currentPos.x, currentPos.y, damageRadius, damage * efficiency(), buildingDamageMultiplier, targetAir, targetGround);
                     if(status != StatusEffects.none){
                         Damage.status(team, currentPos.x, currentPos.y, damageRadius, status, statusDuration * efficiency(), targetAir, targetGround);
                     }

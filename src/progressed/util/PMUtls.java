@@ -1,6 +1,5 @@
 package progressed.util;
 
-import arc.func.*;
 import arc.math.*;
 import arc.math.Interp.*;
 import arc.struct.*;
@@ -8,20 +7,13 @@ import arc.util.*;
 import mindustry.*;
 import mindustry.content.*;
 import mindustry.core.*;
-import mindustry.entities.*;
 import mindustry.entities.bullet.*;
-import mindustry.game.*;
-import mindustry.gen.*;
 import mindustry.type.*;
-import mindustry.world.*;
 import progressed.entities.bullet.*;
 
 import static mindustry.Vars.*;
 
 public class PMUtls{
-    private static IntSet collidedBlocks = new IntSet();
-    private static Tile furthest;
-
     public static PowIn customPowIn(int power){
         return new PowIn(power);
     }
@@ -46,64 +38,6 @@ public class PMUtls{
         }else{
             return damage;
         }
-    }
-
-    public static void trueEachBlock(float wx, float wy, float range, Cons<Building> cons){
-        collidedBlocks.clear();
-        int tx = World.toTile(wx);
-        int ty = World.toTile(wy);
-
-        int tileRange = Mathf.floorPositive(range / Vars.tilesize);
-
-        for(int x = -tileRange + tx; x <= tileRange + tx; x++){
-            for(int y = -tileRange + ty; y <= tileRange + ty; y++){
-                if(Mathf.within(x * Vars.tilesize, y * Vars.tilesize, wx, wy, range)){
-                    Building other = Vars.world.build(x, y);
-                    if(other != null && !collidedBlocks.contains(other.pos())){
-                        cons.get(other);
-                        collidedBlocks.add(other.pos());
-                    }
-                }
-            }
-        }
-    }
-
-    public static void trueEachTile(float wx, float wy, float range, Cons<Tile> cons){
-        collidedBlocks.clear();
-        int tx = World.toTile(wx);
-        int ty = World.toTile(wy);
-
-        int tileRange = Mathf.floorPositive(range / Vars.tilesize);
-
-        for(int x = -tileRange + tx; x <= tileRange + tx; x++){
-            for(int y = -tileRange + ty; y <= tileRange + ty; y++){
-                if(Mathf.within(x * Vars.tilesize, y * Vars.tilesize, wx, wy, range)){
-                    Tile other = Vars.world.tile(x, y);
-                    if(other != null && !collidedBlocks.contains(other.pos())){
-                        cons.get(other);
-                        collidedBlocks.add(other.pos());
-                    }
-                }
-            }
-        }
-    }
-    
-    public static Seq<Teamc> allNearbyEnemies(Team team, float x, float y, float radius){
-        Seq<Teamc> targets = new Seq<>();
-
-        Units.nearbyEnemies(team, x - radius, y - radius, radius * 2f, radius * 2f, unit -> {
-            if(Mathf.within(x, y, unit.x, unit.y, radius) && !unit.dead){
-                targets.add(unit);
-            }
-        });
-        
-        trueEachBlock(x, y, radius, build -> {
-            if(build.team != team && !build.dead && build.block != null){
-                targets.add(build);
-            }
-        });
-
-        return targets;
     }
 
     public static ItemStack[] randomizedItems(int[] repeatAmounts, int minAmount, int maxAmount){
@@ -177,18 +111,6 @@ public class PMUtls{
         return (r1 / r2) * length;
     }
 
-    /** Like Damage.findLaserLength, but uses an (x, y) coord instead of bullet position */
-    public static float findLaserLength(float x, float y, float angle, Team team, float length){
-        Tmp.v1.trns(angle, length);
-
-        furthest = null;
-
-        boolean found = world.raycast(World.toTile(x), World.toTile(y), World.toTile(x + Tmp.v1.x), World.toTile(y + Tmp.v1.y),
-        (tx, ty) -> (furthest = world.tile(tx, ty)) != null && furthest.team() != team && furthest.block().absorbLasers);
-
-        return found && furthest != null ? Math.max(6f, Mathf.dst(x, y, furthest.worldx(), furthest.worldy())) : length;
-    }
-
     public static int boolArrToInt(boolean[] arr){
         int i = 0;
         for(boolean value : arr){
@@ -247,24 +169,5 @@ public class PMUtls{
         float n = s * (l - 1) - (int)(s * (l - 1));
         float i = 1f - n;
         return a * i + b * n;
-    }
-
-    public static void completeDamage(Team team, float x, float y, float radius, float damage, float buildDmbMult, boolean air, boolean ground){
-        Seq<Teamc> targets = allNearbyEnemies(team, x, y, radius);
-        targets.each(t -> {
-            if(t instanceof Unit u){
-                if(u.isFlying() && air || u.isGrounded() && ground){
-                    u.damage(damage);
-                }
-            }else if(t instanceof Building b){
-                if(ground){
-                    b.damage(damage * buildDmbMult);
-                }
-            }
-        });
-    }
-
-    public static void completeDamage(Team team, float x, float y, float radius, float damage){
-        completeDamage(team, x, y, radius, damage, 1f, true, true);
     }
 }

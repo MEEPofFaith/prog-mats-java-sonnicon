@@ -43,7 +43,7 @@ public class PMBullets implements ContentList{
     
     arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
-    harbingerLaser, excaliburLaser;
+    harbingerLaser, excaliburLaser, sentinelLaser;
 
     @Override
     public void load(){
@@ -551,7 +551,7 @@ public class PMBullets implements ContentList{
             homingPower = 0.05f;
             homingRange = 2200f;
             lifetime = 5500f;
-            hitSound = Sounds.bang;
+            hitSound = Sounds.explosionbig;
             hitShake = 30f;
             despawnEffect = PMFx.mushroomCloudExplosion;
 
@@ -582,7 +582,7 @@ public class PMBullets implements ContentList{
             homingPower = 0.075f;
             homingRange = 2200f;
             lifetime = 2250f;
-            hitSound = Sounds.bang;
+            hitSound = Sounds.explosionbig;
             hitShake = 30f;
             despawnEffect = PMFx.mushroomCloudExplosion;
 
@@ -760,6 +760,20 @@ public class PMBullets implements ContentList{
                 Pal.surge,
                 Color.white
             };
+        }};
+
+        sentinelLaser = new TeamLaserBlastBulletType(12f, 630f){{
+            lifetime = 28f;
+            splashDamage = 8000f;
+            splashDamageRadius = 7f * 8f;
+            length = 8f;
+            width = 3f;
+            trailLength = 8;
+            makeFire = true;
+            hittable = false;
+            hitEffect = PMFx.sentinelBlast;
+            hitSound = Sounds.explosionbig;
+            hitSoundVolume = 10f;
         }};
     }
 }

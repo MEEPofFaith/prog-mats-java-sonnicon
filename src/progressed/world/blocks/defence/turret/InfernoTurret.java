@@ -16,6 +16,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
+import progressed.entities.*;
 import progressed.graphics.*;
 import progressed.util.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
@@ -286,7 +287,7 @@ public class InfernoTurret extends PowerTurret{
             targets.clear();
             bullets.clear();
 
-            targets = PMUtls.allNearbyEnemies(team, x, y, range + rangeExtention);
+            targets = PMDamage.allNearbyEnemies(team, x, y, range + rangeExtention);
 
             if(targets.size > 0){
                 bulletLife = shootDuration;

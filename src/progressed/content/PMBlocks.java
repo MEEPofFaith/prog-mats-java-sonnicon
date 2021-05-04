@@ -1,6 +1,8 @@
 package progressed.content;
 
 import arc.*;
+import arc.graphics.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.struct.*;
 import mindustry.content.*;
@@ -49,6 +51,9 @@ public class PMBlocks implements ContentList{
 
     //Misc
     signal, tinker,
+
+    //Why do I hear anxiety piano
+    sentinel,
 
     //Missiles
     firestorm, strikedown, arbiter,
@@ -600,6 +605,55 @@ public class PMBlocks implements ContentList{
             restitution = 0.02f;
             shootShake = 2f;
             shootLength = 16f;
+        }};
+
+        sentinel = new AimLaserTurret("sentinel"){{
+            requirements(Category.turret, with(
+                Items.copper, 900,
+                Items.lead, 375,
+                Items.graphite, 350,
+                Items.surgeAlloy, 450,
+                Items.silicon, 450,
+                PMItems.techtanite, 250
+            ));
+
+            size = 4;
+            health = 80 * size * size;
+            
+            shootLength = 11f;
+            range = 328f;
+            reloadTime = 400f;
+
+            powerUse = 22f;
+
+            coolantUsage *= 2.5f;
+            coolantMultiplier /= 2.5f;
+
+            chargeTime = PMFx.aimChargeBegin.lifetime;
+            chargeBeginEffect = PMFx.aimChargeBegin;
+            chargeEffect = PMFx.aimCharge;
+            chargeEffects = 15;
+            chargeMaxDelay = 60f;
+
+            chargeSound = Sounds.lasercharge;
+            shootSound = Sounds.laserblast;
+            chargeSoundVolume = shootSoundVolume = 0.75f;
+
+            recoilAmount = 3f;
+            restitution = 0.03f;
+            cooldown = 0.01f;
+
+            shootType = PMBullets.sentinelLaser;
+
+            heatDrawer = tile -> {
+                if(tile.heat <= 0.00001f) return;
+        
+                Draw.color(tile.team.color, tile.heat);
+                Draw.blend(Blending.additive);
+                Draw.rect(heatRegion, tile.x + tr2.x, tile.y + tr2.y, tile.rotation - 90);
+                Draw.blend();
+                Draw.color();
+            };
         }};
 
         firestorm = new MissileTurret("firestorm"){{

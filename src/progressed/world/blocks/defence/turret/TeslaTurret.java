@@ -15,8 +15,8 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
+import progressed.entities.*;
 import progressed.graphics.*;
-import progressed.util.*;
 
 public class TeslaTurret extends PowerTurret{
     public Seq<TeslaRing> rings = new Seq<>();
@@ -185,7 +185,7 @@ public class TeslaTurret extends PowerTurret{
         protected void shoot(BulletType type){
             targets.clear();
 
-            targets = PMUtls.allNearbyEnemies(team, x, y, range + rangeExtention);
+            targets = PMDamage.allNearbyEnemies(team, x, y, range + rangeExtention);
 
             if(targets.size > 0){
                 for(int i = 0; i < shots; i++){

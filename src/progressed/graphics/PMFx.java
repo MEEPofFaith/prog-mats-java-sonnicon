@@ -5,11 +5,13 @@ import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.entities.*;
-import mindustry.game.Team;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.entities.bullet.*;
 import progressed.entities.bullet.BlackHoleBulletType.*;
+import progressed.world.blocks.defence.turret.AimLaserTurret;
+import progressed.world.blocks.defence.turret.AimLaserTurret.*;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -394,5 +396,51 @@ public class PMFx{
         color();
 
         Drawf.light(Team.derelict, e.x, e.y, 20f * e.fslope(), Pal.lightFlame, 0.5f);
+    }),
+    
+    aimChargeBegin = new Effect(80f, e -> {
+        if(e.data instanceof AimLaserTurretBuild d){
+            color(e.color);
+
+            Tmp.v1.trns(d.rotation, ((AimLaserTurret)(d.block)).shootLength);
+            Fill.circle(d.x + Tmp.v1.x, d.y + Tmp.v1.y, 3f * e.fin());
+
+            color();
+        }
+    }),
+    
+    aimCharge = new Effect(20f, e -> {
+        if(e.data instanceof AimLaserTurretBuild d){
+            color(e.color);
+
+            Tmp.v1.trns(d.rotation, ((AimLaserTurret)(d.block)).shootLength);
+            randLenVectors(e.id, 3, 24f * e.fout(), (x, y) -> {
+                Fill.circle(d.x + Tmp.v1.x + x, d.y + Tmp.v1.y + y, 2f * e.fin());
+            });
+
+            color();
+        }
+    }),
+    
+    sentinelBlast = new Effect(80f, e -> {
+        color(Pal.missileYellow);
+
+        e.scaled(50f, s -> {
+            stroke(5f * s.fout());
+            Lines.circle(e.x, e.y, 4f + s.fin() * 40f);
+        });
+
+        color(e.color);
+
+        randLenVectors(e.id, 20, 3f + 60f * e.finpow(), (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, 1f + e.fout() * 6f);
+        });
+
+        color(Pal.missileYellowBack);
+        stroke(e.fout());
+
+        randLenVectors(e.id + 1, 11, 2f + 73f * e.finpow(), (x, y) -> {
+            lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 2f + e.fout() * 5f);
+        });
     });
 }

@@ -138,7 +138,7 @@ public class SniperTurret extends ItemTurret{
 
         @Override
         public void updateTile(){
-            if(charging && hasAmmo() && consValid()){
+            if(charging){
                 charge = Mathf.clamp(charge + Time.delta / chargeTime);
             }else{
                 charge = 0;

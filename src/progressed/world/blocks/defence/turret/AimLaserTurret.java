@@ -18,7 +18,7 @@ import progressed.graphics.*;
 import progressed.util.*;
 
 public class AimLaserTurret extends PowerTurret{
-    public float aimStroke = 2f, aimRnd = 12f;
+    public float aimStroke = 2f, aimRnd;
     public float chargeSoundVolume = 1f, shootSoundVolume = 1f;
 
     public AimLaserTurret(String name){
@@ -83,7 +83,7 @@ public class AimLaserTurret extends PowerTurret{
 
                 PMDrawf.line(x, y, Tmp.v1, Tmp.v4, false);
 
-                if(isAI() && target instanceof Unit u && !u.within(targetPos, u.type().hitSize / 4f)){
+                if(isAI() && target instanceof Unit u){
                     Draw.alpha(0.75f);
 
                     Lines.line(u.x, u.y, targetPos.x, targetPos.y);
@@ -91,7 +91,7 @@ public class AimLaserTurret extends PowerTurret{
                     Fill.circle(targetPos.x, targetPos.y, aimStroke / 2f * c);
 
                     Draw.mixcol(team.color, 1f);
-                    Draw.rect(u.type.icon(Cicon.full), targetPos.x, targetPos.y, u.angleTo(targetPos) - 90f);
+                    Draw.rect(u.type.icon(Cicon.full), targetPos.x, targetPos.y, u.rotation - 90f);
                     Draw.mixcol();
                     Draw.alpha(1f);
                 }

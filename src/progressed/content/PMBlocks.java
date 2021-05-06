@@ -618,16 +618,17 @@ public class PMBlocks implements ContentList{
             ));
 
             size = 4;
-            health = 80 * size * size;
+            health = 120 * size * size;
             
             shootLength = 11f;
             range = 328f;
-            reloadTime = 400f;
+            reloadTime = 900f;
 
-            powerUse = 22f;
+            powerUse = 27f;
 
-            coolantUsage *= 2.5f;
-            coolantMultiplier /= 2.5f;
+            float mul = 2.5f;
+            coolantUsage *= mul;
+            coolantMultiplier /= mul;
 
             chargeTime = PMFx.aimChargeBegin.lifetime;
             chargeBeginEffect = PMFx.aimChargeBegin;
@@ -640,8 +641,10 @@ public class PMBlocks implements ContentList{
             chargeSoundVolume = shootSoundVolume = 0.75f;
 
             recoilAmount = 3f;
-            restitution = 0.03f;
-            cooldown = 0.01f;
+            restitution = 0.02f;
+            cooldown = 0.005f;
+
+            aimRnd = 16f;
 
             shootType = PMBullets.sentinelLaser;
 

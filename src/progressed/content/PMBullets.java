@@ -764,7 +764,7 @@ public class PMBullets implements ContentList{
 
         sentinelLaser = new TeamLaserBlastBulletType(12f, 630f){{
             lifetime = 28f;
-            splashDamage = 8000f;
+            splashDamage = 2000f;
             splashDamageRadius = 7f * 8f;
             length = 8f;
             width = 3f;
@@ -773,7 +773,7 @@ public class PMBullets implements ContentList{
             hittable = false;
             hitEffect = PMFx.sentinelBlast;
             hitSound = Sounds.explosionbig;
-            hitSoundVolume = 10f;
+            hitSoundVolume = 4f;
         }};
     }
 }

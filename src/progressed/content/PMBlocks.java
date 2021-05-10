@@ -548,8 +548,8 @@ public class PMBlocks implements ContentList{
                 size = 3;
                 health = 90 * size * size;
                 range = 23f * 8f;
-                reloadTime = 300f;
-                inaccuracy = 35f;
+                reloadTime = 200f;
+                inaccuracy = 30f;
                 velocityInaccuracy = 0.2f;
                 burstSpacing = 5f;
                 shots = 4;

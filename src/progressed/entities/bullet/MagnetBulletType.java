@@ -4,6 +4,7 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
+import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
@@ -14,6 +15,7 @@ public class MagnetBulletType extends BasicBulletType{
     public MagnetBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
 
+        shootEffect = Fx.shootBig;
         drag = 0.018f;
         shrinkX = shrinkY = 0f;
         width = height = 8f;

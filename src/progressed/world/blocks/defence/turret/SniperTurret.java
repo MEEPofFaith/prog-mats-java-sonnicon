@@ -128,7 +128,6 @@ public class SniperTurret extends ItemTurret{
                         float tx = Angles.trnsx(rotation, split * charge * i);
                         float ty = Angles.trnsy(rotation, split * charge * i);
                         Draw.rect(heats[i], x + tr2.x + tx, y + tr2.y + ty, rotation - 90);
-
                     }
                 }
                 Draw.blend();

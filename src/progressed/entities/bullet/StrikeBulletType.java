@@ -18,7 +18,7 @@ import static mindustry.Vars.*;
 
 public class StrikeBulletType extends BasicBulletType{
     public float autoDropRadius, stopRadius;
-    public boolean resumeSeek = true, snapRot;
+    public boolean resumeSeek = true, snapRot, randRot;
     public float weaveWidth, weaveSpeed;
     public Effect rocketEffect = Fx.rocketSmoke;
     public float trailChance = 0.5f, smokeTrailChance = 0.75f;
@@ -198,7 +198,7 @@ public class StrikeBulletType extends BasicBulletType{
             float rRocket = Interp.pow5In.apply(Mathf.curve(b.time, 0f, riseEngineTime)) - Interp.pow5In.apply(Mathf.curve(b.time, riseEngineTime, riseTime));
             float fRocket = Interp.pow5In.apply(Mathf.curve(b.time, b.lifetime - fallTime, b.lifetime - fallTime + fallEngineTime));
             float target = Mathf.curve(b.time, 0f, riseTime / 2f) - Mathf.curve(b.time, b.lifetime - fallTime / 2f, b.lifetime);
-            float rot = snapRot ? b.rotation() + 90f : rise * riseSpin + fadeIn * fallSpin;
+            float rot = (snapRot ? b.rotation() + 90f : rise * riseSpin + fadeIn * fallSpin) + (randRot ? Mathf.randomSeed(b.id, 360f) : 0f);
             Tmp.v1.trns(225f, rise * elevation * 2f);
             Tmp.v2.trns(225f, fall * elevation * 2f);
             float rY = y + rise * elevation;

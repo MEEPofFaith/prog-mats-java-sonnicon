@@ -96,6 +96,7 @@ public class AimLaserTurret extends PowerTurret{
                     Draw.alpha(1f);
                 }
                 
+                Fill.circle(x + Tmp.v1.x, y + Tmp.v1.y, aimStroke / 2f * c);
                 Fill.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke / 2f * c);
                 Lines.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke * 2f * (0.5f + c / 2f));
 

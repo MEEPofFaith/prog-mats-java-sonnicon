@@ -62,8 +62,8 @@ public class BlackHoleBulletType extends BulletType{
                     if(repel) impulse.rotate(180f);
                     other.vel().add(impulse);
 
-                    //manually move units to simulate velocity for remote players
-                    if(b.isRemote()){
+                    //manually move bullets to simulate velocity for remote players
+                    if(other.isRemote()){
                         other.move(impulse.x, impulse.y);
                     }
 

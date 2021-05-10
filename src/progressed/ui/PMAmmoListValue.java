@@ -54,6 +54,9 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
                         bt.add(Core.bundle.format("bullet.damage", type.continuousDamage()) + StatUnit.perSecond.localized());
                     }else{
                         bt.add(Core.bundle.format("bullet.damage", type.damage));
+                        if(type instanceof MagnetBulletType stype){
+                            sep(bt, Core.bundle.format("bullet.pm-attraction-radius", stype.attractRange / tilesize));
+                        }
                     }
                 }
 

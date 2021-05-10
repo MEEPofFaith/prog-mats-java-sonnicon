@@ -23,6 +23,8 @@ public class PMBullets implements ContentList{
 
     sniperBoltSilicon, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
 
+    magnetCopper, magnetTitanium, magnetTechtanite,
+
     pixel,
     
     basicSentryLaunch, strikeSentryLaunch, dashSentryLaunch,
@@ -113,7 +115,7 @@ public class PMBullets implements ContentList{
         }};
 
         sparkZap = new LightningBulletType(){{
-            damage = 12f;
+            damage = 7f;
             lightningLength = 6;
             lightningLengthRand = 4;
             lightningAngle = 0f;
@@ -124,7 +126,7 @@ public class PMBullets implements ContentList{
         }};
 
         stormZap = new LightningBulletType(){{
-            damage = 15f;
+            damage = 6f;
             lightningLength = 7;
             lightningLengthRand = 5;
             lightningAngle = 0f;
@@ -241,6 +243,30 @@ public class PMBullets implements ContentList{
                 super.despawned(b);
             }
         };
+
+        magnetCopper = new MagnetBulletType(2.5f, 12f){{
+            lifetime = 300f;
+            scaledForce = 0.3f;
+            attractRange = 12f * 8f;
+            frontColor = Color.valueOf("EAC2A9");
+            backColor = Color.valueOf("B8705C");
+        }};
+
+        magnetTitanium = new MagnetBulletType(2.8f, 25f){{
+            lifetime = 400f;
+            scaledForce = 0.8f;
+            attractRange = 15f * 8f;
+            frontColor = Color.valueOf("A4B8FA");
+            backColor = Color.valueOf("7575C8");
+        }};
+
+        magnetTechtanite = new MagnetBulletType(3.4f, 45f){{
+            lifetime = 500f;
+            scaledForce = 1.7f;
+            attractRange = 21f * 8f;
+            frontColor = Color.valueOf("B0BAC0");
+            backColor = Color.valueOf("6E7080");
+        }};
 
         pixel = new BitBulletType(2f, 5f){{
             lifetime = 90f;
@@ -475,6 +501,7 @@ public class PMBullets implements ContentList{
             trailSize = 0.7f;
             riseSpin = 190f;
             fallSpin = 110f;
+            randRot = true;
 
             unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
         }};
@@ -503,6 +530,7 @@ public class PMBullets implements ContentList{
             trailSize = 0.7f;
             riseSpin = 230f;
             fallSpin = 120f;
+            randRot = true;
 
             unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
 
@@ -763,7 +791,7 @@ public class PMBullets implements ContentList{
         }};
 
         sentinelLaser = new TeamLaserBlastBulletType(12f, 630f){{
-            lifetime = 28f;
+            lifetime = 36f;
             splashDamage = 2000f;
             splashDamageRadius = 7f * 8f;
             length = 8f;

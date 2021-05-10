@@ -67,6 +67,11 @@ public class BlackHoleCataclysmType extends BulletType{
                     if(data.bF < 0f || data.bSF < 0f) impulse.rotate(180f);
                     other.vel().add(impulse);
 
+                    //manually move bullets to simulate velocity for remote players
+                    if(other.isRemote()){
+                        other.move(impulse.x, impulse.y);
+                    }
+
                     if(Mathf.within(b.x, b.y, other.x, other.y, data.r * scl)){
                         absorbBullet(other);
                     }

@@ -10,13 +10,17 @@ import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import multilib.*;
 import multilib.Recipe.*;
 import progressed.graphics.*;
+import progressed.ui.*;
+import progressed.util.*;
 import progressed.world.blocks.crafting.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
@@ -46,7 +50,10 @@ public class PMBlocks implements ContentList{
     //Pixel Turrets
     bit,
 
-    //Crit Snipers
+    //Magnets
+    magnet,
+
+    //Crit Sniper(s)
     caliber,
 
     //Misc
@@ -263,7 +270,7 @@ public class PMBlocks implements ContentList{
             range = 130f;
             rangeExtention = 16f;
             shots = 2;
-            zaps = 6;
+            zaps = 5;
             zapAngleRand = 19f;
             inaccuracy = 28f;
             shootType = PMBullets.sparkZap;
@@ -529,6 +536,43 @@ public class PMBlocks implements ContentList{
             powerUse = 1.35f;
             shootType = PMBullets.pixel;
         }};
+
+        magnet = new ItemTurret("attraction"){
+            {
+                requirements(Category.turret, empty);
+                ammo(
+                    Items.copper, PMBullets.magnetCopper,
+                    Items.titanium, PMBullets.magnetTitanium,
+                    PMItems.techtanite, PMBullets.magnetTechtanite
+                );
+                size = 3;
+                health = 90 * size * size;
+                range = 23f * 8f;
+                reloadTime = 300f;
+                inaccuracy = 35f;
+                velocityInaccuracy = 0.2f;
+                burstSpacing = 5f;
+                shots = 4;
+            }
+
+            @Override
+            public void setStats(){
+                super.setStats();
+
+                stats.remove(Stat.ammo);
+                stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+            }
+        
+            @Override
+            public void setBars(){
+                super.setBars();
+                bars.add("pm-reload", (ItemTurretBuild entity) -> new Bar(
+                    () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
+                    () -> entity.team.color,
+                    () -> Mathf.clamp(entity.reload / reloadTime)
+                ));
+            }
+        };
 
         caliber = new SniperTurret("caliber"){{
             requirements(Category.turret, with(

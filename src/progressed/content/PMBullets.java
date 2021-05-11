@@ -412,7 +412,7 @@ public class PMBullets implements ContentList{
             riseSpin = 300f;
             fallSpin = 135f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         strikedownEmp = new StrikeBulletType(3f, 80f, "prog-mats-strikedown-emp"){{
@@ -503,7 +503,7 @@ public class PMBullets implements ContentList{
             fallSpin = 110f;
             randRot = true;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         recursionOne = new StrikeBulletType(3f, 80f, "prog-mats-arbiter-cluster-frag"){{
@@ -532,7 +532,7 @@ public class PMBullets implements ContentList{
             fallSpin = 120f;
             randRot = true;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
 
             fragBullets = 3;
             fragVelocityMin = 0.8f;
@@ -565,7 +565,7 @@ public class PMBullets implements ContentList{
             riseSpin = 300f;
             fallSpin = 135f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
 
             fragBullets = 3;
             fragVelocityMin = 0.8f;
@@ -600,7 +600,7 @@ public class PMBullets implements ContentList{
             fallSpin = 180f;
             targetRadius = 2f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         arbiterEmp = new StrikeBulletType(2f, 300f, "prog-mats-arbiter-emp"){{
@@ -686,7 +686,7 @@ public class PMBullets implements ContentList{
             riseSpin = 720f;
             targetRadius = 2f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         basicSentryDrop = new UnitSpawnStrikeBulletType(PMUnitTypes.basicSentry);
@@ -725,7 +725,7 @@ public class PMBullets implements ContentList{
                 riseSpin = 720f;
                 targetRadius = 2f;
 
-                unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+                unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
             }
 
             @Override
@@ -790,13 +790,13 @@ public class PMBullets implements ContentList{
             };
         }};
 
-        sentinelLaser = new TeamLaserBlastBulletType(12f, 630f){{
+        sentinelLaser = new TeamLaserBlastBulletType(12f, 150f){{
             lifetime = 36f;
-            splashDamage = 2000f;
-            splashDamageRadius = 7f * 8f;
+            splashDamage = 1870f;
+            splashDamageRadius = 6f * 8f;
             length = 8f;
             width = 3f;
-            trailLength = 8;
+            trailLength = 12;
             makeFire = true;
             hittable = false;
             hitEffect = PMFx.sentinelBlast;

@@ -666,31 +666,34 @@ public class PMBlocks implements ContentList{
             
             shootLength = 11f;
             range = 328f;
-            reloadTime = 900f;
+            reloadTime = 600f;
 
-            powerUse = 27f;
+            powerUse = 29f;
 
-            float mul = 2.5f;
+            float mul = 3.5f;
             coolantUsage *= mul;
             coolantMultiplier /= mul;
 
             chargeTime = PMFx.aimChargeBegin.lifetime;
             chargeBeginEffect = PMFx.aimChargeBegin;
             chargeEffect = PMFx.aimCharge;
-            chargeEffects = 15;
-            chargeMaxDelay = 60f;
+            chargeEffects = 30;
+            chargeMaxDelay = PMFx.aimChargeBegin.lifetime - PMFx.aimCharge.lifetime;
 
-            chargeSound = Sounds.lasercharge;
+            chargeSound = PMSounds.sentenelCharge; //Note so I don't forget: Sound is made with AnaloguePiano2 in LMMS
             shootSound = Sounds.laserblast;
-            chargeSoundVolume = shootSoundVolume = 0.75f;
+            chargeSoundVolume = 2f;
+            minPitch = 0.7f;
+            shootSoundVolume = 0.75f;
 
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.005f;
 
-            aimRnd = 16f;
+            aimRnd = 24f;
 
             shootType = PMBullets.sentinelLaser;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
 
             heatDrawer = tile -> {
                 if(tile.heat <= 0.00001f) return;
@@ -762,7 +765,7 @@ public class PMBlocks implements ContentList{
             shootShake = 5f;
             inaccuracy = 5f;
             maxAmmo = 8;
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         arbiter = new MissileTurret("arbiter"){{
@@ -790,7 +793,7 @@ public class PMBlocks implements ContentList{
             shootShake = 10f;
             reloadTime = 1500f;
             maxAmmo = 2;
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         blackhole = new BlackHoleTurret("blackhole"){{

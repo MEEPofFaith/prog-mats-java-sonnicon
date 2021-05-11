@@ -13,16 +13,26 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.meta.*;
 import progressed.entities.*;
 import progressed.graphics.*;
 import progressed.util.*;
 
 public class AimLaserTurret extends PowerTurret{
     public float aimStroke = 2f, aimRnd;
-    public float chargeSoundVolume = 1f, shootSoundVolume = 1f;
+    public float chargeSoundVolume = 1f, minPitch = 1f, maxPitch = 1f, shootSoundVolume = 1f;
+    public int chargeSounds = 20;
 
     public AimLaserTurret(String name){
         super(name);
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.reload);
+        stats.add(Stat.reload, 60f / (reloadTime + chargeTime + 1) * (alternate ? 1 : shots), StatUnit.none);
     }
 
     @Override
@@ -70,7 +80,7 @@ public class AimLaserTurret extends PowerTurret{
                 float dst = shootType.range() + shootLength;
                 Healthc box = PMDamage.linecast(targetGround, targetAir, team, x, y, rotation, dst);
 
-                Tmp.v1.trns(rotation, shootLength);
+                Tmp.v1.trns(rotation, shootLength - recoil);
                 if(isAI() && target instanceof Unit){
                     Tmp.v2.trns(rotation, dst(targetPos)).limit(dst);
                 }else if(box != null){
@@ -121,7 +131,6 @@ public class AimLaserTurret extends PowerTurret{
                 super.updateCooling();
             }
         }
-
         @Override
         protected void updateShooting(){
             if(!charging){
@@ -134,7 +143,15 @@ public class AimLaserTurret extends PowerTurret{
             useAmmo();
             tr.trns(rotation, shootLength);
             chargeBeginEffect.at(x + tr.x, y + tr.y, rotation, team.color, self());
-            chargeSound.at(x + tr.x, y + tr.y, 1, chargeSoundVolume);
+            for(int i = 0; i < chargeSounds; i++){
+                float ii = (float)i / ((float)chargeSounds - 1f);
+                float j = (float)i / (float)chargeSounds;
+                Time.run(chargeTime * j, () -> {
+                    if(!isValid()) return;
+                    tr.trns(rotation, shootLength);
+                    chargeSound.at(x + tr.x, y + tr.y, Mathf.lerp(minPitch, maxPitch, ii), chargeSoundVolume);
+                });
+            }
 
             for(int i = 0; i < chargeEffects; i++){
                 Time.run(Mathf.random(chargeMaxDelay), () -> {

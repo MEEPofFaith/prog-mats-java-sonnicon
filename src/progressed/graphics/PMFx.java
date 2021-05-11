@@ -398,7 +398,7 @@ public class PMFx{
         Drawf.light(Team.derelict, e.x, e.y, 20f * e.fslope(), Pal.lightFlame, 0.5f);
     }),
     
-    aimChargeBegin = new Effect(80f, e -> {
+    aimChargeBegin = new Effect(300f, e -> {
         if(e.data instanceof AimLaserTurretBuild d){
             color(e.color);
 
@@ -409,7 +409,7 @@ public class PMFx{
         }
     }),
     
-    aimCharge = new Effect(20f, e -> {
+    aimCharge = new Effect(30f, e -> {
         if(e.data instanceof AimLaserTurretBuild d){
             color(e.color);
 

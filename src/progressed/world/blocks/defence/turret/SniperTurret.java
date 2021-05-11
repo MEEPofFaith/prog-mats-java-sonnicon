@@ -25,7 +25,7 @@ public class SniperTurret extends ItemTurret{
         super(name);
 
         cooldown = 0.01f;
-        unitSort = (u, x, y) -> -u.maxHealth + u.dst(x, y) / 800f;
+        unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
     }
 
     @Override

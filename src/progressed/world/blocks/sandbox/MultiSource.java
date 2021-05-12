@@ -39,6 +39,7 @@ public class MultiSource extends Block{
         saveConfig = true;
         noUpdateDisabled = true;
         displayFlow = false;
+        group = BlockGroup.transportation;
 
         config(Integer.class, (MultiSourceBuild tile, Integer p) -> tile.data.set(p));
         configClear((MultiSourceBuild tile) -> tile.data.clear());
@@ -68,6 +69,13 @@ public class MultiSource extends Block{
             drawRequestConfigCenter(req, content.item((short)data.x), name + "-center-0");
             drawRequestConfigCenter(req, content.liquid((short)data.y), name + "-center-1");
         }
+    }
+    
+    @Override
+    public boolean canReplace(Block other){
+        if(other.alwaysReplace) return true;
+        return other.replaceable && (other != this || rotate) && this.group != BlockGroup.none && (other.group == BlockGroup.transportation || other.group == BlockGroup.liquids) &&
+            (size == other.size || (size >= other.size && ((subclass != null && subclass == other.subclass) || group.anyReplace)));
     }
 
     public class MultiSourceBuild extends Building{

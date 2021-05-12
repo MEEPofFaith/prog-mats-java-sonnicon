@@ -12,12 +12,20 @@ public class MultiVoid extends Block{
         alwaysUnlocked = true;
         
         update = solid = acceptsItems = hasLiquids = true;
+        group = BlockGroup.transportation;
     }
 
     @Override
     public void setBars(){
         super.setBars();
         bars.remove("liquid");
+    }
+    
+    @Override
+    public boolean canReplace(Block other){
+        if(other.alwaysReplace) return true;
+        return other.replaceable && (other != this || rotate) && this.group != BlockGroup.none && (other.group == BlockGroup.transportation || other.group == BlockGroup.liquids) &&
+            (size == other.size || (size >= other.size && ((subclass != null && subclass == other.subclass) || group.anyReplace)));
     }
 
     public class MultiVoidBUild extends Building{

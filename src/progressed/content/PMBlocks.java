@@ -689,7 +689,7 @@ public class PMBlocks implements ContentList{
             restitution = 0.02f;
             cooldown = 0.005f;
 
-            aimRnd = 24f;
+            aimRnd = 16f;
 
             shootType = PMBullets.sentinelLaser;
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;

@@ -53,7 +53,7 @@ public class AimLaserTurret extends PowerTurret{
 
     public class AimLaserTurretBuild extends PowerTurretBuild implements ExtensionHolder{
         public Extension ext;
-        protected float charge;
+        protected float charge, drawCharge, alpha;
 
         @Override
         public void created(){
@@ -70,13 +70,16 @@ public class AimLaserTurret extends PowerTurret{
 
         @Override
         public void drawExt(){
-            if(charging){
+            if(alpha > 0.01f){
                 Draw.mixcol();
 
                 Draw.z(Layer.effect);
-                Lines.stroke(aimStroke * charge, team.color);
 
-                float c = Interp.pow2Out.apply(charge);
+                float c = Interp.pow2Out.apply(drawCharge);
+                float a = Interp.pow2Out.apply(alpha);
+
+                Lines.stroke(aimStroke * a, team.color);
+
                 float dst = shootType.range() + shootLength;
                 Healthc box = PMDamage.linecast(targetGround, targetAir, team, x, y, rotation, dst);
 
@@ -97,8 +100,8 @@ public class AimLaserTurret extends PowerTurret{
                     Draw.alpha(0.75f);
 
                     Lines.line(u.x, u.y, targetPos.x, targetPos.y);
-                    Fill.circle(u.x, u.y, aimStroke / 2f * c);
-                    Fill.circle(targetPos.x, targetPos.y, aimStroke / 2f * c);
+                    Fill.circle(u.x, u.y, aimStroke / 2f * a);
+                    Fill.circle(targetPos.x, targetPos.y, aimStroke / 2f * a);
 
                     Draw.mixcol(team.color, 1f);
                     Draw.rect(u.type.icon(Cicon.full), targetPos.x, targetPos.y, u.rotation - 90f);
@@ -106,9 +109,9 @@ public class AimLaserTurret extends PowerTurret{
                     Draw.alpha(1f);
                 }
                 
-                Fill.circle(x + Tmp.v1.x, y + Tmp.v1.y, aimStroke / 2f * c);
-                Fill.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke / 2f * c);
-                Lines.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke * 2f * (0.5f + c / 2f));
+                Fill.circle(x + Tmp.v1.x, y + Tmp.v1.y, aimStroke / 2f * a);
+                Fill.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke / 2f * a);
+                Lines.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke * 2f * (0.5f + a / 2f));
 
                 Draw.color();
             }
@@ -116,12 +119,13 @@ public class AimLaserTurret extends PowerTurret{
 
         @Override
         public void updateTile(){
+            alpha = Mathf.lerpDelta(alpha, 0f, 0.05f);
+
             if(charging){
                 charge = Mathf.clamp(charge + Time.delta / chargeTime);
-            }else{
-                charge = 0;
+                alpha = Math.max(alpha, charge);
+                drawCharge = charge;
             }
-
             super.updateTile();
         }
 
@@ -142,6 +146,7 @@ public class AimLaserTurret extends PowerTurret{
         protected void shoot(BulletType type){
             useAmmo();
             tr.trns(rotation, shootLength);
+            drawCharge = 0;
             chargeBeginEffect.at(x + tr.x, y + tr.y, rotation, team.color, self());
             for(int i = 0; i < chargeSounds; i++){
                 float ii = (float)i / ((float)chargeSounds - 1f);
@@ -171,6 +176,7 @@ public class AimLaserTurret extends PowerTurret{
                 bullet(type, rotation + Mathf.range(inaccuracy));
                 effects();
                 charging = false;
+                charge = 0;
             });
         }
         

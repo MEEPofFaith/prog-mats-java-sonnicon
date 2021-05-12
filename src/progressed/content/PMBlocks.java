@@ -122,14 +122,13 @@ public class PMBlocks implements ContentList{
             range = 255f;
             maxSpeed = 0.75f;
             health = 140 * size * size;
-            shootCone = 20f;
+            shootCone = 35f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 10f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
-            inaccuracy = 8f;
+            inaccuracy = 3f;
             shootEffect = smokeEffect = ammoUseEffect = Fx.none;
             heatColor = Pal.turretHeat;
 
@@ -139,18 +138,19 @@ public class PMBlocks implements ContentList{
             barLength = 9f;
 
             shootLocs = new float[]{0f};
-            windupSpeed = 0.000125f;
-            windDownSpeed = 0.0125f;
-            minFiringSpeed = 1f/6f;
+            windupSpeed = 0.0001875f;
+            windDownSpeed = 0.003125f;
+            minFiringSpeed = 1f/12f;
         }};
 
         miinigun = new MinigunTurret("miinigun"){{
             requirements(Category.turret, with(
                 Items.copper, 350,
                 Items.graphite, 300,
+                Items.titanium, 150,
                 Items.plastanium, 175,
-                Items.thorium, 80,
-                PMItems.techtanite, 80
+                Items.thorium, 170,
+                PMItems.techtanite, 120
             ));
             ammo(
                 Items.copper, PMBullets.standardCopperMini,
@@ -163,14 +163,13 @@ public class PMBlocks implements ContentList{
             range = 255f;
             maxSpeed = 0.73f;
             health = 150 * size * size;
-            shootCone = 20f;
+            shootCone = 35f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 8f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
-            inaccuracy = 8f;
+            inaccuracy = 3f;
             shootEffect = smokeEffect = ammoUseEffect = Fx.none;
             heatColor = Pal.turretHeat;
 
@@ -180,19 +179,20 @@ public class PMBlocks implements ContentList{
             barLength = 9f;
 
             shootLocs = new float[]{-4f, 4f};
-            windupSpeed = 0.000125f/1.2f;
-            windDownSpeed = 0.0125f;
-            minFiringSpeed = 1f/6f;
+            windupSpeed = 0.0001875f;
+            windDownSpeed = 0.003125f;
+            minFiringSpeed = 1f/12f;
         }};
 
         mivnigun = new MinigunTurret("mivnigun"){{
             requirements(Category.turret, with(
                 Items.copper, 650,
                 Items.graphite, 600,
-                Items.titanium, 120,
-                Items.thorium, 160,
+                Items.titanium, 370,
+                Items.thorium, 340,
                 Items.plastanium, 325,
-                PMItems.techtanite, 240
+                Items.surgeAlloy, 220,
+                PMItems.techtanite, 270
             ));
             ammo(
                 Items.copper, PMBullets.standardCopperMini,
@@ -205,14 +205,13 @@ public class PMBlocks implements ContentList{
             range = 255f;
             maxSpeed = 0.71f;
             health = 160 * size * size;
-            shootCone = 20f;
+            shootCone = 35f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 6f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
-            inaccuracy = 8f;
+            inaccuracy = 3f;
             shootEffect = smokeEffect = ammoUseEffect = Fx.none;
             heatColor = Pal.turretHeat;
 
@@ -222,9 +221,9 @@ public class PMBlocks implements ContentList{
             barLength = 9f;
 
             shootLocs = new float[]{-9f, -3f, 3f, 9f};
-            windupSpeed = 0.000125f/1.4f;
-            windDownSpeed = 0.0125f;
-            minFiringSpeed = 1f/6f;
+            windupSpeed = 0.0001875f;
+            windDownSpeed = 0.003125f;
+            minFiringSpeed = 1f/12f;
         }};
 
         shock = new TeslaTurret("shock"){{

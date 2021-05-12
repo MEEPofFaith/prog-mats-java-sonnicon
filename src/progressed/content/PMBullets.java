@@ -61,13 +61,13 @@ public class PMBullets implements ContentList{
             shake = 0.1f;
         }};
 
-        standardCopperMini = new BasicBulletType(2.5f, 5f){{
+        standardCopperMini = new BasicBulletType(2.5f, 19f){{
             width = 5f;
             height = 7f;
             lifetime = 110f;
         }};
 
-        standardDenseMini = new BasicBulletType(3.5f, 10f){{
+        standardDenseMini = new BasicBulletType(3.5f, 42f){{
             width = 5.5f;
             height = 9f;
             reloadMultiplier = 0.6f;
@@ -75,16 +75,16 @@ public class PMBullets implements ContentList{
             lifetime = 76f;
         }};
 
-        standardHomingMini = new BasicBulletType(3f, 6f){{
+        standardHomingMini = new BasicBulletType(3f, 24f){{
             width = 4f;
             height = 6f;
             homingPower = 0.07f;
             reloadMultiplier = 1.3f;
-            ammoMultiplier = 5f;
+            ammoMultiplier = 5;
             lifetime = 92f;
         }};
 
-        standardIncendiaryMini = new BasicBulletType(3.2f, 7f){{
+        standardIncendiaryMini = new BasicBulletType(3.2f, 21f){{
             width = 5f;
             height = 8f;
             frontColor = Pal.lightishOrange;
@@ -94,7 +94,7 @@ public class PMBullets implements ContentList{
             lifetime = 86f;
         }};
 
-        standardThoriumMini = new BasicBulletType(4f, 13f){{
+        standardThoriumMini = new BasicBulletType(4f, 54f){{
             width = 6f;
             height = 11f;
             shootEffect = Fx.shootBig;

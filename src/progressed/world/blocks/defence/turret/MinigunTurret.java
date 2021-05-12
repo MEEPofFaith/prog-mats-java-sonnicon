@@ -7,14 +7,12 @@ import arc.math.*;
 import arc.util.*;
 import arc.util.io.*;
 import mindustry.entities.bullet.*;
-import mindustry.gen.Building;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import progressed.ProgMats;
 import progressed.util.*;
 
 public class MinigunTurret extends ItemTurret{
@@ -56,7 +54,7 @@ public class MinigunTurret extends ItemTurret{
         super.setBars();
         
         bars.add("pm-minigun-speed", (MinigunTurretBuild entity) -> new Bar(
-            () -> Core.bundle.format("bar.pm-minigun-speed", PMUtls.stringsFixed(entity.speedf() * 100f)),
+            () -> Core.bundle.format("bar.pm-minigun-speed", PMUtls.stringsFixed(entity.speedf() * 100f + entity.speedf() * 0.01f)),
             () -> entity.speedf() > minFiringSpeed ? entity.team.color : Tmp.c1.set(c1).lerp(entity.team.color, Mathf.curve(entity.frameSpeed, 0f, minFiringSpeed) / 2f),
             entity::speedf
         ));
@@ -65,9 +63,9 @@ public class MinigunTurret extends ItemTurret{
     public class MinigunTurretBuild extends ItemTurretBuild{
         protected float[] heats = {0f, 0f, 0f, 0f};
         protected int[] heatFrames = {0, 0, 0, 0};
-        protected int frame, barrel;
+        protected int frame;
         protected float frameSpeed, trueFrame;
-        protected boolean shouldShoot, shouldBarrel;
+        protected boolean shouldShoot;
 
         @Override
         public void draw(){
@@ -103,8 +101,6 @@ public class MinigunTurret extends ItemTurret{
 
         @Override
         public void updateTile(){
-            super.updateTile();
-
             if(!hasAmmo() || !isShooting() || !isActive()){
                 frameSpeed = Mathf.lerpDelta(frameSpeed, 0, windDownSpeed);
             }
@@ -118,11 +114,9 @@ public class MinigunTurret extends ItemTurret{
 
             if(frame != 0){
                 shouldShoot = true;
-                shouldBarrel = true;
-            }else if(shouldBarrel){
-                barrel = barrel + 1;
-                shouldBarrel = false;
             }
+            
+            super.updateTile();
         }
 
         @Override
@@ -142,7 +136,8 @@ public class MinigunTurret extends ItemTurret{
                     shoot(type);
 
                     shouldShoot = false;
-                    heats[barrel % 4] = 1f;
+
+                    heats[Mathf.floor(trueFrame) % 12 / 3] = 1f;
                 }
             }
         }

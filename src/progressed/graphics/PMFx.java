@@ -208,19 +208,27 @@ public class PMFx{
         Bullet bullet = (Bullet)e.data;
 
         if(bullet != null && bullet.type instanceof BlackHoleBulletType b){
-            color(Tmp.c1.set(bullet.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
+            float a = Mathf.clamp(e.fin() * 8f);
+            Tmp.c1.set(bullet.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)).a(a);
+            Tmp.c2.set(Color.black).a(a);
             float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
 
-            Fill.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
-            bullet.y + trnsy(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
-                60,  b.swirlSize * e.fout(),
-                Draw.getColor(), Color.black
+            Fill.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(),
+                b.suctionRadius * e.fout()),
+                bullet.y + trnsy(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
+                60,
+                b.swirlSize * e.fout(),
+                Tmp.c1,
+                Tmp.c2
             );
 
-            Drawf.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
-            bullet.y + trnsy(e.rotation + startAngle * e.fout(),
-                b.suctionRadius * e.fout()), b.swirlSize * e.fout(),
-                Draw.getColor(), 0.7f
+            Drawf.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(),
+                b.suctionRadius * e.fout()),
+                bullet.y + trnsy(e.rotation + startAngle * e.fout(),
+                b.suctionRadius * e.fout()),
+                b.swirlSize * e.fout(),
+                Tmp.c1,
+                0.7f * a
             );
         }
     }).layer(Layer.max - 0.02f),

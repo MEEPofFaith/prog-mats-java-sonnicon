@@ -22,6 +22,7 @@ import progressed.graphics.*;
 import progressed.ui.*;
 import progressed.util.*;
 import progressed.world.blocks.crafting.*;
+import progressed.world.blocks.defence.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
 import progressed.world.blocks.distribution.*;
@@ -78,6 +79,11 @@ public class PMBlocks implements ContentList{
 
     //Crafters
     mindronCollider, shellPress, missileFactory, sentryBuilder,
+
+    // endregion
+    // Region Effect
+
+    fence, web,
 
     // endregion
     // Region Sandbox
@@ -1020,6 +1026,36 @@ public class PMBlocks implements ContentList{
             itemCapacity = 100;
             craftEffect = updateEffect = Fx.none;
             dumpToggle = true;
+        }};
+
+        // endregion
+        // Region Effect
+
+        fence = new StaticNode("fence"){{
+            requirements(Category.effect, with(
+                Items.copper, 60,
+                Items.lead, 50,
+                Items.silicon, 20
+            ));
+            size = 1;
+            health = 90;
+            laserRange = 35;
+            damage = 7f;
+            powerPerLink = 1.2f;
+        }};
+
+        web = new StaticNode("web"){{
+            requirements(Category.effect, with(
+                Items.copper, 70,
+                Items.lead, 35,
+                Items.silicon, 25
+            ));
+            size = 1;
+            health = 110;
+            laserRange = 17;
+            maxNodes = 6;
+            damage = 4f;
+            powerPerLink = 0.5f;
         }};
 
         // endregion

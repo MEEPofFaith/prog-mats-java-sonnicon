@@ -134,6 +134,13 @@ public class PMTechTree implements ContentList{
             node(mindronCollider);
         });
 
+        // Effect
+        vanillaNode(shockMine, () -> {
+            //Static link
+            node(fence);
+            node(web);
+        });
+
         // Items
         vanillaNode(surgeAlloy, () -> {
             nodeProduce(techtanite);

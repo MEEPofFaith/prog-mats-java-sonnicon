@@ -10,6 +10,7 @@ import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.game.*;
 import mindustry.gen.*;
+import mindustry.type.StatusEffect;
 import mindustry.world.*;
 
 import static mindustry.Vars.*;
@@ -19,6 +20,7 @@ public class PMDamage{
     private static Rect rect = new Rect();
     private static Rect hitrect = new Rect();
     private static Vec2 tr = new Vec2();
+    private static Seq<Unit> units = new Seq<>();
     private static IntSet collidedBlocks = new IntSet();
     private static Building tmpBuilding;
     private static Unit tmpUnit;
@@ -79,6 +81,57 @@ public class PMDamage{
         });
 
         return targets;
+    }
+
+    /**
+     * Damages entities in a line.
+     * Only enemie units of the specified team are damaged.
+     */
+    public static void staticDamage(float damage, Team team, Effect effect, StatusEffect status, float statusDuration, float x, float y, float angle, float length, boolean air, boolean ground){
+        tr.trns(angle, length);
+
+        rect.setPosition(x, y).setSize(tr.x, tr.y);
+        float x2 = tr.x + x, y2 = tr.y + y;
+
+        if(rect.width < 0){
+            rect.x += rect.width;
+            rect.width *= -1;
+        }
+
+        if(rect.height < 0){
+            rect.y += rect.height;
+            rect.height *= -1;
+        }
+
+        float expand = 3f;
+
+        rect.y -= expand;
+        rect.x -= expand;
+        rect.width += expand * 2;
+        rect.height += expand * 2;
+
+        Cons<Unit> cons = e -> {
+            e.hitbox(hitrect);
+
+            Vec2 vec = Geometry.raycastRect(x, y, x2, y2, hitrect.grow(expand * 2));
+
+            if(vec != null && damage > 0){
+                effect.at(vec.x, vec.y, angle, team.color);
+                e.damage(damage);
+                e.apply(status, statusDuration);
+            }
+        };
+
+        units.clear();
+
+        Units.nearbyEnemies(team, rect, u -> {
+            if(u.checkTarget(air, ground)){
+                units.add(u);
+            }
+        });
+
+        units.sort(u -> u.dst2(x, y));
+        units.each(cons);
     }
 
     /** Like Damage.findLaserLength, but uses an (x, y) coord instead of bullet position */

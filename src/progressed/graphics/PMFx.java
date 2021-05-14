@@ -314,6 +314,39 @@ public class PMFx{
         Fill.circle(Tmp.v2.x, Tmp.v2.y, Lines.getStroke() / 2);
     }).layer(Layer.bullet + 0.01f),
     
+    //[length, width, team]
+    fakeLightningFast = new Effect(5f, 500f, e -> {
+        Object[] data = (Object[])e.data;
+
+        float length = (float)data[0];
+        int tileLength = Mathf.round(length / tilesize);
+        
+        Lines.stroke((float)data[1] * e.fout());
+        Draw.color(e.color, Color.white, e.fin());
+        
+        for(int i = 0; i < tileLength; i++){
+            float offsetXA = i == 0 ? 0f : Mathf.randomSeed(e.id + (i * 6413), -4.5f, 4.5f);
+            float offsetYA = (length / tileLength) * i;
+            
+            int f = i + 1;
+            
+            float offsetXB = f == tileLength ? 0f : Mathf.randomSeed(e.id + (f * 6413), -4.5f, 4.5f);
+            float offsetYB = (length / tileLength) * f;
+            
+            Tmp.v1.trns(e.rotation, offsetYA, offsetXA);
+            Tmp.v1.add(e.x, e.y);
+            
+            Tmp.v2.trns(e.rotation, offsetYB, offsetXB);
+            Tmp.v2.add(e.x, e.y);
+            
+            Lines.line(Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, false);
+            Fill.circle(Tmp.v1.x, Tmp.v1.y, Lines.getStroke() / 2f);
+            Drawf.light((Team)data[2], Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, (float)data[1] * 3f, e.color, 0.4f);
+        }
+
+        Fill.circle(Tmp.v2.x, Tmp.v2.y, Lines.getStroke() / 2);
+    }).layer(Layer.bullet + 0.01f),
+    
     harbingerCharge = new Effect(150f, 1600f, e -> {
         Color[] colors = {Color.valueOf("D99F6B55"), Color.valueOf("E8D174aa"), Color.valueOf("F3E979"), Color.valueOf("ffffff")};
         float[] tscales = {1f, 0.7f, 0.5f, 0.2f};
@@ -449,6 +482,16 @@ public class PMFx{
 
         randLenVectors(e.id + 1, 11, 2f + 73f * e.finpow(), (x, y) -> {
             lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 2f + e.fout() * 5f);
+        });
+    }),
+    
+    staticSpark = new Effect(10f, e -> {
+        color(e.color);
+        stroke(e.fout() * 1.5f);
+
+        randLenVectors(e.id, 7, e.finpow() * 27f, e.rotation, 45f, (x, y) -> {
+            float ang = Mathf.angle(x, y);
+            lineAngle(e.x + x, e.y + y, ang, e.fout() * 4f + 1f);
         });
     });
 }

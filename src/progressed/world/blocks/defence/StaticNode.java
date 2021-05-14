@@ -218,12 +218,12 @@ public class StaticNode extends Block{
     }
 
     protected void getPotentialLinks(Tile tile, Team team, Cons<Building> others){
-        Boolf<Building> valid = other -> other != null && other.tile() != tile && other.power != null &&
-            other.block instanceof StaticNode &&
+        Boolf<Building> valid = other -> other != null && other.tile() != tile &&
+            other.block == this && other.block instanceof StaticNode &&
             overlaps(tile.x * tilesize + offset, tile.y * tilesize + offset, other.tile(), laserRange * tilesize) && other.team == team &&
             !(other instanceof StaticNodeBuild obuild && obuild.links.size >= ((StaticNode)obuild.block).maxNodes) &&
             !Structs.contains(Edges.getEdges(size), p -> { //do not link to adjacent buildings
-                var t = world.tile(tile.x + p.x, tile.y + p.y);
+                Tile t = world.tile(tile.x + p.x, tile.y + p.y);
                 return t != null && t.build == other;
             });
 
@@ -279,7 +279,7 @@ public class StaticNode extends Block{
     }
 
     public boolean linkValid(Building tile, Building link, boolean checkMaxNodes){
-        if(tile == link || link == null || !link.block.hasPower || tile.team != link.team) return false;
+        if(tile == link || link == null || !link.block.hasPower || tile.team != link.team || tile.block != link.block) return false;
 
         if(overlaps(tile, link, laserRange * tilesize) || (link.block instanceof StaticNode node && overlaps(link, tile, node.laserRange * tilesize))){
             if(checkMaxNodes && link.block instanceof StaticNode node){

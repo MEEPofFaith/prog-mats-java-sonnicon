@@ -9,7 +9,7 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import progressed.content.*;
-import progressed.util.*;
+import progressed.entities.*;
 
 public class MagmaBulletType extends BulletType{
     public float radius, minScl = 0.2f, maxScl = 0.5f;
@@ -64,7 +64,7 @@ public class MagmaBulletType extends BulletType{
         if(b.timer(1, 5f)){
             Damage.damage(b.team, b.x, b.y, radius * b.fout(), damage, true, collidesAir, collidesGround);
             if(status != StatusEffects.none) Damage.status(b.team, b.x, b.y, radius * b.fout(), status, statusDuration, collidesAir, collidesGround);
-            PMUtls.trueEachTile(b.x, b.y, radius * b.fout(), tile -> {
+            PMDamage.trueEachTile(b.x, b.y, radius * b.fout(), tile -> {
                 if(puddleLiquid != null) Puddles.deposit(tile, puddleLiquid, puddleAmount);
                 if(makeFire) Fires.create(tile);
             });

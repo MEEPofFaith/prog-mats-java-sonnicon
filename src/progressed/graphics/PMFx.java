@@ -5,11 +5,13 @@ import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.entities.*;
-import mindustry.game.Team;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.entities.bullet.*;
 import progressed.entities.bullet.BlackHoleBulletType.*;
+import progressed.world.blocks.defence.turret.AimLaserTurret;
+import progressed.world.blocks.defence.turret.AimLaserTurret.*;
 
 import static arc.graphics.g2d.Draw.*;
 import static arc.graphics.g2d.Lines.*;
@@ -206,19 +208,27 @@ public class PMFx{
         Bullet bullet = (Bullet)e.data;
 
         if(bullet != null && bullet.type instanceof BlackHoleBulletType b){
-            color(Tmp.c1.set(bullet.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)));
+            float a = Mathf.clamp(e.fin() * 8f);
+            Tmp.c1.set(bullet.team.color).lerp(Color.black, 0.5f + Mathf.absin(Time.time + Mathf.randomSeed(e.id), 10f, 0.4f)).a(a);
+            Tmp.c2.set(Color.black).a(a);
             float startAngle = Mathf.randomSeed(e.id, 360f, 720f);
 
-            Fill.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
-            bullet.y + trnsy(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
-                60,  b.swirlSize * e.fout(),
-                Draw.getColor(), Color.black
+            Fill.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(),
+                b.suctionRadius * e.fout()),
+                bullet.y + trnsy(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
+                60,
+                b.swirlSize * e.fout(),
+                Tmp.c1,
+                Tmp.c2
             );
 
-            Drawf.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(), b.suctionRadius * e.fout()),
-            bullet.y + trnsy(e.rotation + startAngle * e.fout(),
-                b.suctionRadius * e.fout()), b.swirlSize * e.fout(),
-                Draw.getColor(), 0.7f
+            Drawf.light(bullet.x + trnsx(e.rotation + startAngle * e.fout(),
+                b.suctionRadius * e.fout()),
+                bullet.y + trnsy(e.rotation + startAngle * e.fout(),
+                b.suctionRadius * e.fout()),
+                b.swirlSize * e.fout(),
+                Tmp.c1,
+                0.7f * a
             );
         }
     }).layer(Layer.max - 0.02f),
@@ -273,6 +283,39 @@ public class PMFx{
     
     //[length, width, team]
     fakeLightning = new Effect(10f, 500f, e -> {
+        Object[] data = (Object[])e.data;
+
+        float length = (float)data[0];
+        int tileLength = Mathf.round(length / tilesize);
+        
+        Lines.stroke((float)data[1] * e.fout());
+        Draw.color(e.color, Color.white, e.fin());
+        
+        for(int i = 0; i < tileLength; i++){
+            float offsetXA = i == 0 ? 0f : Mathf.randomSeed(e.id + (i * 6413), -4.5f, 4.5f);
+            float offsetYA = (length / tileLength) * i;
+            
+            int f = i + 1;
+            
+            float offsetXB = f == tileLength ? 0f : Mathf.randomSeed(e.id + (f * 6413), -4.5f, 4.5f);
+            float offsetYB = (length / tileLength) * f;
+            
+            Tmp.v1.trns(e.rotation, offsetYA, offsetXA);
+            Tmp.v1.add(e.x, e.y);
+            
+            Tmp.v2.trns(e.rotation, offsetYB, offsetXB);
+            Tmp.v2.add(e.x, e.y);
+            
+            Lines.line(Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, false);
+            Fill.circle(Tmp.v1.x, Tmp.v1.y, Lines.getStroke() / 2f);
+            Drawf.light((Team)data[2], Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, (float)data[1] * 3f, e.color, 0.4f);
+        }
+
+        Fill.circle(Tmp.v2.x, Tmp.v2.y, Lines.getStroke() / 2);
+    }).layer(Layer.bullet + 0.01f),
+    
+    //[length, width, team]
+    fakeLightningFast = new Effect(5f, 500f, e -> {
         Object[] data = (Object[])e.data;
 
         float length = (float)data[0];
@@ -394,5 +437,61 @@ public class PMFx{
         color();
 
         Drawf.light(Team.derelict, e.x, e.y, 20f * e.fslope(), Pal.lightFlame, 0.5f);
+    }),
+    
+    aimChargeBegin = new Effect(300f, e -> {
+        if(e.data instanceof AimLaserTurretBuild d){
+            color(e.color);
+
+            Tmp.v1.trns(d.rotation, ((AimLaserTurret)(d.block)).shootLength);
+            Fill.circle(d.x + Tmp.v1.x, d.y + Tmp.v1.y, 3f * e.fin());
+
+            color();
+        }
+    }),
+    
+    aimCharge = new Effect(30f, e -> {
+        if(e.data instanceof AimLaserTurretBuild d){
+            color(e.color);
+
+            Tmp.v1.trns(d.rotation, ((AimLaserTurret)(d.block)).shootLength);
+            randLenVectors(e.id, 3, 24f * e.fout(), (x, y) -> {
+                Fill.circle(d.x + Tmp.v1.x + x, d.y + Tmp.v1.y + y, 2f * e.fin());
+            });
+
+            color();
+        }
+    }),
+    
+    sentinelBlast = new Effect(80f, e -> {
+        color(Pal.missileYellow);
+
+        e.scaled(50f, s -> {
+            stroke(5f * s.fout());
+            Lines.circle(e.x, e.y, 4f + s.fin() * 40f);
+        });
+
+        color(e.color);
+
+        randLenVectors(e.id, 20, 3f + 60f * e.finpow(), (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, 1f + e.fout() * 6f);
+        });
+
+        color(Pal.missileYellowBack);
+        stroke(e.fout());
+
+        randLenVectors(e.id + 1, 11, 2f + 73f * e.finpow(), (x, y) -> {
+            lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 2f + e.fout() * 5f);
+        });
+    }),
+    
+    staticSpark = new Effect(10f, e -> {
+        color(e.color);
+        stroke(e.fout() * 1.5f);
+
+        randLenVectors(e.id, 7, e.finpow() * 27f, e.rotation, 45f, (x, y) -> {
+            float ang = Mathf.angle(x, y);
+            lineAngle(e.x + x, e.y + y, ang, e.fout() * 4f + 1f);
+        });
     });
 }

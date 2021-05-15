@@ -12,6 +12,7 @@ import progressed.util.*;
 
 import static mindustry.content.Items.*;
 import static mindustry.content.Blocks.*;
+import static mindustry.content.UnitTypes.*;
 import static mindustry.content.TechTree.*;
 import static progressed.content.PMBlocks.*;
 import static progressed.content.PMItems.*;
@@ -83,7 +84,7 @@ public class PMTechTree implements ContentList{
                     node(strikeSentryBox, recipeCost((MultiCrafter)sentryBuilder, 1, 5f), Seq.with(new Objectives.Research(firestorm)), () -> {
                         node(strikeSentry, ItemStack.empty, Seq.with(new Objectives.Research(strikeSentryBox)));
                     });
-                    node(dashSentryBox, recipeCost((MultiCrafter)sentryBuilder, 2, 5f), Seq.with(new Objectives.Research(lancer)), () -> {
+                    node(dashSentryBox, recipeCost((MultiCrafter)sentryBuilder, 2, 5f), Seq.with(new Objectives.Research(lancer), new Objectives.Research(quasar)), () -> {
                         node(dashSentry, ItemStack.empty, Seq.with(new Objectives.Research(dashSentryBox)));
                     });
                 });
@@ -100,6 +101,10 @@ public class PMTechTree implements ContentList{
                     node(storm, Seq.with(new Objectives.Research(thoriumReactor)));
                 });
             });
+        });
+
+        vanillaNode(lancer, () -> {
+            node(sentinel, Seq.with(new Objectives.SectorComplete(SectorPresets.impact0078)));
         });
 
         vanillaNode(cyclone, () -> {
@@ -127,6 +132,13 @@ public class PMTechTree implements ContentList{
         vanillaNode(surgeSmelter, () -> {
             //Mindron Collider
             node(mindronCollider);
+        });
+
+        // Effect
+        vanillaNode(shockMine, () -> {
+            //Static link
+            node(fence);
+            node(web);
         });
 
         // Items

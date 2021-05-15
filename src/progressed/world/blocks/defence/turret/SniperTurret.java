@@ -25,7 +25,7 @@ public class SniperTurret extends ItemTurret{
         super(name);
 
         cooldown = 0.01f;
-        unitSort = (u, x, y) -> -u.maxHealth + u.dst(x, y) / 800f;
+        unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
     }
 
     @Override
@@ -128,7 +128,6 @@ public class SniperTurret extends ItemTurret{
                         float tx = Angles.trnsx(rotation, split * charge * i);
                         float ty = Angles.trnsy(rotation, split * charge * i);
                         Draw.rect(heats[i], x + tr2.x + tx, y + tr2.y + ty, rotation - 90);
-
                     }
                 }
                 Draw.blend();
@@ -138,7 +137,7 @@ public class SniperTurret extends ItemTurret{
 
         @Override
         public void updateTile(){
-            if(charging && hasAmmo() && consValid()){
+            if(charging){
                 charge = Mathf.clamp(charge + Time.delta / chargeTime);
             }else{
                 charge = 0;

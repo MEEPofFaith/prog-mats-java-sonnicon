@@ -84,7 +84,7 @@ public class BlackHoleTurret extends PowerTurret{
         public void updateTile(){
             alpha = Mathf.lerpDelta(alpha, Mathf.num(consValid()), 0.1f);
 
-            if(charging && hasAmmo() && consValid()){
+            if(charging){
                 charge = Mathf.clamp(charge + Time.delta / chargeTime);
             }else{
                 charge = 0;

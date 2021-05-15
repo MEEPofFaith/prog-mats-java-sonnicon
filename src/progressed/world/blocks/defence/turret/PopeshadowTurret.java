@@ -186,7 +186,7 @@ public class PopeshadowTurret extends PowerTurret{
                 animation = false;
             }
 
-            if(charging && hasAmmo() && consValid()){
+            if(charging){
                 charge = Mathf.clamp(charge + Time.delta / chargeTime);
             }else{
                 charge = 0;

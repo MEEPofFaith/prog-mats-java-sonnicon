@@ -8,7 +8,7 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import progressed.util.*;
+import progressed.entities.*;
 
 public class CrossLaserBulletType extends LaserBulletType{
     public float growTime = 5f, fadeTime = 5f;
@@ -30,7 +30,7 @@ public class CrossLaserBulletType extends LaserBulletType{
             for(int i = 0; i < 2; i++){
                 Tmp.v1.trns(b.rotation(), b.fdata * crossSection);
                 float x = b.x + Tmp.v1.x, y = b.y + Tmp.v1.y;
-                float resultLength = PMUtls.findLaserLength(x, y, b.rotation() + 90f * Mathf.signs[i], b.team, crossLength);
+                float resultLength = PMDamage.findLaserLength(x, y, b.rotation() + 90f * Mathf.signs[i], b.team, crossLength);
                 Damage.collideLine(b, b.team, b.type.hitEffect, x, y, b.rotation() + 90f * Mathf.signs[i], resultLength, largeHit);
                 ((CrossLaserData)b.data).addLength(resultLength, i);
             }

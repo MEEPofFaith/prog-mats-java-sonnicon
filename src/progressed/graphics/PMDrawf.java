@@ -2,10 +2,12 @@ package progressed.graphics;
 
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.math.geom.*;
 import arc.util.*;
 import mindustry.graphics.*;
 
 public class PMDrawf{
+    private static Vec2 vector = new Vec2();
 
     public static void plus(float x, float y, float diameter, float angle, Color color, float alpha){
         Draw.color(color, alpha);
@@ -28,5 +30,25 @@ public class PMDrawf{
         Draw.color(Tmp.c1.set(Pal.shadow).mul(1f, 1f, 1f, alpha));
         Draw.rect(region, x, y, rotation);
         Draw.color();
+    }
+
+    public static void line(float x, float y, Vec2 v1, Vec2 v2, boolean cap){
+        Lines.line(v1.x + x, v1.y + y, v2.x + x, v2.y + y, cap);
+    }
+
+    public static void lineAngleCenter(float x, float y, float angle, float length, boolean cap){
+        vector.trns(angle, length);
+
+        Lines.line(x - vector.x / 2, y - vector.y / 2, x + vector.x / 2, y + vector.y / 2, cap);
+    }
+
+    public static void pill(float x, float y, float angle, float length, float width){
+        Lines.stroke(width);
+        lineAngleCenter(x, y, angle, length - width, false);
+        
+        for(int i = 0; i < 2; i++){
+            Tmp.v1.trns(angle + 180f * i, length / 2f - width / 2f);
+            Fill.circle(x + Tmp.v1.x, y + Tmp.v1.y, width / 2f);
+        }
     }
 }

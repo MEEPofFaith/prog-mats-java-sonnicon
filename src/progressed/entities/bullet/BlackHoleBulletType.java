@@ -11,6 +11,7 @@ import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.content.*;
+import progressed.entities.*;
 import progressed.graphics.*;
 import progressed.util.*;
 
@@ -41,7 +42,7 @@ public class BlackHoleBulletType extends BulletType{
     @Override
     public void update(Bullet b){
         if(b.timer(1, 2f)){
-            PMUtls.completeDamage(b.team, b.x, b.y, damageRadius, b.damage);
+            PMDamage.completeDamage(b.team, b.x, b.y, damageRadius, b.damage);
             
             if(swirlEffect != Fx.none && b.time <= b.lifetime - swirlEffect.lifetime){
                 swirlEffect.at(b.x, b.y, Mathf.random(360f), b);
@@ -61,8 +62,8 @@ public class BlackHoleBulletType extends BulletType{
                     if(repel) impulse.rotate(180f);
                     other.vel().add(impulse);
 
-                    //manually move units to simulate velocity for remote players
-                    if(b.isRemote()){
+                    //manually move bullets to simulate velocity for remote players
+                    if(other.isRemote()){
                         other.move(impulse.x, impulse.y);
                     }
 

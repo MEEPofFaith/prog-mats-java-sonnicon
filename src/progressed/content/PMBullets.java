@@ -23,6 +23,8 @@ public class PMBullets implements ContentList{
 
     sniperBoltSilicon, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
 
+    magnetCopper, magnetTitanium, magnetTechtanite,
+
     pixel,
     
     basicSentryLaunch, strikeSentryLaunch, dashSentryLaunch,
@@ -43,7 +45,7 @@ public class PMBullets implements ContentList{
     
     arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
-    harbingerLaser, excaliburLaser;
+    harbingerLaser, excaliburLaser, sentinelLaser;
 
     @Override
     public void load(){
@@ -59,13 +61,13 @@ public class PMBullets implements ContentList{
             shake = 0.1f;
         }};
 
-        standardCopperMini = new BasicBulletType(2.5f, 5f){{
+        standardCopperMini = new BasicBulletType(2.5f, 19f){{
             width = 5f;
             height = 7f;
             lifetime = 110f;
         }};
 
-        standardDenseMini = new BasicBulletType(3.5f, 10f){{
+        standardDenseMini = new BasicBulletType(3.5f, 42f){{
             width = 5.5f;
             height = 9f;
             reloadMultiplier = 0.6f;
@@ -73,16 +75,16 @@ public class PMBullets implements ContentList{
             lifetime = 76f;
         }};
 
-        standardHomingMini = new BasicBulletType(3f, 6f){{
+        standardHomingMini = new BasicBulletType(3f, 24f){{
             width = 4f;
             height = 6f;
             homingPower = 0.07f;
             reloadMultiplier = 1.3f;
-            ammoMultiplier = 5f;
+            ammoMultiplier = 5;
             lifetime = 92f;
         }};
 
-        standardIncendiaryMini = new BasicBulletType(3.2f, 7f){{
+        standardIncendiaryMini = new BasicBulletType(3.2f, 21f){{
             width = 5f;
             height = 8f;
             frontColor = Pal.lightishOrange;
@@ -92,7 +94,7 @@ public class PMBullets implements ContentList{
             lifetime = 86f;
         }};
 
-        standardThoriumMini = new BasicBulletType(4f, 13f){{
+        standardThoriumMini = new BasicBulletType(4f, 54f){{
             width = 6f;
             height = 11f;
             shootEffect = Fx.shootBig;
@@ -113,7 +115,7 @@ public class PMBullets implements ContentList{
         }};
 
         sparkZap = new LightningBulletType(){{
-            damage = 12f;
+            damage = 7f;
             lightningLength = 6;
             lightningLengthRand = 4;
             lightningAngle = 0f;
@@ -124,7 +126,7 @@ public class PMBullets implements ContentList{
         }};
 
         stormZap = new LightningBulletType(){{
-            damage = 15f;
+            damage = 6f;
             lightningLength = 7;
             lightningLengthRand = 5;
             lightningAngle = 0f;
@@ -241,6 +243,30 @@ public class PMBullets implements ContentList{
                 super.despawned(b);
             }
         };
+
+        magnetCopper = new MagnetBulletType(2.5f, 12f){{
+            lifetime = 300f;
+            scaledForce = 0.3f;
+            attractRange = 12f * 8f;
+            frontColor = Color.valueOf("EAC2A9");
+            backColor = Color.valueOf("B8705C");
+        }};
+
+        magnetTitanium = new MagnetBulletType(2.8f, 25f){{
+            lifetime = 400f;
+            scaledForce = 0.8f;
+            attractRange = 15f * 8f;
+            frontColor = Color.valueOf("A4B8FA");
+            backColor = Color.valueOf("7575C8");
+        }};
+
+        magnetTechtanite = new MagnetBulletType(3.4f, 45f){{
+            lifetime = 500f;
+            scaledForce = 1.7f;
+            attractRange = 21f * 8f;
+            frontColor = Color.valueOf("B0BAC0");
+            backColor = Color.valueOf("6E7080");
+        }};
 
         pixel = new BitBulletType(2f, 5f){{
             lifetime = 90f;
@@ -386,7 +412,7 @@ public class PMBullets implements ContentList{
             riseSpin = 300f;
             fallSpin = 135f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         strikedownEmp = new StrikeBulletType(3f, 80f, "prog-mats-strikedown-emp"){{
@@ -475,8 +501,9 @@ public class PMBullets implements ContentList{
             trailSize = 0.7f;
             riseSpin = 190f;
             fallSpin = 110f;
+            randRot = true;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         recursionOne = new StrikeBulletType(3f, 80f, "prog-mats-arbiter-cluster-frag"){{
@@ -503,8 +530,9 @@ public class PMBullets implements ContentList{
             trailSize = 0.7f;
             riseSpin = 230f;
             fallSpin = 120f;
+            randRot = true;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
 
             fragBullets = 3;
             fragVelocityMin = 0.8f;
@@ -537,7 +565,7 @@ public class PMBullets implements ContentList{
             riseSpin = 300f;
             fallSpin = 135f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
 
             fragBullets = 3;
             fragVelocityMin = 0.8f;
@@ -551,7 +579,7 @@ public class PMBullets implements ContentList{
             homingPower = 0.05f;
             homingRange = 2200f;
             lifetime = 5500f;
-            hitSound = Sounds.bang;
+            hitSound = Sounds.explosionbig;
             hitShake = 30f;
             despawnEffect = PMFx.mushroomCloudExplosion;
 
@@ -572,7 +600,7 @@ public class PMBullets implements ContentList{
             fallSpin = 180f;
             targetRadius = 2f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         arbiterEmp = new StrikeBulletType(2f, 300f, "prog-mats-arbiter-emp"){{
@@ -582,7 +610,7 @@ public class PMBullets implements ContentList{
             homingPower = 0.075f;
             homingRange = 2200f;
             lifetime = 2250f;
-            hitSound = Sounds.bang;
+            hitSound = Sounds.explosionbig;
             hitShake = 30f;
             despawnEffect = PMFx.mushroomCloudExplosion;
 
@@ -658,7 +686,7 @@ public class PMBullets implements ContentList{
             riseSpin = 720f;
             targetRadius = 2f;
 
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         basicSentryDrop = new UnitSpawnStrikeBulletType(PMUnitTypes.basicSentry);
@@ -697,7 +725,7 @@ public class PMBullets implements ContentList{
                 riseSpin = 720f;
                 targetRadius = 2f;
 
-                unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+                unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
             }
 
             @Override
@@ -760,6 +788,20 @@ public class PMBullets implements ContentList{
                 Pal.surge,
                 Color.white
             };
+        }};
+
+        sentinelLaser = new TeamLaserBlastBulletType(12f, 150f){{
+            lifetime = 36f;
+            splashDamage = 1870f;
+            splashDamageRadius = 6f * 8f;
+            length = 8f;
+            width = 3f;
+            trailLength = 12;
+            makeFire = true;
+            hittable = false;
+            hitEffect = PMFx.sentinelBlast;
+            hitSound = Sounds.explosionbig;
+            hitSoundVolume = 4f;
         }};
     }
 }

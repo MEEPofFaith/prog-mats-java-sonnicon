@@ -34,10 +34,8 @@ public class SandboxWall extends Wall{
         requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
         alwaysUnlocked = true;
         
-        lightningChance = 1f;
         lightningDamage = 5000f;
         lightningLength = 10;
-        chanceDeflect = 100000000f;
         flashHit = insulated = absorbLasers = true;
         schematicPriority = 10;
         configurable = saveConfig = update = noUpdateDisabled = true;
@@ -133,20 +131,15 @@ public class SandboxWall extends Wall{
             hit = 1f;
 
             //create lightning if necessary
-            if(lightningChance > 0f && modes.surge){
-                if(Mathf.chance(lightningChance)){
-                    Lightning.create(team, lightningColor, lightningDamage, x, y, bullet.rotation() + 180f, lightningLength);
-                    lightningSound.at(tile, Mathf.random(0.9f, 1.1f));
-                }
+            if(modes.surge){
+                Lightning.create(team, lightningColor, lightningDamage, x, y, bullet.rotation() + 180f, lightningLength);
+                lightningSound.at(tile, Mathf.random(0.9f, 1.1f));
             }
 
             //deflect bullets if necessary
-            if(chanceDeflect > 0f && modes.phase){
+            if(modes.phase){
                 //slow bullets are not deflected
                 if(bullet.vel().len() <= 0.1f || !bullet.type.reflectable) return true;
-
-                //bullet reflection chance depends on bullet damage
-                if(!Mathf.chance(chanceDeflect / bullet.damage())) return true;
 
                 //make sound
                 deflectSound.at(tile, Mathf.random(0.9f, 1.1f));

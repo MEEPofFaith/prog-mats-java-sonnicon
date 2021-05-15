@@ -1,6 +1,8 @@
 package progressed.content;
 
 import arc.*;
+import arc.graphics.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.struct.*;
 import mindustry.content.*;
@@ -8,14 +10,19 @@ import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import multilib.*;
 import multilib.Recipe.*;
 import progressed.graphics.*;
+import progressed.ui.*;
+import progressed.util.*;
 import progressed.world.blocks.crafting.*;
+import progressed.world.blocks.defence.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
 import progressed.world.blocks.distribution.*;
@@ -44,11 +51,17 @@ public class PMBlocks implements ContentList{
     //Pixel Turrets
     bit,
 
-    //Crit Snipers
+    //Magnets
+    magnet,
+
+    //Crit Sniper(s)
     caliber,
 
     //Misc
     signal, tinker,
+
+    //Why do I hear anxiety piano
+    sentinel,
 
     //Missiles
     firestorm, strikedown, arbiter,
@@ -66,6 +79,11 @@ public class PMBlocks implements ContentList{
 
     //Crafters
     mindronCollider, shellPress, missileFactory, sentryBuilder,
+
+    // endregion
+    // Region Effect
+
+    fence, web,
 
     // endregion
     // Region Sandbox
@@ -110,14 +128,13 @@ public class PMBlocks implements ContentList{
             range = 255f;
             maxSpeed = 0.75f;
             health = 140 * size * size;
-            shootCone = 20f;
+            shootCone = 35f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 10f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
-            inaccuracy = 8f;
+            inaccuracy = 3f;
             shootEffect = smokeEffect = ammoUseEffect = Fx.none;
             heatColor = Pal.turretHeat;
 
@@ -127,18 +144,19 @@ public class PMBlocks implements ContentList{
             barLength = 9f;
 
             shootLocs = new float[]{0f};
-            windupSpeed = 0.000125f;
-            windDownSpeed = 0.0125f;
-            minFiringSpeed = 1f/6f;
+            windupSpeed = 0.0001875f;
+            windDownSpeed = 0.003125f;
+            minFiringSpeed = 1f/12f;
         }};
 
         miinigun = new MinigunTurret("miinigun"){{
             requirements(Category.turret, with(
                 Items.copper, 350,
                 Items.graphite, 300,
+                Items.titanium, 150,
                 Items.plastanium, 175,
-                Items.thorium, 80,
-                PMItems.techtanite, 80
+                Items.thorium, 170,
+                PMItems.techtanite, 120
             ));
             ammo(
                 Items.copper, PMBullets.standardCopperMini,
@@ -151,14 +169,13 @@ public class PMBlocks implements ContentList{
             range = 255f;
             maxSpeed = 0.73f;
             health = 150 * size * size;
-            shootCone = 20f;
+            shootCone = 35f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 8f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
-            inaccuracy = 8f;
+            inaccuracy = 3f;
             shootEffect = smokeEffect = ammoUseEffect = Fx.none;
             heatColor = Pal.turretHeat;
 
@@ -168,19 +185,20 @@ public class PMBlocks implements ContentList{
             barLength = 9f;
 
             shootLocs = new float[]{-4f, 4f};
-            windupSpeed = 0.000125f/1.2f;
-            windDownSpeed = 0.0125f;
-            minFiringSpeed = 1f/6f;
+            windupSpeed = 0.0001875f;
+            windDownSpeed = 0.003125f;
+            minFiringSpeed = 1f/12f;
         }};
 
         mivnigun = new MinigunTurret("mivnigun"){{
             requirements(Category.turret, with(
                 Items.copper, 650,
                 Items.graphite, 600,
-                Items.titanium, 120,
-                Items.thorium, 160,
+                Items.titanium, 370,
+                Items.thorium, 340,
                 Items.plastanium, 325,
-                PMItems.techtanite, 240
+                Items.surgeAlloy, 220,
+                PMItems.techtanite, 270
             ));
             ammo(
                 Items.copper, PMBullets.standardCopperMini,
@@ -193,14 +211,13 @@ public class PMBlocks implements ContentList{
             range = 255f;
             maxSpeed = 0.71f;
             health = 160 * size * size;
-            shootCone = 20f;
+            shootCone = 35f;
             shootSound = Sounds.shootBig;
             targetAir = targetGround = true;
-            rotateSpeed = 6f;
             recoilAmount = 3f;
             restitution = 0.02f;
             cooldown = 0.11f;
-            inaccuracy = 8f;
+            inaccuracy = 3f;
             shootEffect = smokeEffect = ammoUseEffect = Fx.none;
             heatColor = Pal.turretHeat;
 
@@ -210,9 +227,9 @@ public class PMBlocks implements ContentList{
             barLength = 9f;
 
             shootLocs = new float[]{-9f, -3f, 3f, 9f};
-            windupSpeed = 0.000125f/1.4f;
-            windDownSpeed = 0.0125f;
-            minFiringSpeed = 1f/6f;
+            windupSpeed = 0.0001875f;
+            windDownSpeed = 0.003125f;
+            minFiringSpeed = 1f/12f;
         }};
 
         shock = new TeslaTurret("shock"){{
@@ -258,7 +275,7 @@ public class PMBlocks implements ContentList{
             range = 130f;
             rangeExtention = 16f;
             shots = 2;
-            zaps = 6;
+            zaps = 5;
             zapAngleRand = 19f;
             inaccuracy = 28f;
             shootType = PMBullets.sparkZap;
@@ -525,6 +542,43 @@ public class PMBlocks implements ContentList{
             shootType = PMBullets.pixel;
         }};
 
+        magnet = new ItemTurret("attraction"){
+            {
+                requirements(Category.turret, empty);
+                ammo(
+                    Items.copper, PMBullets.magnetCopper,
+                    Items.titanium, PMBullets.magnetTitanium,
+                    PMItems.techtanite, PMBullets.magnetTechtanite
+                );
+                size = 3;
+                health = 90 * size * size;
+                range = 23f * 8f;
+                reloadTime = 200f;
+                inaccuracy = 30f;
+                velocityInaccuracy = 0.2f;
+                burstSpacing = 5f;
+                shots = 4;
+            }
+
+            @Override
+            public void setStats(){
+                super.setStats();
+
+                stats.remove(Stat.ammo);
+                stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+            }
+        
+            @Override
+            public void setBars(){
+                super.setBars();
+                bars.add("pm-reload", (ItemTurretBuild entity) -> new Bar(
+                    () -> Core.bundle.format("bar.pm-reload", PMUtls.stringsFixed(Mathf.clamp(entity.reload / reloadTime) * 100f)),
+                    () -> entity.team.color,
+                    () -> Mathf.clamp(entity.reload / reloadTime)
+                ));
+            }
+        };
+
         caliber = new SniperTurret("caliber"){{
             requirements(Category.turret, with(
                 Items.copper, 220,
@@ -602,6 +656,61 @@ public class PMBlocks implements ContentList{
             shootLength = 16f;
         }};
 
+        sentinel = new AimLaserTurret("sentinel"){{
+            requirements(Category.turret, with(
+                Items.copper, 900,
+                Items.lead, 375,
+                Items.graphite, 350,
+                Items.surgeAlloy, 450,
+                Items.silicon, 450,
+                PMItems.techtanite, 250
+            ));
+
+            size = 4;
+            health = 120 * size * size;
+            
+            shootLength = 11f;
+            range = 328f;
+            reloadTime = 600f;
+
+            powerUse = 29f;
+
+            float mul = 3.5f;
+            coolantUsage *= mul;
+            coolantMultiplier /= mul;
+
+            chargeTime = PMFx.aimChargeBegin.lifetime;
+            chargeBeginEffect = PMFx.aimChargeBegin;
+            chargeEffect = PMFx.aimCharge;
+            chargeEffects = 30;
+            chargeMaxDelay = PMFx.aimChargeBegin.lifetime - PMFx.aimCharge.lifetime;
+
+            chargeSound = PMSounds.sentenelCharge; //Note so I don't forget: Sound is made with AnaloguePiano2 in LMMS
+            shootSound = Sounds.laserblast;
+            chargeSoundVolume = 2f;
+            minPitch = 0.7f;
+            shootSoundVolume = 0.75f;
+
+            recoilAmount = 3f;
+            restitution = 0.02f;
+            cooldown = 0.005f;
+
+            aimRnd = 16f;
+
+            shootType = PMBullets.sentinelLaser;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
+
+            heatDrawer = tile -> {
+                if(tile.heat <= 0.00001f) return;
+        
+                Draw.color(tile.team.color, tile.heat);
+                Draw.blend(Blending.additive);
+                Draw.rect(heatRegion, tile.x + tr2.x, tile.y + tr2.y, tile.rotation - 90);
+                Draw.blend();
+                Draw.color();
+            };
+        }};
+
         firestorm = new MissileTurret("firestorm"){{
             requirements(Category.turret, with(
                 Items.copper, 180,
@@ -661,7 +770,7 @@ public class PMBlocks implements ContentList{
             shootShake = 5f;
             inaccuracy = 5f;
             maxAmmo = 8;
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         arbiter = new MissileTurret("arbiter"){{
@@ -689,7 +798,7 @@ public class PMBlocks implements ContentList{
             shootShake = 10f;
             reloadTime = 1500f;
             maxAmmo = 2;
-            unitSort = (u, x, y) -> -u.maxHealth + Mathf.dst2(x, y, u.x, u.y) / 1000f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
         blackhole = new BlackHoleTurret("blackhole"){{
@@ -917,6 +1026,36 @@ public class PMBlocks implements ContentList{
             itemCapacity = 100;
             craftEffect = updateEffect = Fx.none;
             dumpToggle = true;
+        }};
+
+        // endregion
+        // Region Effect
+
+        fence = new StaticNode("fence"){{
+            requirements(Category.effect, with(
+                Items.copper, 60,
+                Items.lead, 50,
+                Items.silicon, 20
+            ));
+            size = 1;
+            health = 90;
+            laserRange = 35;
+            damage = 7f;
+            powerPerLink = 1.2f;
+        }};
+
+        web = new StaticNode("web"){{
+            requirements(Category.effect, with(
+                Items.copper, 70,
+                Items.lead, 35,
+                Items.silicon, 25
+            ));
+            size = 1;
+            health = 110;
+            laserRange = 17;
+            maxNodes = 6;
+            damage = 4f;
+            powerPerLink = 0.5f;
         }};
 
         // endregion

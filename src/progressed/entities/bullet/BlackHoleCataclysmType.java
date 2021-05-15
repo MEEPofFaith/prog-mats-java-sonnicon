@@ -14,9 +14,9 @@ import mindustry.game.EventType.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.content.*;
+import progressed.entities.*;
 import progressed.entities.bullet.BlackHoleBulletType.*;
 import progressed.graphics.*;
-import progressed.util.*;
 
 public class BlackHoleCataclysmType extends BulletType{
     public float growTime = 20f, secondaryGrowTime = 180f, fadeTime = 90f;
@@ -67,19 +67,24 @@ public class BlackHoleCataclysmType extends BulletType{
                     if(data.bF < 0f || data.bSF < 0f) impulse.rotate(180f);
                     other.vel().add(impulse);
 
+                    //manually move bullets to simulate velocity for remote players
+                    if(other.isRemote()){
+                        other.move(impulse.x, impulse.y);
+                    }
+
                     if(Mathf.within(b.x, b.y, other.x, other.y, data.r * scl)){
                         absorbBullet(other);
                     }
                 }
             });
 
-            PMUtls.trueEachBlock(b.x, b.y, data.r * scl, other -> {
+            PMDamage.trueEachBlock(b.x, b.y, data.r * scl, other -> {
                 other.kill();
             });
         }
 
         if(b.time < growTime * 2f){ //*inhales* SPAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACE
-            PMUtls.trueEachTile(b.x, b.y, (data.r - 8f) * scl, tile -> {
+            PMDamage.trueEachTile(b.x, b.y, (data.r - 8f) * scl, tile -> {
                 if(tile.floor() != Blocks.space){
                     tile.setAir();
                     tile.setFloorNet(Blocks.space);

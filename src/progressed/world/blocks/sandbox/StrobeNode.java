@@ -25,7 +25,7 @@ public class StrobeNode extends PowerNode{
         health = 999999999;
         laserRange = 200;
         maxNodes = 65535;
-        laserColor1 = Color.valueOf("FFCCCC");
+        laserColor1 = Color.valueOf("ffcccc");
         laserColor2 = Color.valueOf("fb6767");
     }
 

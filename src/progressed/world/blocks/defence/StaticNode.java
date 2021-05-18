@@ -157,6 +157,8 @@ public class StaticNode extends Block{
 
     @Override
     public void drawPlace(int x, int y, int rotation, boolean valid){
+        drawPotentialLinks(x, y);
+
         Tile tile = world.tile(x, y);
 
         if(tile == null) return;
@@ -182,16 +184,39 @@ public class StaticNode extends Block{
 
     public void staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean attack){
         float angle1 = Angles.angle(x1, y1, x2, y2),
-            vx = Mathf.cosDeg(angle1), vy = Mathf.sinDeg(angle1),
             len1 = size1 * tilesize / 2f - 1.5f, len2 = size2 * tilesize / 2f - 1.5f;
+        Tmp.v1.trns(angle1, len1);
+        Tmp.v2.trns(angle1, len2);
 
         if(drawLaser){
-            Drawf.laser(team, laser, laserEnd, x1 + vx*len1, y1 + vy*len1, x2 - vx*len2, y2 - vy*len2, 0.25f);
+            float space = Math.min(size1, size2) * 1.25f, scale = 0.25f; //In case I want to change these
+
+            Tmp.v3.trns(angle1 - 90f, space);
+            Drawf.laser(team, laser, laserEnd,
+                x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
+                x2 - Tmp.v2.x + Tmp.v3.x, y2 - Tmp.v2.y + Tmp.v3.y,
+                scale
+            );
+
+            Tmp.v3.trns(angle1 + 90f, space);
+            Drawf.laser(team, laser, laserEnd,
+                x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
+                x2 - Tmp.v2.x + Tmp.v3.x, y2 - Tmp.v2.y + Tmp.v3.y,
+                scale
+            );
         }
 
         if(attack){
-            PMDamage.staticDamage(damage, team, shockEffect, status, statusDuration, x1 + vx * len1, y1 + vy * len1, angle1, Mathf.dst(x1 + vx * len1, y1 + vy * len1, x2 - vx * len2, y2 - vy * len2), hitAir, hitGround);
-            PMFx.fakeLightningFast.at(x1 + vx * len1, y1 + vy * len1, angle1, team.color, new Object[]{Mathf.dst(x1 + vx * len1, y1 + vy * len1, x2 - vx * len2, y2 - vy * len2), 2f, team});
+            PMDamage.staticDamage(damage, team, shockEffect, status, statusDuration,
+                x1 + Tmp.v1.x, y1 + Tmp.v1.y, angle1,
+                Mathf.dst(x1 + Tmp.v1.x, y1 + Tmp.v1.y,
+                        x2 - Tmp.v2.x, y2 - Tmp.v2.y),
+                hitAir, hitGround
+            );
+            PMFx.fakeLightningFast.at(x1 + Tmp.v1.x, y1 + Tmp.v1.y,
+                angle1, team.color,
+                new Object[]{Mathf.dst(x1 + Tmp.v1.x, y1 + Tmp.v1.y, x2 - Tmp.v2.x, y2 - Tmp.v2.y), 2f, team}
+            );
         }
     }
 
@@ -408,7 +433,8 @@ public class StaticNode extends Block{
         
                 if(!linkValid(this, link) || link.block instanceof StaticNode && link.id >= id || !linked(link)) continue;
 
-                Draw.color(Tmp.c1.set(team.color).mul(0.5f + (efficiency() + link.efficiency()) / 2f * 0.5f), Renderer.laserOpacity);
+                float base = 0.625f;
+                Draw.color(Tmp.c1.set(team.color).mul(base + (efficiency() + link.efficiency()) / 2f * (1f - base)), Renderer.laserOpacity);
 
                 staticLine(team, x, y, link.x, link.y, size, link.block.size, true, false);
             }

@@ -2,6 +2,7 @@ package progressed.graphics;
 
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.math.Mathf;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.graphics.*;
@@ -50,5 +51,17 @@ public class PMDrawf{
             Tmp.v1.trns(angle + 180f * i, length / 2f - width / 2f);
             Fill.circle(x + Tmp.v1.x, y + Tmp.v1.y, width / 2f);
         }
+    }
+
+    public static void target(float x, float y, float angle, float radius, Color color, float alpha){
+        Draw.color(Pal.gray, alpha);
+        Lines.stroke(3);
+        Lines.poly(x, y, 4, 7f * radius, angle);
+        Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
+        Draw.color(color, alpha);
+        Lines.stroke(1);
+        Lines.poly(x, y, 4, 7f * radius, angle);
+        Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
+        Draw.color();
     }
 }

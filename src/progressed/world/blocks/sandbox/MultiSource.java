@@ -33,7 +33,7 @@ public class MultiSource extends Block{
         solid = true;
         hasItems = true;
         hasLiquids = true;
-        liquidCapacity = 100f;
+        liquidCapacity = 10000f;
         configurable = true;
         outputsLiquid = true;
         saveConfig = true;
@@ -82,6 +82,12 @@ public class MultiSource extends Block{
         protected SourceData data = new SourceData();
 
         @Override
+        public void placed() {
+            super.placed();
+            cdump = 1;
+        }
+
+        @Override
         public void draw(){
             super.draw();
 
@@ -103,8 +109,8 @@ public class MultiSource extends Block{
         @Override
         public void updateTile(){
             if(data.item != null){
-                items.set(data.item, 1);
-                dump(data.item);
+                items.set(data.item, 100);
+                for(int i = 0; i < 100; i++) dump(data.item);
                 items.set(data.item, 0);
             }
 

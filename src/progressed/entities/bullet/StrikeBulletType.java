@@ -9,6 +9,7 @@ import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.Units.*;
 import mindustry.entities.bullet.*;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
@@ -75,9 +76,9 @@ public class StrikeBulletType extends BasicBulletType{
             float y = data.y;
 
             float rise = Interp.pow5In.apply(Mathf.curve(b.time, 0f, riseTime));
-            float rRocket = Interp.pow5In.apply(Mathf.curve(b.time, 0f, riseEngineTime)) - Interp.pow5In.apply(Mathf.curve(b.time, riseEngineTime, riseTime));
-            float weave = weaveWidth > 0f ? Mathf.sin(b.time * weaveSpeed) * weaveWidth * Mathf.signs[Mathf.round(Mathf.randomSeed(b.id, 1f))] * rise : 0f;
             if(rise < 0.9999f && Mathf.chanceDelta(smokeTrailChance)){
+                float rRocket = Interp.pow5In.apply(Mathf.curve(b.time, 0f, riseEngineTime)) - Interp.pow5In.apply(Mathf.curve(b.time, riseEngineTime, riseTime));
+                float weave = weaveWidth > 0f ? Mathf.sin(b.time * weaveSpeed) * weaveWidth * Mathf.signs[Mathf.round(Mathf.randomSeed(b.id, 1f))] * rise : 0f;
                 rocketEffect.at(x + weave + Mathf.range(trailRnd * rRocket), y + rise * elevation + Mathf.range(trailRnd * rRocket), trailSize * rRocket);
             }
 
@@ -146,46 +147,45 @@ public class StrikeBulletType extends BasicBulletType{
             }
         }
 
-        if(puddleLiquid != null && puddles > 0){
-            for(int i = 0; i < puddles; i++){
-                Tile tile = world.tileWorld(x + Mathf.range(puddleRange), y + Mathf.range(puddleRange));
-                Puddles.deposit(tile, puddleLiquid, puddleAmount);
-            }
-        }
-
-        if(Mathf.chance(incendChance)){
-            Damage.createIncend(x, y, incendSpread, incendAmount);
-        }
-
-        if(splashDamageRadius > 0 && !b.absorbed){
-            Damage.damage(b.team, x, y, splashDamageRadius, splashDamage * b.damageMultiplier(), collidesAir, collidesGround);
-
-            if(status != StatusEffects.none){
-                Damage.status(b.team, x, y, splashDamageRadius, status, statusDuration, collidesAir, collidesGround);
+        if(!((StrikeBulletData)b.data).disabled){
+            if(puddleLiquid != null && puddles > 0){
+                for (int i = 0; i < puddles; i++){
+                    Tile tile = world.tileWorld(x + Mathf.range(puddleRange), y + Mathf.range(puddleRange));
+                    Puddles.deposit(tile, puddleLiquid, puddleAmount);
+                }
             }
 
-            if(healPercent > 0f){
-                indexer.eachBlock(b.team, x, y, splashDamageRadius, Building::damaged, other -> {
-                    Fx.healBlockFull.at(other.x, other.y, other.block.size, Pal.heal);
-                    other.heal(healPercent / 100f * other.maxHealth());
-                });
+            if(Mathf.chance(incendChance)){
+                Damage.createIncend(x, y, incendSpread, incendAmount);
             }
 
-            if(makeFire){
-                indexer.eachBlock(null, x, y, splashDamageRadius, other -> other.team != b.team, other -> {
-                    Fires.create(other.tile);
-                });
-            }
-        }
+            if(splashDamageRadius > 0 && !b.absorbed){
+                Damage.damage(b.team, x, y, splashDamageRadius, splashDamage * b.damageMultiplier(), collidesAir, collidesGround);
 
-        for(int i = 0; i < lightning; i++){
-            Lightning.create(b, lightningColor, lightningDamage < 0 ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone/2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
+                if(status != StatusEffects.none){
+                    Damage.status(b.team, x, y, splashDamageRadius, status, statusDuration, collidesAir, collidesGround);
+                }
+
+                if(healPercent > 0f){
+                    indexer.eachBlock(b.team, x, y, splashDamageRadius, Building::damaged, other -> {
+                        Fx.healBlockFull.at(other.x, other.y, other.block.size, Pal.heal);
+                        other.heal(healPercent / 100f * other.maxHealth());
+                    });
+                }
+
+                if(makeFire){
+                    indexer.eachBlock(null, x, y, splashDamageRadius, other -> other.team != b.team, other -> Fires.create(other.tile));
+                }
+            }
+
+            for(int i = 0; i < lightning; i++){
+                Lightning.create(b, lightningColor, lightningDamage < 0 ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone / 2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
+            }
         }
     }
 
     @Override
     public void draw(Bullet b){
-        //wall of variables text oh god
         if(b.data instanceof StrikeBulletData data){
             float x = data.x;
             float y = data.y;
@@ -195,23 +195,11 @@ public class StrikeBulletType extends BasicBulletType{
             float fadeIn = Mathf.curve(b.time, b.lifetime - fallTime, b.lifetime);
             float fall = 1f - fadeIn;
             float a = fadeOut + Interp.pow5Out.apply(fadeIn);
-            float rRocket = Interp.pow5In.apply(Mathf.curve(b.time, 0f, riseEngineTime)) - Interp.pow5In.apply(Mathf.curve(b.time, riseEngineTime, riseTime));
-            float fRocket = Interp.pow5In.apply(Mathf.curve(b.time, b.lifetime - fallTime, b.lifetime - fallTime + fallEngineTime));
-            float target = Mathf.curve(b.time, 0f, riseTime / 2f) - Mathf.curve(b.time, b.lifetime - fallTime / 2f, b.lifetime);
             float rot = (snapRot ? b.rotation() + 90f : rise * riseSpin + fadeIn * fallSpin) + (randRot ? Mathf.randomSeed(b.id, 360f) : 0f);
-            Tmp.v1.trns(225f, rise * elevation * 2f);
-            Tmp.v2.trns(225f, fall * elevation * 2f);
-            float rY = y + rise * elevation;
-            float fY = b.y + fall * elevation;
-            float side = Mathf.signs[Mathf.round(Mathf.randomSeed(b.id, 1f))];
-            float weave = Mathf.sin(b.time * weaveSpeed) * weaveWidth * side;
-            float rWeave = weaveWidth > 0f ? weave * rise : 0f;
-            float fWeave = weaveWidth > 0f ? weave * fall : 0f;
-            float rX = x + rWeave;
-            float fX = b.x + fWeave;
+            float weave = Mathf.sin(b.time * weaveSpeed) * weaveWidth * Mathf.signs[Mathf.round(Mathf.randomSeed(b.id, 1f))];
+            Tmp.v1.trns(225f, rise * fall * elevation * 2f);
 
             //Target
-            float radius = targetRadius * target;
             if(autoDropRadius > 0f){
                 float dropAlpha = Mathf.curve(b.time, riseTime * 2f/3f, riseTime) - Mathf.curve(b.time, b.lifetime - 8f, b.lifetime);
                 Draw.z(Layer.bullet + 0.001f);
@@ -219,61 +207,69 @@ public class StrikeBulletType extends BasicBulletType{
                 Fill.circle(b.x, b.y, autoDropRadius);
             }
             if(targetRadius > 0){
+                float target = Mathf.curve(b.time, 0f, riseTime / 2f) - Mathf.curve(b.time, b.lifetime - fallTime / 2f, b.lifetime);
+                float radius = targetRadius * target;
                 Draw.z(Layer.bullet + 0.002f);
-                Draw.color(Pal.gray, target);
-                Lines.stroke(3);
-                Lines.poly(b.x, b.y, 4, 7f * radius, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f));
-                Lines.spikes(b.x, b.y, 3f * radius, 6f * radius, 4, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f));
-                Draw.color(b.team.color, target);
-                Lines.stroke(1);
-                Lines.poly(b.x, b.y, 4, 7f * radius, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f));
-                Lines.spikes(b.x, b.y, 3f * radius, 6f * radius, 4, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f));
-                Draw.reset();
+                PMDrawf.target(b.x, b.y, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f), radius, b.team.color, target);
             }
 
             //Missile
             if(fadeOut > 0 && fadeIn == 0){
+                float rWeave = weaveWidth > 0f ? weave * rise : 0f;
+                float rX = x + rWeave;
+                float rY = y + rise * elevation;
+                float rRocket = Interp.pow5In.apply(Mathf.curve(b.time, 0f, riseEngineTime)) - Interp.pow5In.apply(Mathf.curve(b.time, riseEngineTime, riseTime));
                 //Engine stolen from launchpad
                 if(riseEngineSize > 0f){
                     Draw.z(Layer.effect + 0.001f);
-                    Draw.color(engineLightColor);
-                    Fill.light(rX, rY, 10, riseEngineSize * 1.5625f * rRocket, Tmp.c1.set(Pal.engine).mul(1f, 1f, 1f, rRocket), Tmp.c2.set(Pal.engine).mul(1, 1f, 1f, 0f));
-                    PMDrawf.cross(rX, rY, riseEngineSize * 0.375f, riseEngineSize * 2.5f * rRocket, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f));
-                    Drawf.light(b.team, rX, rY, riseEngineLightRadius * rRocket, engineLightColor, engineLightOpacity * rRocket);
+                    drawEngine(b.team, rX, rY, riseEngineSize, riseEngineLightRadius, rRocket, b.id);
                 }
                 //Missile itself
                 Draw.z(Layer.weather - 1);
-                Draw.color();
-                Draw.alpha(a);
-                Draw.rect(frontRegion, rX, rY, frontRegion.width * Draw.scl, frontRegion.height * Draw.scl, rot);
-                Drawf.light(b.team, rX, rY, lightRadius, lightColor, lightOpacity);
+                drawMissile(b.team, frontRegion, rX, rY, rot, a);
                 //Missile shadow
                 Draw.z(Layer.flyingUnit + 1f);
-                Draw.color(0f, 0f, 0f, 0.22f * a);
-                Draw.rect(frontRegion, rX + Tmp.v1.x, rY + Tmp.v1.y, frontRegion.width * Draw.scl, frontRegion.height * Draw.scl, rot);
+                drawShadow(frontRegion, rX + Tmp.v1.x, rY + Tmp.v1.y, a, rot);
             }else if(fadeOut == 0f && fadeIn > 0f){
+                float fWeave = weaveWidth > 0f ? weave * fall : 0f;
+                float fX = b.x + fWeave;
+                float fY = b.y + fall * elevation;
+                float rot2 = rot + 180f + Mathf.randomSeed(b.id + 3, 360f);
+                float fRocket = Interp.pow5In.apply(Mathf.curve(b.time, b.lifetime - fallTime, b.lifetime - fallTime + fallEngineTime));
                 //Missile itself
                 Draw.z(Layer.weather - 2f);
-                Draw.color();
-                Draw.alpha(a);
-                Draw.rect(backRegion, fX, fY, backRegion.width * Draw.scl, backRegion.height * Draw.scl, rot + 180f);
-                Drawf.light(b.team, fX, fY, lightRadius, lightColor, lightOpacity);
+                drawMissile(b.team, backRegion, fX, fY, rot2, a);
                 //Engine stolen from launchpad
                 if(fallEngineSize > 0f){
                     Draw.z(Layer.weather - 1f);
-                    Draw.color(engineLightColor);
-                    Fill.light(fX, fY, 10, fallEngineSize * 1.5625f * fRocket, Tmp.c1.set(Pal.engine).mul(1f, 1f, 1f, fRocket), Tmp.c2.set(Pal.engine).mul(1f, 1f, 1f, 0f));
-                    PMDrawf.cross(fX, fY, riseEngineSize * 0.375f, riseEngineSize * 2.5f * fRocket, Time.time * 1.5f + Mathf.randomSeed(b.id + 2, 360f));
-                    Drawf.light(b.team, fX, fY, fallEngineLightRadius * fRocket, engineLightColor, engineLightOpacity * fRocket);
+                    drawEngine(b.team, fX, fY, fallEngineSize, fallEngineLightRadius, fRocket, b.id + 2);
                 }
                 //Missile shadow
                 Draw.z(Layer.flyingUnit + 1f);
-                Draw.color(0f, 0f, 0f, 0.22f * a);
-                Draw.rect(backRegion, fX + Tmp.v2.x, fY + Tmp.v2.y, backRegion.width * Draw.scl, backRegion.height * Draw.scl, rot + 180f + Mathf.randomSeed(b.id + 3, 360f));
+                drawShadow(backRegion, fX + Tmp.v1.x, fY + Tmp.v1.y, a, rot2);
             }
 
             Draw.reset();
         }
+    }
+
+    public void drawMissile(Team team, TextureRegion region, float x, float y, float rot, float a){
+        Draw.color();
+        Draw.alpha(a);
+        Draw.rect(region, x, y, region.width * Draw.scl, region.height * Draw.scl, rot);
+        Drawf.light(team, x, y, lightRadius, lightColor, lightOpacity);
+    }
+
+    public void drawEngine(Team team, float x, float y, float size, float lightRadius, float mul, long seed){
+        Draw.color(engineLightColor);
+        Fill.light(x, y, 10, size * 1.5625f * mul, Tmp.c1.set(Pal.engine).mul(1f, 1f, 1f, mul), Tmp.c2.set(Pal.engine).mul(1, 1f, 1f, 0f));
+        PMDrawf.cross(x, y, size * 0.375f, size * 2.5f * mul, Time.time * 1.5f + Mathf.randomSeed(seed, 360f));
+        Drawf.light(team, x, y, lightRadius * mul, engineLightColor, engineLightOpacity * mul);
+    }
+
+    public void drawShadow(TextureRegion region, float x, float y, float a, float rot){
+        Draw.color(0f, 0f, 0f, 0.22f * a);
+        Draw.rect(region, x, y, region.width * Draw.scl, region.height * Draw.scl, rot);
     }
 
     @Override
@@ -284,7 +280,7 @@ public class StrikeBulletType extends BasicBulletType{
     public static class StrikeBulletData{
         public float x, y;
         public Vec2 vel;
-        protected boolean stopped;
+        public boolean stopped, disabled;
 
         public StrikeBulletData(float x, float y){
             this.x = x;
@@ -298,7 +294,8 @@ public class StrikeBulletType extends BasicBulletType{
         public String toString(){
             return "x : " + x +
             "\ny: " + y +
-            "\nstopped: " + stopped;
+            "\nstopped: " + stopped +
+            "\ndisabled: " + disabled;
         }
     }
 }

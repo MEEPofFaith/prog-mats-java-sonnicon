@@ -147,38 +147,40 @@ public class StrikeBulletType extends BasicBulletType{
             }
         }
 
-        if(puddleLiquid != null && puddles > 0){
-            for(int i = 0; i < puddles; i++){
-                Tile tile = world.tileWorld(x + Mathf.range(puddleRange), y + Mathf.range(puddleRange));
-                Puddles.deposit(tile, puddleLiquid, puddleAmount);
-            }
-        }
-
-        if(Mathf.chance(incendChance)){
-            Damage.createIncend(x, y, incendSpread, incendAmount);
-        }
-
-        if(splashDamageRadius > 0 && !b.absorbed){
-            Damage.damage(b.team, x, y, splashDamageRadius, splashDamage * b.damageMultiplier(), collidesAir, collidesGround);
-
-            if(status != StatusEffects.none){
-                Damage.status(b.team, x, y, splashDamageRadius, status, statusDuration, collidesAir, collidesGround);
+        if(!((StrikeBulletData)b.data).disabled){
+            if(puddleLiquid != null && puddles > 0){
+                for (int i = 0; i < puddles; i++){
+                    Tile tile = world.tileWorld(x + Mathf.range(puddleRange), y + Mathf.range(puddleRange));
+                    Puddles.deposit(tile, puddleLiquid, puddleAmount);
+                }
             }
 
-            if(healPercent > 0f){
-                indexer.eachBlock(b.team, x, y, splashDamageRadius, Building::damaged, other -> {
-                    Fx.healBlockFull.at(other.x, other.y, other.block.size, Pal.heal);
-                    other.heal(healPercent / 100f * other.maxHealth());
-                });
+            if(Mathf.chance(incendChance)){
+                Damage.createIncend(x, y, incendSpread, incendAmount);
             }
 
-            if(makeFire){
-                indexer.eachBlock(null, x, y, splashDamageRadius, other -> other.team != b.team, other -> Fires.create(other.tile));
-            }
-        }
+            if(splashDamageRadius > 0 && !b.absorbed){
+                Damage.damage(b.team, x, y, splashDamageRadius, splashDamage * b.damageMultiplier(), collidesAir, collidesGround);
 
-        for(int i = 0; i < lightning; i++){
-            Lightning.create(b, lightningColor, lightningDamage < 0 ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone/2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
+                if(status != StatusEffects.none){
+                    Damage.status(b.team, x, y, splashDamageRadius, status, statusDuration, collidesAir, collidesGround);
+                }
+
+                if(healPercent > 0f){
+                    indexer.eachBlock(b.team, x, y, splashDamageRadius, Building::damaged, other -> {
+                        Fx.healBlockFull.at(other.x, other.y, other.block.size, Pal.heal);
+                        other.heal(healPercent / 100f * other.maxHealth());
+                    });
+                }
+
+                if(makeFire){
+                    indexer.eachBlock(null, x, y, splashDamageRadius, other -> other.team != b.team, other -> Fires.create(other.tile));
+                }
+            }
+
+            for(int i = 0; i < lightning; i++){
+                Lightning.create(b, lightningColor, lightningDamage < 0 ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone / 2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
+            }
         }
     }
 
@@ -278,7 +280,7 @@ public class StrikeBulletType extends BasicBulletType{
     public static class StrikeBulletData{
         public float x, y;
         public Vec2 vel;
-        protected boolean stopped;
+        public boolean stopped, disabled;
 
         public StrikeBulletData(float x, float y){
             this.x = x;
@@ -292,7 +294,8 @@ public class StrikeBulletType extends BasicBulletType{
         public String toString(){
             return "x : " + x +
             "\ny: " + y +
-            "\nstopped: " + stopped;
+            "\nstopped: " + stopped +
+            "\ndisabled: " + disabled;
         }
     }
 }

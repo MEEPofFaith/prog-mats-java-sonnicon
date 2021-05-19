@@ -52,8 +52,8 @@ public class ProgMats extends Mod{
             progM.meta.author = stringf.get(progM.meta.name + ".author");
             progM.meta.version = "[#FCC21B]" + progM.meta.version + "[]";
             progM.meta.description = stringf.get(progM.meta.name + ".description");
-            
-            PMUtls.godHood(PMUnitTypes.everythingUnit);
+
+            Events.on(ClientLoadEvent.class, e -> PMUtls.godHood(PMUnitTypes.everythingUnit));
         }
     }
 

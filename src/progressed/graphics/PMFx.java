@@ -9,8 +9,7 @@ import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.entities.bullet.*;
-import progressed.entities.bullet.BlackHoleBulletType.*;
-import progressed.world.blocks.defence.turret.AimLaserTurret;
+import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.AimLaserTurret.*;
 
 import static arc.graphics.g2d.Draw.*;
@@ -162,6 +161,63 @@ public class PMFx{
             color(Tmp.c1.set(Color.orange).lerp(new Color[]{Color.orange, Color.red, Color.crimson, Color.darkGray}, colorFin));
             Fill.circle(e.x + x, e.y + y, 8f * slopeFout);
         });
+    }),
+
+    missileBlockedSmall = new Effect(38f, e -> {
+        color(Pal.missileYellow);
+
+        e.scaled(13f, s -> {
+            stroke(2f * s.fout());
+
+            randLenVectors(e.id, 8, 2f + 34f * s.fin(), (x, y) -> {
+                lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 2f + s.fout() * 8f);
+            });
+        });
+
+        float in = Interp.pow2Out.apply(Mathf.curve(e.fin(), 0f, 0.6f));
+        float out = 1f - Interp.pow2In.apply(Mathf.curve(e.fin(), 0.6f));
+
+        stroke(0.5f * out + e.fout());
+
+        Lines.circle(e.x, e.y, 2f * out + 13f * in * out);
+    }),
+
+    missileBlocked = new Effect(52f, e -> {
+        color(Pal.missileYellow);
+
+        e.scaled(24f, s -> {
+            stroke(3f * s.fout());
+
+            randLenVectors(e.id, 14, 2f + 53f * s.fin(), (x, y) -> {
+                lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 2f + s.fout() * 13f);
+            });
+        });
+
+        float in = Interp.pow2Out.apply(Mathf.curve(e.fin(), 0f, 0.6f));
+        float out = 1f - Interp.pow2In.apply(Mathf.curve(e.fin(), 0.6f));
+
+        stroke(out + 2f * e.fout());
+
+        Lines.circle(e.x, e.y, 6f * out + 31f * in * out);
+    }),
+
+    missileBlockedLarge = new Effect(74f, e -> {
+        color(Pal.missileYellow);
+
+        e.scaled(32f, s -> {
+            stroke(5f * s.fout());
+
+            randLenVectors(e.id, 20, 4f + 114f * s.fin(), (x, y) -> {
+                lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 3f + s.fout() * 18f);
+            });
+        });
+
+        float in = Interp.pow2Out.apply(Mathf.curve(e.fin(), 0f, 0.6f));
+        float out = 1f - Interp.pow2In.apply(Mathf.curve(e.fin(), 0.6f));
+
+        stroke(2f * out + 3f * e.fout());
+
+        Lines.circle(e.x, e.y, 6f * out + 57f * in * out);
     }),
     
     sniperCritMini = new Effect(90f, e -> {
@@ -493,5 +549,29 @@ public class PMFx{
             float ang = Mathf.angle(x, y);
             lineAngle(e.x + x, e.y + y, ang, e.fout() * 4f + 1f);
         });
-    });
+    }),
+
+    squareShieldRecharge = new Effect(20f, e -> {
+        color(e.color, e.fout());
+        stroke(1.5f + 1.5f * e.fout());
+        Lines.square(e.x, e.y, e.rotation * e.finpow());
+    }).layer(Layer.shields),
+
+    squareShieldBreak = new Effect(40f, e -> {
+        stroke(3f * e.fout(), e.color);
+        Lines.square(e.x, e.y, e.rotation + e.fin());
+    }),
+
+    squareForceShrink = new Effect(20f, e -> {
+        color(e.color, e.fout());
+        if(renderer.animateShields){
+            Fill.square(e.x, e.y, e.rotation * e.fout());
+        }else{
+            stroke(1.5f);
+            Draw.alpha(0.09f);
+            Fill.square(e.x, e.y, e.rotation * e.fout());
+            Draw.alpha(1f);
+            Lines.square(e.x, e.y, e.rotation * e.fout());
+        }
+    }).layer(Layer.shields);
 }

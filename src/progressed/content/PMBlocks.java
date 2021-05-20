@@ -83,7 +83,7 @@ public class PMBlocks implements ContentList{
     // endregion
     // Region Effect
 
-    fence, web,
+    fence, web, shieldProjector,
 
     // endregion
     // Region Sandbox
@@ -1056,6 +1056,18 @@ public class PMBlocks implements ContentList{
             maxNodes = 6;
             damage = 4f;
             powerPerLink = 0.5f;
+        }};
+
+        shieldProjector = new ShieldProjector("shield-projector"){{
+            requirements(Category.effect, empty);
+            size = 4;
+            radius = 88f;
+            shieldHealth = 2600f;
+            phaseShieldBoost = 1800f;
+            cooldownBrokenBase *= 2f;
+
+            consumes.items(with(Items.phaseFabric, 1, PMItems.techtanite, 1)).boost();
+            consumes.power(7f);
         }};
 
         // endregion

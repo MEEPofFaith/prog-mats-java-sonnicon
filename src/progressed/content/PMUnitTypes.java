@@ -140,6 +140,7 @@ public class PMUnitTypes implements ContentList{
                     trailEffect = PMFx.missileTrailSmall;
 
                     despawnEffect = PMFx.missileBoom;
+                    blockEffect = PMFx.missileBlockedSmall;
 
                     autoDropRadius = 12f;
                     stopRadius = 8f;

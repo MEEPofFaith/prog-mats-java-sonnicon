@@ -176,6 +176,16 @@ public class SandboxWall extends Wall{
         }
 
         @Override
+        public void kill(){
+            //haha no
+        }
+
+        @Override
+        public void remove(){
+            //haha no
+        }
+
+        @Override
         public void buildConfiguration(Table table){
             ButtonGroup<ImageButton> group = new ButtonGroup<>();
             group.setMinCheckCount(0);

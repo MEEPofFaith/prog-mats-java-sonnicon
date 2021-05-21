@@ -33,7 +33,8 @@ public class SandboxWall extends Wall{
         super(name);
         requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
         alwaysUnlocked = true;
-        
+
+        health = 2147483647;
         lightningDamage = 5000f;
         lightningLength = 10;
         flashHit = insulated = absorbLasers = true;
@@ -61,6 +62,13 @@ public class SandboxWall extends Wall{
     }
 
     @Override
+    public void setStats(){
+        super.setStats();
+        stats.remove(Stat.health);
+        stats.add(Stat.health, "∞");
+    }
+
+    @Override
     public void drawRequestConfig(BuildPlan req, Eachable<BuildPlan> list){
         if(req.config instanceof byte[] b){
             //draw floating items to represent active mode
@@ -78,7 +86,6 @@ public class SandboxWall extends Wall{
 
     public class SandboxWallBuild extends WallBuild{
         WallData modes = new WallData();
-        protected float rotation = 90f;
 
         @Override
         public void draw(){
@@ -86,14 +93,13 @@ public class SandboxWall extends Wall{
                 Draw.rect(region, x, y);
                 Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * speed), 1f);
                 Draw.rect(colorRegion, x, y);
-                Draw.reset();
             }else{
                 int variant = Mathf.randomSeed(tile.pos(), 0, Math.max(0, variantRegions.length - 1));
                 Draw.rect(variantRegions[variant], x, y);
                 Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * speed), 1f);
                 Draw.rect(colorVariantRegions[variant], x, y);
-                Draw.reset();
             }
+            Draw.reset();
 
             //draw flashing white overlay if enabled
             if(flashHit && modes.phase && hit >= 0.0001f){
@@ -103,6 +109,8 @@ public class SandboxWall extends Wall{
                 Fill.rect(x, y, tilesize * size, tilesize * size);
                 Draw.blend();
                 Draw.reset();
+
+                hit = Mathf.clamp(hit - Time.delta / 10f);
             }
 
             //draw floating items to represent active mode
@@ -110,7 +118,7 @@ public class SandboxWall extends Wall{
             int amount = modes.amount();
             for(int i = 0; i < 3; i++){
                 if(modes.active(i)){
-                    float rot = rotation + 360f / amount * num;
+                    float rot = Time.time * rotateSpeed % 360f + 360f / amount * num;
                     Draw.rect(iconItems[i].icon(Cicon.full), x + Angles.trnsx(rot, rotateRadius), y + Angles.trnsy(rot, rotateRadius), iconSize, iconSize, 0f);
                     num++;
                 }
@@ -118,16 +126,7 @@ public class SandboxWall extends Wall{
         }
 
         @Override
-        public void updateTile(){
-            super.updateTile();
-            hit = Mathf.clamp(hit - Time.delta / 10f);
-            rotation = (rotation - Time.delta * rotateSpeed) % 360f;
-        }
-
-        @Override
         public boolean collision(Bullet bullet){
-            damage(bullet.damage() * bullet.type().buildingDamageMultiplier);
-
             hit = 1f;
 
             //create lightning if necessary
@@ -164,6 +163,16 @@ public class SandboxWall extends Wall{
             }
 
             return true;
+        }
+
+        @Override
+        public void damage(float damage){
+            //haha no
+        }
+
+        @Override
+        public void damage(float amount, boolean withEffect){
+            //haha no
         }
 
         @Override

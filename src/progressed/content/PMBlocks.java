@@ -1138,14 +1138,12 @@ public class PMBlocks implements ContentList{
 
         //Wall
         sandboxWall = new SandboxWall("sandbox-wall"){{
-            health = 999999999;
             iconSize = 3f;
             rotateRadius = 2.5f;
         }};
 
         sandboxWallLarge = new SandboxWall("sandbox-wall-large"){{
             size = 2;
-            health = 999999999;
             iconSize = 6f;
             rotateRadius = 5f;
         }};

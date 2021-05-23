@@ -8,7 +8,6 @@ import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
-import progressed.entities.bullet.StrikeBulletType.*;
 import progressed.graphics.*;
 
 import static mindustry.Vars.*;
@@ -51,9 +50,9 @@ public class CritBulletType extends BasicBulletType{
     public void init(Bullet b){
         if(b.data == null){
             if(Mathf.chance(critChance)){
-                b.data = new CritBulletData(true, new FixedTrail(trailLength));
+                b.data = new CritBulletData(true, new PMTrail(trailLength));
             }else{
-                b.data = new CritBulletData(false, new FixedTrail(trailLength));
+                b.data = new CritBulletData(false, new PMTrail(trailLength));
             }
         }
         if(((CritBulletData)b.data).crit) b.damage *= critMultiplier;
@@ -63,7 +62,7 @@ public class CritBulletType extends BasicBulletType{
 
     @Override
     public void draw(Bullet b){
-        if(((CritBulletData)b.data).trail instanceof FixedTrail tr && trailLength > 0) tr.draw(backColor, trailWidth);
+        if(((CritBulletData)b.data).trail instanceof PMTrail tr && trailLength > 0) tr.draw(backColor, trailWidth);
         super.draw(b);
     }
 
@@ -90,7 +89,7 @@ public class CritBulletType extends BasicBulletType{
             }
         }
 
-        if(((CritBulletData)b.data).trail instanceof FixedTrail tr && trailLength > 0) tr.update(b.x, b.y, b.rotation());
+        if(((CritBulletData)b.data).trail instanceof PMTrail tr && trailLength > 0) tr.update(b.x, b.y, b.rotation());
     }
 
     @Override
@@ -112,7 +111,7 @@ public class CritBulletType extends BasicBulletType{
     @Override
     public void despawned(Bullet b){
         if(b.data instanceof CritBulletData data){
-            if(data.trail instanceof FixedTrail tr) tr.clear();
+            if(data.trail instanceof PMTrail tr) tr.clear();
             data.despawned = true;
         }
         super.despawned(b);
@@ -136,7 +135,7 @@ public class CritBulletType extends BasicBulletType{
                 float len = Mathf.random(1f, 7f);
                 float a = b.rotation() + Mathf.range(fragCone/2) + fragAngle;
                 if(fragBullet instanceof CritBulletType critB){
-                    critB.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new CritBulletData(crit, new FixedTrail(critB.trailLength)));
+                    critB.create(b.owner, b.team, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, -1f, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax), new CritBulletData(crit, new PMTrail(critB.trailLength)));
                 }else{
                     fragBullet.create(b, x + Angles.trnsx(a, len), y + Angles.trnsy(a, len), a, Mathf.random(fragVelocityMin, fragVelocityMax), Mathf.random(fragLifeMin, fragLifeMax));
                 }
@@ -194,9 +193,9 @@ public class CritBulletType extends BasicBulletType{
 
     public static class CritBulletData{
         public boolean crit, despawned;
-        public FixedTrail trail;
+        public PMTrail trail;
 
-        public CritBulletData(boolean crit, FixedTrail trail){
+        public CritBulletData(boolean crit, PMTrail trail){
             this.crit = crit;
             this.trail = trail;
         }

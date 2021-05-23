@@ -62,9 +62,7 @@ public class PMTrail{ //Taken from Project Unity and modified a bit
 
     public PMTrail copy(){ // Not this though, this I make myself
         PMTrail trail = new PMTrail(length);
-        points.each(p -> {
-            trail.update(p.x, p.y, p.z);
-        });
+        points.each(p -> trail.update(p.x, p.y, p.z));
         return trail;
     }
 }

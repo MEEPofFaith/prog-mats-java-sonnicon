@@ -34,7 +34,6 @@ public class ProgMats extends Mod{
             PMSounds.dispose();
         });
 
-        Core.settings.defaults("pm-swordopacity", 100);
         Events.on(ClientLoadEvent.class, e -> {
             settingAdder.init();
         });

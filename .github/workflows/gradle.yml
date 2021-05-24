@@ -7,6 +7,7 @@ on:
 jobs:
   Bob-the-Builder-builds-a-new-building:
     runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'Version')"
 
     steps:
     - uses: actions/checkout@v2

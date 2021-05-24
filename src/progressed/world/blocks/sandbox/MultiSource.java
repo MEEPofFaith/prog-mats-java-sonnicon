@@ -29,16 +29,11 @@ public class MultiSource extends Block{
         requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
         alwaysUnlocked = true;
 
-        update = true;
-        solid = true;
-        hasItems = true;
-        hasLiquids = true;
-        liquidCapacity = 10000f;
-        configurable = true;
-        outputsLiquid = true;
-        saveConfig = true;
-        noUpdateDisabled = true;
+        update = solid = saveConfig = noUpdateDisabled = true;
+        hasItems = hasLiquids = true;
+        configurable = outputsLiquid = true;
         displayFlow = false;
+        liquidCapacity = 10000f;
         group = BlockGroup.transportation;
 
         config(Integer.class, (MultiSourceBuild tile, Integer p) -> tile.data.set(p));
@@ -119,6 +114,7 @@ public class MultiSource extends Block{
             }else{
                 liquids.add(data.liquid, liquidCapacity);
                 dumpLiquid(data.liquid);
+                liquids.clear();
             }
         }
 

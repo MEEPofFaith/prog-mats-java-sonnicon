@@ -101,7 +101,7 @@ public class PMBlocks implements ContentList{
     godFactory, capBlock,
 
     //Effect
-    multiSource, multiVoid;
+    multiSource, multiVoid, multiSourceVoid;
 
     // endregion
 
@@ -1170,6 +1170,7 @@ public class PMBlocks implements ContentList{
         //Effect
         multiSource = new MultiSource("multi-source");
         multiVoid = new MultiVoid("multi-void");
+        multiSourceVoid = new MultiSourceVoid("multi-source-void");
 
         // endregion
     }

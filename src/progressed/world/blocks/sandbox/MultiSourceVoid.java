@@ -1,26 +1,32 @@
 package progressed.world.blocks.sandbox;
 
+import arc.*;
+import arc.graphics.*;
+import arc.graphics.g2d.*;
+import arc.util.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 
-public class MultiVoid extends Block{
-    public MultiVoid(String name){
+public class MultiSourceVoid extends MultiSource{
+    public float speed = 1.5f;
+
+    protected TextureRegion rainbow;
+
+    public MultiSourceVoid(String name){
         super(name);
-        requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
-        alwaysUnlocked = true;
-        
-        update = solid = acceptsItems = hasLiquids = true;
-        group = BlockGroup.transportation;
+
+        acceptsItems = hasLiquids = true;
     }
 
     @Override
-    public void setBars(){
-        super.setBars();
-        bars.remove("liquid");
+    public void load(){
+        super.load();
+
+        rainbow = Core.atlas.find(name + "-rainbow");
     }
-    
+
     @Override
     public boolean canReplace(Block other){
         if(other.alwaysReplace) return true;
@@ -28,7 +34,16 @@ public class MultiVoid extends Block{
             (size == other.size || (size >= other.size && ((subclass != null && subclass == other.subclass) || group.anyReplace)));
     }
 
-    public class MultiVoidBuild extends Building{
+    public class MultiSourceVoidBuild extends MultiSourceBuild{
+        @Override
+        public void draw(){
+            super.draw();
+
+            Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * speed));
+            Draw.rect(rainbow, x, y);
+            Draw.color();
+        }
+
         @Override
         public boolean acceptItem(Building source, Item item){
             return enabled;

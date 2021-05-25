@@ -5,16 +5,6 @@ on:
     branches: [ master ]
 
 jobs:
-  cancel:
-    name: Cancel Previous Runs
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Bob cannot build 2 buildings at once
-        uses: everphone-gmbh/cancel-previous-workflows@v5
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-  
   build-and-dexify:
     name: Bob the Builder Builds a new building
     runs-on: ubuntu-latest

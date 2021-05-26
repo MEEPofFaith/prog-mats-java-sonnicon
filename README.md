@@ -21,8 +21,12 @@ __Or find it in the in-game mod browser, where installation is almost completely
 Go to the releases, the latest release will have a `ProgMatsDexed.jar` attached to it that you can download. If it does not have it, follow the steps below(recommended) or bother me with a new issue so I can attach the compiled mod.   
 After you have the `ProgMatsDexed.jar`, paste it into your mod folder (locate your mod folder in the "open mod folder" of Mindustry).
 
-## Compiling Yourself
-JDK 15 (I think)
+### Unreleased Builds?
+
+Go to the Actions tab and open the latest workflow with a green ☑️ on it. The zip file at the bottom will contain the latest build of Progressed Materials, though due to it being still in deveopement and my own stupidity you probably shouldn't do that. Anyways unzip that zip to get a `ProgMatsDexed.jar` file and follow the install steps in **Releases**.
+
+## Compiling
+JDK 8.
 
 ### Windows
 Plain Jar: `gradlew build`\

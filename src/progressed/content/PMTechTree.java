@@ -52,7 +52,13 @@ public class PMTechTree implements ContentList{
         vanillaNode(ripple, () -> {
             //Missile (also painful to look at)
             node(firestorm, Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.impact0078)), () -> {
-                node(strikedown, PMUtls.addItemStacks(new ItemStack[][]{brq(strikedown), brq(shellPress), recipeCost((MultiCrafter)shellPress, 0), brq(missileFactory), recipeCost((MultiCrafter)missileFactory, 0)}), Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.nuclearComplex)), () -> {
+                node(strikedown, PMUtls.addItemStacks(new ItemStack[][]{
+                    brq(strikedown),
+                    brq(shellPress),
+                    recipeCost((MultiCrafter)shellPress, 0),
+                    brq(missileFactory),
+                    recipeCost((MultiCrafter)missileFactory, 0)}
+                ), Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.nuclearComplex)), () -> {
                     node(shellPress, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                         node(missileShell, ItemStack.empty, Seq.with(new Research(strikedown)));
                         node(nukeShell, ItemStack.empty, Seq.with(new Research(arbiter)));
@@ -70,12 +76,20 @@ public class PMTechTree implements ContentList{
                             });
                         });
                     });
-                    node(arbiter, PMUtls.addItemStacks(new ItemStack[][]{brq(arbiter), recipeCost((MultiCrafter)shellPress, 1), recipeCost((MultiCrafter)missileFactory, 3)}), Seq.with(new Research(interplanetaryAccelerator), new SectorComplete(SectorPresets.planetaryTerminal)));
+                    node(arbiter, PMUtls.addItemStacks(new ItemStack[][]{
+                        brq(arbiter),
+                        recipeCost((MultiCrafter)shellPress, 1),
+                        recipeCost((MultiCrafter)missileFactory, 3)}
+                    ), Seq.with(new Research(interplanetaryAccelerator), new SectorComplete(SectorPresets.planetaryTerminal)));
                 });
             });
 
             //Tinker
-            node(tinker, PMUtls.addItemStacks(new ItemStack[][]{brq(tinker), brq(sentryBuilder), recipeCost((MultiCrafter)sentryBuilder, 0)}), Seq.with(new SectorComplete(SectorPresets.windsweptIslands)), () -> {
+            node(tinker, PMUtls.addItemStacks(new ItemStack[][]{
+                brq(tinker),
+                brq(sentryBuilder),
+                recipeCost((MultiCrafter)sentryBuilder, 0)}
+            ), Seq.with(new SectorComplete(SectorPresets.windsweptIslands)), () -> {
                 node(sentryBuilder, ItemStack.empty, Seq.with(new Research(tinker)), () -> {
                     node(basicSentryBox, ItemStack.empty, Seq.with(new Research(sentryBuilder)), () -> {
                         node(basicSentry, ItemStack.empty, Seq.with(new Research(basicSentryBox)));

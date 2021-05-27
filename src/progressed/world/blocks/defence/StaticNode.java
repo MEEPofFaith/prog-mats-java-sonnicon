@@ -2,7 +2,6 @@ package progressed.world.blocks.defence;
 
 import arc.*;
 import arc.func.*;
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -22,7 +21,6 @@ import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import progressed.ProgMats;
 import progressed.entities.*;
 import progressed.graphics.*;
 
@@ -33,8 +31,6 @@ public class StaticNode extends Block{
     protected static int returnInt = 0;
     public final int shockTimer = timers++;
 
-    public TextureRegion laser, laserEnd;
-
     public int laserRange = 20;
     public float damage, reload = 5f, cooldown = 0.1f;
     public float powerPerLink;
@@ -43,6 +39,9 @@ public class StaticNode extends Block{
     public StatusEffect status = StatusEffects.shocked;
     public float statusDuration = 10f * 60f;
     public Effect shockEffect = PMFx.staticSpark;
+    public float minValue = 0.75f;
+
+    public TextureRegion laser, laserEnd;
 
     public StaticNode(String name){
         super(name);
@@ -433,15 +432,14 @@ public class StaticNode extends Block{
 
             if(Mathf.zero(Renderer.laserOpacity)) return;
 
-            Draw.z(Layer.bullet);
+            Draw.z(Layer.power);
 
             for(int i : links.items){
                 Building link = world.build(i);
         
                 if(!linkValid(this, link) || !linked(link)) continue;
 
-                float base = 0.625f;
-                Draw.color(Tmp.c1.set(team.color).mul(base + efficiency() * (1f - base)), Renderer.laserOpacity);
+                Draw.color(Tmp.c1.set(team.color).mul(minValue + efficiency() * (1f - minValue)), Renderer.laserOpacity);
 
                 staticLine(team, x, y, link.x, link.y, size, link.block.size, true, false, false);
             }

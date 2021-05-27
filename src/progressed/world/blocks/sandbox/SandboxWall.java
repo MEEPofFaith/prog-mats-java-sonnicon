@@ -26,15 +26,15 @@ public class SandboxWall extends Wall{
     public float rotateSpeed = 6f, rotateRadius, iconSize;
 
     protected Item[] iconItems = {Items.surgeAlloy,  Items.phaseFabric, Items.plastanium};
-    protected TextureRegion colorRegion;
-    protected TextureRegion[] colorVariantRegions;
+    public TextureRegion colorRegion;
+    public TextureRegion[] colorVariantRegions;
 
     public SandboxWall(String name){
         super(name);
         requirements(Category.defense, BuildVisibility.sandboxOnly, ItemStack.empty);
         alwaysUnlocked = true;
 
-        health = 1;
+        health = 2147483647;
         lightningDamage = 5000f;
         lightningLength = 10;
         flashHit = insulated = absorbLasers = true;
@@ -42,6 +42,13 @@ public class SandboxWall extends Wall{
         configurable = saveConfig = update = noUpdateDisabled = true;
 
         config(byte[].class, (SandboxWallBuild tile, byte[] b) -> tile.modes.set(b));
+        config(Integer.class, (SandboxWallBuild tile, Integer i) -> {
+            tile.modes.toggle(i);
+            if(i == 1 && tile.modes.active(i)){
+                tile.hit = 0f;
+            }
+        });
+
         configClear((SandboxWallBuild tile) -> tile.modes.reset());
     }
 
@@ -213,26 +220,6 @@ public class SandboxWall extends Wall{
         @Override
         public byte[] config(){
             return modes.toByteArray();
-        }
-
-        @Override
-        public void configure(Object value){
-            int sel = (int)value;
-            modes.toggle(sel);
-            //save last used config
-            block.lastConfig = value;
-            //reset hit for turning on phase;
-            if(sel == 1 && modes.active(sel)) hit = 0f;
-            Call.tileConfig(player, self(), value);
-        }
-
-        @Override
-        public void configureAny(Object value){
-            int sel = (int)value;
-            modes.toggle(sel);
-            //reset hit for turning on phase;
-            if(sel == 1 && modes.active(sel)) hit = 0f;
-            Call.tileConfig(player, self(), value);
         }
 
         @Override

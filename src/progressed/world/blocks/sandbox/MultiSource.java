@@ -21,8 +21,8 @@ import progressed.ui.*;
 import static mindustry.Vars.*;
 
 public class MultiSource extends Block{
-    protected TextureRegion cross;
-    protected TextureRegion[] center = new TextureRegion[2];
+    public TextureRegion cross;
+    public TextureRegion[] center = new TextureRegion[2];
 
     public MultiSource(String name){
         super(name);

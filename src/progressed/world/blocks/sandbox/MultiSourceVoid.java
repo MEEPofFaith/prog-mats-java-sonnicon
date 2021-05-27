@@ -12,7 +12,7 @@ import mindustry.world.meta.*;
 public class MultiSourceVoid extends MultiSource{
     public float speed = 1.5f;
 
-    protected TextureRegion rainbow;
+    public TextureRegion rainbow;
 
     public MultiSourceVoid(String name){
         super(name);

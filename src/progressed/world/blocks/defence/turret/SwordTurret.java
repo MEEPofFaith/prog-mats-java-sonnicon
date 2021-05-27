@@ -70,7 +70,7 @@ public class SwordTurret extends BaseTurret{
 
     public float elevation = -1f, swordElevation = -1f;
 
-    protected TextureRegion baseRegion, outlineRegion, swordRegion, heatRegion;
+    public TextureRegion baseRegion, outlineRegion, swordRegion, heatRegion;
 
     public SwordTurret(String name){
         super(name);
@@ -101,7 +101,7 @@ public class SwordTurret extends BaseTurret{
     }
 
     @Override
-    protected TextureRegion[] icons(){
+    public TextureRegion[] icons(){
         return new TextureRegion[]{
             baseRegion,
             region

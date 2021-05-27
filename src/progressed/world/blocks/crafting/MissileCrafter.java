@@ -5,7 +5,7 @@ import arc.graphics.g2d.*;
 import multilib.*;
 
 public class MissileCrafter extends MultiCrafter{
-    protected TextureRegion colorRegion;
+    public TextureRegion colorRegion;
 
     public MissileCrafter(String name, Recipe[] recs){
         super(name, recs);

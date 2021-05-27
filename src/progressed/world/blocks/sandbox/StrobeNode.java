@@ -15,7 +15,7 @@ public class StrobeNode extends PowerNode{
     public float speed = 1.5f, lerpSpeed = 0.005f;
     public Color laserColor3 = Color.red;
 
-    protected TextureRegion colorRegion;
+    public TextureRegion colorRegion;
 
     public StrobeNode(String name){
         super(name);

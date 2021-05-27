@@ -28,7 +28,7 @@ public class FloatingConveyor extends Conveyor{
     public float deepSpeed = -1f;
     public float deepDisplayedSpeed = 0f;
 
-    protected TextureRegion[] topRegions = new TextureRegion[5];
+    public TextureRegion[] topRegions = new TextureRegion[5];
 
     public FloatingConveyor(String name){
         super(name);

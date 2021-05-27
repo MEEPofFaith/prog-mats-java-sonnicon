@@ -23,8 +23,8 @@ public class ColliderCrafter extends GenericCrafter{
     public float startRot = 2700f;
     public float cooldown = 0.03f;
 
-    protected TextureRegion bottomRegion, colliderRegion, glassRegion, topRegion;
-    protected TextureRegion[] heatRegions = new TextureRegion[2], lightRegions = new TextureRegion[2];
+    public TextureRegion bottomRegion, colliderRegion, glassRegion, topRegion;
+    public TextureRegion[] heatRegions = new TextureRegion[2], lightRegions = new TextureRegion[2];
 
     public ColliderCrafter(String name){
         super(name);

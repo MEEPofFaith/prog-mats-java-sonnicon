@@ -33,7 +33,7 @@ public class StaticNode extends Block{
     protected static int returnInt = 0;
     public final int shockTimer = timers++;
 
-    protected TextureRegion laser, laserEnd;
+    public TextureRegion laser, laserEnd;
 
     public int laserRange = 20;
     public float damage, reload = 5f, cooldown = 0.1f;

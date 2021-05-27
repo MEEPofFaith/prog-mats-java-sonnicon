@@ -25,8 +25,8 @@ public class TeslaTurret extends PowerTurret{
     public float zapAngleRand, spinUp, spinDown, rangeExtention, lightningStroke = 3.5f;
     public int zaps;
 
-    protected TextureRegion[] ringRegions, heatRegions, outlineRegions;
-    protected TextureRegion bottomRegion, topRegion;
+    public TextureRegion[] ringRegions, heatRegions, outlineRegions;
+    public TextureRegion bottomRegion, topRegion;
 
     public TeslaTurret(String name){
         super(name);

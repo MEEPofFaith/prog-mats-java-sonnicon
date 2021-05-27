@@ -72,7 +72,7 @@ public class PMBlocks implements ContentList{
     // endregion
     // Region Distribution
     
-    floatingConveyor,
+    floatingConveyor, burstDriver,
 
     // endregion
     // Region Crafting
@@ -90,6 +90,9 @@ public class PMBlocks implements ContentList{
 
     //Turret
     harbinger, everythingGun,
+
+    //Distribution
+    sandDriver,
     
     //Power
     strobeNode, strobeInf, strobeBoost, 
@@ -455,7 +458,7 @@ public class PMBlocks implements ContentList{
             range = 200f;
             rangeExtention = 60f;
             reloadTime = 240f;
-            shootLength = 42/4;
+            shootLength = 42f / 4f;
             shootDuration = 60f;
             rotateSpeed = 8f;
             layers = 2;
@@ -888,6 +891,23 @@ public class PMBlocks implements ContentList{
             researchCostMultiplier = 300f;
         }};
 
+        burstDriver = new BurstDriver("burst-driver"){{
+            requirements(Category.distribution, with(
+                Items.titanium, 275,
+                Items.silicon, 200,
+                Items.lead, 350,
+                Items.thorium, 125,
+                PMItems.techtanite, 75
+            ));
+            size = 3;
+            itemCapacity = 120;
+            reloadTime = 120f;
+            shots = 60;
+            delay = 1f;
+            range = 560f;
+            consumes.power(2.75f);
+        }};
+
         // endregion
         // Region Crafting
 
@@ -1059,7 +1079,12 @@ public class PMBlocks implements ContentList{
         }};
 
         shieldProjector = new ShieldProjector("shield-projector"){{
-            requirements(Category.effect, empty);
+            requirements(Category.effect, with(
+                Items.lead, 325,
+                Items.titanium, 225,
+                Items.surgeAlloy, 75,
+                PMItems.techtanite, 125
+            ));
             size = 4;
             radius = 88f;
             shieldHealth = 2600f;
@@ -1124,6 +1149,19 @@ public class PMBlocks implements ContentList{
                 baseRegion = Core.atlas.find("prog-mats-block-" + size);
             }
         };
+
+        // Distribution
+        sandDriver = new BurstDriver("sand-driver"){{
+            requirements(Category.distribution, BuildVisibility.sandboxOnly, empty);
+            size = 3;
+            itemCapacity = 120;
+            reloadTime = 120f;
+            shots = 60;
+            delay = 1f;
+            range = 560f;
+            sandy = true;
+            consumes.power(0.1f);
+        }};
 
         //Power
         strobeNode = new StrobeNode("rainbow-power-node");

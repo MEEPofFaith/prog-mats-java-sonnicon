@@ -43,7 +43,9 @@ public class PMBullets implements ContentList{
     
     arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
-    harbingerLaser, excaliburLaser, sentinelLaser;
+    harbingerLaser, excaliburLaser, sentinelLaser,
+
+    burstBolt;
 
     @Override
     public void load(){
@@ -811,5 +813,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.explosionbig;
             hitSoundVolume = 4f;
         }};
+
+        burstBolt = new BurstDriverItem();
     }
 }

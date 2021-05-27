@@ -26,14 +26,14 @@ public class TeamLaserBlastBulletType extends BulletType{
     public void init(Bullet b){
         super.init(b);
 
-        if(trailLength > 0) b.data = new Trail(trailLength);
+        if(trailLength > 0) b.data = new PMTrail(trailLength);
     }
 
     @Override
     public void update(Bullet b){
         super.update(b);
 
-        if(b.data instanceof Trail tr){
+        if(b.data instanceof PMTrail tr){
             Tmp.v1.trns(b.rotation() - 180f, length / 2f - width / 2f);
             tr.update(b.x + Tmp.v1.x, b.y + Tmp.v1.y);
         }
@@ -41,7 +41,7 @@ public class TeamLaserBlastBulletType extends BulletType{
 
     @Override
     public void draw(Bullet b){
-        if(b.data instanceof Trail tr) tr.draw(b.team.color, width / 2f);
+        if(b.data instanceof PMTrail tr) tr.draw(b.team.color, width / 2f);
 
         Draw.color(b.team.color);
         PMDrawf.pill(b.x, b.y, b.rotation(), length, width);
@@ -54,7 +54,7 @@ public class TeamLaserBlastBulletType extends BulletType{
 
     @Override
     public void despawned(Bullet b){
-        if(b.data instanceof Trail tr) tr.clear();
+        if(b.data instanceof PMTrail tr) tr.clear();
 
         super.despawned(b);
     }
@@ -63,7 +63,7 @@ public class TeamLaserBlastBulletType extends BulletType{
     public void hitTile(Bullet b, Building build, float initialHealth, boolean direct){
         super.hitTile(b, build, initialHealth, direct);
 
-        if(direct && b.data instanceof Trail tr) tr.clear();
+        if(direct && b.data instanceof PMTrail tr) tr.clear();
     }
 
     @Override

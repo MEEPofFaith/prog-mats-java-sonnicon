@@ -1151,15 +1151,13 @@ public class PMBlocks implements ContentList{
         };
 
         // Distribution
-        sandDriver = new BurstDriver("sand-driver"){{
-            requirements(Category.distribution, BuildVisibility.sandboxOnly, empty);
+        sandDriver = new SandDriver("sand-driver"){{
             size = 3;
             itemCapacity = 120;
             reloadTime = 120f;
             shots = 60;
             delay = 1f;
             range = 560f;
-            sandy = true;
             consumes.power(0.1f);
         }};
 

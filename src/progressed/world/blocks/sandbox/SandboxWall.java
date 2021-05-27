@@ -22,7 +22,6 @@ import progressed.util.*;
 import static mindustry.Vars.*;
 
 public class SandboxWall extends Wall{
-    public float speed = 1.5f;
     public float rotateSpeed = 6f, rotateRadius, iconSize;
 
     protected Item[] iconItems = {Items.surgeAlloy,  Items.phaseFabric, Items.plastanium};
@@ -96,6 +95,8 @@ public class SandboxWall extends Wall{
 
         @Override
         public void draw(){
+            float speed = Core.settings.getInt("pm-strobespeed") / 2f;
+
             if(variants == 0){
                 Draw.rect(region, x, y);
                 Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * speed), 1f);

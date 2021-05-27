@@ -12,7 +12,7 @@ import mindustry.world.blocks.power.*;
 import mindustry.world.meta.*;
 
 public class StrobeNode extends PowerNode{
-    public float speed = 1.5f, lerpSpeed = 0.005f;
+    public float lerpSpeed = 0.005f;
     public Color laserColor3 = Color.red;
 
     public TextureRegion colorRegion;
@@ -40,6 +40,8 @@ public class StrobeNode extends PowerNode{
 
     @Override
     protected void setupColor(float satisfaction){
+        float speed = Core.settings.getInt("pm-strobespeed") / 2f;
+
         Color c1 = Tmp.c1.set(laserColor1).lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1, 1));
         Draw.color(c1.shiftHue(Time.time * speed), Tmp.c1.set(laserColor2).shiftHue(Time.time * speed), 1 - satisfaction);
         Draw.alpha(Renderer.laserOpacity);
@@ -50,6 +52,7 @@ public class StrobeNode extends PowerNode{
         public void draw(){
             super.draw();
             Draw.z(Layer.block);
+            float speed = Core.settings.getInt("pm-strobespeed") / 2f;
             Color c1 = Tmp.c1.set(laserColor1).lerp(laserColor3, Mathf.absin(Time.time * lerpSpeed, 1, 1));
             Draw.color(c1.shiftHue(Time.time * speed), Tmp.c1.set(laserColor2).shiftHue(Time.time * speed), 1 - this.power.graph.getSatisfaction());
             Draw.alpha(1);

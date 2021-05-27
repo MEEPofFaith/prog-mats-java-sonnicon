@@ -10,8 +10,6 @@ import mindustry.world.*;
 import mindustry.world.meta.*;
 
 public class MultiSourceVoid extends MultiSource{
-    public float speed = 1.5f;
-
     public TextureRegion rainbow;
 
     public MultiSourceVoid(String name){
@@ -38,8 +36,7 @@ public class MultiSourceVoid extends MultiSource{
         @Override
         public void draw(){
             super.draw();
-
-            Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * speed));
+            Draw.color(Tmp.c1.set(Color.red).shiftHue(Time.time * Core.settings.getInt("pm-strobespeed") / 2f));
             Draw.rect(rainbow, x, y);
             Draw.color();
         }

@@ -44,8 +44,7 @@ public class BurstDriver extends Block{
 
     public int shots = 10;
     public float delay = 1f;
-
-    public boolean sandy;
+    public float xRand = 3f;
 
     public TextureRegion baseRegion;
 
@@ -176,7 +175,7 @@ public class BurstDriver extends Block{
 
             if(state == DriverState.accepting){
                 //if there's nothing shooting at this, bail - OR, items full
-                if(currentShooter() == null || (itemCapacity - items.total() < minDistribute && !sandy)){
+                if(currentShooter() == null || (itemCapacity - items.total() < minDistribute && !sandy())){
                     state = DriverState.idle;
                     return;
                 }
@@ -193,7 +192,7 @@ public class BurstDriver extends Block{
                 float targetRotation = tile.angleTo(link);
 
                 if(
-                    (items.total() >= minDistribute || sandy) && //must shoot minimum amount of items
+                    (items.total() >= minDistribute || sandy()) && //must shoot minimum amount of items
                         link.block.itemCapacity - link.items.total() >= minDistribute //must have minimum amount of space
                 ){
                     BurstDriverBuild other = (BurstDriverBuild)link;
@@ -279,14 +278,14 @@ public class BurstDriver extends Block{
         @Override
         public boolean acceptItem(Building source, Item item){
             //Burst drivers that output only cannot accept items
-            return items.total() < itemCapacity && linkValid() && !sandy;
+            return items.total() < itemCapacity && linkValid() && !sandy();
         }
 
         protected void fire(BurstDriverBuild target){
             //reset reload, use power.
             reload = 1f;
 
-            for(int i = 0; i < Math.min(shots, sandy ? shots : items.total()); i++){
+            for(int i = 0; i < Math.min(shots, sandy() ? shots : items.total()); i++){
                 Time.run(i * delay, () -> {
                     if(!isValid() || !consValid()) return;
 
@@ -294,7 +293,7 @@ public class BurstDriver extends Block{
                     boolean canShoot = false;
                     data.from = this;
                     data.to = target;
-                    if(sandy){
+                    if(sandy()){
                         data.item = content.items().random();
                         canShoot = true;
                     }else{
@@ -308,7 +307,7 @@ public class BurstDriver extends Block{
                     if(canShoot){
                         float angle = tile.angleTo(target);
 
-                        tr.trns(angle, shootLength);
+                        tr.trns(angle, shootLength, Mathf.range(xRand));
 
                         PMBullets.burstBolt.create(this, team, x + tr.x, y + tr.y, angle, -1f, speed, lifetime, data);
 
@@ -350,6 +349,10 @@ public class BurstDriver extends Block{
         @Override
         public Point2 config(){
             return Point2.unpack(link).sub(tile.x, tile.y);
+        }
+
+        public boolean sandy(){
+            return false;
         }
 
         @Override

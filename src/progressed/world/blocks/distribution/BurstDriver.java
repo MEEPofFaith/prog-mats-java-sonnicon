@@ -35,7 +35,7 @@ public class BurstDriver extends Block{
     public float reloadTime = 100f;
 
     public float speed = 6.5f;
-    public float lifetime = 80f;
+    public float lifetime = 100f;
 
     public Effect shootEffect = Fx.shootSmall;
     public Effect smokeEffect = Fx.shootSmallSmoke;
@@ -330,10 +330,11 @@ public class BurstDriver extends Block{
             }
         }
 
-        public void handlePayload(Bullet bullet, BurstDriverData data){
+        public void handleBurstItem(Bullet bullet, BurstDriverData data){
             //add item if possible
             int maxAdd = Math.min(1, itemCapacity * 2 - items.total());
             items.add(data.item, maxAdd);
+            dump(data.item); //input is fast, attempt to dump immidiately
 
             Effect.shake(shake, shake, this);
             receiveEffect.at(bullet);

@@ -900,10 +900,10 @@ public class PMBlocks implements ContentList{
                 PMItems.techtanite, 75
             ));
             size = 3;
-            itemCapacity = 120;
+            itemCapacity = 180;
             reloadTime = 120f;
-            shots = 60;
-            delay = 1f;
+            shots = 90;
+            delay = 0.75f;
             range = 560f;
             consumes.power(2.75f);
         }};
@@ -1153,10 +1153,10 @@ public class PMBlocks implements ContentList{
         // Distribution
         sandDriver = new SandDriver("sand-driver"){{
             size = 3;
-            itemCapacity = 120;
+            itemCapacity = 180;
             reloadTime = 120f;
-            shots = 60;
-            delay = 1f;
+            shots = 90;
+            delay = 0.75f;
             range = 560f;
             consumes.power(0.1f);
         }};

@@ -79,7 +79,7 @@ public class BurstDriverItem extends BulletType{
         } //else, bullet has gone off course, does not get received.
 
         if(intersect){
-            data.to.handlePayload(b, data);
+            data.to.handleBurstItem(b, data);
         }
     }
 

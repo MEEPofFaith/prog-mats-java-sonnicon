@@ -17,7 +17,8 @@ repositories{
 }
 
 dependencies{
-    compileOnly "com.github.younggam:multi-lib:$multilibVersion"
+    implementation  "com.github.younggam:multi-lib:$multilibVersion"
+    
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
     compileOnly "com.squareup:javapoet:$javapoetVersion"
     compileOnly "com.github.Anuken:jabel:$jabelVersion"

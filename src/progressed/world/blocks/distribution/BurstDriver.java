@@ -17,6 +17,7 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.MassDriver.*;
+import mindustry.world.meta.*;
 import progressed.content.*;
 
 import static mindustry.Vars.*;
@@ -33,8 +34,8 @@ public class BurstDriver extends Block{
 
     public float reloadTime = 100f;
 
-    public float speed = 5.5f;
-    public float lifetime = 100f;
+    public float speed = 6.5f;
+    public float lifetime = 80f;
 
     public Effect shootEffect = Fx.shootSmall;
     public Effect smokeEffect = Fx.shootSmallSmoke;
@@ -65,6 +66,14 @@ public class BurstDriver extends Block{
         //point2 is relative
         config(Point2.class, (BurstDriverBuild tile, Point2 point) -> tile.link = Point2.pack(point.x + tile.tileX(), point.y + tile.tileY()));
         config(Integer.class, (BurstDriverBuild tile, Integer point) -> tile.link = point);
+    }
+
+    @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.add(Stat.shootRange, range / tilesize, StatUnit.blocks);
+        stats.add(Stat.reload, 60f / (reloadTime + 1) * shots, StatUnit.none);
     }
 
     @Override

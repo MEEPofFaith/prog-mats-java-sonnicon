@@ -2,7 +2,6 @@ package progressed.world.blocks.defence;
 
 import arc.*;
 import arc.func.*;
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -22,7 +21,6 @@ import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import progressed.ProgMats;
 import progressed.entities.*;
 import progressed.graphics.*;
 
@@ -33,8 +31,6 @@ public class StaticNode extends Block{
     protected static int returnInt = 0;
     public final int shockTimer = timers++;
 
-    protected TextureRegion laser, laserEnd;
-
     public int laserRange = 20;
     public float damage, reload = 5f, cooldown = 0.1f;
     public float powerPerLink;
@@ -43,6 +39,9 @@ public class StaticNode extends Block{
     public StatusEffect status = StatusEffects.shocked;
     public float statusDuration = 10f * 60f;
     public Effect shockEffect = PMFx.staticSpark;
+    public float minValue = 0.75f;
+
+    public TextureRegion laser, laserEnd;
 
     public StaticNode(String name){
         super(name);
@@ -182,15 +181,15 @@ public class StaticNode extends Block{
         Placement.calculateNodes(points, this, rotation, (point, other) -> overlaps(world.tile(point.x, point.y), world.tile(other.x, other.y)));
     }
 
-    public void staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean attack){
+    public void staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean drawOther, boolean attack){
         float angle1 = Angles.angle(x1, y1, x2, y2),
             len1 = size1 * tilesize / 2f - 1.5f, len2 = size2 * tilesize / 2f - 1.5f;
         Tmp.v1.trns(angle1, len1);
         Tmp.v2.trns(angle1, len2);
 
-        if(drawLaser){
-            float space = Math.min(size1, size2) * 1.25f, scale = 0.25f; //In case I want to change these
+        float space = Math.min(size1, size2), scale = 0.25f; //In case I want to change these
 
+        if(drawLaser){
             Tmp.v3.trns(angle1 - 90f, space);
             Drawf.laser(team, laser, laserEnd,
                 x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
@@ -198,26 +197,33 @@ public class StaticNode extends Block{
                 scale
             );
 
-            Tmp.v3.trns(angle1 + 90f, space);
-            Drawf.laser(team, laser, laserEnd,
-                x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
-                x2 - Tmp.v2.x + Tmp.v3.x, y2 - Tmp.v2.y + Tmp.v3.y,
-                scale
-            );
+            if(drawOther){
+                Tmp.v3.trns(angle1 + 90f, space);
+                Drawf.laser(team, laser, laserEnd,
+                    x2 - Tmp.v2.x + Tmp.v3.x, y2 - Tmp.v2.y + Tmp.v3.y,
+                    x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
+                    scale
+                );
+            }
         }
 
         if(attack){
+            Tmp.v3.trns(angle1 - 90f, space);
+            float dst = Mathf.dst(x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y, x2 - Tmp.v2.x + Tmp.v3.x, y2 - Tmp.v2.y + Tmp.v3.y);
+
             PMDamage.staticDamage(damage, team, shockEffect, status, statusDuration,
-                x1 + Tmp.v1.x, y1 + Tmp.v1.y, angle1,
-                Mathf.dst(x1 + Tmp.v1.x, y1 + Tmp.v1.y,
-                        x2 - Tmp.v2.x, y2 - Tmp.v2.y),
+                x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y, angle1, dst,
                 hitAir, hitGround
             );
-            PMFx.fakeLightningFast.at(x1 + Tmp.v1.x, y1 + Tmp.v1.y,
+            PMFx.fakeLightningFast.at(x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
                 angle1, team.color,
-                new Object[]{Mathf.dst(x1 + Tmp.v1.x, y1 + Tmp.v1.y, x2 - Tmp.v2.x, y2 - Tmp.v2.y), 2f, team}
+                new Object[]{dst, 2f, team}
             );
         }
+    }
+
+    public void staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean attack){
+        staticLine(team, x1, y1, x2, y2, size1, size2, drawLaser, true, attack);
     }
 
     protected boolean overlaps(float srcx, float srcy, Tile other, Block otherBlock, float range){
@@ -304,10 +310,10 @@ public class StaticNode extends Block{
     }
 
     public boolean linkValid(Building tile, Building link, boolean checkMaxNodes){
-        if(tile == link || link == null || !link.block.hasPower || tile.team != link.team || tile.block != link.block) return false;
+        if(tile == link || link == null || !(link.block instanceof StaticNode node) || tile.team != link.team || tile.block != link.block) return false;
 
-        if(overlaps(tile, link, laserRange * tilesize) || (link.block instanceof StaticNode node && overlaps(link, tile, node.laserRange * tilesize))){
-            if(checkMaxNodes && link.block instanceof StaticNode node){
+        if(overlaps(tile, link, laserRange * tilesize) || overlaps(link, tile, node.laserRange * tilesize)){
+            if(checkMaxNodes){
                 StaticNodeBuild n = (StaticNodeBuild)link;
                 return n.links.size < node.maxNodes || n.links.contains(tile.pos());
             }
@@ -426,17 +432,16 @@ public class StaticNode extends Block{
 
             if(Mathf.zero(Renderer.laserOpacity)) return;
 
-            Draw.z(Layer.bullet);
+            Draw.z(Layer.power);
 
             for(int i : links.items){
                 Building link = world.build(i);
         
-                if(!linkValid(this, link) || link.block instanceof StaticNode && link.id >= id || !linked(link)) continue;
+                if(!linkValid(this, link) || !linked(link)) continue;
 
-                float base = 0.625f;
-                Draw.color(Tmp.c1.set(team.color).mul(base + (efficiency() + link.efficiency()) / 2f * (1f - base)), Renderer.laserOpacity);
+                Draw.color(Tmp.c1.set(team.color).mul(minValue + efficiency() * (1f - minValue)), Renderer.laserOpacity);
 
-                staticLine(team, x, y, link.x, link.y, size, link.block.size, true, false);
+                staticLine(team, x, y, link.x, link.y, size, link.block.size, true, false, false);
             }
 
             Draw.reset();

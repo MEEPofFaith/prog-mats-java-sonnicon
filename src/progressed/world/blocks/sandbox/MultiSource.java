@@ -21,24 +21,19 @@ import progressed.ui.*;
 import static mindustry.Vars.*;
 
 public class MultiSource extends Block{
-    protected TextureRegion cross;
-    protected TextureRegion[] center = new TextureRegion[2];
+    public TextureRegion cross;
+    public TextureRegion[] center = new TextureRegion[2];
 
     public MultiSource(String name){
         super(name);
         requirements(Category.effect, BuildVisibility.sandboxOnly, ItemStack.empty);
         alwaysUnlocked = true;
 
-        update = true;
-        solid = true;
-        hasItems = true;
-        hasLiquids = true;
-        liquidCapacity = 10000f;
-        configurable = true;
-        outputsLiquid = true;
-        saveConfig = true;
-        noUpdateDisabled = true;
+        update = solid = saveConfig = noUpdateDisabled = true;
+        hasItems = hasLiquids = true;
+        configurable = outputsLiquid = true;
         displayFlow = false;
+        liquidCapacity = 10000f;
         group = BlockGroup.transportation;
 
         config(Integer.class, (MultiSourceBuild tile, Integer p) -> tile.data.set(p));
@@ -119,6 +114,7 @@ public class MultiSource extends Block{
             }else{
                 liquids.add(data.liquid, liquidCapacity);
                 dumpLiquid(data.liquid);
+                liquids.clear();
             }
         }
 

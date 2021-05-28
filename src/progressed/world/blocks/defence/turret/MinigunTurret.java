@@ -21,7 +21,7 @@ public class MinigunTurret extends ItemTurret{
     public float[] shootLocs;
     public Color c1 = Color.darkGray;
 
-    protected TextureRegion[] turretRegions = new TextureRegion[3], heatRegions = new TextureRegion[12];
+    public TextureRegion[] turretRegions = new TextureRegion[3], heatRegions = new TextureRegion[12];
 
     public MinigunTurret(String name){
         super(name);

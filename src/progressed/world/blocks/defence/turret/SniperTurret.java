@@ -19,7 +19,7 @@ public class SniperTurret extends ItemTurret{
     public int partCount = 3;
     public float split, chargeMoveFract = 0.9f;
 
-    protected TextureRegion[] outlines, connectors, parts, heats, cHeats;
+    public TextureRegion[] outlines, connectors, parts, heats, cHeats;
 
     public SniperTurret(String name){
         super(name);

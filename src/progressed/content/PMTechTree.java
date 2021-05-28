@@ -3,7 +3,6 @@ package progressed.content;
 import arc.struct.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
-import mindustry.game.*;
 import mindustry.game.Objectives.*;
 import mindustry.type.*;
 import mindustry.world.Block;
@@ -27,65 +26,79 @@ public class PMTechTree implements ContentList{
         vanillaNode(meltdown, () ->{
             // Eruptors
             node(flame, () -> {
-                node(blaze, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
-                    node(inferno, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
+                node(blaze, Seq.with(new SectorComplete(SectorPresets.overgrowth)), () -> {
+                    node(inferno, Seq.with(new SectorComplete(SectorPresets.nuclearComplex)));
                 });
 
                 //Sword
-                node(masquerade, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
-                    node(violet, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
+                node(masquerade, Seq.with(new SectorComplete(SectorPresets.overgrowth)), () -> {
+                    node(violet, Seq.with(new SectorComplete(SectorPresets.nuclearComplex)));
                 });
             });
         });
 
         vanillaNode(salvo, () -> {
             //Miniguns
-            node(minigun, Seq.with(new Objectives.SectorComplete(SectorPresets.fungalPass)), () -> {
-                node(miinigun, Seq.with(new Objectives.SectorComplete(SectorPresets.overgrowth)), () -> {
+            node(minigun, Seq.with(new SectorComplete(SectorPresets.fungalPass)), () -> {
+                node(miinigun, Seq.with(new SectorComplete(SectorPresets.overgrowth)), () -> {
                     node(mivnigun);
                 });
             });
 
             //Kugelblitz
-            node(blackhole, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex), new Objectives.Research(meltdown)));
+            node(blackhole, Seq.with(new SectorComplete(SectorPresets.nuclearComplex), new Research(meltdown)));
         });
 
         vanillaNode(ripple, () -> {
             //Missile (also painful to look at)
-            node(firestorm, Seq.with(new Objectives.Research(launchPad), new Objectives.SectorComplete(SectorPresets.impact0078)), () -> {
-                node(strikedown, PMUtls.addItemStacks(new ItemStack[][]{brq(strikedown), brq(shellPress), recipeCost((MultiCrafter)shellPress, 0), brq(missileFactory), recipeCost((MultiCrafter)missileFactory, 0)}), Seq.with(new Objectives.Research(launchPad), new Objectives.SectorComplete(SectorPresets.nuclearComplex)), () -> {
-                    node(shellPress, ItemStack.empty, Seq.with(new Objectives.Research(strikedown)), () -> {
-                        node(missileShell, ItemStack.empty, Seq.with(new Objectives.Research(strikedown)));
-                        node(nukeShell, ItemStack.empty, Seq.with(new Objectives.Research(arbiter)));
-                        node(missileFactory, ItemStack.empty, Seq.with(new Objectives.Research(strikedown)), () -> {
+            node(firestorm, Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.impact0078)), () -> {
+                node(strikedown, PMUtls.addItemStacks(new ItemStack[][]{
+                    brq(strikedown),
+                    brq(shellPress),
+                    recipeCost((MultiCrafter)shellPress, 0),
+                    brq(missileFactory),
+                    recipeCost((MultiCrafter)missileFactory, 0)
+                }), Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.nuclearComplex)), () -> {
+                    node(shellPress, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
+                        node(missileShell, ItemStack.empty, Seq.with(new Research(strikedown)));
+                        node(nukeShell, ItemStack.empty, Seq.with(new Research(arbiter)));
+                        node(missileFactory, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                             //Missile
-                            node(basicMissile, ItemStack.empty, Seq.with(new Objectives.Research(strikedown)), () -> {
+                            node(basicMissile, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                                 node(empMissile, recipeCost((MultiCrafter)missileFactory, 1, 5f));
                                 node(quantiumMissile, recipeCost((MultiCrafter)missileFactory, 2, 5f));
                             });
                             //Nuke
-                            node(basicNuke, ItemStack.empty, Seq.with(new Objectives.Research(arbiter)), () -> {
+                            node(basicNuke, ItemStack.empty, Seq.with(new Research(arbiter)), () -> {
                                 node(empNuke, recipeCost((MultiCrafter)missileFactory, 4, 5f));
                                 node(clusterNuke, recipeCost((MultiCrafter)missileFactory, 5, 5f));
                                 node(sentryNuke, recipeCost((MultiCrafter)missileFactory, 6, 5f));
                             });
                         });
                     });
-                    node(arbiter, PMUtls.addItemStacks(new ItemStack[][]{brq(arbiter), recipeCost((MultiCrafter)shellPress, 1), recipeCost((MultiCrafter)missileFactory, 3)}), Seq.with(new Objectives.Research(interplanetaryAccelerator), new Objectives.SectorComplete(SectorPresets.planetaryTerminal)));
+                    node(arbiter, PMUtls.addItemStacks(new ItemStack[][]{
+                        brq(arbiter),
+                        recipeCost((MultiCrafter)shellPress, 1),
+                        recipeCost((MultiCrafter)missileFactory, 3)
+                    }), Seq.with(new Research(interplanetaryAccelerator), new SectorComplete(SectorPresets.planetaryTerminal)));
                 });
             });
 
             //Tinker
-            node(tinker, PMUtls.addItemStacks(new ItemStack[][]{brq(tinker), brq(sentryBuilder), recipeCost((MultiCrafter)sentryBuilder, 0)}), Seq.with(new Objectives.SectorComplete(SectorPresets.windsweptIslands)), () -> {
-                node(sentryBuilder, ItemStack.empty, Seq.with(new Objectives.Research(tinker)), () -> {
-                    node(basicSentryBox, ItemStack.empty, Seq.with(new Objectives.Research(sentryBuilder)), () -> {
-                        node(basicSentry, ItemStack.empty, Seq.with(new Objectives.Research(basicSentryBox)));
+            node(tinker, PMUtls.addItemStacks(new ItemStack[][]{
+                brq(tinker),
+                brq(sentryBuilder),
+                recipeCost((MultiCrafter)sentryBuilder, 0)
+            }), Seq.with(new SectorComplete(SectorPresets.windsweptIslands)), () -> {
+                node(sentryBuilder, ItemStack.empty, Seq.with(new Research(tinker)), () -> {
+                    node(basicSentryBox, ItemStack.empty, Seq.with(new Research(sentryBuilder)), () -> {
+                        node(basicSentry, ItemStack.empty, Seq.with(new Research(basicSentryBox)));
                     });
-                    node(strikeSentryBox, recipeCost((MultiCrafter)sentryBuilder, 1, 5f), Seq.with(new Objectives.Research(firestorm)), () -> {
-                        node(strikeSentry, ItemStack.empty, Seq.with(new Objectives.Research(strikeSentryBox)));
+                    node(strikeSentryBox, recipeCost((MultiCrafter)sentryBuilder, 1, 5f), Seq.with(new Research(firestorm)), () -> {
+                        node(strikeSentry, ItemStack.empty, Seq.with(new Research(strikeSentryBox)));
                     });
-                    node(dashSentryBox, recipeCost((MultiCrafter)sentryBuilder, 2, 5f), Seq.with(new Objectives.Research(lancer), new Objectives.Research(quasar)), () -> {
-                        node(dashSentry, ItemStack.empty, Seq.with(new Objectives.Research(dashSentryBox)));
+                    node(dashSentryBox, recipeCost((MultiCrafter)sentryBuilder, 2, 5f), Seq.with(new Research(lancer), new Research(quasar)), () -> {
+                        node(dashSentry, ItemStack.empty, Seq.with(new Research(dashSentryBox)));
                     });
                 });
             });
@@ -97,14 +110,14 @@ public class PMTechTree implements ContentList{
             
             //Coil
             node(shock, () -> {
-                node(spark, Seq.with(new Objectives.Research(differentialGenerator)), () -> {
-                    node(storm, Seq.with(new Objectives.Research(thoriumReactor)));
+                node(spark, Seq.with(new Research(differentialGenerator)), () -> {
+                    node(storm, Seq.with(new Research(thoriumReactor)));
                 });
             });
         });
 
         vanillaNode(lancer, () -> {
-            node(sentinel, Seq.with(new Objectives.SectorComplete(SectorPresets.impact0078)));
+            node(sentinel, Seq.with(new SectorComplete(SectorPresets.impact0078)));
         });
 
         vanillaNode(cyclone, () -> {
@@ -114,7 +127,7 @@ public class PMTechTree implements ContentList{
 
         vanillaNode(foreshadow, () -> {
             //P o p e s h a d o w
-            node(excalibur, Seq.with(new Objectives.SectorComplete(SectorPresets.nuclearComplex)));
+            node(excalibur, Seq.with(new SectorComplete(SectorPresets.nuclearComplex)));
         });
 
         vanillaNode(segment, () -> {
@@ -125,7 +138,12 @@ public class PMTechTree implements ContentList{
         // Distribution
         vanillaNode(armoredConveyor, () -> {
             //Floating Conveyor
-            node(floatingConveyor, Seq.with(new Objectives.SectorComplete(SectorPresets.windsweptIslands)));
+            node(floatingConveyor, Seq.with(new SectorComplete(SectorPresets.windsweptIslands)));
+        });
+
+        vanillaNode(massDriver, () -> {
+            //Burst Driver
+            node(burstDriver, Seq.with(new Research(plastaniumConveyor)));
         });
 
         // Crating
@@ -139,6 +157,11 @@ public class PMTechTree implements ContentList{
             //Static link
             node(fence);
             node(web);
+        });
+
+        vanillaNode(forceProjector, () -> {
+            //Shield Projector
+            node(shieldProjector, Seq.with(new Research(strikedown)));
         });
 
         // Items
@@ -158,11 +181,9 @@ public class PMTechTree implements ContentList{
     private static ItemStack[] recipeCost(MultiCrafter crafter, int rec){
         return recipeCost(crafter, rec, 1f);
     }
-    
-    //Dont mind me I'ma just yoink some stuff from BetaMindy
+
     private static void vanillaNode(UnlockableContent parent, Runnable children){
-        TechNode parnode = TechTree.all.find(t -> t.content == parent);
-        context = parnode;
+        context = TechTree.get(parent);
         children.run();
     }
 

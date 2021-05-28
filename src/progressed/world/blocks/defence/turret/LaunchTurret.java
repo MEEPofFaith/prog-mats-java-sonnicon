@@ -23,8 +23,8 @@ public class LaunchTurret extends ItemTurret{
     public float warmupSpeed = 0.05f, chargeupSpeed = 0.07f, animSpeed = 0.05f, sep = 0.5f, back = 0f, end = -6f, pauseTime = 1.25f;
     public Effect launchEffect = Fx.none, launchSmokeEffect = Fx.none;
 
-    protected TextureRegion[] arrowRegions;
-    protected TextureRegion topRegion;
+    public TextureRegion[] arrowRegions;
+    public TextureRegion topRegion;
 
     public LaunchTurret(String name){
         super(name);
@@ -233,7 +233,7 @@ public class LaunchTurret extends ItemTurret{
         }
 
         //Steal from PayloadConveyor
-        protected TextureRegion clipRegion(Rect bounds, Rect sprite, TextureRegion region){
+        public TextureRegion clipRegion(Rect bounds, Rect sprite, TextureRegion region){
             Rect over = Tmp.r3;
 
             boolean overlaps = Intersector.intersectRectangles(bounds, sprite, over);

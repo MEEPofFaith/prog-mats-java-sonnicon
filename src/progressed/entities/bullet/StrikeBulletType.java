@@ -14,6 +14,8 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
 import progressed.graphics.*;
+import progressed.util.*;
+import progressed.world.blocks.defence.ShieldProjector.*;
 
 import static mindustry.Vars.*;
 
@@ -30,6 +32,7 @@ public class StrikeBulletType extends BasicBulletType{
     public float riseEngineLightRadius = 50f, fallEngineLightRadius = 42f, engineLightOpacity = 0.5f;
     public Color engineLightColor = Pal.engine;
     public float riseSpin = 0f, fallSpin = 0f;
+    public Effect blockEffect = Fx.none;
 
     public Sortf unitSort = Unit::dst2;
 
@@ -53,6 +56,7 @@ public class StrikeBulletType extends BasicBulletType{
         super.init();
 
         drawSize = elevation + 64f;
+        blockEffect = blockEffect == Fx.none ? blockEffect = despawnEffect : blockEffect;
     }
 
     @Override
@@ -128,6 +132,26 @@ public class StrikeBulletType extends BasicBulletType{
     }
 
     @Override
+    public void despawned(Bullet b){
+        ShieldBuild shield = (ShieldBuild)(indexer.findEnemyTile(b.team, b.x, b.y, 256f, build -> build instanceof ShieldBuild s && !s.broken));
+        boolean shielded = shield != null && PMMathf.isInSquare(shield.x, shield.y, shield.realRadius(), b.x, b.y);
+
+        if(shielded){
+            ((StrikeBulletData)b.data).block(shield);
+            blockEffect.at(b.x, b.y, b.rotation(), hitColor);
+        }else{
+            despawnEffect.at(b.x, b.y, b.rotation(), hitColor);
+        }
+        hitSound.at(b);
+
+        Effect.shake(despawnShake, despawnShake, b);
+
+        if(!b.hit && (fragBullet != null || splashDamageRadius > 0 || lightning > 0)){
+            hit(b);
+        }
+    }
+
+    @Override
     public void hit(Bullet b, float x, float y){
         b.hit = true;
         hitEffect.at(x, y, b.rotation(), hitColor);
@@ -147,7 +171,9 @@ public class StrikeBulletType extends BasicBulletType{
             }
         }
 
-        if(!((StrikeBulletData)b.data).disabled){
+        StrikeBulletData data = ((StrikeBulletData)b.data);
+
+        if(!data.blocked){
             if(puddleLiquid != null && puddles > 0){
                 for (int i = 0; i < puddles; i++){
                     Tile tile = world.tileWorld(x + Mathf.range(puddleRange), y + Mathf.range(puddleRange));
@@ -181,6 +207,9 @@ public class StrikeBulletType extends BasicBulletType{
             for(int i = 0; i < lightning; i++){
                 Lightning.create(b, lightningColor, lightningDamage < 0 ? damage : lightningDamage, b.x, b.y, b.rotation() + Mathf.range(lightningCone / 2) + lightningAngle, lightningLength + Mathf.random(lightningLengthRand));
             }
+        }else{
+            ShieldBuild s = data.shield;
+            s.buildup += (b.damage() + splashDamage * s.realStrikeBlastResistance() * b.damageMultiplier()) * s.warmup;
         }
     }
 
@@ -280,7 +309,8 @@ public class StrikeBulletType extends BasicBulletType{
     public static class StrikeBulletData{
         public float x, y;
         public Vec2 vel;
-        public boolean stopped, disabled;
+        public boolean stopped, blocked;
+        public ShieldBuild shield;
 
         public StrikeBulletData(float x, float y){
             this.x = x;
@@ -291,11 +321,16 @@ public class StrikeBulletType extends BasicBulletType{
             this.vel = vel.cpy();
         }
 
+        public void block(ShieldBuild shield){
+            blocked = true;
+            this.shield = shield;
+        }
+
         public String toString(){
             return "x : " + x +
             "\ny: " + y +
-            "\nstopped: " + stopped +
-            "\ndisabled: " + disabled;
+                "\nstopped: " + stopped +
+                "\nblocked: " + blocked;
         }
     }
 }

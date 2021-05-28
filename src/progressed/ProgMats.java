@@ -34,7 +34,6 @@ public class ProgMats extends Mod{
             PMSounds.dispose();
         });
 
-        Core.settings.defaults("pm-swordopacity", 100);
         Events.on(ClientLoadEvent.class, e -> {
             settingAdder.init();
         });
@@ -43,6 +42,8 @@ public class ProgMats extends Mod{
     @Override
     public void init(){
         enableConsole = true;
+        renderer.minZoom = 0.667f; //Zoom out farther
+        renderer.maxZoom = 24f; //Get a closer look at yourself
 
         if(!headless){
             LoadedMod progM = mods.locateMod("prog-mats");
@@ -52,8 +53,8 @@ public class ProgMats extends Mod{
             progM.meta.author = stringf.get(progM.meta.name + ".author");
             progM.meta.version = "[#FCC21B]" + progM.meta.version + "[]";
             progM.meta.description = stringf.get(progM.meta.name + ".description");
-            
-            PMUtls.godHood(PMUnitTypes.everythingUnit);
+
+            Events.on(ContentInitEvent.class, e -> PMUtls.godHood(PMUnitTypes.everythingUnit));
         }
     }
 

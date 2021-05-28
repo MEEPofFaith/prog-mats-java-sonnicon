@@ -5,7 +5,8 @@ on:
     branches: [ master ]
 
 jobs:
-  Bob-the-Builder-builds-a-new-building:
+  build-and-dexify:
+    name: Bob the Builder Builds a new building
     runs-on: ubuntu-latest
 
     steps:
@@ -19,7 +20,7 @@ jobs:
     - name: Building roads
       run: echo "${ANDROID_HOME}/build-tools/30.0.1" >> $GITHUB_PATH
 
-    - name: Double-checking construction permit
+    - name: Double-checking construction permit, making sure cement is mixed properly
       run: |
         chmod +x gradlew
         chmod +x alpha-bleed

@@ -18,10 +18,10 @@ repositories{
 
 dependencies{
     implementation "com.github.younggam:multi-lib:$multilibVersion"
-    implementation "com.github.Anuken.Arc:arc-core:$mindustryVersion"
-    implementation "com.github.Anuken.Mindustry:core:$mindustryVersion"
-    implementation "com.squareup:javapoet:$javapoetVersion"
-    implementation "com.github.Anuken:jabel:$jabelVersion"
+    
+    compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
+    compileOnly "com.squareup:javapoet:$javapoetVersion"
+    compileOnly "com.github.Anuken:jabel:$jabelVersion"
 }
 
 ext{
@@ -50,7 +50,7 @@ tasks.withType(JavaCompile){
     }
 
     doFirst{
-        options.compilerArgs = options.compilerArgs.findAll{ it != '--enable-preview' }
+        options.compilerArgs = options.compilerArgs.findAll{it != '--enable-preview'}
     }
 }
 

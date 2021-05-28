@@ -31,8 +31,8 @@ public class PopeshadowTurret extends PowerTurret{
         {21f / 4f, 65f / 4f, 21f / 4f, 73f / 4f, 3f}
     };
 
-    protected TextureRegion bottomRegion, topRegion;
-    protected TextureRegion[] sideRegions = new TextureRegion[2], outlineRegions = new TextureRegion[3], cellRegions = new TextureRegion[8];
+    public TextureRegion bottomRegion, topRegion;
+    public TextureRegion[] sideRegions = new TextureRegion[2], outlineRegions = new TextureRegion[3], cellRegions = new TextureRegion[8];
 
     public PopeshadowTurret(String name){
         super(name);

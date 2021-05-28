@@ -35,8 +35,8 @@ public class EruptorTurret extends PowerTurret{
     public float capCloseRate = 0.01f;
 
 
-    protected TextureRegion turretRegion, baseOutline;
-    protected TextureRegion[] cellRegions, capRegions, outlineRegions, heatRegions;
+    public TextureRegion turretRegion, baseOutline;
+    public TextureRegion[] cellRegions, capRegions, outlineRegions, heatRegions;
     
     protected Vec2 tr3 = new Vec2();
 

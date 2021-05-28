@@ -15,7 +15,7 @@ import progressed.ui.*;
 import progressed.util.*;
 
 public class BlackHoleTurret extends PowerTurret{
-    protected TextureRegion spaceRegion;
+    public TextureRegion spaceRegion;
 
     protected PowIn pow = PMUtls.customPowIn(6);
     

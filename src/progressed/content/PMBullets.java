@@ -2,10 +2,8 @@ package progressed.content;
 
 import arc.graphics.*;
 import arc.math.*;
-import arc.struct.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
-import mindustry.entities.*;
 import mindustry.entities.Effect;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
@@ -45,7 +43,9 @@ public class PMBullets implements ContentList{
     
     arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
-    harbingerLaser, excaliburLaser, sentinelLaser;
+    harbingerLaser, excaliburLaser, sentinelLaser,
+
+    burstBolt;
 
     @Override
     public void load(){
@@ -369,6 +369,7 @@ public class PMBullets implements ContentList{
             collidesAir = false;
             hitShake = 2f;
             despawnEffect = PMFx.missileBoom;
+            blockEffect = PMFx.missileBlockedSmall;
             
             trailParam = 3f;
             trailEffect = Fx.missileTrail;
@@ -396,6 +397,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.bang;
             hitShake = 5f;
             despawnEffect = PMFx.nuclearExplosion;
+            blockEffect = PMFx.missileBlocked;
 
             trailParam = 5f;
             trailChance = 0.2f;
@@ -425,6 +427,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.bang;
             hitShake = 5f;
             despawnEffect = PMFx.nuclearExplosion;
+            blockEffect = PMFx.missileBlocked;
 
             fragBullets = 360;
             fragVelocityMin = 0.5f;
@@ -456,6 +459,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.bang;
             hitShake = 5f;
             despawnEffect = PMFx.nuclearExplosion;
+            blockEffect = PMFx.missileBlocked;
 
             fragBullets = 360;
             fragVelocityMin = 0.5f;
@@ -486,6 +490,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.bang;
             hitShake = 5f;
             despawnEffect = PMFx.nuclearExplosion;
+            blockEffect = PMFx.missileBlocked;
 
             trailParam = 5f;
             trailChance = 0.2f;
@@ -515,6 +520,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.bang;
             hitShake = 5f;
             despawnEffect = PMFx.nuclearExplosion;
+            blockEffect = PMFx.missileBlocked;
 
             trailParam = 5f;
             trailChance = 0.2f;
@@ -549,6 +555,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.bang;
             hitShake = 5f;
             despawnEffect = PMFx.nuclearExplosion;
+            blockEffect = PMFx.missileBlocked;
 
             trailParam = 5f;
             trailChance = 0.2f;
@@ -582,6 +589,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.explosionbig;
             hitShake = 30f;
             despawnEffect = PMFx.mushroomCloudExplosion;
+            blockEffect = PMFx.missileBlockedLarge;
 
             trailParam = 8f;
             trailChance = 0.2f;
@@ -613,6 +621,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.explosionbig;
             hitShake = 30f;
             despawnEffect = PMFx.mushroomCloudExplosion;
+            blockEffect = PMFx.missileBlockedLarge;
 
             fragBullets = 360;
             fragBullet = empParticleStrong;
@@ -643,6 +652,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.bang;
             hitShake = 5f;
             despawnEffect = PMFx.nuclearExplosion;
+            blockEffect = PMFx.missileBlocked;
 
             trailParam = 5f;
             trailChance = 0.2f;
@@ -803,5 +813,7 @@ public class PMBullets implements ContentList{
             hitSound = Sounds.explosionbig;
             hitSoundVolume = 4f;
         }};
+
+        burstBolt = new BurstDriverItem();
     }
 }

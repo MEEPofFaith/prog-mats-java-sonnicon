@@ -36,8 +36,8 @@ public class InfernoTurret extends PowerTurret{
     public float shootDuration = 60f;
     public float capCloseRate = 0.01f;
 
-    protected TextureRegion bottomRegion, sideRegion, sideOutline, sideHeat;
-    protected TextureRegion[] cellRegions, capRegions, outlineRegions, heatRegions;
+    public TextureRegion bottomRegion, sideRegion, sideOutline, sideHeat;
+    public TextureRegion[] cellRegions, capRegions, outlineRegions, heatRegions;
 
     protected Vec2 tr3 = new Vec2();
 

@@ -140,6 +140,7 @@ public class PMUnitTypes implements ContentList{
                     trailEffect = PMFx.missileTrailSmall;
 
                     despawnEffect = PMFx.missileBoom;
+                    blockEffect = PMFx.missileBlockedSmall;
 
                     autoDropRadius = 12f;
                     stopRadius = 8f;
@@ -238,7 +239,6 @@ public class PMUnitTypes implements ContentList{
             public void setStats(){
                 super.setStats();
 
-                stats.remove(Stat.abilities);
                 stats.add(Stat.abilities, "Everything");
                 stats.remove(Stat.weapons);
                 stats.add(Stat.weapons, "Everything");

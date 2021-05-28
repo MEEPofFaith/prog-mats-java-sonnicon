@@ -1,6 +1,5 @@
 package progressed.world.blocks.defence.turret;
 
-import arc.*;
 import arc.audio.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -71,7 +70,7 @@ public class SwordTurret extends BaseTurret{
 
     public float elevation = -1f, swordElevation = -1f;
 
-    protected TextureRegion baseRegion, outlineRegion, swordRegion, heatRegion;
+    public TextureRegion baseRegion, outlineRegion, swordRegion, heatRegion;
 
     public SwordTurret(String name){
         super(name);
@@ -102,7 +101,7 @@ public class SwordTurret extends BaseTurret{
     }
 
     @Override
-    protected TextureRegion[] icons(){
+    public TextureRegion[] icons(){
         return new TextureRegion[]{
             baseRegion,
             region
@@ -162,7 +161,7 @@ public class SwordTurret extends BaseTurret{
         protected float animationTime, coolantScl = 1f, logicControlTime = -1, lookAngle, heat;
         public BlockUnitc unit = Nulls.blockUnit;
         protected boolean logicShooting, wasAttacking, ready, traveling, hit;
-        protected FixedTrail[] trails = new FixedTrail[swords];
+        protected PMTrail[] trails = new PMTrail[swords];
 
         @Override
         public void created(){
@@ -174,7 +173,7 @@ public class SwordTurret extends BaseTurret{
             ext.set(x, y);
             ext.add();
             for(int i = 0; i < swords; i++){
-                trails[i] = new FixedTrail(trailLength);
+                trails[i] = new PMTrail(trailLength);
             }
         }
 
@@ -293,7 +292,7 @@ public class SwordTurret extends BaseTurret{
             Tmp.c1.set(trailColor).lerp(heatColor, heat).mul(1f, 1f, 1f, swordOpacity);
 
             Draw.z(Layer.flyingUnit + 0.003f);
-            for(FixedTrail t : trails){
+            for(PMTrail t : trails){
                 t.draw(Tmp.c1, trailWidth);
             }
 

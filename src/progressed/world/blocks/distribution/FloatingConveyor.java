@@ -28,7 +28,7 @@ public class FloatingConveyor extends Conveyor{
     public float deepSpeed = -1f;
     public float deepDisplayedSpeed = 0f;
 
-    protected TextureRegion[] topRegions = new TextureRegion[5];
+    public TextureRegion[] topRegions = new TextureRegion[5];
 
     public FloatingConveyor(String name){
         super(name);
@@ -98,31 +98,14 @@ public class FloatingConveyor extends Conveyor{
         public void placed(){
             super.placed();
 
-            deep = buildDeep();
+            deep = checkDeep(x, y);
         }
 
         @Override
         public void onProximityUpdate(){
             super.onProximityUpdate();
 
-            @Nullable ConveyorBuild prevc = back() instanceof ConveyorBuild && back().team == team ? (ConveyorBuild)back() : null;
-
-            if(nextc instanceof FloatingConveyorBuild n && prevc instanceof FloatingConveyorBuild p){
-                boolean nDeep = n.buildDeep();
-                boolean pDeep = p.buildDeep();
-
-                if(p.nextc == self()){
-                    if(nDeep && pDeep){
-                        deep = buildDeep();
-                    }else{
-                        deep = false;
-                    }
-                }else{
-                    deep = buildDeep();
-                }
-            }else{
-                deep = buildDeep();
-            }
+            deep = checkDeep(x, y);
         }
 
         @Override
@@ -215,10 +198,6 @@ public class FloatingConveyor extends Conveyor{
             }
 
             noSleep();
-        }
-
-        public boolean buildDeep(){
-            return checkDeep(x, y);
         }
     }
 }

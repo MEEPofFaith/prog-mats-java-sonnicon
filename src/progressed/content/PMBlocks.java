@@ -72,7 +72,7 @@ public class PMBlocks implements ContentList{
     // endregion
     // Region Distribution
     
-    floatingConveyor,
+    floatingConveyor, burstDriver,
 
     // endregion
     // Region Crafting
@@ -83,13 +83,16 @@ public class PMBlocks implements ContentList{
     // endregion
     // Region Effect
 
-    fence, web,
+    fence, web, shieldProjector,
 
     // endregion
     // Region Sandbox
 
     //Turret
     harbinger, everythingGun,
+
+    //Distribution
+    sandDriver,
     
     //Power
     strobeNode, strobeInf, strobeBoost, 
@@ -101,7 +104,7 @@ public class PMBlocks implements ContentList{
     godFactory, capBlock,
 
     //Effect
-    multiSource, multiVoid;
+    multiSource, multiVoid, multiSourceVoid;
 
     // endregion
 
@@ -455,7 +458,7 @@ public class PMBlocks implements ContentList{
             range = 200f;
             rangeExtention = 60f;
             reloadTime = 240f;
-            shootLength = 42/4;
+            shootLength = 42f / 4f;
             shootDuration = 60f;
             rotateSpeed = 8f;
             layers = 2;
@@ -888,6 +891,23 @@ public class PMBlocks implements ContentList{
             researchCostMultiplier = 300f;
         }};
 
+        burstDriver = new BurstDriver("burst-driver"){{
+            requirements(Category.distribution, with(
+                Items.titanium, 275,
+                Items.silicon, 200,
+                Items.lead, 350,
+                Items.thorium, 125,
+                PMItems.techtanite, 75
+            ));
+            size = 3;
+            itemCapacity = 180;
+            reloadTime = 120f;
+            shots = 90;
+            delay = 0.75f;
+            range = 560f;
+            consumes.power(2.75f);
+        }};
+
         // endregion
         // Region Crafting
 
@@ -1058,6 +1078,23 @@ public class PMBlocks implements ContentList{
             powerPerLink = 0.5f;
         }};
 
+        shieldProjector = new ShieldProjector("shield-projector"){{
+            requirements(Category.effect, with(
+                Items.lead, 325,
+                Items.titanium, 225,
+                Items.surgeAlloy, 75,
+                PMItems.techtanite, 125
+            ));
+            size = 4;
+            radius = 88f;
+            shieldHealth = 2600f;
+            phaseShieldBoost = 1800f;
+            cooldownBrokenBase *= 2f;
+
+            consumes.items(with(Items.phaseFabric, 1, PMItems.techtanite, 1)).boost();
+            consumes.power(7f);
+        }};
+
         // endregion
         // Region Sandbox
 
@@ -1113,6 +1150,17 @@ public class PMBlocks implements ContentList{
             }
         };
 
+        // Distribution
+        sandDriver = new SandDriver("sand-driver"){{
+            size = 3;
+            itemCapacity = 180;
+            reloadTime = 120f;
+            shots = 90;
+            delay = 0.75f;
+            range = 560f;
+            consumes.power(0.1f);
+        }};
+
         //Power
         strobeNode = new StrobeNode("rainbow-power-node");
 
@@ -1126,14 +1174,12 @@ public class PMBlocks implements ContentList{
 
         //Wall
         sandboxWall = new SandboxWall("sandbox-wall"){{
-            health = 999999999;
             iconSize = 3f;
             rotateRadius = 2.5f;
         }};
 
         sandboxWallLarge = new SandboxWall("sandbox-wall-large"){{
             size = 2;
-            health = 999999999;
             iconSize = 6f;
             rotateRadius = 5f;
         }};
@@ -1160,6 +1206,7 @@ public class PMBlocks implements ContentList{
         //Effect
         multiSource = new MultiSource("multi-source");
         multiVoid = new MultiVoid("multi-void");
+        multiSourceVoid = new MultiSourceVoid("multi-source-void");
 
         // endregion
     }

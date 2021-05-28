@@ -36,7 +36,10 @@ public class BurstDriverItem extends BulletType{
         Drawf.shadow(region, b.x - size / 2f, b.y - size / 2f, size, size, rot);
 
         Draw.z(Layer.bullet - 0.02f); //Don't bloom
-        Draw.rect(region, b.x, b.y, size, size, rot);
+        Lines.stroke(size / 12f, data.item.color);
+        Lines.circle(b.x, b.y, size / 2f);
+        Draw.color();
+        Draw.rect(region, b.x, b.y, size * 0.75f, size * 0.75f, rot);
     }
 
     @Override

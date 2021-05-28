@@ -27,7 +27,7 @@ jobs:
         chmod +x alpha-bleeding-linux.exe
 
     - name: BOB THE BUILDER CAN HE FIX IT! BOB THE BUILDER YES HE CAN! (Builds and dexifies mod jar file)
-      run: ./gradlew alphableed buildDex
+      run: ./gradlew bleedBuildDex
 
     - name: New building's grand opening.
       uses: actions/upload-artifact@v2.2.1

@@ -547,7 +547,12 @@ public class PMBlocks implements ContentList{
 
         magnet = new ItemTurret("attraction"){
             {
-                requirements(Category.turret, empty);
+                requirements(Category.turret, with(
+                    Items.copper, 115,
+                    Items.lead, 80,
+                    Items.graphite, 30,
+                    Items.titanium, 25
+                ));
                 ammo(
                     Items.copper, PMBullets.magnetCopper,
                     Items.titanium, PMBullets.magnetTitanium,

@@ -133,31 +133,33 @@ public class PMUtls{
     }
 
     public static void godHood(UnitType target){
-        content.units().each(u -> {
-            if(u != target){
-                u.weapons.each(w -> {
-                    if(!w.bullet.killShooter){
-                        Weapon copy = w.copy();
-                        target.weapons.add(copy);
-                        if(w.otherSide != -1){
-                            int diff = u.weapons.get(w.otherSide).otherSide - w.otherSide;
-                            copy.otherSide = target.weapons.indexOf(copy) + diff;
+        try{
+            content.units().each(u -> {
+                if(u != target){
+                    u.weapons.each(w -> {
+                        if(!w.bullet.killShooter){
+                            Weapon copy = w.copy();
+                            target.weapons.add(copy);
+                            if(w.otherSide != -1){
+                                int diff = u.weapons.get(w.otherSide).otherSide - w.otherSide;
+                                copy.otherSide = target.weapons.indexOf(copy) + diff;
+                            }
+
+                            copy.rotateSpeed = 360f;
+                            copy.shootCone = 360f;
+
+                            if(copy.shootStatus == StatusEffects.unmoving || copy.shootStatus == StatusEffects.slow){
+                                copy.shootStatus = StatusEffects.none;
+                            }
                         }
+                    });
 
-                        copy.rotateSpeed = 360f;
-                        copy.shootCone = 360f;
-
-                        if(copy.shootStatus == StatusEffects.unmoving || copy.shootStatus == StatusEffects.slow){
-                            copy.shootStatus = StatusEffects.none;
-                        }
-                    }
-                });
-
-                u.abilities.each(a -> {
-                    target.abilities.add(a);
-                });
-            }
-        });
+                    u.abilities.each(a -> {
+                        target.abilities.add(a);
+                    });
+                }
+            });
+        }catch(Throwable ignored){}
     }
 
     public static float multiLerp(float[] values, float progress){ //No idea how this works, just stole it from Color

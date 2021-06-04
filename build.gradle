@@ -92,4 +92,8 @@ task dexify(type: Jar){
     from(zipTree(jarArtifact), zipTree(dexedArtifact))
 }
 
+task bleedBuild dependsOn "alphableed", "build"
+
 task buildDex dependsOn "build", "dexify"
+
+task bleedBuildDex dependsOn "alphableed", "buildDex"

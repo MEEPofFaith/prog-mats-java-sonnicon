@@ -240,7 +240,6 @@ public class PMUnitTypes implements ContentList{
                 super.setStats();
 
                 stats.add(Stat.abilities, "Everything");
-                stats.remove(Stat.weapons);
                 stats.add(Stat.weapons, "Everything");
             }
         };

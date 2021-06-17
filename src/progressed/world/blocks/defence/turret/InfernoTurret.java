@@ -59,6 +59,16 @@ public class InfernoTurret extends PowerTurret{
     }
 
     @Override
+    public void setStats(){
+        super.setStats();
+
+        stats.remove(Stat.booster);
+        stats.add(Stat.input, new BoosterListValue(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, false, l -> consumes.liquidfilters.get(l.id)));
+        stats.remove(Stat.inaccuracy);
+        stats.add(Stat.shots, "@stat.pm-inferno");
+    }
+
+    @Override
     public void load(){
         super.load();
 
@@ -95,16 +105,6 @@ public class InfernoTurret extends PowerTurret{
             baseRegion,
             atlas.find(name + "-icon")
         };
-    }
-
-    @Override
-    public void setStats(){
-        super.setStats();
-
-        stats.remove(Stat.booster);
-        stats.add(Stat.input, new BoosterListValue(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, false, l -> consumes.liquidfilters.get(l.id)));
-        stats.remove(Stat.inaccuracy);
-        stats.add(Stat.shots, "@stat.pm-inferno");
     }
 
     @Override

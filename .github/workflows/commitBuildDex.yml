@@ -23,11 +23,9 @@ jobs:
     - name: Double-checking construction permit, making sure cement is mixed properly
       run: |
         chmod +x gradlew
-        chmod +x alpha-bleed
-        chmod +x alpha-bleeding-linux.exe
 
     - name: BOB THE BUILDER CAN HE FIX IT! BOB THE BUILDER YES HE CAN! (Builds and dexifies mod jar file)
-      run: ./gradlew bleedBuildDex
+      run: ./gradlew buildDex
 
     - name: New building's grand opening.
       uses: actions/upload-artifact@v2.2.1

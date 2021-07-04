@@ -10,7 +10,7 @@ Progressed Materials, but now has been ported to Java, and all subsequent work w
 - Extra Sand in the Sandbox
 - Progressed Materials
 
-Add a load of turrets ~~many of which need balancing~~, small minor things, and sandbox only items for fun and testing.
+Adds a load of turrets ~~many of which need balancing~~, small minor things, and sandbox only items for fun and testing.
 
 ## Download Now!   
 [![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=FCC21B&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)

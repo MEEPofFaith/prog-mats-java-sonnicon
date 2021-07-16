@@ -15,7 +15,7 @@ jobs:
     - name: Gather construction materials
       uses: actions/setup-java@v1
       with:
-        java-version: 15
+        java-version: 16
 
     - name: Building roads
       run: echo "${ANDROID_HOME}/build-tools/30.0.1" >> $GITHUB_PATH

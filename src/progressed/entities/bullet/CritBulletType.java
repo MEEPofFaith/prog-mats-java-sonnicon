@@ -62,7 +62,8 @@ public class CritBulletType extends BasicBulletType{
 
     @Override
     public void draw(Bullet b){
-        if(((CritBulletData)b.data).trail instanceof PMTrail tr && trailLength > 0) tr.draw(backColor, trailWidth);
+        PMTrail trail = ((CritBulletData)b.data).trail;
+        if(trail != null && trailLength > 0) trail.draw(backColor, trailWidth);
         super.draw(b);
     }
 
@@ -89,7 +90,8 @@ public class CritBulletType extends BasicBulletType{
             }
         }
 
-        if(((CritBulletData)b.data).trail instanceof PMTrail tr && trailLength > 0) tr.update(b.x, b.y, b.rotation());
+        PMTrail trail = ((CritBulletData)b.data).trail;
+        if(trail != null && trailLength > 0) trail.update(b.x, b.y, b.rotation());
     }
 
     @Override
@@ -111,7 +113,7 @@ public class CritBulletType extends BasicBulletType{
     @Override
     public void despawned(Bullet b){
         if(b.data instanceof CritBulletData data){
-            if(data.trail instanceof PMTrail tr) tr.clear();
+            if(data.trail != null) data.trail.clear();
             data.despawned = true;
         }
         super.despawned(b);

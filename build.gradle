@@ -5,11 +5,13 @@ plugins{
 
 group pGroup
 
-sourceCompatibility = 1.8
 sourceSets.main{
     java.srcDir("src/")
     resources.srcDir("assets/")
 }
+
+sourceCompatibility = 16
+targetCompatibility = 8
 
 repositories{
     mavenCentral()
@@ -18,10 +20,10 @@ repositories{
 
 dependencies{
     implementation "com.github.younggam:multi-lib:$multilibVersion"
-    
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
-    compileOnly "com.squareup:javapoet:$javapoetVersion"
-    compileOnly "com.github.Anuken:jabel:$jabelVersion"
+
+    compileOnly "com.github.bsideup.jabel:jabel-javac-plugin:$jabelVersion"
+    annotationProcessor "com.github.bsideup.jabel:jabel-javac-plugin:$jabelVersion"
 }
 
 ext{
@@ -40,22 +42,20 @@ jar{
     }
 }
 
-tasks.withType(JavaCompile){
-    sourceCompatibility = 15
-    targetCompatibility = 8
+compileJava{
+    options.incremental = true
+    options.encoding = 'UTF-8'
+    options.compilerArgs += '-Xlint:deprecation'
 
-    options.encoding("UTF-8")
-    if(JavaVersion.current() != JavaVersion.VERSION_1_8){
-        options.compilerArgs.addAll(['--release', '8', '--enable-preview'])
+    options.fork = true
+    options.forkOptions.jvmArgs += [
+            '--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED',
+            '--add-opens=jdk.compiler/com.sun.tools.javac.parser=ALL-UNNAMED'
+    ]
+
+    if(JavaVersion.current() != JavaVersion.VERSION_1_8) {
+        options.compilerArgs += ['--release', '8']
     }
-
-    doFirst{
-        options.compilerArgs = options.compilerArgs.findAll{it != '--enable-preview'}
-    }
-}
-
-tasks.withType(JavaExec){
-    jvmArgs += "--enable-preview"
 }
 
 task alphableed doFirst{
@@ -72,7 +72,7 @@ task alphableed doFirst{
 }
 
 task dexify(type: Jar){
-    archiveName "${pArtifactFilename}Dexed.jar"
+    archiveFileName.set "${pArtifactFilename}Dexed.jar"
 
     final File  jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "${pArtifactFilename}Desktop.jar"),
                 dexedArtifact = new File(tasks.dexify.getTemporaryDir(), "dexed.jar")

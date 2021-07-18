@@ -74,7 +74,7 @@ task alphableed doFirst{
 task dexify(type: Jar){
     archiveFileName.set "${pArtifactFilename}Dexed.jar"
 
-    final File  jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "${pArtifactFilename}Desktop.jar"),
+    final File jarArtifact = new File(tasks.jar.archiveFile.get().asFile.parent, "${pArtifactFilename}Desktop.jar"),
                 dexedArtifact = new File(tasks.dexify.getTemporaryDir(), "Dexed.jar")
 
     doFirst{

@@ -129,6 +129,11 @@ public class PMTechTree implements ContentList{
             node(excalibur, Seq.with(new SectorComplete(SectorPresets.nuclearComplex)));
         });
 
+        vanillaNode(parallax, () -> {
+            //Nanomachines
+            node(vaccinator);
+        });
+
         vanillaNode(segment, () -> {
             //Signal flare
             node(signal);

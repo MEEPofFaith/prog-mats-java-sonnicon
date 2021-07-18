@@ -11,6 +11,7 @@ import mindustry.type.*;
 
 public class ParalyzeStatusEffect extends StatusEffect{
     public float cooldown, rotationRand;
+    public boolean hidden = true;
     public Color effectColor = Pal.lancerLaser;
 
     public ParalyzeStatusEffect(String name){

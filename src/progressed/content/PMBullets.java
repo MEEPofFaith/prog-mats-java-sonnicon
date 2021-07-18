@@ -27,21 +27,23 @@ public class PMBullets implements ContentList{
     
     basicSentryLaunch, strikeSentryLaunch, dashSentryLaunch,
 
+    syringe,
+
     smallFlare, mediumFlare, largeFlare,
     
     blackHole, cataclysm, absorbed,
     
-    empParticle, quantumParticle, empParticleStrong,
+    empParticle,
     
     firestormMissile,
 
     recursionTwo, recursionOne,
     
-    strikedownBasic, strikedownEmp, strikedownQuantum, strikedownRecursive,
+    strikedownBasic, strikedownEmp, strikedownRecursive,
     
     basicSentryDrop, strikeSentryDrop, dashSentryDrop,
     
-    arbiterBasic, arbiterEmp, arbiterClusterFrag, arbiterCluster, arbiterSentry,
+    arbiterBasic, arbiterClusterFrag, arbiterCluster, arbiterSentry,
     
     harbingerLaser, excaliburLaser, sentinelLaser,
 
@@ -199,7 +201,7 @@ public class PMBullets implements ContentList{
         }};
 
         sniperBoltTechtanite = new CritBulletType(13f, 800f){
-            float fragInacc = 5f;
+            final float fragInacc = 5f;
 
             {
                 lifetime = 23f;
@@ -285,6 +287,18 @@ public class PMBullets implements ContentList{
         strikeSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.strikeSentry);
         dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
 
+        syringe = new InjectorBulletType(3f, 7f){{
+            nanomachines = true;
+            vaccines = new Vaccine[]{
+                new Vaccine(PMStatusEffects.vcFrenzy),
+                new Vaccine(PMStatusEffects.vcDisassembly),
+                new Vaccine(PMStatusEffects.vcWeaken)
+            };
+            width = height = 8f;
+            lifetime = 50f;
+            ammoMultiplier = 4;
+        }};
+
         smallFlare = new SignalFlareBulletType(8f, 60f, PMUnitTypes.flareSmall){{
             size = 4f;
             spinSpeed = 3f;
@@ -337,26 +351,6 @@ public class PMBullets implements ContentList{
             status = PMStatusEffects.emp;
             statusDuration = 60f * 10f;
         }};
-
-        quantumParticle = new ParticleBulletType(3f, 0f){{
-            lifetime = 40f;
-            particleSound = Sounds.sap;
-            particleSoundChance = 0.25f;
-            hitColor = trailColor = Color.valueOf("EFE4CA");
-            status = PMStatusEffects.teleportation;
-            statusDuration = 60f * 10f;
-        }};
-
-        empParticleStrong = new ParticleBulletType(12f, 0f){{
-            lifetime = 48f;
-            particleSound = Sounds.spark;
-            particleSoundChance = 0.4f;
-            particleSoundMinPitch = 0.4f;
-            particleSoundMaxPitch = 0.7f;
-            hitColor = trailColor = Pal.lancerLaser;
-            status = PMStatusEffects.empStrong;
-            statusDuration = 60f * 12f;
-        }};
         
         firestormMissile = new StrikeBulletType(2.4f, 28f, "prog-mats-storm-missile"){{
             splashDamage = 72f;
@@ -371,8 +365,7 @@ public class PMBullets implements ContentList{
             despawnEffect = PMFx.missileBoom;
             blockEffect = PMFx.missileBlockedSmall;
             
-            trailParam = 3f;
-            trailEffect = Fx.missileTrail;
+            targetColor = PMPal.missileBasic;
 
             elevation = 150f;
             riseTime = 30f;
@@ -399,9 +392,7 @@ public class PMBullets implements ContentList{
             despawnEffect = PMFx.nuclearExplosion;
             blockEffect = PMFx.missileBlocked;
 
-            trailParam = 5f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailMedium;
+            targetColor = PMPal.missileBasic;
 
             autoDropRadius = 15f;
             stopRadius = 10f;
@@ -433,9 +424,7 @@ public class PMBullets implements ContentList{
             fragVelocityMin = 0.5f;
             fragBullet = empParticle;
 
-            trailParam = 5f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailMedium;
+            targetColor = PMPal.missileEmp;
 
             autoDropRadius = 35f;
             stopRadius = 10f;
@@ -444,38 +433,6 @@ public class PMBullets implements ContentList{
             elevation = 300f;
             riseTime = 35f;
             fallTime = 15f;
-            trailSize = 0.7f;
-            riseSpin = 270f;
-            fallSpin = 90f;
-        }};
-
-        strikedownQuantum = new StrikeBulletType(1.8f, 80f, "prog-mats-strikedown-quantum"){{
-            splashDamage = 160f;
-            splashDamageRadius = 48f;
-            reloadMultiplier = 0.5f;
-            homingPower = 0.075f;
-            homingRange = 330f;
-            lifetime = 200f;
-            hitSound = Sounds.bang;
-            hitShake = 5f;
-            despawnEffect = PMFx.nuclearExplosion;
-            blockEffect = PMFx.missileBlocked;
-
-            fragBullets = 360;
-            fragVelocityMin = 0.5f;
-            fragBullet = quantumParticle;
-
-            trailParam = 5f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailMedium;
-
-            autoDropRadius = 25f;
-            stopRadius = 10f;
-            riseEngineSize = 16f;
-            fallEngineSize = 8f;
-            elevation = 300f;
-            riseTime = 30f;
-            fallTime = 25f;
             trailSize = 0.7f;
             riseSpin = 270f;
             fallSpin = 90f;
@@ -492,9 +449,7 @@ public class PMBullets implements ContentList{
             despawnEffect = PMFx.nuclearExplosion;
             blockEffect = PMFx.missileBlocked;
 
-            trailParam = 5f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailMedium;
+            targetColor = PMPal.missileFrag;
 
             autoDropRadius = 15f;
             stopRadius = 10f;
@@ -522,9 +477,7 @@ public class PMBullets implements ContentList{
             despawnEffect = PMFx.nuclearExplosion;
             blockEffect = PMFx.missileBlocked;
 
-            trailParam = 5f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailMedium;
+            targetColor = PMPal.missileFrag;
 
             autoDropRadius = 15f;
             stopRadius = 10f;
@@ -557,9 +510,7 @@ public class PMBullets implements ContentList{
             despawnEffect = PMFx.nuclearExplosion;
             blockEffect = PMFx.missileBlocked;
 
-            trailParam = 5f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailMedium;
+            targetColor = PMPal.missileFrag;
 
             autoDropRadius = 15f;
             stopRadius = 10f;
@@ -591,9 +542,7 @@ public class PMBullets implements ContentList{
             despawnEffect = PMFx.mushroomCloudExplosion;
             blockEffect = PMFx.missileBlockedLarge;
 
-            trailParam = 8f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailLarge;
+            targetColor = PMPal.missileBasic;
 
             autoDropRadius = 30f;
             stopRadius = 20f;
@@ -611,40 +560,6 @@ public class PMBullets implements ContentList{
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
-        arbiterEmp = new StrikeBulletType(2f, 300f, "prog-mats-arbiter-emp"){{
-            splashDamage = 12000f;
-            splashDamageRadius = 170f;
-            reloadMultiplier = 0.75f;
-            homingPower = 0.075f;
-            homingRange = 2200f;
-            lifetime = 2250f;
-            hitSound = Sounds.explosionbig;
-            hitShake = 30f;
-            despawnEffect = PMFx.mushroomCloudExplosion;
-            blockEffect = PMFx.missileBlockedLarge;
-
-            fragBullets = 360;
-            fragBullet = empParticleStrong;
-            fragVelocityMin = 0.5f;
-
-            trailParam = 8f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailLarge;
-
-            autoDropRadius = 60f;
-            stopRadius = 30f;
-            riseEngineSize = 24f;
-            fallEngineSize = 14f;
-            trailSize = 0.7f;
-            elevation = 900f;
-            riseTime = 180f;
-            fallTime = 70f;
-            trailSize = 2f;
-            riseSpin = 720f;
-            fallSpin = 180f;
-            targetRadius = 2f;
-        }};
-
         arbiterClusterFrag = new StrikeBulletType(1f, 80f, "prog-mats-arbiter-cluster-frag"){{
             splashDamage = 3000f;
             splashDamageRadius = 40f;
@@ -654,9 +569,7 @@ public class PMBullets implements ContentList{
             despawnEffect = PMFx.nuclearExplosion;
             blockEffect = PMFx.missileBlocked;
 
-            trailParam = 5f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailMedium;
+            targetColor = PMPal.missileFrag;
 
             autoDropRadius = stopRadius = -1f;
             fallEngineSize = 8f;
@@ -681,9 +594,7 @@ public class PMBullets implements ContentList{
             fragVelocityMax = 1f;
             fragLifeMin = 0.5f;
 
-            trailParam = 8f;
-            trailChance = 0.2f;
-            trailEffect = PMFx.missileTrailLarge;
+            targetColor = PMPal.missileFrag;
 
             autoDropRadius = 30f;
             stopRadius = 20f;
@@ -704,7 +615,7 @@ public class PMBullets implements ContentList{
         dashSentryDrop = new UnitSpawnStrikeBulletType(PMUnitTypes.dashSentry);
 
         arbiterSentry = new StrikeBulletType(2.25f, 0f, "prog-mats-arbiter-unit"){
-            public BulletType[] unitDrops = {basicSentryDrop, strikeSentryDrop, dashSentryDrop};
+            public final BulletType[] unitDrops = {basicSentryDrop, strikeSentryDrop, dashSentryDrop};
 
             {
                 reloadMultiplier = 1.25F;
@@ -720,9 +631,7 @@ public class PMBullets implements ContentList{
                 fragVelocityMax = 1.5f;
                 fragLifeMin = 0.5f;
 
-                trailParam = 8f;
-                trailChance = 0.2f;
-                trailEffect = PMFx.missileTrailLarge;
+                targetColor = PMPal.missileUnit;
 
                 autoDropRadius = 30f;
                 stopRadius = 20f;

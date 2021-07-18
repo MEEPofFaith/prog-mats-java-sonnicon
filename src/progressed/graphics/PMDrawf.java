@@ -53,15 +53,20 @@ public class PMDrawf{
         }
     }
 
-    public static void target(float x, float y, float angle, float radius, Color color, float alpha){
+    public static void target(float x, float y, float angle, float radius, Color ringColor, Color spikeColor, float alpha){
         Draw.color(Pal.gray, alpha);
         Lines.stroke(3);
         Lines.poly(x, y, 4, 7f * radius, angle);
         Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
-        Draw.color(color, alpha);
+        Draw.color(ringColor, alpha);
         Lines.stroke(1);
         Lines.poly(x, y, 4, 7f * radius, angle);
+        Draw.color(spikeColor);
         Lines.spikes(x, y, 3f * radius, 6f * radius, 4, angle);
         Draw.color();
+    }
+
+    public static void target(float x, float y, float angle, float radius, Color color, float alpha){
+        target(x, y, angle, radius, color, color, alpha);
     }
 }

@@ -58,7 +58,7 @@ public class PMBlocks implements ContentList{
     caliber,
 
     //Misc
-    signal, tinker,
+    signal, tinker, vaccinator,
 
     //Why do I hear anxiety piano
     sentinel,
@@ -664,6 +664,40 @@ public class PMBlocks implements ContentList{
             shootLength = 16f;
         }};
 
+        vaccinator = new ItemTurret("vaccinator"){
+            {
+                requirements(Category.turret, with(
+                    Items.lead, 70,
+                    Items.titanium, 50,
+                    Items.silicon, 80,
+                    Items.plastanium, 20
+                ));
+                ammo(
+                    Items.plastanium, PMBullets.syringe
+                );
+
+                size = 2;
+                health = 80 * size * size;
+                range = 17f * 8f;
+
+                reloadTime = 120f;
+
+                shots = 4;
+                spread = 15f; //h
+                burstSpacing = 3f;
+
+                shootSound = Sounds.shootSnap;
+            }
+
+            @Override
+            public void setStats(){
+                super.setStats();
+
+                stats.remove(Stat.ammo);
+                stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+            }
+        };
+
         sentinel = new AimLaserTurret("sentinel"){{
             requirements(Category.turret, with(
                 Items.copper, 900,
@@ -765,7 +799,6 @@ public class PMBlocks implements ContentList{
             ammo(
                 PMItems.basicMissile, PMBullets.strikedownBasic,
                 PMItems.empMissile, PMBullets.strikedownEmp,
-                PMItems.quantiumMissile, PMBullets.strikedownQuantum,
                 PMItems.recursiveMissile, PMBullets.strikedownRecursive
             );
             reloadBar = true;
@@ -793,7 +826,6 @@ public class PMBlocks implements ContentList{
             ));
             ammo(
                 PMItems.basicNuke, PMBullets.arbiterBasic,
-                PMItems.empNuke, PMBullets.arbiterEmp,
                 PMItems.clusterNuke, PMBullets.arbiterCluster,
                 PMItems.sentryNuke, PMBullets.arbiterSentry
             );
@@ -959,7 +991,7 @@ public class PMBlocks implements ContentList{
             dumpToggle = true;
         }};
 
-        missileFactory = new MissileCrafter("missile-factory", 8){{
+        missileFactory = new MissileCrafter("missile-factory", 6){{
             requirements(Category.crafting, with(
                 Items.copper, 300,
                 Items.lead, 200,
@@ -981,11 +1013,6 @@ public class PMBlocks implements ContentList{
                 new OutputContents(with(PMItems.empMissile, 1)),
                 75f, true
             );
-            addRecipe(//Quantium Missile
-                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 8, Items.phaseFabric, 13, Items.silicon, 10), 7f),
-                new OutputContents(with(PMItems.quantiumMissile, 1)),
-                90f, true
-            );
             addRecipe(//Recursive Missile
                 new InputContents(with(PMItems.missileShell, 1, PMItems.basicMissile, 2, Items.copper, 15, Items.plastanium, 10, Items.silicon, 10), 5f),
                 new OutputContents(with(PMItems.recursiveMissile, 1)),
@@ -999,11 +1026,6 @@ public class PMBlocks implements ContentList{
                 new InputContents(with(PMItems.nukeShell, 1, Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25), 6f),
                 new OutputContents(with(PMItems.basicNuke, 1)),
                 90f, true
-            );
-            addRecipe(//EMP Nuke
-                new InputContents(with(PMItems.nukeShell, 1, Items.silicon, 30, Items.surgeAlloy, 20, PMItems.techtanite, 40), 8f),
-                new OutputContents(with(PMItems.empNuke, 1)),
-                105f, true
             );
             addRecipe(//Cluster Nuke
                 new InputContents(with(PMItems.nukeShell, 1, PMItems.basicMissile, 5, Items.copper, 30, Items.plastanium, 15, PMItems.techtanite, 25), 6.25f),

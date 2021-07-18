@@ -66,13 +66,12 @@ public class PMTechTree implements ContentList{
                             //Missile
                             node(basicMissile, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                                 node(empMissile, recipeCost((MultiCrafter)missileFactory, 1, 5f));
-                                node(quantiumMissile, recipeCost((MultiCrafter)missileFactory, 2, 5f));
+                                node(recursiveMissile, recipeCost((MultiCrafter)missileFactory, 2, 5f));
                             });
                             //Nuke
                             node(basicNuke, ItemStack.empty, Seq.with(new Research(arbiter)), () -> {
-                                node(empNuke, recipeCost((MultiCrafter)missileFactory, 4, 5f));
-                                node(clusterNuke, recipeCost((MultiCrafter)missileFactory, 5, 5f));
-                                node(sentryNuke, recipeCost((MultiCrafter)missileFactory, 6, 5f));
+                                node(clusterNuke, recipeCost((MultiCrafter)missileFactory, 4, 5f));
+                                node(sentryNuke, recipeCost((MultiCrafter)missileFactory, 5, 5f));
                             });
                         });
                     });

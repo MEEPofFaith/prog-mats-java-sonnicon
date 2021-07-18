@@ -11,9 +11,9 @@ public class PMItems implements ContentList{
     
     missileShell, nukeShell,
 
-    basicMissile, empMissile, quantiumMissile, recursiveMissile,
+    basicMissile, empMissile, recursiveMissile,
 
-    basicNuke, empNuke, clusterNuke, sentryNuke,
+    basicNuke, clusterNuke, sentryNuke,
 
     basicSentryBox, strikeSentryBox, dashSentryBox;
 
@@ -31,13 +31,9 @@ public class PMItems implements ContentList{
 
         empMissile = new Item("emp-missile", Color.valueOf("6974C4"));
 
-        quantiumMissile = new Item("quantum-missile", Color.valueOf("EFCA98"));
-
         recursiveMissile = new Item("recursive-missile", Color.valueOf("73D188"));
 
         basicNuke = new Item("basic-nuke", Color.valueOf("D4816B"));
-
-        empNuke = new Item("emp-nuke", Color.valueOf("5757C1"));
 
         clusterNuke = new Item("cluster-nuke", Color.valueOf("62AE7F"));
 

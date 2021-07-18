@@ -14,8 +14,10 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
+import progressed.*;
 import progressed.content.*;
 import progressed.entities.bullet.*;
+import progressed.entities.bullet.InjectorBulletType.*;
 import progressed.entities.units.*;
 
 import static mindustry.Vars.*;
@@ -105,6 +107,50 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
 
                 if(type.status != StatusEffects.none){
                     sep(bt, (type.minfo.mod == null ? type.status.emoji() : "") + "[stat]" + type.status.localizedName);
+                }
+
+                if(type instanceof InjectorBulletType stype){ //This could probably be optimized, but stat display is only run once so whatever
+                    Vaccine[] v = stype.vaccines;
+                    StringBuilder str = new StringBuilder();
+                    str.append("[lightgray]");
+
+                    if(v.length == 1){ //Single
+                        StatusEffect s = v[0].status;
+                        str.append(s.minfo.mod == null ? s.emoji() : "")
+                            .append("[stat]")
+                            .append(s.localizedName);
+                    }else if(v.length == 2){ //Double
+                        StatusEffect s = v[0].status;
+                        str.append(s.minfo.mod == null ? s.emoji() : "")
+                            .append("[stat]")
+                            .append(s.localizedName)
+                            .append("[] or ");
+
+                        s = v[1].status;
+                        str.append(s.minfo.mod == null ? s.emoji() : "")
+                            .append("[stat]")
+                            .append(s.localizedName);
+                    }else if(v.length > 2){ //3 or more
+                        for(int i = 0; i < v.length - 1; i++){
+                            StatusEffect s = v[i].status;
+                            str.append(s.minfo.mod == null ? s.emoji() : "")
+                                .append("[stat]")
+                                .append(s.localizedName)
+                                .append("[], ");
+                        }
+
+                        StatusEffect s = v[v.length - 1].status;
+                        str.append("or ")
+                            .append(s.minfo.mod == null ? s.emoji() : "")
+                            .append("[stat]")
+                            .append(s.localizedName);
+                    }
+
+                    sep(bt, str.toString());
+                    if(stype.nanomachines){
+                        bt.row();
+                        bt.image(Core.atlas.find("prog-mats-nanomachines")).padTop(8f).scaling(Scaling.fit);
+                    }
                 }
 
                 if(type.homingPower > 0.01f){

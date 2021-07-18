@@ -136,8 +136,7 @@ public class PMUnitTypes implements ContentList{
                     hitSound = Sounds.explosion;
                     hitShake = 1.5f;
 
-                    trailParam = 3f;
-                    trailEffect = PMFx.missileTrailSmall;
+                    targetColor = PMPal.missileBasic;
 
                     despawnEffect = PMFx.missileBoom;
                     blockEffect = PMFx.missileBlockedSmall;
@@ -155,7 +154,7 @@ public class PMUnitTypes implements ContentList{
 
         EntityMapping.nameMap.put("dash-sentry", SentryUnitEntity::new);
         dashSentry = new SentryUnitType("dash-sentry"){
-            float len = 56f, rangeMul = 16f;
+            final float len = 56f, rangeMul = 16f;
             {
                 health = 800f;
                 duration = 12f * 60f;

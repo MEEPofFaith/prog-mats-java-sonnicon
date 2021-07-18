@@ -31,6 +31,7 @@ public class StrikeBulletType extends BasicBulletType{
     public float riseTime = 60f, fallTime = 20f, elevation = 200f;
     public float riseEngineLightRadius = 50f, fallEngineLightRadius = 42f, engineLightOpacity = 0.5f;
     public Color engineLightColor = Pal.engine;
+    public Color targetColor;
     public float riseSpin = 0f, fallSpin = 0f;
     public Effect blockEffect = Fx.none;
 
@@ -39,12 +40,13 @@ public class StrikeBulletType extends BasicBulletType{
     public StrikeBulletType(float speed, float damage, String sprite){
         super(speed, damage, sprite);
         ammoMultiplier = 1;
-        backMove = collides = hittable = absorbable = reflectable = keepVelocity = false;
+        collides = hittable = absorbable = reflectable = keepVelocity = false;
         hitEffect = Fx.blockExplosionSmoke;
         shootEffect = smokeEffect = Fx.none;
         lightRadius = 32f;
         lightOpacity = 0.6f;
         lightColor = Pal.engine;
+        trailEffect = Fx.none;
     }
 
     public StrikeBulletType(float speed, float damage){
@@ -229,17 +231,16 @@ public class StrikeBulletType extends BasicBulletType{
             Tmp.v1.trns(225f, rise * fall * elevation * 2f);
 
             //Target
+            Draw.z(Layer.bullet - 0.02f);
             if(autoDropRadius > 0f){
                 float dropAlpha = Mathf.curve(b.time, riseTime * 2f/3f, riseTime) - Mathf.curve(b.time, b.lifetime - 8f, b.lifetime);
-                Draw.z(Layer.bullet + 0.001f);
                 Draw.color(Color.red, (0.25f + 0.5f * Mathf.absin(16f, 1f)) * dropAlpha);
                 Fill.circle(b.x, b.y, autoDropRadius);
             }
             if(targetRadius > 0){
                 float target = Mathf.curve(b.time, 0f, riseTime / 2f) - Mathf.curve(b.time, b.lifetime - fallTime / 2f, b.lifetime);
                 float radius = targetRadius * target;
-                Draw.z(Layer.bullet + 0.002f);
-                PMDrawf.target(b.x, b.y, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f), radius, b.team.color, target);
+                PMDrawf.target(b.x, b.y, Time.time * 1.5f + Mathf.randomSeed(b.id, 360f), radius, targetColor != null ? targetColor : b.team.color, b.team.color, target);
             }
 
             //Missile

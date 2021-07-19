@@ -679,6 +679,7 @@ public class PMBlocks implements ContentList{
                 size = 2;
                 health = 80 * size * size;
                 range = 17f * 8f;
+                shootLength = 21f / 4f;
 
                 reloadTime = 120f;
 

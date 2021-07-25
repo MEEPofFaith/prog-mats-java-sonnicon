@@ -20,7 +20,6 @@ import mindustry.world.blocks.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import mindustry.world.meta.values.*;
 import progressed.content.*;
 import progressed.entities.*;
 import progressed.graphics.*;
@@ -113,7 +112,7 @@ public class SwordTurret extends BaseTurret{
         super.setStats();
 
         if(acceptCoolant){
-            stats.add(Stat.booster, new BoosterListValue(speed, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, true, l -> consumes.liquidfilters.get(l.id)));
+            stats.add(Stat.booster, StatValues.boosters(speed, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, true, l -> consumes.liquidfilters.get(l.id)));
         }
 
         stats.add(Stat.reload, PMUtls.stringsFixed(totalTime / 60f));
@@ -159,7 +158,7 @@ public class SwordTurret extends BaseTurret{
         public @Nullable Posc target;
         public Vec2 targetPos = new Vec2(), currentPos = new Vec2();
         protected float animationTime, coolantScl = 1f, logicControlTime = -1, lookAngle, heat;
-        public BlockUnitc unit = Nulls.blockUnit;
+        public BlockUnitc unit;
         protected boolean logicShooting, wasAttacking, ready, traveling, hit;
         protected PMTrail[] trails = new PMTrail[swords];
 

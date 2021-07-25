@@ -15,7 +15,6 @@ import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import mindustry.world.meta.values.*;
 import progressed.entities.bullet.MagmaBulletType;
 import progressed.graphics.*;
 import progressed.util.*;
@@ -61,7 +60,7 @@ public class EruptorTurret extends PowerTurret{
         super.setStats();
 
         stats.remove(Stat.booster);
-        stats.add(Stat.input, new BoosterListValue(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, false, l -> consumes.liquidfilters.get(l.id)));
+        stats.add(Stat.input, StatValues.boosters(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, false, l -> consumes.liquidfilters.get(l.id)));
     }
 
     @Override

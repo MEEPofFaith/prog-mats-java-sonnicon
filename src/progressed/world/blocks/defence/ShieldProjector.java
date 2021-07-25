@@ -38,7 +38,7 @@ public class ShieldProjector extends ForceProjector{
     public ShieldProjector(String name){
         super(name);
 
-        radius = 80f; //Make it square based
+        radius = 80f; //Make it square based because I'm too lazy to do math
     }
 
     @Override
@@ -79,7 +79,6 @@ public class ShieldProjector extends ForceProjector{
         public void onRemoved(){
             float radius = realRadius();
             if(!broken && radius > 1f) PMFx.squareForceShrink.at(x, y, radius, team.color);
-            drawer.remove();
         }
 
         @Override

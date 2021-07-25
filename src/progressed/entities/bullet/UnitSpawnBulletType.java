@@ -29,7 +29,7 @@ public class UnitSpawnBulletType extends BasicBulletType{
 
     @Override
     public void load(){
-        frontRegion = spawn.icon(Cicon.full);
+        frontRegion = spawn.fullIcon;
     }
 
     @Override

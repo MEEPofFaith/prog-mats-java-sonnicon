@@ -30,7 +30,7 @@ public class BurstDriverItem extends BulletType{
 
         Draw.z(Layer.bullet - 0.03f); //Don't bloom
 
-        TextureRegion region = data.item.icon(Cicon.full);
+        TextureRegion region = data.item.fullIcon;
         float rot = b.rotation() + Mathf.randomSeed(b.id, 0f, 380f) + Time.time * Mathf.randomSeed(b.id + 1, minSpin, maxSpin) * Mathf.signs[Mathf.randomSeed(b.id + 2, 0, 1)];
 
         Drawf.shadow(region, b.x - size / 2f, b.y - size / 2f, size, size, rot);

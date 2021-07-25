@@ -22,7 +22,7 @@ public class FuelListValue implements StatValue{
     public void display(Table table){
         table.row();
 
-        table.image(smelter.fuelItem.icon(Cicon.medium)).size(3 * 8).padRight(4).right().top();
+        table.image(smelter.fuelItem.fullIcon).size(3 * 8).padRight(4).right().top();
         table.add(smelter.fuelItem.localizedName).padRight(10).left().top();
 
         table.table(t -> {
@@ -58,7 +58,7 @@ public class FuelListValue implements StatValue{
 
     void floorStat(Table t, Attribute attr, Floor floor){
         float multiplier = floor.attributes.get(attr) * smelter.fuelUseReduction / -100f;
-        t.stack(new Image(floor.icon(Cicon.medium)).setScaling(Scaling.fit), new Table (ft -> {
+        t.stack(new Image(floor.fullIcon).setScaling(Scaling.fit), new Table (ft -> {
             ft.top().right().add((multiplier < 0 ? "[accent]" : "[scarlet]+") + (multiplier * 100f) + "%").style(Styles.outlineLabel);
         }));
     }

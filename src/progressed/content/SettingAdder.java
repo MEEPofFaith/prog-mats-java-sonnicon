@@ -1,12 +1,11 @@
 package progressed.content;
 
-import arc.*;
 import arc.scene.*;
 import arc.scene.ui.*;
-import arc.scene.ui.SettingsDialog.*;
 import arc.scene.ui.layout.*;
 import mindustry.ui.*;
 import mindustry.ui.dialogs.*;
+import mindustry.ui.dialogs.SettingsMenuDialog.*;
 import progressed.util.*;
 
 import static arc.Core.*;

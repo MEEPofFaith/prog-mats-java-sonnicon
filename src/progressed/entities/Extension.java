@@ -19,7 +19,7 @@ import static mindustry.Vars.*;
  * <br>
  * See {@link ExtensionHolder} for usage and example codes.
  * @author GlennFolker
-*/
+ */
 @SuppressWarnings("unchecked")
 public final class Extension implements Drawc{
     public ExtensionHolder holder;
@@ -220,7 +220,6 @@ public final class Extension implements Drawc{
         return (T)this;
     }
 
-    @Override
     public <T> T with(Cons<T> cons){
         cons.get((T)this);
         return (T)this;

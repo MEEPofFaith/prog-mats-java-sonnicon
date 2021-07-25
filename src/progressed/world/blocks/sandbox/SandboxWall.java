@@ -83,7 +83,7 @@ public class SandboxWall extends Wall{
             for(int i = 0; i < 3; i++){
                 if(b[i] == 1){
                     float rot = 90f + 360f / amount * num;
-                    Draw.rect(iconItems[i].icon(Cicon.full), req.drawx() + Angles.trnsx(rot, rotateRadius), req.drawy() + Angles.trnsy(rot, rotateRadius), iconSize, iconSize, 0f);
+                    Draw.rect(iconItems[i].fullIcon, req.drawx() + Angles.trnsx(rot, rotateRadius), req.drawy() + Angles.trnsy(rot, rotateRadius), iconSize, iconSize, 0f);
                     num++;
                 }
             }
@@ -127,7 +127,7 @@ public class SandboxWall extends Wall{
             for(int i = 0; i < 3; i++){
                 if(modes.active(i)){
                     float rot = Time.time * rotateSpeed % 360f + 360f / amount * num;
-                    Draw.rect(iconItems[i].icon(Cicon.full), x + Angles.trnsx(rot, rotateRadius), y + Angles.trnsy(rot, rotateRadius), iconSize, iconSize, 0f);
+                    Draw.rect(iconItems[i].fullIcon, x + Angles.trnsx(rot, rotateRadius), y + Angles.trnsy(rot, rotateRadius), iconSize, iconSize, 0f);
                     num++;
                 }
             }
@@ -200,7 +200,7 @@ public class SandboxWall extends Wall{
                 int ii = i;
                 ImageButton button = cont.button(Tex.whiteui, Styles.clearToggleTransi, 40, () -> {}).group(group).get();
                 button.changed(() -> configure(ii));
-                button.getStyle().imageUp = new TextureRegionDrawable(iconItems[i].icon(Cicon.small));
+                button.getStyle().imageUp = new TextureRegionDrawable(iconItems[i].fullIcon, 8f * 3f);
                 button.update(() -> button.setChecked(modes.active(ii)));
             }
 

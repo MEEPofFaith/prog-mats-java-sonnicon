@@ -22,8 +22,6 @@ public class PMUnitTypes implements ContentList{
     //Steal from BetaMindy
     private static Entry<Class<? extends Entityc>, Prov<? extends Entityc>>[] types = new Entry[]{
         prov(Extension.class, Extension::create),
-        prov(SentryUnitEntity.class, SentryUnitEntity::new),
-        prov(FlareUnitEntity.class, FlareUnitEntity::new)
     };
 
     private static ObjectIntMap<Class<? extends Entityc>> idMap = new ObjectIntMap<>();
@@ -86,7 +84,6 @@ public class PMUnitTypes implements ContentList{
         setupID(); // From BetaMindy
 
         //Region Sentry Units
-        EntityMapping.nameMap.put("basic-sentry", SentryUnitEntity::new);
         basicSentry = new SentryUnitType("basic-sentry"){{
             health = 500f;
             duration = 16f * 60f;
@@ -114,7 +111,6 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        EntityMapping.nameMap.put("strike-sentry", SentryUnitEntity::new);
         strikeSentry = new SentryUnitType("strike-sentry"){{
             health = 300f;
 
@@ -152,7 +148,6 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        EntityMapping.nameMap.put("dash-sentry", SentryUnitEntity::new);
         dashSentry = new SentryUnitType("dash-sentry"){
             final float len = 56f, rangeMul = 16f;
             {
@@ -190,14 +185,12 @@ public class PMUnitTypes implements ContentList{
             }
         };
 
-        EntityMapping.nameMap.put("small-flare", FlareUnitEntity::new);
         flareSmall = new FlareUnitType("small-flare"){{
             health = 300f;
             attraction = 800f;
             flareY = 29f / 4f;
         }};
 
-        EntityMapping.nameMap.put("medium-flare", FlareUnitEntity::new);
         flareMedium = new FlareUnitType("medium-flare", 360f){{
             health = 900f;
             attraction = 11000f;
@@ -205,7 +198,6 @@ public class PMUnitTypes implements ContentList{
             flareEffectSize = 1.5f;
         }};
 
-        EntityMapping.nameMap.put("large-flare", FlareUnitEntity::new);
         flareLarge = new FlareUnitType("large-flare", 420f){{
             health = 2700f;
             attraction = 26000f;
@@ -213,9 +205,9 @@ public class PMUnitTypes implements ContentList{
             flareEffectSize = 2f;
         }};
 
-        EntityMapping.nameMap.put("god", UnitEntity::create);
         everythingUnit = new UnitType("god"){
             {
+                constructor = UnitEntity::create;
                 alwaysUnlocked = true;
                 flying = true;
                 lowAltitude = true;

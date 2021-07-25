@@ -11,6 +11,7 @@ public class PMStatusEffects implements ContentList{
     public static StatusEffect
     emp,
 
+    //Anti-vaxxers are quivering in fear
     vcFrenzy, vcDisassembly, vcWeaken;
 
     @Override

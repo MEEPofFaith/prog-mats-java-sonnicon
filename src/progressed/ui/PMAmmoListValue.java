@@ -168,14 +168,14 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
                 if(type instanceof UnitSpawnBulletType stype){
                     bt.row();
                     UnitType s = stype.spawn;
-                    bt.image(s.icon(Cicon.full)).size(3 * 8);
+                    bt.image(s.fullIcon).size(3 * 8);
                     bt.add("[stat]" + s.localizedName);
                 }
 
                 if(type instanceof UnitSpawnStrikeBulletType stype){
                     bt.row();
                     UnitType s = stype.spawn;
-                    bt.image(s.icon(Cicon.full)).size(3 * 8);   
+                    bt.image(s.fullIcon).size(3 * 8);   
                     bt.add("[stat]" + s.localizedName);
                 }
 
@@ -194,6 +194,6 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
     }
 
     TextureRegion icon(T t){
-        return t.icon(Cicon.medium);
+        return t.fullIcon;
     }
 }

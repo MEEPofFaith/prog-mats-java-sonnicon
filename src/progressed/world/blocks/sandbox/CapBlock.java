@@ -11,8 +11,6 @@ public class CapBlock extends Wall{
         super(name);
         requirements(Category.units, BuildVisibility.sandboxOnly, ItemStack.empty);
         alwaysUnlocked = true;
-
-        flags = EnumSet.of(BlockFlag.unitModifier);
     }
 
     public class CapBlockBuild extends WallBuild{

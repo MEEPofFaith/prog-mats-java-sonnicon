@@ -27,7 +27,7 @@ public class VisualItem extends Item{
         super.init();
 
         if(unit != null){
-            sprite = unit.icon(Cicon.full);
+            sprite = unit.fullIcon;
         }else if(spriteName != null){
             sprite = Core.atlas.find(spriteName);
         }

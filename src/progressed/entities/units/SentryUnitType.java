@@ -25,6 +25,7 @@ public class SentryUnitType extends UnitType{
 
     public SentryUnitType(String name){
         super(name);
+        constructor = SentryUnitEntity::new;
         defaultController = SentryAI::new;
         
         speed = accel = 0f;
@@ -108,7 +109,7 @@ public class SentryUnitType extends UnitType{
     public void display(Unit unit, Table table){
         table.table(t -> {
             t.left();
-            t.add(new Image(icon(Cicon.medium))).size(8 * 4).scaling(Scaling.fit);
+            t.add(new Image(fullIcon)).size(8 * 4).scaling(Scaling.fit);
             t.labelWrap(localizedName).left().width(190f).padLeft(5);
         }).growX().left();
         table.row();

@@ -104,7 +104,7 @@ public class AimLaserTurret extends PowerTurret{
                     Fill.circle(targetPos.x, targetPos.y, aimStroke / 2f * a);
 
                     Draw.mixcol(team.color, 1f);
-                    Draw.rect(u.type.icon(Cicon.full), targetPos.x, targetPos.y, u.rotation - 90f);
+                    Draw.rect(u.type.fullIcon, targetPos.x, targetPos.y, u.rotation - 90f);
                     Draw.mixcol();
                     Draw.alpha(1f);
                 }

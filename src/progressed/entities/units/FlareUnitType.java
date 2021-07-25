@@ -30,6 +30,7 @@ public class FlareUnitType extends UnitType{
     public FlareUnitType(String name, float duration){
         super(name);
         this.duration = duration;
+        constructor = FlareUnitEntity::new;
         defaultController = EmptyAI::new;
 
         drag = 1f;
@@ -167,7 +168,7 @@ public class FlareUnitType extends UnitType{
     public void display(Unit unit, Table table){
         table.table(t -> {
             t.left();
-            t.add(new Image(icon(Cicon.medium))).size(8 * 4).scaling(Scaling.fit);
+            t.add(new Image(fullIcon)).size(8 * 4).scaling(Scaling.fit);
             t.labelWrap(localizedName).left().width(190f).padLeft(5);
         }).growX().left();
         table.row();

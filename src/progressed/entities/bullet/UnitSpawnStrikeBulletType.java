@@ -43,7 +43,7 @@ public class UnitSpawnStrikeBulletType extends StrikeBulletType{
     
     @Override
     public void load(){
-        frontRegion = backRegion = spawn.icon(Cicon.full);
+        frontRegion = backRegion = spawn.fullIcon;
     }
 
     @Override

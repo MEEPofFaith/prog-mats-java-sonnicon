@@ -88,7 +88,6 @@ public class BlackHoleCataclysmType extends BulletType{
                 if(tile.floor() != Blocks.space){
                     tile.setAir();
                     tile.setFloorNet(Blocks.space);
-                    Vars.world.notifyChanged(tile);
                 }
             });
         }else if(!data.space){

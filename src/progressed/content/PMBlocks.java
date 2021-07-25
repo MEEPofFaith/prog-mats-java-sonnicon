@@ -992,7 +992,7 @@ public class PMBlocks implements ContentList{
             dumpToggle = true;
         }};
 
-        missileFactory = new MissileCrafter("missile-factory", 6){{
+        missileFactory = new VisualMultiCrafter("missile-factory", 6){{
             requirements(Category.crafting, with(
                 Items.copper, 300,
                 Items.lead, 200,
@@ -1048,7 +1048,7 @@ public class PMBlocks implements ContentList{
             dumpToggle = true;
         }};
 
-        sentryBuilder = new SentryCrafter("sentry-builder", 3){{
+        sentryBuilder = new VisualMultiCrafter("sentry-builder", 3){{
             requirements(Category.crafting, with(
                 Items.copper, 90,
                 Items.lead, 80,

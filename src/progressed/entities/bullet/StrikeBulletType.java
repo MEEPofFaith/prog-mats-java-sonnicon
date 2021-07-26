@@ -231,7 +231,7 @@ public class StrikeBulletType extends BasicBulletType{
             Tmp.v1.trns(225f, rise * fall * elevation * 2f);
 
             //Target
-            Draw.z(Layer.bullet - 0.02f);
+            Draw.z(Layer.bullet - 0.03f);
             if(autoDropRadius > 0f){
                 float dropAlpha = Mathf.curve(b.time, riseTime * 2f/3f, riseTime) - Mathf.curve(b.time, b.lifetime - 8f, b.lifetime);
                 Draw.color(Color.red, (0.25f + 0.5f * Mathf.absin(16f, 1f)) * dropAlpha);

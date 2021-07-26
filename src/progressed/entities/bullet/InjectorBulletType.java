@@ -38,7 +38,7 @@ public class InjectorBulletType extends BasicBulletType{
 
     @Override
     public void draw(Bullet b){
-        Draw.z(Layer.bullet - 0.02f);
+        Draw.z(Layer.bullet - 0.03f);
         Draw.color();
         Draw.rect(backRegion, b.x, b.y, width, height, b.rotation() - 90f);
         Draw.color(((Vaccine)(b.data)).status.color);

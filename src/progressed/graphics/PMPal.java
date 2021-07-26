@@ -8,8 +8,8 @@ public class PMPal{
     pixelFront = Color.valueOf("FF84C1"),
     pixelBack = Color.valueOf("EF4A9D"),
 
-    missileBasic = Color.valueOf("EAB678"),
-    missileEmp = Color.valueOf("6F80E8"),
-    missileFrag = Color.valueOf("CBD97F"),
-    missileUnit = Color.valueOf("EA8878");
+    missileBasic = Color.valueOf("D4816B"),
+    missileEmp = Color.valueOf("5757C1"),
+    missileFrag = Color.valueOf("9CB664"),
+    missileUnit = Color.valueOf("BC5452");
 }

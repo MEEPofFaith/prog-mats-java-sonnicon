@@ -17,6 +17,7 @@ import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.entities.bullet.MagmaBulletType;
 import progressed.graphics.*;
+import progressed.graphics.PMFx.*;
 import progressed.util.*;
 
 import static arc.Core.*;
@@ -222,7 +223,7 @@ public class EruptorTurret extends PowerTurret{
                 extendTo(Math.min(range + rangeExtention, dst(targetPos)));
                 if(timer(lightningTimer, lightningInterval)){
                     tr2.trns(rotation, shootLength - recoil);
-                    PMFx.fakeLightning.at(x + tr2.x, y + tr2.y, angleTo(bullet), lightningColor, new Object[]{Mathf.dst(x + tr2.x, y + tr2.y, bullet.x, bullet.y), lightningStroke, team});
+                    PMFx.PMChainLightning.at(x + tr2.x, y + tr2.y, angleTo(bullet), lightningColor, new LightningData(bullet, lightningStroke));
                 }
                 if(bulletLife <= 0f){
                     bullet = null;

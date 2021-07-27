@@ -3,6 +3,7 @@ package progressed.graphics;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.math.geom.*;
 import arc.util.*;
 import mindustry.entities.*;
 import mindustry.game.*;
@@ -18,6 +19,8 @@ import static arc.math.Angles.*;
 import static mindustry.Vars.*;
 
 public class PMFx{
+    private static final Rand rand = new Rand();
+
     public static final Effect
 
     bitTrail = new Effect(75f, e -> {
@@ -336,39 +339,43 @@ public class PMFx{
         
         reset();
     }),
-    
-    //[length, width, team]
-    fakeLightning = new Effect(10f, 500f, e -> {
-        Object[] data = (Object[])e.data;
 
-        float length = (float)data[0];
-        int tileLength = Mathf.round(length / tilesize);
-        
-        Lines.stroke((float)data[1] * e.fout());
-        Draw.color(e.color, Color.white, e.fin());
-        
-        for(int i = 0; i < tileLength; i++){
-            float offsetXA = i == 0 ? 0f : Mathf.randomSeed(e.id + (i * 6413), -4.5f, 4.5f);
-            float offsetYA = (length / tileLength) * i;
-            
-            int f = i + 1;
-            
-            float offsetXB = f == tileLength ? 0f : Mathf.randomSeed(e.id + (f * 6413), -4.5f, 4.5f);
-            float offsetYB = (length / tileLength) * f;
-            
-            Tmp.v1.trns(e.rotation, offsetYA, offsetXA);
-            Tmp.v1.add(e.x, e.y);
-            
-            Tmp.v2.trns(e.rotation, offsetYB, offsetXB);
-            Tmp.v2.add(e.x, e.y);
-            
-            Lines.line(Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, false);
-            Fill.circle(Tmp.v1.x, Tmp.v1.y, Lines.getStroke() / 2f);
-            Drawf.light((Team)data[2], Tmp.v1.x, Tmp.v1.y, Tmp.v2.x, Tmp.v2.y, (float)data[1] * 3f, e.color, 0.4f);
+    PMChainLightning = new Effect(10f, 500f, e -> {
+        if(!(e.data instanceof LightningData d)) return;
+        float tx = d.pos.getX(), ty = d.pos.getY(), dst = Mathf.dst(e.x, e.y, tx, ty);
+        Tmp.v1.set(d.pos).sub(e.x, e.y).nor();
+
+        float normx = Tmp.v1.x, normy = Tmp.v1.y;
+        float range = 6f;
+        int links = Mathf.ceil(dst / range);
+        float spacing = dst / links;
+
+        Lines.stroke(d.stroke * e.fout());
+        Draw.color(Color.white, e.color, e.fin());
+
+        Lines.beginLine();
+
+        Lines.linePoint(e.x, e.y);
+
+        rand.setSeed(e.id);
+
+        for(int i = 0; i < links; i++){
+            float nx, ny;
+            if(i == links - 1){
+                nx = tx;
+                ny = ty;
+            }else{
+                float len = (i + 1) * spacing;
+                Tmp.v1.setToRandomDirection(rand).scl(range/2f);
+                nx = e.x + normx * len + Tmp.v1.x;
+                ny = e.y + normy * len + Tmp.v1.y;
+            }
+
+            Lines.linePoint(nx, ny);
         }
 
-        Fill.circle(Tmp.v2.x, Tmp.v2.y, Lines.getStroke() / 2);
-    }).layer(Layer.bullet + 0.01f),
+        Lines.endLine();
+    }).followParent(false).layer(Layer.bullet + 0.01f),
     
     //[length, width, team]
     fakeLightningFast = new Effect(5f, 500f, e -> {
@@ -574,4 +581,14 @@ public class PMFx{
             Lines.square(e.x, e.y, e.rotation * e.fout());
         }
     }).layer(Layer.shields);
+
+    public static class LightningData{
+        Position pos;
+        float stroke;
+
+        public LightningData(Position pos, float stroke){
+            this.pos = pos;
+            this.stroke = stroke;
+        }
+    }
 }

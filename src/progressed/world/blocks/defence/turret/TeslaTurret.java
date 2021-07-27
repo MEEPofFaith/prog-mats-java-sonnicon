@@ -17,6 +17,7 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 import progressed.entities.*;
 import progressed.graphics.*;
+import progressed.graphics.PMFx.*;
 
 public class TeslaTurret extends PowerTurret{
     public Seq<TeslaRing> rings = new Seq<>();
@@ -204,7 +205,7 @@ public class TeslaTurret extends PowerTurret{
                     float shootAngle = Angles.angle(shootX, shootY, sX, sY);
                     float dist = Mathf.dst(shootX, shootY, sX, sY);
 
-                    PMFx.fakeLightning.at(shootX, shootY, shootAngle, lightningColor, new Object[]{dist, lightningStroke, team});
+                    PMFx.PMChainLightning.at(shootX, shootY, shootAngle, lightningColor, new LightningData(target, lightningStroke));
                     shootSound.at(shootX, shootY, Mathf.random(0.9f, 1.1f));
                     shootEffect.at(shootX, shootY, shootAngle, lightningColor);
                     if(shootShake > 0f){

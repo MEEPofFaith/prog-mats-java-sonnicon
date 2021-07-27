@@ -25,13 +25,14 @@ import static mindustry.Vars.*;
 
 public class TeslaTurret extends Block{
     private final Seq<Healthc> targets = new Seq<>();
+    public final int timerCheck = timers++;
+    public int checkInterval = 20;
 
     public Seq<TeslaRing> rings = new Seq<>();
     public boolean hasSpinners;
     public Color lightningColor = Pal.surge;
 
     public float reloadTime;
-    public float checkTime = 20f;
     public boolean acceptCoolant = true;
     public float coolantMultiplier = 5f;
 
@@ -111,8 +112,6 @@ public class TeslaTurret extends Block{
 
     @Override
     public void init(){
-        super.init();
-
         if(acceptCoolant && !consumes.has(ConsumeType.liquid)){
             hasLiquids = true;
             consumes.add(new ConsumeCoolant(0.2f)).update(false).boost();
@@ -126,6 +125,9 @@ public class TeslaTurret extends Block{
         }
 
         if(elevation < 0) elevation = size / 2f;
+        clipSize = Math.max(clipSize, (range + 3f) * 2f);
+
+        super.init();
     }
 
     @Override
@@ -151,7 +153,7 @@ public class TeslaTurret extends Block{
     
     public class TeslaTurretBuild extends Building implements Ranged{
         protected float[] heats = new float[rings.size];
-        protected float speedScl, curStroke, check, reload;
+        protected float rotation = 90f, speedScl, curStroke, check, reload;
         protected boolean nearby;
 
         @Override
@@ -188,7 +190,16 @@ public class TeslaTurret extends Block{
             for(int i = 0; i < rings.size; i++){
                 TeslaRing ring = rings.get(i);
                 if(ring.drawUnder){
-                    if(ring.hasSprite) Draw.rect(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                    if(ring.hasSprite){
+                        /* Uncomment when next alpha is released
+                            if(ring.rotationMul != 0){
+                                Drawf.spinSprite(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                            }else{
+                                Draw.rect(ringRegions[i], x, y);
+                            }
+                         */
+                        Draw.rect(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                    }
 
                     if(heats[i] > 0.00001f){
                         Draw.color(heatColor, heats[i]);
@@ -205,7 +216,16 @@ public class TeslaTurret extends Block{
             for(int i = 0; i < rings.size; i++){
                 TeslaRing ring = rings.get(i);
                 if(!ring.drawUnder){
-                    if(ring.hasSprite) Draw.rect(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                    if(ring.hasSprite){
+                        /* Uncomment when next alpha is released
+                            if(ring.rotationMul != 0){
+                                Drawf.spinSprite(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                            }else{
+                                Draw.rect(ringRegions[i], x, y);
+                            }
+                         */
+                        Draw.rect(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                    }
 
                     if(heats[i] > 0.00001f){
                         Draw.color(heatColor, heats[i]);
@@ -244,9 +264,12 @@ public class TeslaTurret extends Block{
             rotation -= speedScl * delta();
             curStroke = Mathf.lerpDelta(curStroke, nearby ? 1 : 0, 0.09f);
 
-            nearby = false;
-            if(consValid() && (check += delta()) >= checkTime){
-                nearby = PMDamage.checkForTargets(team, x, y, range);
+            if(consValid()){
+                if(timer(timerCheck, checkInterval)){
+                    nearby = PMDamage.checkForTargets(team, x, y, range);
+                }
+            }else{
+                nearby = false;
             }
 
             if(nearby){

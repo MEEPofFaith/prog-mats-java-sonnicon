@@ -60,6 +60,13 @@ public class ShieldProjector extends ForceProjector{
     }
 
     @Override
+    public void init(){
+        clipSize = Math.max(clipSize, PMMathf.cornerDst(radius + phaseRadiusBoost + 3f) * 2f);
+
+        super.init();
+    }
+
+    @Override
     public void drawPlace(int x, int y, int rotation, boolean valid){
         drawPotentialLinks(x, y);
 

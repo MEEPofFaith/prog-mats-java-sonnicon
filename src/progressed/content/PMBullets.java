@@ -292,7 +292,8 @@ public class PMBullets implements ContentList{
             vaccines = new Vaccine[]{
                 new Vaccine(PMStatusEffects.vcFrenzy),
                 new Vaccine(PMStatusEffects.vcDisassembly),
-                new Vaccine(PMStatusEffects.vcWeaken)
+                new Vaccine(PMStatusEffects.vcWeaken),
+                new Vaccine(PMStatusEffects.vcCorvus)
             };
             width = height = 8f;
             lifetime = 50f;

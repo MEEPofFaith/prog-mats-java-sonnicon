@@ -12,7 +12,7 @@ public class PMStatusEffects implements ContentList{
     emp,
 
     //Anti-vaxxers are quivering in fear
-    vcFrenzy, vcDisassembly, vcWeaken;
+    vcFrenzy, vcDisassembly, vcWeaken, vcCorvus;
 
     @Override
     public void load(){
@@ -28,11 +28,10 @@ public class PMStatusEffects implements ContentList{
         //Anti-vaxxers are quivering in fear
         vcFrenzy = new ExclusiveStatusEffect("frenzy"){{
             color = Pal.lightOrange;
-            damageMultiplier = 1.5f;
-            speedMultiplier = 1.5f;
-            reloadMultiplier = 1.5f;
-            healthMultiplier = 0.5f;
-            damage = 5f;
+            damageMultiplier = 3f;
+            speedMultiplier = 3f;
+            reloadMultiplier = 3f;
+            healthMultiplier = 0.25f;
         }};
 
         vcDisassembly = new ExclusiveStatusEffect("disassembly"){{
@@ -49,12 +48,20 @@ public class PMStatusEffects implements ContentList{
             damageMultiplier = 0.5f;
         }};
 
+        vcCorvus = new ExclusiveStatusEffect("corvus-19"){{ //lmao
+            color = Pal.heal;
+            speedMultiplier = 0.8f;
+            reloadMultiplier = 0.8f;
+            damage = 8f;
+        }};
+
         afterLoad();
     }
 
     public void afterLoad(){
-        ((ExclusiveStatusEffect)vcFrenzy).exclusives = Seq.with(vcDisassembly, vcWeaken);
-        ((ExclusiveStatusEffect)vcDisassembly).exclusives = Seq.with(vcFrenzy, vcWeaken);
-        ((ExclusiveStatusEffect)vcWeaken).exclusives = Seq.with(vcFrenzy, vcDisassembly);
+        ((ExclusiveStatusEffect)vcFrenzy).exclusives = Seq.with(vcDisassembly, vcWeaken, vcCorvus);
+        ((ExclusiveStatusEffect)vcDisassembly).exclusives = Seq.with(vcFrenzy, vcWeaken, vcCorvus);
+        ((ExclusiveStatusEffect)vcWeaken).exclusives = Seq.with(vcFrenzy, vcDisassembly, vcCorvus);
+        ((ExclusiveStatusEffect)vcCorvus).exclusives = Seq.with(vcFrenzy, vcDisassembly, vcWeaken);
     }
 }

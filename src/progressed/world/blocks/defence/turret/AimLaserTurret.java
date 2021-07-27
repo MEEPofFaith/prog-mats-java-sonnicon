@@ -5,7 +5,6 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
-import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
@@ -36,6 +35,12 @@ public class AimLaserTurret extends PowerTurret{
     }
 
     @Override
+    public void init(){
+        clipSize = Math.max(clipSize, (shootType.range() + shootLength + aimRnd + aimStroke * 2f + 3f) * 2f);
+        super.init();
+    }
+
+    @Override
     public void setBars(){
         super.setBars();
         bars.add("pm-reload", (AimLaserTurretBuild entity) -> new Bar(
@@ -51,25 +56,18 @@ public class AimLaserTurret extends PowerTurret{
         ));
     }
 
-    public class AimLaserTurretBuild extends PowerTurretBuild implements ExtensionHolder{
-        public Extension ext;
+    public class AimLaserTurretBuild extends PowerTurretBuild{
         protected float charge, drawCharge, alpha;
-
-        @Override
-        public void created(){
-            super.created();
-            ext = Extension.create();
-            ext.holder = this;
-            ext.set(x, y);
-            ext.add();
-        }
         
         public boolean isAI(){
             return !(isControlled() || (logicControlled() && logicShooting));
         }
 
         @Override
-        public void drawExt(){
+        public void draw(){
+            super.draw();
+
+            //a n x i e t y
             if(alpha > 0.01f){
                 Draw.mixcol();
 
@@ -108,7 +106,7 @@ public class AimLaserTurret extends PowerTurret{
                     Draw.mixcol();
                     Draw.alpha(1f);
                 }
-                
+
                 Fill.circle(x + Tmp.v1.x, y + Tmp.v1.y, aimStroke / 2f * a);
                 Fill.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke / 2f * a);
                 Lines.circle(x + Tmp.v4.x, y + Tmp.v4.y, aimStroke * 2f * (0.5f + a / 2f));
@@ -199,17 +197,6 @@ public class AimLaserTurret extends PowerTurret{
         @Override
         public boolean shouldTurn(){
             return true;
-        }
-
-        @Override
-        public float clipSizeExt(){
-            return (shootType.range() + shootLength + aimRnd + aimStroke * 2f) * Vars.renderer.getDisplayScale();
-        }
-
-        @Override
-        public void onRemoved(){
-            super.onRemoved();
-            ext.remove();
         }
     }
 }

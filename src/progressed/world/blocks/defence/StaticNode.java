@@ -26,6 +26,7 @@ import progressed.graphics.*;
 
 import static mindustry.Vars.*;
 
+@SuppressWarnings("unchecked")
 public class StaticNode extends Block{
     protected static BuildPlan otherReq;
     protected static int returnInt = 0;

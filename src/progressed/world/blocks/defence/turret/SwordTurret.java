@@ -44,7 +44,6 @@ public class SwordTurret extends BaseTurret{
     public float attackRadius = 2f * tilesize, speed = 2f;
     public Color heatColor = Pal.surge;
     public float cooldown = 0.05f;
-    public float minSpeed = 0.05f;
 
     public float bladeCenter, trailWidth = 8f;
     public Color trailColor = Color.violet;
@@ -85,6 +84,8 @@ public class SwordTurret extends BaseTurret{
         if(swordElevation < 0) swordElevation = elevation * 2f;
         if(expandedRadius < 0) expandedRadius = radius * 2.5f;
         if(baseLength < 0) baseLength = size * tilesize / 2f;
+
+        clipSize = Math.max(clipSize, (range + expandedRadius + swordRegion.height) * 2f);
 
         super.init();
     }
@@ -153,13 +154,12 @@ public class SwordTurret extends BaseTurret{
         }
     }
 
-    public class SwordTurretBuild extends BaseTurretBuild implements ExtensionHolder, ControlBlock{
-        public Extension ext;
+    public class SwordTurretBuild extends BaseTurretBuild implements ControlBlock{
         public @Nullable Posc target;
         public Vec2 targetPos = new Vec2(), currentPos = new Vec2();
         protected float animationTime, coolantScl = 1f, logicControlTime = -1, lookAngle, heat;
         public BlockUnitc unit;
-        protected boolean logicShooting, wasAttacking, ready, traveling, hit;
+        protected boolean logicShooting, wasAttacking, ready, hit;
         protected PMTrail[] trails = new PMTrail[swords];
 
         @Override
@@ -167,10 +167,6 @@ public class SwordTurret extends BaseTurret{
             unit = (BlockUnitc)UnitTypes.block.create(team);
             unit.tile(this);
             currentPos.set(x, y);
-            ext = Extension.create();
-            ext.holder = this;
-            ext.set(x, y);
-            ext.add();
             for(int i = 0; i < swords; i++){
                 trails[i] = new PMTrail(trailLength);
             }
@@ -253,18 +249,15 @@ public class SwordTurret extends BaseTurret{
 
         @Override
         public void draw(){
+            //Base turret
             Draw.rect(baseRegion, x, y);
 
             Draw.z(Layer.turret);
 
             Drawf.shadow(region, x - elevation, y - elevation, lookAngle);
             Draw.rect(region, x, y, lookAngle);
-        }
 
-        @Override
-        public void drawExt(){
-            Draw.mixcol();
-
+            //Swords
             float swordOpacity = settings.getInt("pm-swordopacity") / 100f;
 
             Tmp.c1.set(trailColor).lerp(heatColor, heat).mul(1f, 1f, 1f, 0.5f * swordOpacity);
@@ -279,7 +272,7 @@ public class SwordTurret extends BaseTurret{
 
                 Vec2 v3 = Tmp.v3.trns(v1.angleTo(v2) - 90f, -connectWidth / 2f, v1.dst(v2)).add(v1).add(this);
                 Vec2 v4 = Tmp.v4.trns(v1.angleTo(v2) - 90f, connectWidth / 2f, v1.dst(v2)).add(v1).add(this);
-                
+
                 Vec2 v5 = Tmp.v5.trns(v1.angleTo(v2) - 90f, -baseWidth / 2f, 0f);
                 Vec2 v6 = Tmp.v6.trns(v1.angleTo(v2) - 90f, baseWidth / 2f, 0f);
 
@@ -303,11 +296,11 @@ public class SwordTurret extends BaseTurret{
                 float sX = currentPos.x + Tmp.v1.x, sY = currentPos.y + Tmp.v1.y;
 
                 Draw.z(Layer.flyingUnit + 0.001f);
-                PMDrawf.shadowAlpha(outlineRegion, sX - swordElevation, sY - swordElevation, rot + getRotation(i), swordOpacity);
+                PMDrawf.shadowAlpha(outlineRegion, sX - swordElevation, sY - swordElevation, rot + getRotation(), swordOpacity);
 
                 Draw.alpha(swordOpacity);
                 Draw.z(Layer.flyingUnit + 0.004f);
-                Draw.rect(outlineRegion, sX, sY, rot + getRotation(i));
+                Draw.rect(outlineRegion, sX, sY, rot + getRotation());
             }
 
             for(int i = 0; i < swords; i++){
@@ -319,24 +312,23 @@ public class SwordTurret extends BaseTurret{
 
                 Draw.alpha(swordOpacity);
                 Draw.z(Layer.flyingUnit + 0.005f);
-                Draw.rect(swordRegion, sX, sY, rot + getRotation(i));
+                Draw.rect(swordRegion, sX, sY, rot + getRotation());
 
                 if(ready && heat > 0f){
                     Draw.color(heatColor, heat * swordOpacity);
                     Draw.blend(Blending.additive);
-                    Draw.rect(heatRegion, sX, sY, rot + getRotation(i));
+                    Draw.rect(heatRegion, sX, sY, rot + getRotation());
                     Draw.color();
                     Draw.blend();
                 }
             }
         }
 
-        protected float getRotation(int sword){
+        protected float getRotation(){
             float expand = Mathf.curve(animationTime, 0f, expandTime);
             float attack = Mathf.curve(animationTime, pauseTime, stabTime);
             float endRot = Mathf.curve(animationTime, stabTime + (totalTime - stabTime) * 0.2f, totalTime);
-            float drawRot = -270 * expand + -180f * attack + -270f * endRot;
-            return drawRot;
+            return -270 * expand + -180f * attack + -270f * endRot;
         }
 
         protected float getRadius(){
@@ -446,9 +438,9 @@ public class SwordTurret extends BaseTurret{
 
                 float sX = currentPos.x + Tmp.v1.x, sY = currentPos.y + Tmp.v1.y;
 
-                Tmp.v2.trns(rot + getRotation(i) + 90f, bladeCenter);
+                Tmp.v2.trns(rot + getRotation() + 90f, bladeCenter);
 
-                trails[i].update(sX + Tmp.v2.x, sY + Tmp.v2.y, rot + getRotation(i));
+                trails[i].update(sX + Tmp.v2.x, sY + Tmp.v2.y, rot + getRotation());
             }
         }
 
@@ -467,7 +459,6 @@ public class SwordTurret extends BaseTurret{
         }
 
         protected void reset(){
-            ready = false;
             coolantScl = 1f;
             moveTo(x, y, false);
         }
@@ -476,9 +467,7 @@ public class SwordTurret extends BaseTurret{
             float angle = currentPos.angleTo(pos);
             float dist = currentPos.dst(pos);
             boolean checkDst = dist < attackRadius;
-            if(checkDst && readyUp){
-                ready = true;
-            }
+            ready = checkDst && readyUp;
             Tmp.v1.trns(angle, speed * cdelta() * efficiency()).limit(dist);
             currentPos.add(Tmp.v1);
         }
@@ -512,17 +501,6 @@ public class SwordTurret extends BaseTurret{
             //disabled -> 0.1f efficiency
             if(!enabled) return 0.1f;
             return power != null && (block.consumes.has(ConsumeType.power) && !block.consumes.getPower().buffered) ? (0.1f + power.status * 0.9f) : 1f;
-        }
-
-        @Override
-        public float clipSizeExt(){
-            return range + getRadius() + swordRegion.height / 2f;
-        }
-
-        @Override
-        public void onRemoved(){
-            super.onRemoved();
-            ext.remove();
         }
 
         @Override

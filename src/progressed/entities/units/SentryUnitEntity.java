@@ -44,9 +44,4 @@ public class SentryUnitEntity extends UnitEntity{
     public float prefRotation(){
         return rotation();
     }
-
-    @Override
-    public int classId(){
-        return PMUnitTypes.classID(SentryUnitEntity.class);
-    }
 }

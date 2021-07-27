@@ -100,9 +100,4 @@ public class FlareUnitEntity extends SentryUnitEntity{
     public void impulseNet(Vec2 v){
         // cannot move
     }
-
-    @Override
-    public int classId(){
-        return PMUnitTypes.classID(FlareUnitEntity.class);
-    }
 }

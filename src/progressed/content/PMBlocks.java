@@ -248,15 +248,13 @@ public class PMBlocks implements ContentList{
             );
             size = 1;
             health = 310;
-            powerUse = 3.6f;
             reloadTime = 30f;
             range = 72f;
-            rangeExtention = 8f;
-            shots = 2;
-            zaps = 4;
-            zapAngleRand = 27f;
-            inaccuracy = 32f;
-            shootType = PMBullets.shockZap;
+            maxTargets = 6;
+            damage = 20f;
+            status = StatusEffects.shocked;
+
+            consumes.power(3.6f);
         }};
 
         spark = new TeslaTurret("spark"){{
@@ -273,15 +271,13 @@ public class PMBlocks implements ContentList{
             );
             size = 2;
             health = 200 * size * size;
-            powerUse = 4.8f;
             reloadTime = 20f;
             range = 130f;
-            rangeExtention = 16f;
-            shots = 2;
-            zaps = 5;
-            zapAngleRand = 19f;
-            inaccuracy = 28f;
-            shootType = PMBullets.sparkZap;
+            maxTargets = 5;
+            damage = 23f;
+            status = StatusEffects.shocked;
+
+            consumes.power(4.8f);
         }};
 
         storm = new TeslaTurret("storm"){{
@@ -349,19 +345,17 @@ public class PMBlocks implements ContentList{
             );
             size = 3;
             health = 180 * size * size;
-            powerUse = 8.9f;
             reloadTime = 10f;
             range = 210f;
-            rangeExtention = 24f;
-            shots = 3;
-            zaps = 7;
-            zapAngleRand = 13f;
-            inaccuracy = 28f;
+            maxTargets = 16;
             coolantMultiplier = 1f;
             spinUp = 0.005f;
             spinDown = 0.0125f;
             hasSpinners = true;
-            shootType = PMBullets.stormZap;
+            damage = 27f;
+            status = StatusEffects.shocked;
+
+            consumes.power(8.9f);
         }};
 
         flame = new EruptorTurret("flame"){{

@@ -17,8 +17,6 @@ public class PMBullets implements ContentList{
 
     standardCopperMini, standardDenseMini, standardHomingMini, standardIncendiaryMini, standardThoriumMini,
 
-    shockZap, sparkZap, stormZap,
-
     sniperBoltSilicon, sniperBoltTitanium, sniperBoltThorium, sniperBoltSurge, sniperBoltTechtaniteFrag, sniperBoltTechtanite,
 
     magnetCopper, magnetTitanium, magnetTechtanite,
@@ -103,39 +101,6 @@ public class PMBullets implements ContentList{
             smokeEffect = Fx.shootBigSmoke;
             ammoMultiplier = 4f;
             lifetime = 66f;
-        }};
-
-        shockZap = new LightningBulletType(){{
-            damage = 8f;
-            lightningLength = 5;
-            lightningLengthRand = 3;
-            lightningAngle = 0f;
-            lightningColor = Pal.surge;
-            lightRadius = 24f;
-            lightOpacity = 0.7f;
-            backMove = false;
-        }};
-
-        sparkZap = new LightningBulletType(){{
-            damage = 7f;
-            lightningLength = 6;
-            lightningLengthRand = 4;
-            lightningAngle = 0f;
-            lightningColor = Pal.surge;
-            lightRadius = 24f;
-            lightOpacity = 0.7f;
-            backMove = false;
-        }};
-
-        stormZap = new LightningBulletType(){{
-            damage = 6f;
-            lightningLength = 7;
-            lightningLengthRand = 5;
-            lightningAngle = 0f;
-            lightningColor = Pal.surge;
-            lightRadius = 24f;
-            lightOpacity = 0.7f;
-            backMove = false;
         }};
 
         sniperBoltSilicon = new CritBulletType(12f, 300f){{

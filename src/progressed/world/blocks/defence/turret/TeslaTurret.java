@@ -1,61 +1,88 @@
 package progressed.world.blocks.defence.turret;
 
 import arc.*;
+import arc.audio.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
-import mindustry.*;
+import arc.util.io.*;
 import mindustry.content.*;
-import mindustry.entities.Effect;
-import mindustry.entities.bullet.*;
+import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.logic.*;
 import mindustry.type.*;
-import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.*;
+import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.entities.*;
 import progressed.graphics.*;
 import progressed.graphics.PMFx.*;
 
-public class TeslaTurret extends PowerTurret{
+import static mindustry.Vars.*;
+
+public class TeslaTurret extends Block{
+    private final Seq<Healthc> targets = new Seq<>();
+
     public Seq<TeslaRing> rings = new Seq<>();
     public boolean hasSpinners;
-    public Color lightningColor;
-    public float zapAngleRand, spinUp, spinDown, rangeExtention, lightningStroke = 3.5f;
-    public int zaps;
+    public Color lightningColor = Pal.surge;
+
+    public float reloadTime;
+    public float checkTime = 20f;
+    public boolean acceptCoolant = true;
+    public float coolantMultiplier = 5f;
+
+    public int maxTargets;
+    public float range, damage;
+    public StatusEffect status;
+    public float statusDuration = 10f * 60f;
+
+    public float spinUp, spinDown, lightningStroke = 3.5f;
+    public float sectionRad = 0.14f, blinkScl = 20f;
+    public int sections = 5;
+
+    public Sound shootSound = Sounds.spark;
+    public Effect shootEffect = Fx.sparkShoot;
+    public Effect coolEffect = Fx.fuelburn;
+    public Color heatColor = Pal.turretHeat;
+    public float shootShake;
+
+    public float elevation = -1f;
+    public float cooldown = 0.04f;
+    public float rotateSpeed = 0.5f;
 
     public TextureRegion[] ringRegions, heatRegions, outlineRegions;
-    public TextureRegion bottomRegion, topRegion;
+    public TextureRegion baseRegion, bottomRegion, topRegion;
 
     public TeslaTurret(String name){
         super(name);
-        shootCone = 306f;
-        lightningColor = Pal.surge;
-        shootSound = Sounds.spark;
-        shootEffect = Fx.sparkShoot;
-        cooldown = 0.04f;
+
+        update = true;
+        solid = true;
+        outlineIcon = true;
+        priority = TargetPriority.turret;
+        group = BlockGroup.turrets;
+        flags = EnumSet.of(BlockFlag.turret);
     }
 
     @Override
     public void setStats(){
         super.setStats();
 
-        stats.remove(Stat.inaccuracy);
-        if(inaccuracy > 0f) stats.add(Stat.inaccuracy, inaccuracy / Vars.tilesize, StatUnit.blocks);
-
-        stats.remove(Stat.ammo);
+        stats.add(Stat.shootRange, range / tilesize, StatUnit.blocks);
         stats.add(Stat.ammo, stat -> {
             stat.row();
             stat.table(t -> {
                 t.left().defaults().padRight(3).left();
 
-                t.add(Core.bundle.format("bullet.lightning", zaps, shootType.damage));
+                t.add(Core.bundle.format("bullet.lightning", maxTargets, damage));
                 t.row();
 
-                if(shootType.status != StatusEffects.none){
-                    t.add((shootType.minfo.mod == null ? shootType.status.emoji() : "") + "[stat]" + shootType.status.localizedName);
+                if(status != StatusEffects.none){
+                    t.add((status.minfo.mod == null ? status.emoji() : "") + "[stat]" + status.localizedName);
                 }
             }).padTop(-9).left().get().background(Tex.underline);
         });
@@ -79,15 +106,38 @@ public class TeslaTurret extends PowerTurret{
 
         if(hasSpinners) bottomRegion = Core.atlas.find(name + "-bottom");
         topRegion = Core.atlas.find(name + "-top");
+        baseRegion = Core.atlas.find(name + "-base", "block-" + size);
     }
 
     @Override
     public void init(){
         super.init();
 
-        if(rings.size == 0){
+        if(acceptCoolant && !consumes.has(ConsumeType.liquid)){
+            hasLiquids = true;
+            consumes.add(new ConsumeCoolant(0.2f)).update(false).boost();
+        }
+
+        if(rings.size <= 0){
             throw new RuntimeException(name + " does not have any rings!");
         }
+        if(maxTargets <= 0){
+            throw new RuntimeException("The maxTargets of " + name + " is 0!");
+        }
+
+        if(elevation < 0) elevation = size / 2f;
+    }
+
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid){
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * tilesize + offset, y * tilesize + offset, range, Pal.placing);
+    }
+
+    @Override
+    public TextureRegion[] icons(){
+        return new TextureRegion[]{baseRegion, region};
     }
 
     public static class TeslaRing{ //Create different rings out of this
@@ -99,10 +149,15 @@ public class TeslaTurret extends PowerTurret{
         }
     }
     
-    public class TeslaTurretBuild extends PowerTurretBuild{
-        protected Seq<Teamc> targets = new Seq<>();
+    public class TeslaTurretBuild extends Building implements Ranged{
         protected float[] heats = new float[rings.size];
-        protected float speedScl;
+        protected float speedScl, curStroke, check, reload;
+        protected boolean nearby;
+
+        @Override
+        public void drawSelect(){
+            Drawf.dashCircle(x, y, range, team.color);
+        }
 
         @Override
         public void draw(){
@@ -161,6 +216,15 @@ public class TeslaTurret extends PowerTurret{
                     }
                 }
             }
+
+            if(curStroke > 0.001f){
+                Draw.z(Layer.bullet - 0.001f);
+                Lines.stroke((0.7f +  + Mathf.absin(blinkScl, 0.7f)) * curStroke, lightningColor);
+                for(int i = 0; i < sections; i++){
+                    float rot = i * 360f / sections + Time.time * rotateSpeed;
+                    Lines.swirl(x, y, range, sectionRad, rot);
+                }
+            }
         }
 
         @Override
@@ -169,66 +233,111 @@ public class TeslaTurret extends PowerTurret{
                 heats[i] = Mathf.lerpDelta(heats[i], 0f, cooldown);
             }
 
-            if(!hasAmmo() || !isShooting() || !isActive() || !cons.valid()){
-                    speedScl = Mathf.lerpDelta(speedScl, 0, spinDown);
-                }
-                if(hasAmmo() && isShooting() && isActive() && cons.valid()){
-                    Liquid liquid = liquids.current();
-                    speedScl = Mathf.lerpDelta(speedScl, 1, spinUp * peekAmmo().reloadMultiplier * liquid.heatCapacity * coolantMultiplier * edelta());
-                }
+            if(!nearby || !cons.valid()){
+                speedScl = Mathf.lerpDelta(speedScl, 0, spinDown);
+            }
+            if(nearby && cons.valid()){
+                Liquid liquid = liquids.current();
+                speedScl = Mathf.lerpDelta(speedScl, 1, spinUp * liquid.heatCapacity * coolantMultiplier * edelta());
+            }
                 
-                rotation -= speedScl * Time.delta;
-            
-            super.updateTile();
+            rotation -= speedScl * delta();
+            curStroke = Mathf.lerpDelta(curStroke, nearby ? 1 : 0, 0.09f);
+
+            nearby = false;
+            if(consValid() && (check += delta()) >= checkTime){
+                nearby = PMDamage.checkForTargets(team, x, y, range);
+            }
+
+            if(nearby){
+                updateCooling();
+
+                if((reload += delta()) >= reloadTime){
+                    targets.clear();
+                    PMDamage.allNearbyEnemies(team, x, y, range, targets::add);
+
+                    if(targets.size > 0){
+                        targets.shuffle();
+                        int max = Math.min(maxTargets, targets.size);
+
+                        for(int i = 0; i < max; i++){
+                            Healthc other = targets.get(i);
+
+                            //lightning gets absorbed by plastanium
+                            var absorber = Damage.findAbsorber(team, x, y, other.getX(), other.getY());
+                            if(absorber != null){
+                                other = absorber;
+                            }
+
+                            //Deal damage
+                            other.damage(damage);
+                            if(other instanceof Statusc s){
+                                s.apply(status, statusDuration);
+                            }
+
+                            //Lightning effect
+                            TeslaRing ring = rings.random();
+                            heats[rings.indexOf(ring)] = 1f;
+                            Tmp.v1.trns(rotation * ring.rotationMul, ring.xOffset, ring.yOffset); //ring location
+                            Tmp.v2.setToRandomDirection().setLength(ring.radius); //ring
+
+                            float shootX = x + Tmp.v1.x, shootY = y + Tmp.v1.y;
+                            float shootAngle = Angles.angle(shootX, shootY, other.x(), other.y());
+
+                            shootSound.at(shootX, shootY, Mathf.random(0.9f, 1.1f));
+                            shootEffect.at(shootX, shootY, shootAngle, lightningColor);
+                            PMFx.PMChainLightning.at(shootX, shootY, shootAngle, lightningColor, new LightningData(other, lightningStroke));
+                        }
+
+                        Effect.shake(shootShake, shootShake, this);
+
+                        reload %= reloadTime;
+                    }
+                }
+            }
         }
 
-        @Override
-        protected void shoot(BulletType type){
-            targets.clear();
+        protected void updateCooling(){
+            if(reload < reloadTime){
+                float maxUsed = consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount;
+                Liquid liquid = liquids.current();
 
-            targets = PMDamage.allNearbyEnemies(team, x, y, range + rangeExtention);
+                float used = Math.min(liquids.get(liquid), maxUsed * Time.delta) * efficiency();
+                reload += used * liquid.heatCapacity * coolantMultiplier;
+                liquids.remove(liquid, used);
 
-            if(targets.size > 0){
-                for(int i = 0; i < shots; i++){
-                    TeslaRing ring = rings.random();
-                    Teamc target = targets.random();
-
-                    heats[rings.indexOf(ring)] = 1f;
-
-                    Tmp.v1.trns(rotation * ring.rotationMul, ring.xOffset, ring.yOffset); //ring location
-                    Tmp.v2.setToRandomDirection().setLength(ring.radius); //ring
-                    Tmp.v3.setToRandomDirection().setLength(Mathf.random(inaccuracy)); //inaccuracy
-
-                    float shootX = x + Tmp.v1.x + Tmp.v2.x, shootY = y + Tmp.v1.y + Tmp.v2.y;
-                    float sX = target.x() + Tmp.v3.x, sY = target.y() + Tmp.v3.y;
-
-                    float shootAngle = Angles.angle(shootX, shootY, sX, sY);
-                    float dist = Mathf.dst(shootX, shootY, sX, sY);
-
-                    PMFx.PMChainLightning.at(shootX, shootY, shootAngle, lightningColor, new LightningData(target, lightningStroke));
-                    shootSound.at(shootX, shootY, Mathf.random(0.9f, 1.1f));
-                    shootEffect.at(shootX, shootY, shootAngle, lightningColor);
-                    if(shootShake > 0f){
-                        Effect.shake(shootShake, shootShake, this);
-                    }
-                    final float spawnX = sX, spawnY = sY;
-                    Time.run(3f, () -> {
-                        for(int j = 0; j < zaps; j++){
-                            shootType.create(this, team, spawnX, spawnY, ((360f / zaps) * j) + Mathf.range(zapAngleRand));
-                        }
-                    });
+                if(Mathf.chance(0.06 * used)){
+                    coolEffect.at(x + Mathf.range(size * tilesize / 2f), y + Mathf.range(size * tilesize / 2f));
                 }
             }
         }
 
         @Override
-        protected void turnToTarget(float targetRot){
-            //DO nothing, turning is irrelevant
+        public float range(){
+            return range;
         }
 
         @Override
-        public boolean canControl(){
-            return false; //Can't aim, technically does not shoot
+        public void write(Writes write){
+            super.write(write);
+
+            write.f(reload);
+            write.bool(nearby);
+        }
+
+        @Override
+        public void read(Reads read, byte revision){
+            super.read(read, revision);
+
+            if(revision >= 1){
+                reload = read.f();
+                nearby = read.bool();
+            }
+        }
+
+        @Override
+        public byte version(){
+            return 1;
         }
     }
 }

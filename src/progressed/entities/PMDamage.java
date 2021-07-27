@@ -5,7 +5,6 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
-import mindustry.*;
 import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.game.*;
@@ -24,6 +23,7 @@ public class PMDamage{
     private static IntSet collidedBlocks = new IntSet();
     private static Building tmpBuilding;
     private static Unit tmpUnit;
+    private static boolean check;
 
     public static void trueEachBlock(float wx, float wy, float range, Cons<Building> cons){
         collidedBlocks.clear();
@@ -65,8 +65,8 @@ public class PMDamage{
         }
     }
     
-    public static Seq<Teamc> allNearbyEnemies(Team team, float x, float y, float radius){
-        Seq<Teamc> targets = new Seq<>();
+    public static Seq<Healthc> allNearbyEnemies(Team team, float x, float y, float radius){
+        Seq<Healthc> targets = new Seq<>();
 
         Units.nearbyEnemies(team, x - radius, y - radius, radius * 2f, radius * 2f, unit -> {
             if(Mathf.within(x, y, unit.x, unit.y, radius) && !unit.dead){
@@ -81,6 +81,28 @@ public class PMDamage{
         });
 
         return targets;
+    }
+
+    public static void allNearbyEnemies(Team team, float x, float y, float radius, Cons<Healthc> cons){
+        allNearbyEnemies(team, x, y, radius).each(cons);
+    }
+
+    public static boolean checkForTargets(Team team, float x, float y, float radius){
+        check = false;
+
+        Units.nearbyEnemies(team, x - radius, y - radius, radius * 2f, radius * 2f, unit -> {
+            if(Mathf.within(x, y, unit.x, unit.y, radius) && !unit.dead){
+                check = true;
+            }
+        });
+
+        trueEachBlock(x, y, radius, build -> {
+            if(build.team != team && !build.dead && build.block != null){
+                check = true;
+            }
+        });
+
+        return check;
     }
 
     /**
@@ -147,7 +169,7 @@ public class PMDamage{
     }
 
     public static void completeDamage(Team team, float x, float y, float radius, float damage, float buildDmbMult, boolean air, boolean ground){
-        Seq<Teamc> targets = allNearbyEnemies(team, x, y, radius);
+        Seq<Healthc> targets = allNearbyEnemies(team, x, y, radius);
         targets.each(t -> {
             if(t instanceof Unit u){
                 if(u.isFlying() && air || u.isGrounded() && ground){

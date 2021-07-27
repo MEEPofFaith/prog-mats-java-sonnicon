@@ -25,6 +25,7 @@ import static arc.Core.*;
 import static mindustry.Vars.*;
 
 public class InfernoTurret extends PowerTurret{
+    protected final Seq<Healthc> targets = new Seq<>();
     public final int lightningTimer = timers++;
     public float lightningInterval = 2f, lightningStroke = 3f;
     public Color lightningColor = Color.valueOf("ff9c5a");
@@ -124,7 +125,6 @@ public class InfernoTurret extends PowerTurret{
     }
 
     public class InfernoTurretBuild extends PowerTurretBuild{
-        protected Seq<Teamc> targets = new Seq<>();
         protected Seq<Bullet> bullets = new Seq<>();
         protected float bulletLife, speed;
         protected float[] layerOpen = new float[cells.size];
@@ -287,7 +287,7 @@ public class InfernoTurret extends PowerTurret{
             targets.clear();
             bullets.clear();
 
-            targets = PMDamage.allNearbyEnemies(team, x, y, range + rangeExtention);
+            PMDamage.allNearbyEnemies(team, x, y, range + rangeExtention, targets::add);
 
             if(targets.size > 0){
                 bulletLife = shootDuration;

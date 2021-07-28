@@ -30,6 +30,5 @@ public class SettingAdder{
             settingUi.row();
             settingUi.button(bundle.get("setting.pm-title"), Styles.cleart, dialog::show);
         });
-
     }
 }

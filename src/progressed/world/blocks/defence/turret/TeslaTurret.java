@@ -15,6 +15,7 @@ import mindustry.graphics.*;
 import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.defense.turrets.Turret.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.entities.*;
@@ -33,6 +34,7 @@ public class TeslaTurret extends Block{
     public Color lightningColor = Pal.surge;
 
     public float reloadTime;
+    public float powerUse = 1f;
     public boolean acceptCoolant = true;
     public float coolantMultiplier = 5f;
 
@@ -112,17 +114,19 @@ public class TeslaTurret extends Block{
 
     @Override
     public void init(){
-        if(acceptCoolant && !consumes.has(ConsumeType.liquid)){
-            hasLiquids = true;
-            consumes.add(new ConsumeCoolant(0.2f)).update(false).boost();
-        }
-
         if(rings.size <= 0){
             throw new RuntimeException(name + " does not have any rings!");
         }
         if(maxTargets <= 0){
             throw new RuntimeException("The maxTargets of " + name + " is 0!");
         }
+
+        if(acceptCoolant && !consumes.has(ConsumeType.liquid)){
+            hasLiquids = true;
+            consumes.add(new ConsumeCoolant(0.2f)).update(false).boost();
+        }
+
+        consumes.powerCond(powerUse, TeslaTurretBuild::active);
 
         if(elevation < 0) elevation = size / 2f;
         clipSize = Math.max(clipSize, (range + 3f) * 2f);
@@ -153,8 +157,12 @@ public class TeslaTurret extends Block{
     
     public class TeslaTurretBuild extends Building implements Ranged{
         protected float[] heats = new float[rings.size];
-        protected float rotation = 90f, speedScl, curStroke, check, reload;
+        protected float rotation = 90f, speedScl, curStroke, reload;
         protected boolean nearby;
+
+        public boolean active(){
+            return nearby;
+        }
 
         @Override
         public void drawSelect(){
@@ -237,7 +245,7 @@ public class TeslaTurret extends Block{
                 }
             }
 
-            if(curStroke > 0.001f){
+            if(Core.settings.getBool("pm-tesla-range") && curStroke > 0.001f){
                 Draw.z(Layer.bullet - 0.001f);
                 Lines.stroke((0.7f +  + Mathf.absin(blinkScl, 0.7f)) * curStroke, lightningColor);
                 for(int i = 0; i < sections; i++){

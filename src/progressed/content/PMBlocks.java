@@ -249,12 +249,11 @@ public class PMBlocks implements ContentList{
             size = 1;
             health = 310;
             reloadTime = 30f;
+            powerUse = 3.6f;
             range = 72f;
             maxTargets = 6;
             damage = 20f;
             status = StatusEffects.shocked;
-
-            consumes.power(3.6f);
         }};
 
         spark = new TeslaTurret("spark"){{
@@ -272,12 +271,11 @@ public class PMBlocks implements ContentList{
             size = 2;
             health = 200 * size * size;
             reloadTime = 20f;
+            powerUse = 4.8f;
             range = 130f;
             maxTargets = 5;
             damage = 23f;
             status = StatusEffects.shocked;
-
-            consumes.power(4.8f);
         }};
 
         storm = new TeslaTurret("storm"){{
@@ -346,6 +344,7 @@ public class PMBlocks implements ContentList{
             size = 3;
             health = 180 * size * size;
             reloadTime = 10f;
+            powerUse = 8.9f;
             range = 210f;
             maxTargets = 16;
             coolantMultiplier = 1f;
@@ -354,8 +353,6 @@ public class PMBlocks implements ContentList{
             hasSpinners = true;
             damage = 27f;
             status = StatusEffects.shocked;
-
-            consumes.power(8.9f);
         }};
 
         flame = new EruptorTurret("flame"){{

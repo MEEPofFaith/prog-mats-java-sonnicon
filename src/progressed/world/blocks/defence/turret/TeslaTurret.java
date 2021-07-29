@@ -360,7 +360,7 @@ public class TeslaTurret extends Block{
         public void read(Reads read, byte revision){
             super.read(read, revision);
 
-            if(revision == 2){
+            if(revision >= 2){
                 reload = read.f();
                 nearby = read.bool();
             }

@@ -57,14 +57,13 @@ public class PMTechTree implements ContentList{
                     brq(shellPress),
                     recipeCost((MultiCrafter)shellPress, 0),
                     brq(missileFactory),
-                    recipeCost((MultiCrafter)missileFactory, 0)
                 }), Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.nuclearComplex)), () -> {
                     node(shellPress, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                         node(missileShell, ItemStack.empty, Seq.with(new Research(strikedown)));
                         node(nukeShell, ItemStack.empty, Seq.with(new Research(arbiter)));
                         node(missileFactory, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                             //Missile
-                            node(basicMissile, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
+                            node(basicMissile, recipeCost((MultiCrafter)missileFactory, 0), Seq.with(new Research(strikedown)), () -> {
                                 node(empMissile, recipeCost((MultiCrafter)missileFactory, 1, 5f));
                                 node(recursiveMissile, recipeCost((MultiCrafter)missileFactory, 2, 5f));
                             });

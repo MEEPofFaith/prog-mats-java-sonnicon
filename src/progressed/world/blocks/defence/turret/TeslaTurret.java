@@ -199,14 +199,11 @@ public class TeslaTurret extends Block{
                 TeslaRing ring = rings.get(i);
                 if(ring.drawUnder){
                     if(ring.hasSprite){
-                        /* Uncomment when next alpha is released
-                            if(ring.rotationMul != 0){
-                                Drawf.spinSprite(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
-                            }else{
-                                Draw.rect(ringRegions[i], x, y);
-                            }
-                         */
-                        Draw.rect(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                        if(ring.rotationMul != 0){
+                            Drawf.spinSprite(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                        }else{
+                            Draw.rect(ringRegions[i], x, y);
+                        }
                     }
 
                     if(heats[i] > 0.00001f){
@@ -225,14 +222,11 @@ public class TeslaTurret extends Block{
                 TeslaRing ring = rings.get(i);
                 if(!ring.drawUnder){
                     if(ring.hasSprite){
-                        /* Uncomment when next alpha is released
-                            if(ring.rotationMul != 0){
-                                Drawf.spinSprite(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
-                            }else{
-                                Draw.rect(ringRegions[i], x, y);
-                            }
-                         */
-                        Draw.rect(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                        if(ring.rotationMul != 0){
+                            Drawf.spinSprite(ringRegions[i], x, y, rotation * ring.rotationMul - 90f);
+                        }else{
+                            Draw.rect(ringRegions[i], x, y);
+                        }
                     }
 
                     if(heats[i] > 0.00001f){

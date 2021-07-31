@@ -5,9 +5,9 @@ import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.game.Objectives.*;
 import mindustry.type.*;
-import mindustry.world.Block;
-import multilib.MultiCrafter;
+import mindustry.world.*;
 import progressed.util.*;
+import progressed.world.blocks.crafting.pmmultilib.*;
 
 import static mindustry.content.Items.*;
 import static mindustry.content.Blocks.*;
@@ -178,7 +178,7 @@ public class PMTechTree implements ContentList{
     }
 
     private static ItemStack[] recipeCost(MultiCrafter crafter, int rec, float multiplier){
-        return PMUtls.researchRequirements(crafter.recs[rec].input.items, multiplier);
+        return PMUtls.researchRequirements(crafter.getCost(rec), multiplier);
     }
 
     private static ItemStack[] recipeCost(MultiCrafter crafter, int rec){

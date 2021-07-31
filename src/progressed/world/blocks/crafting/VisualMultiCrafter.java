@@ -3,20 +3,16 @@ package progressed.world.blocks.crafting;
 import arc.*;
 import arc.graphics.g2d.*;
 import mindustry.graphics.*;
-import mindustry.ui.*;
-import multilib.*;
 import progressed.type.*;
+import progressed.world.blocks.crafting.pmmultilib.*;
 
 public class VisualMultiCrafter extends MultiCrafter{
+    public boolean hasTop;
+
     public TextureRegion colorRegion, topRegion;
 
-    public VisualMultiCrafter(String name, Recipe[] recs){
-        super(name, recs);
-        isSmelter = false;
-    }
-    
-    public VisualMultiCrafter(String name, int recLen){
-        this(name, new Recipe[recLen]);
+    public VisualMultiCrafter(String name){
+        super(name);
     }
 
     @Override
@@ -28,7 +24,7 @@ public class VisualMultiCrafter extends MultiCrafter{
 
     @Override
     public TextureRegion[] icons(){
-        if(topRegion.found()){
+        if(hasTop){
             return new TextureRegion[]{region, topRegion};
         }else{
             return super.icons();
@@ -39,7 +35,7 @@ public class VisualMultiCrafter extends MultiCrafter{
         @Override
         public void draw(){
             super.draw();
-            if(toggle >= 0 && recs[toggle].output.items[0].item instanceof VisualItem s){
+            if(recipe >= 0 && getRecipe().outputItems()[0].item instanceof VisualItem s){
                 if(colorRegion.found()){
                     Draw.color(s.color);
                     Draw.rect(colorRegion, x, y);

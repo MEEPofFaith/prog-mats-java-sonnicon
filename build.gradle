@@ -19,7 +19,6 @@ repositories{
 }
 
 dependencies{
-    implementation "com.github.younggam:multi-lib:$multilibVersion"
     compileOnly "com.github.Anuken.Mindustry:core:$mindustryVersion"
 
     compileOnly "com.github.bsideup.jabel:jabel-javac-plugin:$jabelVersion"

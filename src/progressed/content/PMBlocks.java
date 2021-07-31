@@ -16,12 +16,12 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import multilib.*;
-import multilib.Recipe.*;
 import progressed.graphics.*;
 import progressed.ui.*;
 import progressed.util.*;
 import progressed.world.blocks.crafting.*;
+import progressed.world.blocks.crafting.pmmultilib.*;
+import progressed.world.blocks.crafting.pmmultilib.Recipe.*;
 import progressed.world.blocks.defence.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
@@ -959,7 +959,7 @@ public class PMBlocks implements ContentList{
             outputItem = new ItemStack(PMItems.techtanite, 2);
         }};
 
-        shellPress = new MultiCrafter("shell-press", 2){{
+        shellPress = new MultiCrafter("shell-press"){{
             requirements(Category.crafting, with(
                 Items.copper, 75,
                 Items.lead, 100,
@@ -967,23 +967,21 @@ public class PMBlocks implements ContentList{
                 Items.silicon, 80
             ));
             addRecipe(
-                new InputContents(with(Items.copper, 5, Items.lead, 5, Items.titanium, 5), 3f),
-                new OutputContents(with(PMItems.missileShell, 2)),
-                60f
+                new Inputs(with(Items.copper, 5, Items.lead, 5, Items.titanium, 5), 3f, 60f),
+                new Outputs(with(PMItems.missileShell, 2))
             );
             addRecipe(
-                new InputContents(with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10), 5f),
-                new OutputContents(with(PMItems.nukeShell, 1)),
-                90f, true
+                new Inputs(with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10), 5f, 90f),
+                new Outputs(with(PMItems.nukeShell, 1)),
+                true
             );
             size = 3;
             itemCapacity = 30;
             craftEffect = Fx.pulverizeMedium;
             updateEffect = Fx.none;
-            dumpToggle = true;
         }};
 
-        missileFactory = new VisualMultiCrafter("missile-factory", 6){{
+        missileFactory = new VisualMultiCrafter("missile-factory"){{
             requirements(Category.crafting, with(
                 Items.copper, 300,
                 Items.lead, 200,
@@ -996,38 +994,37 @@ public class PMBlocks implements ContentList{
             // Region Missiles
 
             addRecipe(//Baisc Missile
-                new InputContents(with(PMItems.missileShell, 1, Items.thorium, 3, Items.blastCompound, 6), 3f),
-                new OutputContents(with(PMItems.basicMissile, 1)),
-                60f
+                new Inputs(with(PMItems.missileShell, 1, Items.thorium, 3, Items.blastCompound, 6), 3f, 60f),
+                new Outputs(with(PMItems.basicMissile, 1))
             );
             addRecipe(//EMP Missile
-                new InputContents(with(PMItems.missileShell, 1, Items.lead, 12, Items.titanium, 10, Items.silicon, 10), 4f),
-                new OutputContents(with(PMItems.empMissile, 1)),
-                75f, true
+                new Inputs(with(PMItems.missileShell, 1, Items.lead, 12, Items.titanium, 10, Items.silicon, 10), 4f, 75f),
+                new Outputs(with(PMItems.empMissile, 1)),
+                true
             );
             addRecipe(//Recursive Missile
-                new InputContents(with(PMItems.missileShell, 1, PMItems.basicMissile, 2, Items.copper, 15, Items.plastanium, 10, Items.silicon, 10), 5f),
-                new OutputContents(with(PMItems.recursiveMissile, 1)),
-                80f, true
+                new Inputs(with(PMItems.missileShell, 1, PMItems.basicMissile, 2, Items.copper, 15, Items.plastanium, 10, Items.silicon, 10), 5f, 80f),
+                new Outputs(with(PMItems.recursiveMissile, 1)),
+                true
             );
 
             // endregion
             // Region Nukes
 
             addRecipe(//Basic Nuke
-                new InputContents(with(PMItems.nukeShell, 1, Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25), 6f),
-                new OutputContents(with(PMItems.basicNuke, 1)),
-                90f, true
+                new Inputs(with(PMItems.nukeShell, 1, Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25), 6f, 90f),
+                new Outputs(with(PMItems.basicNuke, 1)),
+                true
             );
             addRecipe(//Cluster Nuke
-                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicMissile, 5, Items.copper, 30, Items.plastanium, 15, PMItems.techtanite, 25), 6.25f),
-                new OutputContents(with(PMItems.clusterNuke, 1)),
-                120f, true
+                new Inputs(with(PMItems.nukeShell, 1, PMItems.basicMissile, 5, Items.copper, 30, Items.plastanium, 15, PMItems.techtanite, 25), 6.25f, 120f),
+                new Outputs(with(PMItems.clusterNuke, 1)),
+                true
             );
             addRecipe(//Sentry Nuke
-                new InputContents(with(PMItems.nukeShell, 1, PMItems.basicSentryBox, 3, PMItems.strikeSentryBox, 3, PMItems.dashSentryBox, 3, Items.pyratite, 10, Items.blastCompound, 5), 5.5f),
-                new OutputContents(with(PMItems.sentryNuke, 1)),
-                150f, true
+                new Inputs(with(PMItems.nukeShell, 1, PMItems.basicSentryBox, 3, PMItems.strikeSentryBox, 3, PMItems.dashSentryBox, 3, Items.pyratite, 10, Items.blastCompound, 5), 5.5f, 150f),
+                new Outputs(with(PMItems.sentryNuke, 1)),
+                true
             );
 
             // endregion
@@ -1036,10 +1033,10 @@ public class PMBlocks implements ContentList{
             itemCapacity = 50;
             craftEffect = Fx.pulverizeMedium;
             updateEffect = Fx.none;
-            dumpToggle = true;
+            hasTop = true;
         }};
 
-        sentryBuilder = new VisualMultiCrafter("sentry-builder", 3){{
+        sentryBuilder = new VisualMultiCrafter("sentry-builder"){{
             requirements(Category.crafting, with(
                 Items.copper, 90,
                 Items.lead, 80,
@@ -1047,24 +1044,22 @@ public class PMBlocks implements ContentList{
                 Items.silicon, 150
             ));
             addRecipe(//Basic Sentry
-                new InputContents(with(Items.copper, 30, Items.lead, 35, Items.titanium, 15, Items.silicon, 25), 4f),
-                new OutputContents(with(PMItems.basicSentryBox, 3)),
-                90f, true
+                new Inputs(with(Items.copper, 30, Items.lead, 35, Items.titanium, 15, Items.silicon, 25), 4f, 90f),
+                new Outputs(with(PMItems.basicSentryBox, 3))
             );
             addRecipe(//Strike Sentry
-                new InputContents(with(Items.copper, 40, Items.lead, 40, Items.titanium, 20, Items.silicon, 30, Items.blastCompound, 10), 4.5f),
-                new OutputContents(with(PMItems.strikeSentryBox, 3)),
-                120f
+                new Inputs(with(Items.copper, 40, Items.lead, 40, Items.titanium, 20, Items.silicon, 30, Items.blastCompound, 10), 4.5f, 120f),
+                new Outputs(with(PMItems.strikeSentryBox, 3)),
+                true
             );
             addRecipe(//Dash Sentry
-                new InputContents(with(Items.copper, 30, Items.lead, 30, Items.titanium, 30, Items.graphite, 15, Items.silicon, 35), 5.25f),
-                new OutputContents(with(PMItems.dashSentryBox, 3)),
-                105f
+                new Inputs(with(Items.copper, 30, Items.lead, 30, Items.titanium, 30, Items.graphite, 15, Items.silicon, 35), 5.25f, 105f),
+                new Outputs(with(PMItems.dashSentryBox, 3)),
+                true
             );
             size = 4;
             itemCapacity = 100;
             craftEffect = updateEffect = Fx.none;
-            dumpToggle = true;
         }};
 
         // endregion

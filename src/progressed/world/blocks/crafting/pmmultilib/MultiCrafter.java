@@ -11,6 +11,7 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.ui.fragments.*;
@@ -91,45 +92,38 @@ public class MultiCrafter extends GenericCrafter{
 
            recipes.each(r -> {
                 t.table(tt -> {
-                    tt.add(Core.bundle.format("stat.pm-multi-recipe", recipes.indexOf(r) + 1)).left();
-                    tt.row();
+                    tt.add(Core.bundle.format("stat.pm-multi-recipe", recipes.indexOf(r) + 1)).left().row();
 
-                    tt.table(i -> {
-                        i.add("@stat.pm-multi-intput").left().top();
-                        i.row();
-                        i.table(s -> {
-                            int cols = 9;
-                            int row = 0;
+                    //Inputs
+                    tt.add("[accent]" + Stat.input.localized()).left().padLeft(8f).row();
+                    tt.table(s -> {
+                        int cols = 9;
+                        int row = 0;
 
-                            for(ItemStack stack : r.inputItems()){
-                                s.add(PMElements.itemImage(stack.item.uiIcon, () -> stack.amount == 0 ? "" : stack.amount + ""));
-                                if(row++ % cols == cols - 1) s.row();
-                            }
-                        }).left().top().padLeft(8f);
-                        i.row();
-                        i.table(p -> {
-                            StatValues.number(r.inputPower(), StatUnit.powerSecond).display(p);
-                        }).left().top().padLeft(8f);
-                        i.row();
-                        i.table(c -> {
-                            StatValues.number(r.craftTime(), StatUnit.seconds).display(c);
-                        }).left().padLeft(8f);
-                    }).left().top().padTop(4).growY().get().background(Tex.button);
+                        for(ItemStack stack : r.inputItems()){
+                            s.add(PMElements.itemImage(stack.item.uiIcon, () -> stack.amount == 0 ? "" : stack.amount + ""));
+                            if(row++ % cols == cols - 1) s.row();
+                        }
+                    }).left().top().padLeft(16f).row();
+                    tt.table(p -> {
+                        StatValues.number(r.inputPower() * 60f, StatUnit.powerSecond).display(p);
+                    }).left().top().padLeft(16f).row();
+                    tt.table(c -> {
+                        StatValues.number(r.craftTime() / 60f, StatUnit.seconds).display(c);
+                    }).left().padLeft(16f).row();
 
-                    tt.table(o -> {
-                        o.add("@stat.pm-multi-output").left().top();
-                        o.row();
-                        o.table(s -> {
-                            int cols = 9;
-                            int row = 0;
+                    //Outputs
+                    tt.add("[accent]" + Stat.output.localized()).left().padLeft(8f).row();
+                    tt.table(s -> {
+                        int cols = 9;
+                        int row = 0;
 
-                            for(ItemStack stack : r.outputItems()){
-                                s.add(PMElements.itemImage(stack.item.uiIcon, () -> stack.amount == 0 ? "" : stack.amount + ""));
-                                if(row++ % cols == cols - 1) s.row();
-                            }
-                        }).left().top().padLeft(8f);
-                    }).left().top().padTop(4).growY().get().background(Tex.button);
-                }).padTop(recipes.indexOf(r) > 0 ? -4 : 4).left().get().background(Tex.button);
+                        for(ItemStack stack : r.outputItems()){
+                            s.add(PMElements.itemImage(stack.item.uiIcon, () -> stack.amount == 0 ? "" : stack.amount + ""));
+                            if(row++ % cols == cols - 1) s.row();
+                        }
+                    }).left().top().padLeft(16f);
+                }).padTop(4f).padLeft(8f).color(Pal.accent).left().get().background(Tex.button);
                 t.row();
            });
         });

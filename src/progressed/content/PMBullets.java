@@ -347,7 +347,7 @@ public class PMBullets implements ContentList{
             targetRadius = 0.5f;
         }};
 
-        strikedownBasic = new StrikeBulletType(2f, 80f, "prog-mats-strikedown-basic"){{
+        strikedownBasic = new StrikeBulletType(2f, 80f, "prog-mats-basic-missile"){{
             splashDamage = 750f;
             splashDamageRadius = 64f;
             homingPower = 0.05f;
@@ -374,7 +374,7 @@ public class PMBullets implements ContentList{
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
-        strikedownEmp = new StrikeBulletType(3f, 80f, "prog-mats-strikedown-emp"){{
+        strikedownEmp = new StrikeBulletType(3f, 80f, "prog-mats-emp-missile"){{
             splashDamage = 235f;
             splashDamageRadius = 48f;
             reloadMultiplier = 0.75f;
@@ -404,7 +404,7 @@ public class PMBullets implements ContentList{
             fallSpin = 90f;
         }};
 
-        recursionTwo = new StrikeBulletType(4f, 80f, "prog-mats-arbiter-cluster-frag"){{
+        recursionTwo = new StrikeBulletType(4f, 80f, "prog-mats-recursive-missile"){{
             splashDamage = 50f;
             splashDamageRadius = 32f;
             homingPower = 0.1f;
@@ -432,7 +432,7 @@ public class PMBullets implements ContentList{
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
-        recursionOne = new StrikeBulletType(3f, 80f, "prog-mats-arbiter-cluster-frag"){{
+        recursionOne = new StrikeBulletType(3f, 80f, "prog-mats-recursive-missile"){{
             splashDamage = 100f;
             splashDamageRadius = 40f;
             homingPower = 0.07f;
@@ -465,7 +465,7 @@ public class PMBullets implements ContentList{
             fragBullet = recursionTwo;
         }};
 
-        strikedownRecursive = new StrikeBulletType(2f, 80f, "prog-mats-arbiter-cluster-frag"){{
+        strikedownRecursive = new StrikeBulletType(2f, 80f, "prog-mats-recursive-missile"){{
             splashDamage = 200f;
             splashDamageRadius = 48f;
             homingPower = 0.05f;
@@ -497,7 +497,7 @@ public class PMBullets implements ContentList{
             fragBullet = recursionOne;
         }};
 
-        arbiterBasic = new StrikeBulletType(1f, 300f, "prog-mats-arbiter-basic"){{
+        arbiterBasic = new StrikeBulletType(1f, 300f, "prog-mats-basic-nuke"){{
             splashDamage = 27000f;
             splashDamageRadius = 240f;
             homingPower = 0.05f;
@@ -526,7 +526,7 @@ public class PMBullets implements ContentList{
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
-        arbiterClusterFrag = new StrikeBulletType(1f, 80f, "prog-mats-arbiter-cluster-frag"){{
+        arbiterClusterFrag = new StrikeBulletType(1f, 80f, "prog-mats-recursive-missile"){{
             splashDamage = 3000f;
             splashDamageRadius = 40f;
             lifetime = 150f;
@@ -546,7 +546,7 @@ public class PMBullets implements ContentList{
             fallSpin = 135f;
         }};
 
-        arbiterCluster = new StrikeBulletType(1f, 0f, "prog-mats-arbiter-cluster"){{
+        arbiterCluster = new StrikeBulletType(1f, 0f, "prog-mats-cluster-nuke"){{
             homingPower = 0.05f;
             homingRange = 2200f;
             lifetime = 5500f;
@@ -580,7 +580,7 @@ public class PMBullets implements ContentList{
         strikeSentryDrop = new UnitSpawnStrikeBulletType(PMUnitTypes.strikeSentry);
         dashSentryDrop = new UnitSpawnStrikeBulletType(PMUnitTypes.dashSentry);
 
-        arbiterSentry = new StrikeBulletType(2.25f, 0f, "prog-mats-arbiter-unit"){
+        arbiterSentry = new StrikeBulletType(2.25f, 0f, "prog-mats-unit-nuke"){
             public final BulletType[] unitDrops = {basicSentryDrop, strikeSentryDrop, dashSentryDrop};
 
             {

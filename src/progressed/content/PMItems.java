@@ -27,17 +27,17 @@ public class PMItems implements ContentList{
 
         nukeShell = new Item("nuke-shell", Color.valueOf("F58859"));
 
-        basicMissile = new VisualItem("basic-missile", Color.valueOf("EAB678"), "prog-mats-strikedown-basic");
+        basicMissile = new VisualItem("basic-missile", Color.valueOf("EAB678"), "prog-mats-basic-missile");
 
-        empMissile = new VisualItem("emp-missile", Color.valueOf("6974C4"), "prog-mats-strikedown-emp");
+        empMissile = new VisualItem("emp-missile", Color.valueOf("6974C4"), "prog-mats-emp-missile");
 
-        recursiveMissile = new VisualItem("recursive-missile", Color.valueOf("73D188"), "prog-mats-arbiter-cluster-frag");
+        recursiveMissile = new VisualItem("recursive-missile", Color.valueOf("73D188"), "prog-mats-recursive-missile");
 
-        basicNuke = new VisualItem("basic-nuke", Color.valueOf("D4816B"), "prog-mats-arbiter-basic");
+        basicNuke = new VisualItem("basic-nuke", Color.valueOf("D4816B"), "prog-mats-basic-nuke");
 
-        clusterNuke = new VisualItem("cluster-nuke", Color.valueOf("62AE7F"), "prog-mats-arbiter-cluster");
+        clusterNuke = new VisualItem("cluster-nuke", Color.valueOf("62AE7F"), "prog-mats-cluster-nuke");
 
-        sentryNuke = new VisualItem("sentry-nuke", Color.valueOf("FEB380"), "prog-mats-arbiter-unit");
+        sentryNuke = new VisualItem("sentry-nuke", Color.valueOf("FEB380"), "prog-mats-unit-nuke");
 
         basicSentryBox = new VisualItem("basic-sentry-box", Color.valueOf("C9A58F"), PMUnitTypes.basicSentry);
         

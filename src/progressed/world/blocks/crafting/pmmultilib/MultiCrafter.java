@@ -12,6 +12,7 @@ import arc.util.*;
 import arc.util.io.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.ui.fragments.*;
@@ -44,6 +45,10 @@ public class MultiCrafter extends GenericCrafter{
                tile.recipe = i;
            }
            tile.progress = 0;
+        });
+        config(Item.class, (MultiCrafterBuild tile, Item i) -> {
+            Recipe rec = recipes.find(r -> r.outputItems()[0].item == i);
+            if(rec != null) tile.recipe = recipes.indexOf(rec);
         });
 
         configClear((MultiCrafterBuild tile) -> tile.recipe = 0);
@@ -137,6 +142,15 @@ public class MultiCrafter extends GenericCrafter{
         public int recipe = -1;
         protected float itemHas;
         protected boolean openInv;
+
+        @Override
+        public void control(LAccess type, double p1, double p2, double p3, double p4){
+            if(type == LAccess.config){
+                recipe = (int)p1;
+            }
+
+            super.control(type, p1, p2, p3, p4);
+        }
 
         @Override
         public void updateTile(){
@@ -248,6 +262,14 @@ public class MultiCrafter extends GenericCrafter{
             }
 
             return true;
+        }
+
+        @Override
+        public Object config(){
+            if(recipe >= 0){
+                return getRecipe().outputItems()[0].item;
+            }
+            return null;
         }
 
         @Override

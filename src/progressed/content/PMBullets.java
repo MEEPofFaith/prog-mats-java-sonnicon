@@ -419,6 +419,7 @@ public class PMBullets implements ContentList{
 
             autoDropRadius = 15f;
             stopRadius = 10f;
+            stopDelay = 30f;
             riseEngineSize = 16f;
             fallEngineSize = 8f;
             elevation = 230f;
@@ -447,6 +448,7 @@ public class PMBullets implements ContentList{
 
             autoDropRadius = 15f;
             stopRadius = 10f;
+            stopDelay = 45f;
             riseEngineSize = 16f;
             fallEngineSize = 8f;
             elevation = 260f;

@@ -20,7 +20,7 @@ import progressed.world.blocks.defence.ShieldProjector.*;
 import static mindustry.Vars.*;
 
 public class StrikeBulletType extends BasicBulletType{
-    public float autoDropRadius, stopRadius;
+    public float autoDropRadius, stopRadius, stopDelay;
     public boolean resumeSeek = true, snapRot, randRot;
     public float weaveWidth, weaveSpeed;
     public Effect rocketEffect = Fx.rocketSmoke;
@@ -97,7 +97,7 @@ public class StrikeBulletType extends BasicBulletType{
             }
 
             //Start and stop
-            if(target != null && stopRadius > 0f){
+            if(target != null && stopRadius > 0f && b.time >= stopDelay){
                 boolean inRange = Mathf.within(b.x, b.y, target.x(), target.y(), stopRadius);
                 if(inRange && !data.stopped){
                     data.setVel(b.vel);

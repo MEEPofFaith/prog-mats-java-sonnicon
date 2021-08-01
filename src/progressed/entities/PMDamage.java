@@ -109,7 +109,7 @@ public class PMDamage{
      * Damages entities in a line.
      * Only enemie units of the specified team are damaged.
      */
-    public static void staticDamage(float damage, Team team, Effect effect, StatusEffect status, float statusDuration, float x, float y, float angle, float length, boolean air, boolean ground){
+    public static boolean staticDamage(float damage, Team team, Effect effect, StatusEffect status, float statusDuration, float x, float y, float angle, float length, boolean air, boolean ground){
         tr.trns(angle, length);
 
         rect.setPosition(x, y).setSize(tr.x, tr.y);
@@ -154,6 +154,7 @@ public class PMDamage{
 
         units.sort(u -> u.dst2(x, y));
         units.each(cons);
+        return !units.isEmpty();
     }
 
     /** Like Damage.findLaserLength, but uses an (x, y) coord instead of bullet position */

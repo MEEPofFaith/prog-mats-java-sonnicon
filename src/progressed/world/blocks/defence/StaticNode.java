@@ -133,6 +133,7 @@ public class StaticNode extends Block{
     @Override
     public void init(){
         consumes.add(new StaticNodeConsumePower());
+        clipSize = Math.max(clipSize, (laserRange + 1f) * tilesize * 2f);
 
         super.init();
     }
@@ -182,7 +183,7 @@ public class StaticNode extends Block{
         Placement.calculateNodes(points, this, rotation, (point, other) -> overlaps(world.tile(point.x, point.y), world.tile(other.x, other.y)));
     }
 
-    public void staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean drawOther, boolean attack){
+    public boolean staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean drawOther, boolean attack){
         float angle1 = Angles.angle(x1, y1, x2, y2),
             len1 = size1 * tilesize / 2f - 1.5f, len2 = size2 * tilesize / 2f - 1.5f;
         Tmp.v1.trns(angle1, len1);
@@ -212,19 +213,24 @@ public class StaticNode extends Block{
             Tmp.v3.trns(angle1 - 90f, space);
             float dst = Mathf.dst(x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y, x2 - Tmp.v2.x + Tmp.v3.x, y2 - Tmp.v2.y + Tmp.v3.y);
 
-            PMDamage.staticDamage(damage, team, shockEffect, status, statusDuration,
+            boolean hit = PMDamage.staticDamage(damage, team, shockEffect, status, statusDuration,
                 x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y, angle1, dst,
                 hitAir, hitGround
             );
-            PMFx.fakeLightningFast.at(x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
-                angle1, team.color,
-                new Object[]{dst, 2f, team}
-            );
+            if(hit){
+                PMFx.fakeLightningFast.at(x1 + Tmp.v1.x + Tmp.v3.x, y1 + Tmp.v1.y + Tmp.v3.y,
+                    angle1, team.color,
+                    new Object[]{dst, 2f, team}
+                );
+            }
+
+            return hit;
         }
+        return false;
     }
 
-    public void staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean attack){
-        staticLine(team, x1, y1, x2, y2, size1, size2, drawLaser, true, attack);
+    public boolean staticLine(Team team, float x1, float y1, float x2, float y2, int size1, int size2, boolean drawLaser, boolean attack){
+        return staticLine(team, x1, y1, x2, y2, size1, size2, drawLaser, true, attack);
     }
 
     protected boolean overlaps(float srcx, float srcy, Tile other, Block otherBlock, float range){
@@ -324,6 +330,7 @@ public class StaticNode extends Block{
 
     public class StaticNodeBuild extends Building{
         public IntSeq links = new IntSeq();
+        public boolean active;
 
         @Override
         public void placed(){
@@ -357,14 +364,12 @@ public class StaticNode extends Block{
         public void updateTile(){
             super.updateTile();
 
-            boolean shoot = timer(shockTimer, reload / efficiency());
-
-            if(consValid() && efficiency() > 0f){
+            if(consValid() && Groups.unit.contains(u -> u.team != team) && timer(shockTimer, reload / efficiency())){
                 for(int i : links.items){
                     Building link = world.build(i);
 
                     if(linked(link)){
-                        if(shoot) staticLine(team, x, y, link.x, link.y, size, link.block.size, false, true);
+                        active = staticLine(team, x, y, link.x, link.y, size, link.block.size, false, true);
                     }
                 }
             }
@@ -491,7 +496,7 @@ public class StaticNode extends Block{
         @Override
         public float requestedPower(Building entity){
             if(entity instanceof StaticNodeBuild e){
-                if(entity.tile().build == null) return 0f;
+                if(entity.tile().build == null || !e.active) return 0f;
                 if(e.links.size > 0) return ((StaticNode)entity.block).powerPerLink * e.links.size;
             }
             return 0f;

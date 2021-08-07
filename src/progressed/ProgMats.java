@@ -22,6 +22,7 @@ public class ProgMats extends Mod{
         new PMItems(),
         new PMBullets(),
         new PMWeathers(),
+        new PMPayloads(),
         new PMBlocks(),
         new PMTechTree()
     };

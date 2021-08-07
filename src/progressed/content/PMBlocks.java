@@ -26,6 +26,7 @@ import progressed.world.blocks.defence.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
 import progressed.world.blocks.distribution.*;
+import progressed.world.blocks.payloads.*;
 import progressed.world.blocks.sandbox.*;
 
 import static mindustry.type.ItemStack.*;
@@ -959,7 +960,7 @@ public class PMBlocks implements ContentList{
             outputItem = new ItemStack(PMItems.techtanite, 2);
         }};
 
-        shellPress = new MultiCrafter("shell-press"){{
+        /*shellPress = new MultiCrafter("shell-press"){{
             requirements(Category.crafting, with(
                 Items.copper, 75,
                 Items.lead, 100,
@@ -979,6 +980,18 @@ public class PMBlocks implements ContentList{
             itemCapacity = 30;
             craftEffect = Fx.pulverizeMedium;
             updateEffect = Fx.none;
+        }};*/
+
+        shellPress = new ShellBuilder("shell-press"){{
+            requirements(Category.crafting, with(
+                Items.copper, 75,
+                Items.lead, 100,
+                Items.titanium, 100,
+                Items.silicon, 80
+            ));
+
+            size = 4;
+            products = Seq.with(PMPayloads.emptyMissile, PMPayloads.emptyNuke);
         }};
 
         missileFactory = new VisualMultiCrafter("missile-factory"){{

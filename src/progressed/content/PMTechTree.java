@@ -8,6 +8,7 @@ import mindustry.type.*;
 import mindustry.world.*;
 import progressed.util.*;
 import progressed.world.blocks.crafting.pmmultilib.*;
+import progressed.world.blocks.payloads.*;
 
 import static mindustry.content.Items.*;
 import static mindustry.content.Blocks.*;
@@ -55,7 +56,7 @@ public class PMTechTree implements ContentList{
                 node(strikedown, PMUtls.addItemStacks(new ItemStack[][]{
                     brq(strikedown),
                     brq(shellPress),
-                    recipeCost((MultiCrafter)shellPress, 0),
+                    recipeCost((ShellBuilder)shellPress, 0),
                     brq(missileFactory),
                 }), Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.nuclearComplex)), () -> {
                     node(shellPress, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
@@ -76,7 +77,7 @@ public class PMTechTree implements ContentList{
                     });
                     node(arbiter, PMUtls.addItemStacks(new ItemStack[][]{
                         brq(arbiter),
-                        recipeCost((MultiCrafter)shellPress, 1),
+                        recipeCost((ShellBuilder)shellPress, 1),
                         recipeCost((MultiCrafter)missileFactory, 3)
                     }), Seq.with(new Research(interplanetaryAccelerator), new SectorComplete(SectorPresets.planetaryTerminal)));
                 });
@@ -177,12 +178,24 @@ public class PMTechTree implements ContentList{
         return content.researchRequirements();
     }
 
+    private static ItemStack[] recipeCost(ItemStack[] cost, float multiplier){
+        return PMUtls.researchRequirements(cost, multiplier);
+    }
+
     private static ItemStack[] recipeCost(MultiCrafter crafter, int rec, float multiplier){
-        return PMUtls.researchRequirements(crafter.getCost(rec), multiplier);
+        return recipeCost(crafter.getCost(rec), multiplier);
     }
 
     private static ItemStack[] recipeCost(MultiCrafter crafter, int rec){
-        return recipeCost(crafter, rec, 1f);
+        return recipeCost(crafter.getCost(rec), 1f);
+    }
+
+    private static ItemStack[] recipeCost(ShellBuilder crafter, int rec, float multiplier){
+        return recipeCost(crafter.getCost(rec), multiplier);
+    }
+
+    private static ItemStack[] recipeCost(ShellBuilder crafter, int rec){
+        return recipeCost(crafter.getCost(rec), 1f);
     }
 
     private static void vanillaNode(UnlockableContent parent, Runnable children){

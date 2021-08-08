@@ -2,7 +2,6 @@ package progressed.content;
 
 import mindustry.content.*;
 import mindustry.ctype.*;
-import mindustry.type.*;
 import progressed.world.blocks.payloads.*;
 
 import static mindustry.type.ItemStack.*;
@@ -14,22 +13,70 @@ public class PMPayloads implements ContentList{
 
     emptyMissile,
 
+    basicMissile, empMissile, recursiveMissile,
+
     //Region Nukes
 
-    emptyNuke;
+    emptyNuke,
+
+    basicNuke, clusterNuke, unitNuke;
 
     @Override
     public void load(){
         emptyMissile = new Missile("empty-missile"){{
-            requirements(Category.units, with(Items.copper, 5, Items.lead, 5, Items.titanium, 5));
+            requirements = with(Items.copper, 5, Items.lead, 5, Items.titanium, 5);
 
             size = 2;
+            powerCost = 3f;
+        }};
+
+        basicMissile = new Missile("basic-missile"){{
+            requirements = with(Items.thorium, 3, Items.blastCompound, 6);
+
+            prev = emptyMissile;
+            size = 2;
+            powerCost = 3f;
+        }};
+
+        empMissile = new Missile("emp-missile"){{
+            requirements = with(Items.lead, 12, Items.titanium, 10, Items.silicon, 10);
+
+            prev = emptyMissile;
+            size = 2;
+            powerCost = 4f;
+            requiresUnlock = true;
+        }};
+
+        recursiveMissile = new Missile("recursive-missile"){{
+            requirements = with(Items.copper, 30, Items.lead, 15, Items.titanium, 15, Items.plastanium, 10, Items.silicon, 10);
+
+            prev = emptyMissile;
+            size = 2;
+            powerCost = 5f;
+            requiresUnlock = true;
         }};
 
         emptyNuke = new Missile("empty-nuke"){{
-            requirements(Category.units, with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10));
+            requirements = with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10);
 
             size = 3;
+            powerCost = 5f;
+        }};
+
+        basicNuke = new Missile("basic-nuke"){{
+            requirements = with(Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25);
+
+            prev = emptyNuke;
+            size = 3;
+            powerCost = 6f;
+        }};
+
+        clusterNuke = new Missile("cluster-nuke"){{
+            requirements = with(Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25);
+
+            prev = emptyNuke;
+            size = 3;
+            powerCost = 6.25f;
         }};
     }
 }

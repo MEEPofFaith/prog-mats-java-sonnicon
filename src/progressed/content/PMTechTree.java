@@ -56,7 +56,8 @@ public class PMTechTree implements ContentList{
                 node(strikedown, PMUtls.addItemStacks(new ItemStack[][]{
                     brq(strikedown),
                     brq(shellPress),
-                    recipeCost((ShellBuilder)shellPress, 0),
+                    recipeCost((PayloadCrafter)shellPress, 0),
+                    recipeCost((PayloadCrafter)missileFactory, 0),
                     brq(missileFactory),
                 }), Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.nuclearComplex)), () -> {
                     node(shellPress, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
@@ -64,21 +65,20 @@ public class PMTechTree implements ContentList{
                         node(nukeShell, ItemStack.empty, Seq.with(new Research(arbiter)));
                         node(missileFactory, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                             //Missile
-                            node(basicMissile, recipeCost((MultiCrafter)missileFactory, 0), Seq.with(new Research(strikedown)), () -> {
-                                node(empMissile, recipeCost((MultiCrafter)missileFactory, 1, 5f));
-                                node(recursiveMissile, recipeCost((MultiCrafter)missileFactory, 2, 5f));
+                            node(basicMissile, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
+                                node(empMissile, recipeCost((PayloadCrafter)missileFactory, 1, 5f));
+                                node(recursiveMissile, recipeCost((PayloadCrafter)missileFactory, 2, 5f));
                             });
                             //Nuke
                             node(basicNuke, ItemStack.empty, Seq.with(new Research(arbiter)), () -> {
-                                node(clusterNuke, recipeCost((MultiCrafter)missileFactory, 4, 5f));
-                                node(sentryNuke, recipeCost((MultiCrafter)missileFactory, 5, 5f));
+                                node(clusterNuke, recipeCost((PayloadCrafter)missileFactory, 4, 5f));
                             });
                         });
                     });
                     node(arbiter, PMUtls.addItemStacks(new ItemStack[][]{
                         brq(arbiter),
-                        recipeCost((ShellBuilder)shellPress, 1),
-                        recipeCost((MultiCrafter)missileFactory, 3)
+                        recipeCost((PayloadCrafter)shellPress, 1),
+                        recipeCost((PayloadCrafter)missileFactory, 3)
                     }), Seq.with(new Research(interplanetaryAccelerator), new SectorComplete(SectorPresets.planetaryTerminal)));
                 });
             });
@@ -190,11 +190,11 @@ public class PMTechTree implements ContentList{
         return recipeCost(crafter.getCost(rec), 1f);
     }
 
-    private static ItemStack[] recipeCost(ShellBuilder crafter, int rec, float multiplier){
+    private static ItemStack[] recipeCost(PayloadCrafter crafter, int rec, float multiplier){
         return recipeCost(crafter.getCost(rec), multiplier);
     }
 
-    private static ItemStack[] recipeCost(ShellBuilder crafter, int rec){
+    private static ItemStack[] recipeCost(PayloadCrafter crafter, int rec){
         return recipeCost(crafter.getCost(rec), 1f);
     }
 

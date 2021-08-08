@@ -20,7 +20,6 @@ import progressed.graphics.*;
 import progressed.ui.*;
 import progressed.util.*;
 import progressed.world.blocks.crafting.*;
-import progressed.world.blocks.crafting.pmmultilib.*;
 import progressed.world.blocks.crafting.pmmultilib.Recipe.*;
 import progressed.world.blocks.defence.*;
 import progressed.world.blocks.defence.turret.*;
@@ -819,8 +818,7 @@ public class PMBlocks implements ContentList{
             ));
             ammo(
                 PMItems.basicNuke, PMBullets.arbiterBasic,
-                PMItems.clusterNuke, PMBullets.arbiterCluster,
-                PMItems.sentryNuke, PMBullets.arbiterSentry
+                PMItems.clusterNuke, PMBullets.arbiterCluster
             );
             reloadBar = true;
             size = 7;
@@ -982,7 +980,7 @@ public class PMBlocks implements ContentList{
             updateEffect = Fx.none;
         }};*/
 
-        shellPress = new ShellBuilder("shell-press"){{
+        shellPress = new PayloadCrafter("shell-press"){{
             requirements(Category.crafting, with(
                 Items.copper, 75,
                 Items.lead, 100,
@@ -994,7 +992,7 @@ public class PMBlocks implements ContentList{
             products = Seq.with(PMPayloads.emptyMissile, PMPayloads.emptyNuke);
         }};
 
-        missileFactory = new VisualMultiCrafter("missile-factory"){{
+        /*missileFactory = new VisualMultiCrafter("missile-factory"){{
             requirements(Category.crafting, with(
                 Items.copper, 300,
                 Items.lead, 200,
@@ -1047,6 +1045,20 @@ public class PMBlocks implements ContentList{
             craftEffect = Fx.pulverizeMedium;
             updateEffect = Fx.none;
             hasTop = true;
+        }};*/
+
+        missileFactory = new PayloadCrafter("missile-factory"){{
+            requirements(Category.crafting, with(
+                Items.copper, 300,
+                Items.lead, 200,
+                Items.silicon, 200,
+                Items.plastanium, 150,
+                Items.thorium, 100,
+                Items.surgeAlloy, 110
+            ));
+
+            size = 4;
+            products = Seq.with(PMPayloads.basicMissile, PMPayloads.empMissile, PMPayloads.recursiveMissile, PMPayloads.basicNuke, PMPayloads.clusterNuke);
         }};
 
         sentryBuilder = new VisualMultiCrafter("sentry-builder"){{

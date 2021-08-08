@@ -13,7 +13,7 @@ public class PMItems implements ContentList{
 
     basicMissile, empMissile, recursiveMissile,
 
-    basicNuke, clusterNuke, sentryNuke,
+    basicNuke, clusterNuke,
 
     basicSentryBox, strikeSentryBox, dashSentryBox;
 
@@ -36,8 +36,6 @@ public class PMItems implements ContentList{
         basicNuke = new VisualItem("basic-nuke", Color.valueOf("D4816B"), "prog-mats-b-basic-nuke");
 
         clusterNuke = new VisualItem("cluster-nuke", Color.valueOf("62AE7F"), "prog-mats-b-cluster-nuke");
-
-        sentryNuke = new VisualItem("sentry-nuke", Color.valueOf("FEB380"), "prog-mats-b-unit-nuke");
 
         basicSentryBox = new VisualItem("basic-sentry-box", Color.valueOf("C9A58F"), PMUnitTypes.basicSentry);
         

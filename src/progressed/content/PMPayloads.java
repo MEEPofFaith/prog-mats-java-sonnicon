@@ -61,6 +61,7 @@ public class PMPayloads implements ContentList{
 
             size = 3;
             powerCost = 5f;
+            requiresUnlock = true;
         }};
 
         basicNuke = new Missile("basic-nuke"){{
@@ -69,6 +70,7 @@ public class PMPayloads implements ContentList{
             prev = emptyNuke;
             size = 3;
             powerCost = 6f;
+            requiresUnlock = true;
         }};
 
         clusterNuke = new Missile("cluster-nuke"){{
@@ -77,6 +79,7 @@ public class PMPayloads implements ContentList{
             prev = emptyNuke;
             size = 3;
             powerCost = 6.25f;
+            requiresUnlock = true;
         }};
     }
 }

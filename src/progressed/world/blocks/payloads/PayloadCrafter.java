@@ -14,8 +14,6 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.payloads.*;
-import mindustry.world.blocks.payloads.BlockProducer.*;
-import mindustry.world.blocks.power.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.ui.*;
@@ -77,6 +75,8 @@ public class PayloadCrafter extends BlockProducer{
     @Override
     public void setStats(){
         super.setStats();
+        stats.remove(Stat.powerUse);
+
         stats.add(Stat.input, t -> {
            t.row();
 
@@ -87,34 +87,33 @@ public class PayloadCrafter extends BlockProducer{
                t.table(ct -> {
                    ct.left().defaults().padRight(3).left();
 
-                   ct.add(Stat.input.localized());
                    ct.table(it -> {
+                       it.add(Stat.input.localized() + ": ");
                        for(ItemStack stack : p.requirements){
                            it.add(PMElements.itemImage(stack.item.uiIcon, () -> stack.amount == 0 ? "" : stack.amount + ""));
                        }
-                   }).left();
+                   });
 
                    if(p instanceof Missile m){
                        if(m.prev != null){
                            ct.row();
                            ct.table(pt -> {
-                               ct.image(m.prev.fullIcon);
-                               ct.add(m.prev.localizedName);
+                               pt.image(m.prev.fullIcon).padLeft(60f).padRight(4).right().top();
+                               pt.add(m.prev.localizedName).padRight(10).left().top();
                            });
                        }
                        if(m.powerCost > 0){
                            ct.row();
-                           ct.add(Stat.powerUse.localized());
-                           ct.table(StatValues.number(m.powerCost * 60f, StatUnit.powerSecond)::display);
+                           ct.add(Stat.powerUse.localized() + ": " + (m.powerCost * 60f) + " " + StatUnit.powerSecond.localized());
                        }
                        if(m.requiresUnlock){
                            ct.row();
                            ct.add("@block.pm-requires-unlock");
                        }
                    }
-
-                   ct.row();
                }).padTop(-9).left().get().background(Tex.underline);
+
+               t.row();
            });
         });
     }

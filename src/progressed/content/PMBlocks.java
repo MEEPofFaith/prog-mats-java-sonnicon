@@ -779,7 +779,7 @@ public class PMBlocks implements ContentList{
             };
         }};
 
-        strikedown = new MissileTurret("strikedown"){{
+        /*strikedown = new MissileTurret("strikedown"){{
             requirements(Category.turret, with(
                 Items.copper, 70,
                 Items.lead, 350,
@@ -804,9 +804,34 @@ public class PMBlocks implements ContentList{
             inaccuracy = 5f;
             maxAmmo = 8;
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
+        }};*/
+
+        strikedown = new PayloadMissileTurret("strikedown"){{
+            requirements(Category.turret, with(
+                Items.copper, 70,
+                Items.lead, 350,
+                Items.graphite, 300,
+                Items.silicon, 300,
+                Items.titanium, 250,
+                PMItems.techtanite, 120
+            ));
+            ammo(
+                PMPayloads.basicMissile, PMBullets.strikedownBasic,
+                PMPayloads.empMissile, PMBullets.strikedownEmp,
+                PMPayloads.recursiveMissile, PMBullets.strikedownRecursive
+            );
+            size = 4;
+            health = 160 * size * size;
+            range = 330f;
+            reloadTime = 180f;
+            shootSound = Sounds.artillery;
+            cooldown = 0.001f;
+            shootShake = 5f;
+            inaccuracy = 5f;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
-        arbiter = new MissileTurret("arbiter"){{
+        /*arbiter = new MissileTurret("arbiter"){{
             requirements(Category.turret, with(
                 Items.copper, 4000,
                 Items.graphite, 2200,
@@ -829,6 +854,30 @@ public class PMBlocks implements ContentList{
             shootShake = 10f;
             reloadTime = 1500f;
             maxAmmo = 2;
+            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
+        }};*/
+
+        arbiter = new PayloadMissileTurret("arbiter"){{
+            requirements(Category.turret, with(
+                Items.copper, 4000,
+                Items.graphite, 2200,
+                Items.silicon, 2000,
+                Items.titanium, 1300,
+                Items.thorium, 650,
+                Items.surgeAlloy, 200,
+                PMItems.techtanite, 800
+            ));
+            ammo(
+                PMPayloads.basicNuke, PMBullets.arbiterBasic,
+                PMPayloads.clusterNuke, PMBullets.arbiterCluster
+            );
+            size = 7;
+            health = 170 * size * size;
+            range = 4400f;
+            shootSound = Sounds.explosionbig;
+            cooldown = 0.001f;
+            shootShake = 10f;
+            reloadTime = 1500f;
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 

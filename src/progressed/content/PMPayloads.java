@@ -44,6 +44,7 @@ public class PMPayloads implements ContentList{
             prev = emptyMissile;
             size = 2;
             powerCost = 4f;
+            constructTime = 75f;
             requiresUnlock = true;
         }};
 
@@ -53,6 +54,7 @@ public class PMPayloads implements ContentList{
             prev = emptyMissile;
             size = 2;
             powerCost = 5f;
+            constructTime = 80f;
             requiresUnlock = true;
         }};
 
@@ -61,6 +63,7 @@ public class PMPayloads implements ContentList{
 
             size = 3;
             powerCost = 5f;
+            constructTime = 90f;
             requiresUnlock = true;
         }};
 
@@ -70,6 +73,7 @@ public class PMPayloads implements ContentList{
             prev = emptyNuke;
             size = 3;
             powerCost = 6f;
+            constructTime = 90f;
             requiresUnlock = true;
         }};
 
@@ -79,6 +83,7 @@ public class PMPayloads implements ContentList{
             prev = emptyNuke;
             size = 3;
             powerCost = 6.25f;
+            constructTime = 120f;
             requiresUnlock = true;
         }};
     }

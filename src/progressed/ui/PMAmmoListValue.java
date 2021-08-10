@@ -41,7 +41,11 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
 
             //no point in displaying unit icon twice
             if(!unit && !(t instanceof PowerTurret)){
-                table.image(icon(t)).size(3 * 8).padRight(4).right().top();
+                if(t instanceof Item){
+                    table.image(icon(t)).size(3 * 8).padRight(4).right().top();
+                }else{
+                    table.image(icon(t)).padRight(4).right().top();
+                }
                 table.add(t.localizedName).padRight(10).left().top();
             }
 
@@ -169,13 +173,6 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
                     bt.row();
                     UnitType s = stype.spawn;
                     bt.image(s.fullIcon).size(3 * 8);
-                    bt.add("[stat]" + s.localizedName);
-                }
-
-                if(type instanceof UnitSpawnStrikeBulletType stype){
-                    bt.row();
-                    UnitType s = stype.spawn;
-                    bt.image(s.fullIcon).size(3 * 8);   
                     bt.add("[stat]" + s.localizedName);
                 }
 

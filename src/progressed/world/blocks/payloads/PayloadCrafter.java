@@ -29,7 +29,6 @@ public class PayloadCrafter extends BlockProducer{
     public PayloadCrafter(String name){
         super(name);
 
-        buildSpeed = 0.1f;
         configurable = true;
 
         config(Block.class, (ShellBuilderBuild tile, Block block) -> {
@@ -179,9 +178,10 @@ public class PayloadCrafter extends BlockProducer{
             }
 
             if(produce){
-                progress += buildSpeed * edelta();
+                progress += edelta();
 
-                if(progress >= recipe.buildCost){
+                Missile m = (Missile)recipe;
+                if(progress >= m.constructTime){
                     consume();
                     payload = new BuildPayload(recipe, team);
                     payVector.setZero();

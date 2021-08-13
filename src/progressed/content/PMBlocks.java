@@ -629,32 +629,6 @@ public class PMBlocks implements ContentList{
             ammoPerShot = 10;
         }};
 
-        /*
-        tinker = new LaunchTurret("tinker"){{
-            requirements(Category.turret, with(
-                Items.copper, 125,
-                Items.lead, 75,
-                Items.silicon, 30,
-                Items.titanium, 50
-            ));
-            ammo(
-                PMItems.basicSentryBox, PMBullets.basicSentryLaunch,
-                PMItems.strikeSentryBox, PMBullets.strikeSentryLaunch,
-                PMItems.dashSentryBox, PMBullets.dashSentryLaunch
-            );
-            size = 3;
-            health = 140 * size * size;
-            reloadTime = 60f * 10f;
-            minRange = 5f * tilesize;
-            range = 40 * tilesize;
-            velocityInaccuracy = 0.2f;
-            cooldown = 0.03f;
-            recoilAmount = 6f;
-            restitution = 0.02f;
-            shootShake = 2f;
-            shootLength = 16f;
-        }};*/
-
         tinker = new PayloadTurret("tinker"){{
             requirements(Category.turret, with(
                 Items.copper, 125,
@@ -808,33 +782,6 @@ public class PMBlocks implements ContentList{
             };
         }};
 
-        /*strikedown = new MissileTurret("strikedown"){{
-            requirements(Category.turret, with(
-                Items.copper, 70,
-                Items.lead, 350,
-                Items.graphite, 300,
-                Items.silicon, 300,
-                Items.titanium, 250,
-                PMItems.techtanite, 120
-            ));
-            ammo(
-                PMItems.basicMissile, PMBullets.strikedownBasic,
-                PMItems.empMissile, PMBullets.strikedownEmp,
-                PMItems.recursiveMissile, PMBullets.strikedownRecursive
-            );
-            reloadBar = true;
-            size = 4;
-            health = 160 * size * size;
-            range = 330f;
-            reloadTime = 180f;
-            shootSound = Sounds.artillery;
-            cooldown = 0.001f;
-            shootShake = 5f;
-            inaccuracy = 5f;
-            maxAmmo = 8;
-            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
-        }};*/
-
         strikedown = new PayloadMissileTurret("strikedown"){{
             requirements(Category.turret, with(
                 Items.copper, 70,
@@ -859,32 +806,6 @@ public class PMBlocks implements ContentList{
             inaccuracy = 5f;
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
-
-        /*arbiter = new MissileTurret("arbiter"){{
-            requirements(Category.turret, with(
-                Items.copper, 4000,
-                Items.graphite, 2200,
-                Items.silicon, 2000,
-                Items.titanium, 1300,
-                Items.thorium, 650,
-                Items.surgeAlloy, 200,
-                PMItems.techtanite, 800
-            ));
-            ammo(
-                PMItems.basicNuke, PMBullets.arbiterBasic,
-                PMItems.clusterNuke, PMBullets.arbiterCluster
-            );
-            reloadBar = true;
-            size = 7;
-            health = 170 * size * size;
-            range = 4400f;
-            shootSound = Sounds.explosionbig;
-            cooldown = 0.001f;
-            shootShake = 10f;
-            reloadTime = 1500f;
-            maxAmmo = 2;
-            unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
-        }};*/
 
         arbiter = new PayloadMissileTurret("arbiter"){{
             requirements(Category.turret, with(
@@ -1036,28 +957,6 @@ public class PMBlocks implements ContentList{
             outputItem = new ItemStack(PMItems.techtanite, 2);
         }};
 
-        /*shellPress = new MultiCrafter("shell-press"){{
-            requirements(Category.crafting, with(
-                Items.copper, 75,
-                Items.lead, 100,
-                Items.titanium, 100,
-                Items.silicon, 80
-            ));
-            addRecipe(
-                new Inputs(with(Items.copper, 5, Items.lead, 5, Items.titanium, 5), 3f, 60f),
-                new Outputs(with(PMItems.missileShell, 2))
-            );
-            addRecipe(
-                new Inputs(with(Items.titanium, 10, Items.surgeAlloy, 10, PMItems.techtanite, 10), 5f, 90f),
-                new Outputs(with(PMItems.nukeShell, 1)),
-                true
-            );
-            size = 3;
-            itemCapacity = 30;
-            craftEffect = Fx.pulverizeMedium;
-            updateEffect = Fx.none;
-        }};*/
-
         shellPress = new PayloadCrafter("shell-press"){{
             requirements(Category.units, with(
                 Items.copper, 75,
@@ -1069,61 +968,6 @@ public class PMBlocks implements ContentList{
             size = 4;
             products = Seq.with(PMPayloads.emptyMissile, PMPayloads.emptyNuke);
         }};
-
-        /*missileFactory = new VisualMultiCrafter("missile-factory"){{
-            requirements(Category.crafting, with(
-                Items.copper, 300,
-                Items.lead, 200,
-                Items.silicon, 200,
-                Items.plastanium, 150,
-                Items.thorium, 100,
-                Items.surgeAlloy, 110
-            ));
-            
-            // Region Missiles
-
-            addRecipe(//Baisc Missile
-                new Inputs(with(PMItems.missileShell, 1, Items.thorium, 3, Items.blastCompound, 6), 3f, 60f),
-                new Outputs(with(PMItems.basicMissile, 1))
-            );
-            addRecipe(//EMP Missile
-                new Inputs(with(PMItems.missileShell, 1, Items.lead, 12, Items.titanium, 10, Items.silicon, 10), 4f, 75f),
-                new Outputs(with(PMItems.empMissile, 1)),
-                true
-            );
-            addRecipe(//Recursive Missile
-                new Inputs(with(PMItems.missileShell, 1, PMItems.basicMissile, 2, Items.copper, 15, Items.plastanium, 10, Items.silicon, 10), 5f, 80f),
-                new Outputs(with(PMItems.recursiveMissile, 1)),
-                true
-            );
-
-            // endregion
-            // Region Nukes
-
-            addRecipe(//Basic Nuke
-                new Inputs(with(PMItems.nukeShell, 1, Items.titanium, 25, Items.thorium, 35, Items.blastCompound, 25), 6f, 90f),
-                new Outputs(with(PMItems.basicNuke, 1)),
-                true
-            );
-            addRecipe(//Cluster Nuke
-                new Inputs(with(PMItems.nukeShell, 1, PMItems.basicMissile, 5, Items.copper, 30, Items.plastanium, 15, PMItems.techtanite, 25), 6.25f, 120f),
-                new Outputs(with(PMItems.clusterNuke, 1)),
-                true
-            );
-            addRecipe(//Sentry Nuke
-                new Inputs(with(PMItems.nukeShell, 1, PMItems.basicSentryBox, 3, PMItems.strikeSentryBox, 3, PMItems.dashSentryBox, 3, Items.pyratite, 10, Items.blastCompound, 5), 5.5f, 150f),
-                new Outputs(with(PMItems.sentryNuke, 1)),
-                true
-            );
-
-            // endregion
-
-            size = 4;
-            itemCapacity = 50;
-            craftEffect = Fx.pulverizeMedium;
-            updateEffect = Fx.none;
-            hasTop = true;
-        }};*/
 
         missileFactory = new PayloadCrafter("missile-factory"){{
             requirements(Category.units, with(
@@ -1138,33 +982,6 @@ public class PMBlocks implements ContentList{
             size = 4;
             products = Seq.with(PMPayloads.basicMissile, PMPayloads.empMissile, PMPayloads.recursiveMissile, PMPayloads.basicNuke, PMPayloads.clusterNuke);
         }};
-
-        /*
-        sentryBuilder = new VisualMultiCrafter("sentry-builder"){{
-            requirements(Category.crafting, with(
-                Items.copper, 90,
-                Items.lead, 80,
-                Items.titanium, 60,
-                Items.silicon, 150
-            ));
-            addRecipe(//Basic Sentry
-                new Inputs(with(Items.copper, 30, Items.lead, 35, Items.titanium, 15, Items.silicon, 25), 4f, 90f),
-                new Outputs(with(PMItems.basicSentryBox, 3))
-            );
-            addRecipe(//Strike Sentry
-                new Inputs(with(Items.copper, 40, Items.lead, 40, Items.titanium, 20, Items.silicon, 30, Items.blastCompound, 10), 4.5f, 120f),
-                new Outputs(with(PMItems.strikeSentryBox, 3)),
-                true
-            );
-            addRecipe(//Dash Sentry
-                new Inputs(with(Items.copper, 30, Items.lead, 30, Items.titanium, 30, Items.graphite, 15, Items.silicon, 35), 5.25f, 105f),
-                new Outputs(with(PMItems.dashSentryBox, 3)),
-                true
-            );
-            size = 4;
-            itemCapacity = 100;
-            craftEffect = updateEffect = Fx.none;
-        }};*/
 
         sentryBuilder = new PayloadCrafter("sentry-builder"){{
             requirements(Category.units, with(

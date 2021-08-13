@@ -177,10 +177,6 @@ public class PMTechTree implements ContentList{
         return content.researchRequirements();
     }
 
-    private static ItemStack[] recipeCost(ItemStack[] cost, float multiplier){
-        return PMUtls.researchRequirements(cost, multiplier);
-    }
-
     private static void vanillaNode(UnlockableContent parent, Runnable children){
         context = TechTree.get(parent);
         children.run();

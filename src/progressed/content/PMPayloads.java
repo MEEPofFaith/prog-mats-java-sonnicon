@@ -2,12 +2,13 @@ package progressed.content;
 
 import mindustry.content.*;
 import mindustry.ctype.*;
+import mindustry.world.*;
 import progressed.world.blocks.payloads.*;
 
 import static mindustry.type.ItemStack.*;
 
 public class PMPayloads implements ContentList{
-    public static Missile
+    public static Block
 
     //Region Missiles
 
@@ -19,7 +20,11 @@ public class PMPayloads implements ContentList{
 
     emptyNuke,
 
-    basicNuke, clusterNuke, unitNuke;
+    basicNuke, clusterNuke,
+
+    //Region Sentries
+
+    basicSentry, strikeSentry, dashSentry;
 
     @Override
     public void load(){
@@ -85,6 +90,33 @@ public class PMPayloads implements ContentList{
             powerCost = 6.25f;
             constructTime = 120f;
             requiresUnlock = true;
+        }};
+
+        basicSentry = new Sentry("basic-sentry"){{
+            requirements = with(Items.copper, 30, Items.lead, 35, Items.titanium, 15, Items.silicon, 25);
+
+            size = 2;
+            powerCost = 4f;
+            constructTime = 90f;
+           type = PMUnitTypes.barrage;
+        }};
+
+        strikeSentry = new Sentry("strike-sentry"){{
+            requirements = with(Items.copper, 40, Items.lead, 40, Items.titanium, 20, Items.silicon, 30, Items.blastCompound, 10);
+
+            size = 2;
+            powerCost = 4.5f;
+            constructTime = 120f;
+           type = PMUnitTypes.downpour;
+        }};
+
+        dashSentry = new Sentry("dash-sentry"){{
+            requirements = with(Items.copper, 30, Items.lead, 30, Items.titanium, 30, Items.graphite, 15, Items.silicon, 35);
+
+            size = 2;
+            powerCost = 5.25f;
+            constructTime = 105f;
+           type = PMUnitTypes.rapier;
         }};
     }
 }

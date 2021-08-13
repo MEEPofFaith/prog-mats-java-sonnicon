@@ -1,6 +1,7 @@
 package progressed.content;
 
 import arc.graphics.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
@@ -10,6 +11,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.entities.bullet.*;
 import progressed.graphics.*;
+import progressed.world.blocks.payloads.*;
 
 public class PMBullets implements ContentList{
     public static BulletType
@@ -22,8 +24,8 @@ public class PMBullets implements ContentList{
     magnetCopper, magnetTitanium, magnetTechtanite,
 
     pixel,
-    
-    basicSentryLaunch, strikeSentryLaunch, dashSentryLaunch,
+
+    sentryLaunch,
 
     syringe,
 
@@ -246,9 +248,32 @@ public class PMBullets implements ContentList{
             trailDelay = 7.5f;
         }};
 
-        basicSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.basicSentry);
-        strikeSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.strikeSentry);
-        dashSentryLaunch = new UnitSpawnBulletType(2f, PMUnitTypes.dashSentry);
+        sentryLaunch = new BulletType(16f, 50f){
+            {
+                lifetime = 22f;
+                collidesGround = collidesAir = collidesTiles = collides = false;
+                scaleVelocity = true;
+            }
+
+            @Override
+            public void draw(Bullet b){
+                if(b.data instanceof Sentry s){
+                    Draw.z(Layer.flyingUnitLow - 1f);
+                    Draw.rect(s.type.fullIcon, b.x, b.y, b.rotation() - 90f);
+                }
+            }
+
+            @Override
+            public void despawned(Bullet b){
+                if(b.data instanceof Sentry s){
+                    Unit spawned = s.type.spawn(b.team, b);
+                    spawned.rotation = b.rotation();
+                    spawned.vel.add(b.vel);
+                }
+
+                super.despawned(b);
+            }
+        };
 
         syringe = new InjectorBulletType(3f, 7f){{
             nanomachines = true;

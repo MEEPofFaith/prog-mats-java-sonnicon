@@ -2,7 +2,6 @@ package progressed.world.blocks.defence.turret;
 
 import arc.*;
 import arc.audio.*;
-import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
@@ -23,18 +22,16 @@ import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
-import mindustry.world.blocks.defense.turrets.Turret.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import progressed.world.blocks.payloads.*;
+import progressed.ui.*;
 
 import static mindustry.Vars.*;
 
 //Payload + Turret = A lot of copy paste aaaaa
 public class PayloadMissileTurret extends PayloadBlock{
     public float range = 80f;
-    public float rotateSpeed = 5;
 
     public boolean acceptCoolant = true;
     /** Effect displayed when coolant is used. */
@@ -111,7 +108,6 @@ public class PayloadMissileTurret extends PayloadBlock{
     @Override
     public void drawRequestRegion(BuildPlan req, Eachable<BuildPlan> list){
         Draw.rect(region, req.drawx(), req.drawy());
-        Draw.rect(inRegion, req.drawx(), req.drawy());
         Draw.rect(topRegion, req.drawx(), req.drawy());
     }
 
@@ -131,6 +127,7 @@ public class PayloadMissileTurret extends PayloadBlock{
         stats.add(Stat.reload, 60f / reloadTime, StatUnit.perSecond);
         stats.add(Stat.targetsAir, targetAir);
         stats.add(Stat.targetsGround, targetGround);
+        stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
 
         if(acceptCoolant){
             stats.add(Stat.booster, StatValues.boosters(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, true, l -> consumes.liquidfilters.get(l.id)));
@@ -317,15 +314,6 @@ public class PayloadMissileTurret extends PayloadBlock{
             }
         }
 
-        /** Consume ammo and return a type. */
-        public BulletType useAmmo(){
-            if(cheating()) return peekAmmo();
-
-            BulletType bullet = peekAmmo();
-            payload = null;
-            return bullet;
-        }
-
         /** @return the ammo type that will be returned if useAmmo is called. */
         public BulletType peekAmmo(){
             return ammoTypes.get(payload.block());
@@ -353,7 +341,7 @@ public class PayloadMissileTurret extends PayloadBlock{
             shotCounter++;
             heat = 1f;
             effects();
-            useAmmo();
+            if(!cheating()) payload = null;
         }
 
         protected void bullet(BulletType type, float angle){

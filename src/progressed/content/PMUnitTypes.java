@@ -1,9 +1,6 @@
 package progressed.content;
 
-import arc.func.*;
 import arc.graphics.*;
-import arc.struct.*;
-import arc.struct.ObjectMap.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
@@ -11,8 +8,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.meta.*;
-import progressed.ai.*;
-import progressed.entities.*;
 import progressed.entities.bullet.*;
 import progressed.entities.units.*;
 import progressed.graphics.*;
@@ -21,7 +16,7 @@ public class PMUnitTypes implements ContentList{
     public static UnitType
     
     //sentry
-    basicSentry, strikeSentry, dashSentry,
+    barrage, downpour, rapier,
 
     //signal flare
     flareSmall, flareMedium, flareLarge,
@@ -32,7 +27,7 @@ public class PMUnitTypes implements ContentList{
     @Override
     public void load(){
         //Region Sentry Units
-        basicSentry = new SentryUnitType("basic-sentry"){{
+        barrage = new SentryUnitType("barrage"){{
             health = 500f;
             duration = 16f * 60f;
 
@@ -59,7 +54,7 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        strikeSentry = new SentryUnitType("strike-sentry"){{
+        downpour = new SentryUnitType("downpour"){{
             health = 300f;
 
             weapons.add(new Weapon(name + "-hole"){{
@@ -96,7 +91,7 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
-        dashSentry = new SentryUnitType("dash-sentry"){
+        rapier = new SentryUnitType("rapier"){
             final float len = 56f, rangeMul = 16f;
             {
                 health = 800f;

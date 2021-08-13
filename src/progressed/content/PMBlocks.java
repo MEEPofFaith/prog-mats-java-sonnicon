@@ -20,7 +20,6 @@ import progressed.graphics.*;
 import progressed.ui.*;
 import progressed.util.*;
 import progressed.world.blocks.crafting.*;
-import progressed.world.blocks.crafting.pmmultilib.Recipe.*;
 import progressed.world.blocks.defence.*;
 import progressed.world.blocks.defence.turret.*;
 import progressed.world.blocks.defence.turret.EruptorTurret.*;
@@ -630,6 +629,7 @@ public class PMBlocks implements ContentList{
             ammoPerShot = 10;
         }};
 
+        /*
         tinker = new LaunchTurret("tinker"){{
             requirements(Category.turret, with(
                 Items.copper, 125,
@@ -653,6 +653,35 @@ public class PMBlocks implements ContentList{
             restitution = 0.02f;
             shootShake = 2f;
             shootLength = 16f;
+        }};*/
+
+        tinker = new PayloadTurret("tinker"){{
+            requirements(Category.turret, with(
+                Items.copper, 125,
+                Items.lead, 75,
+                Items.silicon, 30,
+                Items.titanium, 50
+            ));
+            ammo(
+                PMPayloads.basicSentry, PMBullets.sentryLaunch,
+                PMPayloads.strikeSentry, PMBullets.sentryLaunch,
+                PMPayloads.dashSentry, PMBullets.sentryLaunch
+            );
+
+            size = 3;
+            health = 140 * size * size;
+            reloadTime = 60f * 10f;
+            minRange = 5f * tilesize;
+            range = 40 * tilesize;
+            velocityInaccuracy = 0.2f;
+            cooldown = 0.03f;
+            recoilAmount = 6f;
+            restitution = 0.02f;
+            shootShake = 2f;
+
+            loadLength = 4f;
+            shootLength = 11f;
+            width = 3.5f;
         }};
 
         vaccinator = new ItemTurret("vaccinator"){
@@ -1030,7 +1059,7 @@ public class PMBlocks implements ContentList{
         }};*/
 
         shellPress = new PayloadCrafter("shell-press"){{
-            requirements(Category.crafting, with(
+            requirements(Category.units, with(
                 Items.copper, 75,
                 Items.lead, 100,
                 Items.titanium, 100,
@@ -1097,7 +1126,7 @@ public class PMBlocks implements ContentList{
         }};*/
 
         missileFactory = new PayloadCrafter("missile-factory"){{
-            requirements(Category.crafting, with(
+            requirements(Category.units, with(
                 Items.copper, 300,
                 Items.lead, 200,
                 Items.silicon, 200,
@@ -1110,6 +1139,7 @@ public class PMBlocks implements ContentList{
             products = Seq.with(PMPayloads.basicMissile, PMPayloads.empMissile, PMPayloads.recursiveMissile, PMPayloads.basicNuke, PMPayloads.clusterNuke);
         }};
 
+        /*
         sentryBuilder = new VisualMultiCrafter("sentry-builder"){{
             requirements(Category.crafting, with(
                 Items.copper, 90,
@@ -1134,6 +1164,18 @@ public class PMBlocks implements ContentList{
             size = 4;
             itemCapacity = 100;
             craftEffect = updateEffect = Fx.none;
+        }};*/
+
+        sentryBuilder = new PayloadCrafter("sentry-builder"){{
+            requirements(Category.units, with(
+                Items.copper, 90,
+                Items.lead, 80,
+                Items.titanium, 60,
+                Items.silicon, 150
+            ));
+
+            size = 4;
+            products = Seq.with(PMPayloads.basicSentry, PMPayloads.strikeSentry, PMPayloads.dashSentry);
         }};
 
         // endregion

@@ -7,8 +7,6 @@ import mindustry.game.Objectives.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import progressed.util.*;
-import progressed.world.blocks.crafting.pmmultilib.*;
-import progressed.world.blocks.payloads.*;
 
 import static mindustry.content.Items.*;
 import static mindustry.content.Blocks.*;
@@ -67,12 +65,12 @@ public class PMTechTree implements ContentList{
                         node(missileFactory, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                             //Missile
                             node(basicMissile, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
-                                node(empMissile, brq(empMissile));
-                                node(recursiveMissile, brq(recursiveMissile));
+                                node(empMissile);
+                                node(recursiveMissile);
                             });
                             //Nuke
                             node(basicNuke, ItemStack.empty, Seq.with(new Research(arbiter)), () -> {
-                                node(clusterNuke, brq(clusterNuke));
+                                node(clusterNuke);
                             });
                         });
                     });
@@ -88,17 +86,17 @@ public class PMTechTree implements ContentList{
             node(tinker, PMUtls.addItemStacks(new ItemStack[][]{
                 brq(tinker),
                 brq(sentryBuilder),
-                recipeCost((MultiCrafter)sentryBuilder, 0)
+                brq(basicSentry)
             }), Seq.with(new SectorComplete(SectorPresets.windsweptIslands)), () -> {
                 node(sentryBuilder, ItemStack.empty, Seq.with(new Research(tinker)), () -> {
-                    node(basicSentryBox, ItemStack.empty, Seq.with(new Research(sentryBuilder)), () -> {
-                        node(basicSentry, ItemStack.empty, Seq.with(new Research(basicSentryBox)));
+                    node(basicSentry, ItemStack.empty, Seq.with(new Research(sentryBuilder)), () -> {
+                        node(barrage, ItemStack.empty, Seq.with(new Research(basicSentry)));
                     });
-                    node(strikeSentryBox, recipeCost((MultiCrafter)sentryBuilder, 1, 5f), Seq.with(new Research(firestorm)), () -> {
-                        node(strikeSentry, ItemStack.empty, Seq.with(new Research(strikeSentryBox)));
+                    node(strikeSentry, Seq.with(new Research(firestorm)), () -> {
+                        node(downpour, ItemStack.empty, Seq.with(new Research(strikeSentry)));
                     });
-                    node(dashSentryBox, recipeCost((MultiCrafter)sentryBuilder, 2, 5f), Seq.with(new Research(lancer), new Research(quasar)), () -> {
-                        node(dashSentry, ItemStack.empty, Seq.with(new Research(dashSentryBox)));
+                    node(dashSentry, Seq.with(new Research(lancer), new Research(quasar)), () -> {
+                        node(rapier, ItemStack.empty, Seq.with(new Research(dashSentry)));
                     });
                 });
             });
@@ -181,14 +179,6 @@ public class PMTechTree implements ContentList{
 
     private static ItemStack[] recipeCost(ItemStack[] cost, float multiplier){
         return PMUtls.researchRequirements(cost, multiplier);
-    }
-
-    private static ItemStack[] recipeCost(MultiCrafter crafter, int rec, float multiplier){
-        return recipeCost(crafter.getCost(rec), multiplier);
-    }
-
-    private static ItemStack[] recipeCost(MultiCrafter crafter, int rec){
-        return recipeCost(crafter.getCost(rec), 1f);
     }
 
     private static void vanillaNode(UnlockableContent parent, Runnable children){

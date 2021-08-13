@@ -11,11 +11,9 @@ import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.type.*;
-import mindustry.ui.*;
+import mindustry.world.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
-import progressed.*;
-import progressed.content.*;
 import progressed.entities.bullet.*;
 import progressed.entities.bullet.InjectorBulletType.*;
 import progressed.entities.units.*;
@@ -41,10 +39,10 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
 
             //no point in displaying unit icon twice
             if(!unit && !(t instanceof PowerTurret)){
-                if(t instanceof Item){
-                    table.image(icon(t)).size(3 * 8).padRight(4).right().top();
-                }else{
+                if(t instanceof Block){
                     table.image(icon(t)).padRight(4).right().top();
+                }else{
+                    table.image(icon(t)).size(3 * 8).padRight(4).right().top();
                 }
                 table.add(t.localizedName).padRight(10).left().top();
             }
@@ -167,13 +165,6 @@ public class PMAmmoListValue<T extends UnlockableContent> implements StatValue{ 
 
                 if(type.lightning > 0){
                     sep(bt, Core.bundle.format("bullet.lightning", type.lightning, type.lightningDamage < 0 ? type.damage : type.lightningDamage));
-                }
-
-                if(type instanceof UnitSpawnBulletType stype){
-                    bt.row();
-                    UnitType s = stype.spawn;
-                    bt.image(s.fullIcon).size(3 * 8);
-                    bt.add("[stat]" + s.localizedName);
                 }
 
                 if(type.fragBullet != null){

@@ -29,7 +29,7 @@ public class PayloadCrafter extends BlockProducer{
     public PayloadCrafter(String name){
         super(name);
 
-        configurable = true;
+        configurable = logicConfigurable = true;
 
         config(Block.class, (ShellBuilderBuild tile, Block block) -> {
             if(tile.recipe != block) tile.progress = 0f;
@@ -143,14 +143,6 @@ public class PayloadCrafter extends BlockProducer{
         @Override
         public @Nullable Block recipe(){
             return recipe;
-        }
-
-        @Override
-        public void control(LAccess type, Object p1, double p2, double p3, double p4){
-            if(p1 instanceof Block b && products.contains(b)){
-                recipe = b;
-            }
-            super.control(type, p1, p2, p3, p4);
         }
 
         @Override

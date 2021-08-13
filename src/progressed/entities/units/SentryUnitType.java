@@ -21,7 +21,7 @@ import progressed.util.*;
 
 public class SentryUnitType extends UnitType{
     public int engines = 4;
-    public float engineRotOffset = 45f, duration = 600f, riseSpeed = 0.016f;
+    public float engineRotOffset = 45f, duration = 600f, riseSpeed = 0.125f;
 
     public SentryUnitType(String name){
         super(name);
@@ -29,7 +29,7 @@ public class SentryUnitType extends UnitType{
         defaultController = SentryAI::new;
         
         speed = accel = 0f;
-        drag = 0.025f;
+        drag = 0.12f;
         flying = lowAltitude = true;
         engineOffset = 6f;
         engineSize = 2f;
@@ -48,23 +48,32 @@ public class SentryUnitType extends UnitType{
 
         Draw.color(unit.team.color);
         for(int i = 0; i < engines; i++){
+            float a = unit.rotation + engineRotOffset + (i * 360f / engines);
             Fill.circle(
-                unit.x + Angles.trnsx(unit.rotation + engineRotOffset + (i * 360f / engines), offset),
-                unit.y + Angles.trnsy(unit.rotation + engineRotOffset + (i * 360f / engines), offset),
-                (engineSize + Mathf.absin(2, engineSize / 4f)) * scl
+                unit.x + Angles.trnsx(a, offset),
+                unit.y + Angles.trnsy(a, offset),
+                getEngineSize(unit, a) * scl
             );
         }
 
         Draw.color(Color.white);
         for(int i = 0; i < engines; i++){
+            float a = unit.rotation + engineRotOffset + (i * 360f / engines);
             Fill.circle(
-                unit.x + Angles.trnsx(unit.rotation + engineRotOffset + (i * 360f / engines), offset - 1f),
-                unit.y + Angles.trnsy(unit.rotation + engineRotOffset + (i * 360f / engines), offset - 1f),
-                (engineSize + Mathf.absin(2, engineSize / 4f)) / 2f * scl
+                unit.x + Angles.trnsx(a, offset - 1f),
+                unit.y + Angles.trnsy(a, offset - 1f),
+                getEngineSize(unit, a) / 2f * scl
             );
         }
 
         Draw.reset();
+    }
+
+    public float getEngineSize(Unit unit, float angle){
+        float min = 0f, max = 3f;
+        float amount = Mathf.curve(unit.vel.len(), 0.01f, 16f);
+        float multiplier = (max - ((max - 1f) - amount * (max - 1f))) - (Mathf.curve(Angles.angleDist(angle, unit.vel.angle()), 0f, 180f) * (max - min) * amount);
+        return (engineSize + Mathf.absin(2, engineSize / 4f)) * multiplier;
     }
 
     @Override

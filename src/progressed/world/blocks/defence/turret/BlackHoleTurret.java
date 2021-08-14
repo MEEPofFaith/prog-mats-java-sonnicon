@@ -49,7 +49,7 @@ public class BlackHoleTurret extends PowerTurret{
         super.setStats();
 
         stats.remove(Stat.ammo);
-        stats.add(Stat.ammo, new PMAmmoListValue<>(OrderedMap.of(this, shootType)));
+        stats.add(Stat.ammo, PMStatValues.ammo(OrderedMap.of(this, shootType)));
     }
 
     @Override

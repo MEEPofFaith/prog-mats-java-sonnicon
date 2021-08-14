@@ -2,13 +2,12 @@ package progressed.world.blocks.payloads;
 
 import arc.graphics.g2d.*;
 import arc.util.*;
-import mindustry.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 
 public class Sentry extends Missile{
-    public UnitType type;
+    public UnitType unit;
 
     public Sentry(String name){
         super(name);
@@ -33,7 +32,7 @@ public class Sentry extends Missile{
         }
 
         public void spawn(){
-            Unit spawned = type.spawn(team, self());
+            Unit spawned = unit.spawn(team, self());
             spawned.rotation(rotdeg());
             kill();
         }

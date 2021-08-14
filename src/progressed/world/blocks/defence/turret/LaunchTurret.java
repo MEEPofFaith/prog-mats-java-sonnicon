@@ -50,7 +50,7 @@ public class LaunchTurret extends ItemTurret{
         super.setStats();
 
         stats.remove(Stat.ammo);
-        stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+        stats.add(Stat.ammo, PMStatValues.ammo(ammoTypes));
     }
 
     @Override

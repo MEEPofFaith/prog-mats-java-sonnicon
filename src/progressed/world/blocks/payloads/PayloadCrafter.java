@@ -11,17 +11,19 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.logic.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.ui.*;
+import progressed.util.*;
 
 import static mindustry.Vars.*;
 
 public class PayloadCrafter extends BlockProducer{
-    public Seq<Block> products;
+    public Seq<Missile> products;
     public boolean hasTop = true;
 
     public int[] capacities = {};
@@ -31,7 +33,7 @@ public class PayloadCrafter extends BlockProducer{
 
         configurable = logicConfigurable = true;
 
-        config(Block.class, (ShellBuilderBuild tile, Block block) -> {
+        config(Block.class, (PayloadCrafterBuild tile, Block block) -> {
             if(tile.recipe != block) tile.progress = 0f;
             if(canProduce(block)){
                 tile.recipe = block;
@@ -65,7 +67,7 @@ public class PayloadCrafter extends BlockProducer{
 
     @Override
     public TextureRegion[] icons(){
-        if(products.contains(b -> b instanceof Missile m && m.prev != null)){
+        if(products.contains(b -> b.prev != null)){
             return new TextureRegion[]{region, inRegion, outRegion, topRegion};
         }
         return new TextureRegion[]{region, outRegion, topRegion};
@@ -93,22 +95,24 @@ public class PayloadCrafter extends BlockProducer{
                        }
                    });
 
-                   if(p instanceof Missile m){
-                       if(m.prev != null){
-                           ct.row();
-                           ct.table(pt -> {
-                               pt.image(m.prev.fullIcon).padLeft(60f).padRight(4).right().top();
-                               pt.add(m.prev.localizedName).padRight(10).left().top();
-                           });
-                       }
-                       if(m.powerCost > 0){
-                           ct.row();
-                           ct.add(Stat.powerUse.localized() + ": " + (m.powerCost * 60f) + " " + StatUnit.powerSecond.localized());
-                       }
-                       if(m.requiresUnlock){
-                           ct.row();
-                           ct.add("@block.pm-requires-unlock");
-                       }
+                   if(p.prev != null){
+                       ct.row();
+                       ct.table(pt -> {
+                           pt.image(p.prev.fullIcon).padLeft(60f).padRight(4).right().top();
+                           pt.add(p.prev.localizedName).padRight(10).left().top();
+                       });
+                   }
+                   if(p.constructTime > 0){
+                       ct.row();
+                       ct.add(Stat.buildTime.localized() + ": " + PMUtls.stringsFixed(p.constructTime / 60f) + " " + StatUnit.seconds.localized());
+                   }
+                   if(p.powerUse > 0){
+                       ct.row();
+                       ct.add(Stat.powerUse.localized() + ": " + PMUtls.stringsFixed(p.powerUse * 60f) + " " + StatUnit.powerSecond.localized());
+                   }
+                   if(p.requiresUnlock){
+                       ct.row();
+                       ct.add("@block.pm-requires-unlock");
                    }
                }).padTop(-9).left().get().background(Tex.underline);
 
@@ -118,26 +122,29 @@ public class PayloadCrafter extends BlockProducer{
     }
 
     @Override
+    public void setBars(){
+        super.setBars();
+
+        bars.remove("progress");
+        bars.add("progress", (PayloadCrafterBuild entity) -> new Bar("bar.progress", Pal.ammo, () -> entity.recipe() == null ? 0f : (entity.progress / ((Missile)(entity.recipe())).constructTime)));
+    }
+
+    @Override
     public void drawRequestRegion(BuildPlan req, Eachable<BuildPlan> list){
         Draw.rect(region, req.drawx(), req.drawy());
-        if(products.contains(b -> b instanceof Missile m && m.prev != null)) Draw.rect(inRegion, req.drawx(), req.drawy(), req.rotation * 90);
+        if(products.contains(b -> b.prev != null)) Draw.rect(inRegion, req.drawx(), req.drawy(), req.rotation * 90);
         Draw.rect(outRegion, req.drawx(), req.drawy(), req.rotation * 90);
         Draw.rect(topRegion, req.drawx(), req.drawy());
     }
 
     public boolean canProduce(Block b){
-        boolean unlocked = true;
-        if(b instanceof Missile m && m.requiresUnlock){
-            unlocked = b.unlockedNow();
+        if(b instanceof Missile m){
+            return (!m.requiresUnlock || m.unlockedNow()) && products.contains(m);
         }
-        return unlocked && products.contains(b);
+        return false;
     }
 
-    public ItemStack[] getCost(int rec){
-        return products.get(rec).requirements;
-    }
-
-    public class ShellBuilderBuild extends BlockProducerBuild{
+    public class PayloadCrafterBuild extends BlockProducerBuild{
         public @Nullable Block recipe;
 
         @Override
@@ -203,7 +210,7 @@ public class PayloadCrafter extends BlockProducer{
             drawPayload();
 
             if(recipe != null){
-                Draw.draw(Layer.blockOver, () -> Drawf.construct(this, recipe.fullIcon, 0, progress / recipe.buildCost, heat, time));
+                Draw.draw(Layer.blockOver, () -> Drawf.construct(this, recipe.fullIcon, 0, progress / ((Missile)recipe).constructTime, heat, time));
             }
 
             Draw.z(Layer.blockOver);
@@ -252,8 +259,8 @@ public class PayloadCrafter extends BlockProducer{
 
         @Override
         public float requestedPower(Building entity){
-            if(entity instanceof ShellBuilderBuild s && s.recipe() instanceof Missile m){
-                return m.powerCost;
+            if(entity instanceof PayloadCrafterBuild s && s.recipe() instanceof Missile m){
+                return m.powerUse;
             }
 
             return super.requestedPower(entity);

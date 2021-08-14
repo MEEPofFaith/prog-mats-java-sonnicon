@@ -63,7 +63,7 @@ public class PMBlocks implements ContentList{
     sentinel,
 
     //Missiles
-    firestorm, strikedown, arbiter,
+    firestorm, strikedown, trinity,
 
     //Misc
     blackhole, excalibur,
@@ -563,7 +563,7 @@ public class PMBlocks implements ContentList{
                 super.setStats();
 
                 stats.remove(Stat.ammo);
-                stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+                stats.add(Stat.ammo, PMStatValues.ammo(ammoTypes));
             }
         
             @Override
@@ -637,14 +637,13 @@ public class PMBlocks implements ContentList{
                 Items.titanium, 50
             ));
             ammo(
-                PMPayloads.basicSentry, PMBullets.sentryLaunch,
-                PMPayloads.strikeSentry, PMBullets.sentryLaunch,
-                PMPayloads.dashSentry, PMBullets.sentryLaunch
+                PMPayloads.basicSentry, PMBullets.barrageLaunch,
+                PMPayloads.strikeSentry, PMBullets.downpourLaunch,
+                PMPayloads.dashSentry, PMBullets.rapierLaunch
             );
 
             size = 3;
             health = 140 * size * size;
-            reloadTime = 60f * 10f;
             minRange = 5f * tilesize;
             range = 40 * tilesize;
             velocityInaccuracy = 0.2f;
@@ -689,7 +688,7 @@ public class PMBlocks implements ContentList{
                 super.setStats();
 
                 stats.remove(Stat.ammo);
-                stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+                stats.add(Stat.ammo, PMStatValues.ammo(ammoTypes));
             }
         };
 
@@ -799,7 +798,6 @@ public class PMBlocks implements ContentList{
             size = 4;
             health = 160 * size * size;
             range = 330f;
-            reloadTime = 180f;
             shootSound = Sounds.artillery;
             cooldown = 0.001f;
             shootShake = 5f;
@@ -807,7 +805,7 @@ public class PMBlocks implements ContentList{
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 
-        arbiter = new PayloadMissileTurret("arbiter"){{
+        trinity = new PayloadMissileTurret("arbiter"){{
             requirements(Category.turret, with(
                 Items.copper, 4000,
                 Items.graphite, 2200,
@@ -827,7 +825,6 @@ public class PMBlocks implements ContentList{
             shootSound = Sounds.explosionbig;
             cooldown = 0.001f;
             shootShake = 10f;
-            reloadTime = 1500f;
             unitSort = (u, x, y) -> -u.maxHealth + u.dst2(x, y) / 6400f;
         }};
 

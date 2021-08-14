@@ -7,7 +7,7 @@ import mindustry.world.meta.*;
 
 public class Missile extends NuclearWarhead{
     public Block prev;
-    public float powerCost, constructTime = 60f;
+    public float powerUse, constructTime = -1;
     public boolean requiresUnlock;
 
     public Missile(String name){
@@ -17,5 +17,10 @@ public class Missile extends NuclearWarhead{
         category = Category.units;
         researchCostMultiplier = 5f;
         hasShadow = false;
+    }
+
+    @Override
+    public void init(){
+        if(constructTime < 0) constructTime = buildCost;
     }
 }

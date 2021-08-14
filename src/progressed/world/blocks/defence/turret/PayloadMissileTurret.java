@@ -39,7 +39,7 @@ public class PayloadMissileTurret extends PayloadBlock{
     /** How much reload is lowered by for each unit of liquid of heat capacity. */
     public float coolantMultiplier = 5f;
 
-    public float reloadTime = 10f;
+    public float reloadTime = 60f;
 
     //after being logic-controlled and this amount of time passes, the turret will resume normal AI
     public final static float logicControlCooldown = 60 * 2;
@@ -127,7 +127,7 @@ public class PayloadMissileTurret extends PayloadBlock{
         stats.add(Stat.reload, 60f / reloadTime, StatUnit.perSecond);
         stats.add(Stat.targetsAir, targetAir);
         stats.add(Stat.targetsGround, targetGround);
-        stats.add(Stat.ammo, new PMAmmoListValue<>(ammoTypes));
+        stats.add(Stat.ammo, PMStatValues.ammo(ammoTypes));
 
         if(acceptCoolant){
             stats.add(Stat.booster, StatValues.boosters(reloadTime, consumes.<ConsumeLiquidBase>get(ConsumeType.liquid).amount, coolantMultiplier, true, l -> consumes.liquidfilters.get(l.id)));
@@ -234,6 +234,7 @@ public class PayloadMissileTurret extends PayloadBlock{
 
             drawPayload();
 
+            Draw.z(Layer.blockOver + 0.1f);
             Draw.rect(topRegion, x, y);
 
             if(heat >= 0.001f && heatRegion.found()){

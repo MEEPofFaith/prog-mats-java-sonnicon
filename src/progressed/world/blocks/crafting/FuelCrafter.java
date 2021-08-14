@@ -60,7 +60,7 @@ public class FuelCrafter extends GenericCrafter{
     public void setStats(){
         super.setStats();
 
-        stats.add(Stat.input, new FuelListValue(this));
+        stats.add(Stat.input, PMStatValues.fuel(this));
     }
 
     public class FuelSmelterBuild extends GenericCrafterBuild{

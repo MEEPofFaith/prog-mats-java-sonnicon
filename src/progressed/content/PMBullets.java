@@ -1,7 +1,6 @@
 package progressed.content;
 
 import arc.graphics.*;
-import arc.graphics.g2d.*;
 import arc.math.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
@@ -11,7 +10,6 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import progressed.entities.bullet.*;
 import progressed.graphics.*;
-import progressed.world.blocks.payloads.*;
 
 public class PMBullets implements ContentList{
     public static BulletType
@@ -25,7 +23,7 @@ public class PMBullets implements ContentList{
 
     pixel,
 
-    sentryLaunch,
+    barrageLaunch, downpourLaunch, rapierLaunch,
 
     syringe,
 
@@ -248,32 +246,9 @@ public class PMBullets implements ContentList{
             trailDelay = 7.5f;
         }};
 
-        sentryLaunch = new BulletType(16f, 50f){
-            {
-                lifetime = 22f;
-                collidesGround = collidesAir = collidesTiles = collides = false;
-                scaleVelocity = true;
-            }
-
-            @Override
-            public void draw(Bullet b){
-                if(b.data instanceof Sentry s){
-                    Draw.z(Layer.flyingUnitLow - 1f);
-                    Draw.rect(s.type.fullIcon, b.x, b.y, b.rotation() - 90f);
-                }
-            }
-
-            @Override
-            public void despawned(Bullet b){
-                if(b.data instanceof Sentry s){
-                    Unit spawned = s.type.spawn(b.team, b);
-                    spawned.rotation = b.rotation();
-                    spawned.vel.add(b.vel);
-                }
-
-                super.despawned(b);
-            }
-        };
+        barrageLaunch = new SentryBulletType(PMUnitTypes.barrage);
+        downpourLaunch = new SentryBulletType(PMUnitTypes.downpour);
+        rapierLaunch = new SentryBulletType(PMUnitTypes.rapier);
 
         syringe = new InjectorBulletType(3f, 7f){{
             nanomachines = true;

@@ -61,7 +61,7 @@ public class PMTechTree implements ContentList{
                 }), Seq.with(new Research(launchPad), new SectorComplete(SectorPresets.nuclearComplex)), () -> {
                     node(shellPress, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                         node(emptyMissile, ItemStack.empty, Seq.with(new Research(strikedown)));
-                        node(emptyNuke, ItemStack.empty, Seq.with(new Research(arbiter)));
+                        node(emptyNuke, ItemStack.empty, Seq.with(new Research(trinity)));
                         node(missileFactory, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
                             //Missile
                             node(basicMissile, ItemStack.empty, Seq.with(new Research(strikedown)), () -> {
@@ -69,13 +69,13 @@ public class PMTechTree implements ContentList{
                                 node(recursiveMissile);
                             });
                             //Nuke
-                            node(basicNuke, ItemStack.empty, Seq.with(new Research(arbiter)), () -> {
+                            node(basicNuke, ItemStack.empty, Seq.with(new Research(trinity)), () -> {
                                 node(clusterNuke);
                             });
                         });
                     });
-                    node(arbiter, PMUtls.addItemStacks(new ItemStack[][]{
-                        brq(arbiter),
+                    node(trinity, PMUtls.addItemStacks(new ItemStack[][]{
+                        brq(trinity),
                         brq(emptyNuke),
                         brq(basicNuke)
                     }), Seq.with(new Research(interplanetaryAccelerator), new SectorComplete(SectorPresets.planetaryTerminal)));

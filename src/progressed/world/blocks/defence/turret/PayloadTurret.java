@@ -57,7 +57,7 @@ public class PayloadTurret extends PayloadMissileTurret{
 
     @Override
     protected TextureRegion[] icons(){
-        return new TextureRegion[]{baseRegion, topRegion, region};
+        return new TextureRegion[]{baseRegion, inRegion, topRegion, region};
     }
 
     @Override

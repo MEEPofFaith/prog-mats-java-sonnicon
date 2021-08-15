@@ -53,6 +53,8 @@ public class PayloadCrafter extends BlockProducer{
             }
         });
 
+        if(products.contains(m -> m.prev != null)) acceptsPayload = true;
+
         super.init();
     }
 

@@ -2,10 +2,10 @@ package progressed.content;
 
 import mindustry.content.*;
 import mindustry.ctype.*;
-import mindustry.world.*;
 import progressed.world.blocks.payloads.*;
 
 import static mindustry.type.ItemStack.*;
+import static mindustry.Vars.*;
 
 public class PMPayloads implements ContentList{
     public static Missile
@@ -34,6 +34,7 @@ public class PMPayloads implements ContentList{
             size = 2;
             powerUse = 3f;
             constructTime = 60f * 5f;
+            shadowRad = size * tilesize * 1.5f;
         }};
 
         basicMissile = new Missile("basic-missile"){{
@@ -43,6 +44,7 @@ public class PMPayloads implements ContentList{
             size = 2;
             powerUse = 3f;
             constructTime = 60f * 19f;
+            shadowRad = size * tilesize * 1.5f;
         }};
 
         empMissile = new Missile("emp-missile"){{
@@ -53,6 +55,7 @@ public class PMPayloads implements ContentList{
             powerUse = 4f;
             constructTime = 60f * 21f;
             requiresUnlock = true;
+            shadowRad = size * tilesize * 1.5f;
         }};
 
         recursiveMissile = new Missile("recursive-missile"){{
@@ -63,6 +66,7 @@ public class PMPayloads implements ContentList{
             powerUse = 5f;
             constructTime = 60f * 26f;
             requiresUnlock = true;
+            shadowRad = size * tilesize * 1.5f;
         }};
 
         emptyNuke = new Missile("empty-nuke"){{

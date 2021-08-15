@@ -69,7 +69,7 @@ public class PayloadTurret extends PayloadMissileTurret{
 
     public class PayloadTurretBuild extends PayloadMissileTurretBuild{
         public float rotation = 90f, recoil, payLength, charge;
-        public boolean loaded, charging;
+        public boolean loaded, charging, shooting;
 
         @Override
         public void draw(){
@@ -86,8 +86,15 @@ public class PayloadTurret extends PayloadMissileTurret{
             if(payload != null){
                 updatePayload();
 
+                if(loaded){
+                    payRotation = rotation - 90f;
+                }
+
                 Draw.z(hasArrived() ? Layer.turret + 0.01f : Layer.blockOver);
-                payload.draw();
+                //payload.draw()
+                Draw.z(Layer.blockOver);
+                Drawf.shadow(payload.x(), payload.y(), payload.size() * 2f);
+                Draw.rect(payload.block().fullIcon, payload.x(), payload.y(), payRotation);
             }
 
             tr2.trns(rotation, -recoil);
@@ -153,7 +160,28 @@ public class PayloadTurret extends PayloadMissileTurret{
             }
 
             if(hasAmmo()){
-                payRotation = Angles.moveToward(payRotation, rotation + 180f, payloadRotateSpeed * delta());
+                if(!loaded){
+                    boolean loading;
+                    if(payLength > -loadLength){
+                        payLength -= payloadSpeed * delta();
+                        loading = true;
+                    }else{
+                        payLength = -loadLength;
+                        loading = false;
+                    }
+
+                    boolean rotating;
+                    if(!Angles.within(payRotation, rotation - 90f, 0.01f)){
+                        payRotation = Angles.moveToward(payRotation, rotation - 90f, payloadRotateSpeed * edelta());
+                        rotating = true;
+                    }else{
+                        rotating = false;
+                    }
+
+                    if(!loading && !rotating){
+                        loaded = true;
+                    }
+                }
 
                 if(timer(timerTarget, targetInterval)){
                     findTarget();
@@ -184,6 +212,34 @@ public class PayloadTurret extends PayloadMissileTurret{
                         updateShooting();
                     }
                 }
+
+                if(shooting){
+                    if(charging){
+                        charge += edelta();
+                        if(charge >= chargeTime){
+                            charging = false;
+                            charge = chargeTime;
+                        }
+                    }else{
+                        BulletType type = peekAmmo();
+
+                        if(payLength < shootLength){
+                            payLength += peekAmmo().speed * delta();
+                            if(payLength >= shootLength){
+                                loaded = false;
+                                payLength = shootLength;
+                            }
+                        }
+
+                        if(!loaded){
+                            shoot(type);
+                            shooting = false;
+                            reload %= reloadTime;
+                        }
+                    }
+                }
+            }else{
+                moveInPayload(); //Rotating is done elsewhere
             }
 
             if(acceptCoolant){
@@ -191,48 +247,18 @@ public class PayloadTurret extends PayloadMissileTurret{
             }
         }
 
+        protected void turnToTarget(float targetRot){
+            rotation = Angles.moveToward(rotation, targetRot, rotateSpeed * delta() * baseReloadSpeed());
+        }
+
         @Override
         protected void updateShooting(){
             reload += delta() * peekAmmo().reloadMultiplier * baseReloadSpeed();
 
-            if(payLength > -loadLength && !loaded){
-                payLength -= payloadSpeed * delta();
-                if(payLength <= -loadLength){
-                    loaded = true;
-                    charging = true;
-                    payLength = -loadLength;
-                }
-            }
-
             if(reload > reloadTime && loaded){
-                if(charging){
-                    charge += delta();
-                    if(charge >= chargeTime){
-                        charging = false;
-                        charge = chargeTime;
-                    }
-                }else{
-                    BulletType type = peekAmmo();
-
-                    if(payLength < shootLength){
-                        payLength += peekAmmo().speed * delta();
-                        if(payLength >= shootLength){
-                            loaded = false;
-                            payLength = shootLength;
-                        }
-                    }
-
-                    if(!loaded){
-                        shoot(type);
-
-                        reload %= reloadTime;
-                    }
-                }
+                charging = true;
+                shooting = true;
             }
-        }
-
-        protected void turnToTarget(float targetRot){
-            rotation = Angles.moveToward(rotation, targetRot, rotateSpeed * delta() * baseReloadSpeed());
         }
 
         @Override
@@ -243,11 +269,12 @@ public class PayloadTurret extends PayloadMissileTurret{
             charge = 0f;
         }
 
-        protected void bullet(BulletType type, float angle){
+        protected void bullet(BulletType type){
             float lifeScl = type.scaleVelocity ? Mathf.clamp(Mathf.dst(x, y, targetPos.x, targetPos.y) / type.range(), minRange / type.range(), range / type.range()) : 1f;
 
             tr.trns(rotation, -recoil + payLength);
-            type.create(this, team, x + tr.x, y + tr.y, angle, -1f, 1f + Mathf.range(velocityInaccuracy), lifeScl, payload.block());
+            float angle = rotation + Mathf.range(inaccuracy + type.inaccuracy);
+            type.create(this, team, x + tr.x, y + tr.y, angle, 1f + Mathf.range(velocityInaccuracy), lifeScl);
         }
 
         @Override
@@ -260,11 +287,6 @@ public class PayloadTurret extends PayloadMissileTurret{
                     payload.set(x + payVector.x, y + payVector.y, payRotation);
                 }
             }
-        }
-
-        @Override
-        public boolean hasAmmo(){
-            return moveInPayload();
         }
     }
 }

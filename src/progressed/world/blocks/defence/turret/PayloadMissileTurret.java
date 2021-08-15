@@ -75,9 +75,12 @@ public class PayloadMissileTurret extends PayloadBlock{
         group = BlockGroup.turrets;
         flags = EnumSet.of(BlockFlag.turret);
         liquidCapacity = 20f;
+        outputsPayload = false;
+        acceptsPayload = true;
+        rotate = false;
     }
 
-    /** Initializes accepted ammo map. Format: [item1, bullet1, item2, bullet2...] */
+    /** Initializes accepted ammo map. Format: [block1, bullet1, block2, bullet2...] */
     public void ammo(Object... objects){
         ammoTypes = ObjectMap.of(objects);
     }
@@ -287,6 +290,8 @@ public class PayloadMissileTurret extends PayloadBlock{
                         updateShooting();
                     }
                 }
+            }else{
+                moveInPayload();
             }
 
             if(acceptCoolant){
@@ -322,7 +327,7 @@ public class PayloadMissileTurret extends PayloadBlock{
 
         /** @return  whether the turret has ammo. */
         public boolean hasAmmo(){
-            return moveInPayload(false);
+            return payload != null && hasArrived();
         }
 
         protected void updateShooting(){
@@ -338,16 +343,17 @@ public class PayloadMissileTurret extends PayloadBlock{
         }
 
         protected void shoot(BulletType type){
-            bullet(type, angleTo(targetPos) + Mathf.range(inaccuracy + type.inaccuracy));
+            bullet(type);
             shotCounter++;
             heat = 1f;
             effects();
             if(!cheating()) payload = null;
         }
 
-        protected void bullet(BulletType type, float angle){
+        protected void bullet(BulletType type){
             float lifeScl = type.scaleVelocity ? Mathf.clamp(Mathf.dst(x, y, targetPos.x, targetPos.y) / type.range(), minRange / type.range(), range / type.range()) : 1f;
 
+            float angle = angleTo(targetPos) + Mathf.range(inaccuracy + type.inaccuracy);
             type.create(this, team, x, y, angle, 1f + Mathf.range(velocityInaccuracy), lifeScl);
         }
 
@@ -380,7 +386,7 @@ public class PayloadMissileTurret extends PayloadBlock{
 
         @Override
         public boolean acceptPayload(Building source, Payload payload){
-            return super.acceptPayload(source, payload) && payload instanceof BuildPayload p && ammoTypes.containsKey(p.block());
+            return this.payload == null && payload instanceof BuildPayload b && ammoTypes.containsKey(b.block());
         }
 
         @Override

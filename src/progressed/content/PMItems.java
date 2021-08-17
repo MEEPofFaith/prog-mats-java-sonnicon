@@ -6,11 +6,11 @@ import mindustry.type.*;
 
 public class PMItems implements ContentList{
     public static Item
-    techtanite;
+        fusium;
 
     @Override
     public void load(){
-        techtanite = new Item("techtanite", Color.valueOf("B0BAC0")){{
+        fusium = new Item("techtanite", Color.valueOf("B0BAC0")){{
             cost = 1.6f;
         }};
     }

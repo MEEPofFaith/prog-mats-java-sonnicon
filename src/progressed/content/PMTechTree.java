@@ -169,7 +169,7 @@ public class PMTechTree implements ContentList{
 
         // Items
         vanillaNode(surgeAlloy, () -> {
-            nodeProduce(techtanite);
+            nodeProduce(fusium);
         });
     }
 

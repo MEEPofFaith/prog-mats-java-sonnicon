@@ -9,6 +9,8 @@ import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.io.*;
+import mindustry.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -296,6 +298,26 @@ public class PayloadCrafter extends BlockProducer{
         @Override
         public boolean acceptPayload(Building source, Payload payload){
             return this.payload == null && recipe instanceof Missile m && payload instanceof BuildPayload p && p.block() == m.prev;
+        }
+
+        @Override
+        public void write(Writes write){
+            super.write(write);
+            write.s(recipe == null ? -1 : recipe.id);
+        }
+
+        @Override
+        public void read(Reads read, byte revision){
+            super.read(read, revision);
+
+            if(revision >= 1){
+                recipe = Vars.content.block(read.s());
+            }
+        }
+
+        @Override
+        public byte version(){
+            return 1;
         }
     }
 

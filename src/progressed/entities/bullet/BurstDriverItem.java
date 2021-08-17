@@ -7,7 +7,6 @@ import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import mindustry.ui.*;
 import progressed.world.blocks.distribution.BurstDriver.*;
 
 public class BurstDriverItem extends BulletType{

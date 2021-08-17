@@ -3,7 +3,6 @@ package progressed.content;
 import arc.graphics.*;
 import mindustry.ctype.*;
 import mindustry.type.*;
-import progressed.type.*;
 
 public class PMItems implements ContentList{
     public static Item

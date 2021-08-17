@@ -9,7 +9,7 @@ import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.game.*;
 import mindustry.gen.*;
-import mindustry.type.StatusEffect;
+import mindustry.type.*;
 import mindustry.world.*;
 
 import static mindustry.Vars.*;
@@ -132,6 +132,8 @@ public class PMDamage{
         rect.width += expand * 2;
         rect.height += expand * 2;
 
+        check = false;
+
         Cons<Unit> cons = e -> {
             e.hitbox(hitrect);
 
@@ -141,6 +143,7 @@ public class PMDamage{
                 effect.at(vec.x, vec.y, angle, team.color);
                 e.damage(damage);
                 e.apply(status, statusDuration);
+                check = true;
             }
         };
 
@@ -154,7 +157,7 @@ public class PMDamage{
 
         units.sort(u -> u.dst2(x, y));
         units.each(cons);
-        return !units.isEmpty();
+        return check;
     }
 
     /** Like Damage.findLaserLength, but uses an (x, y) coord instead of bullet position */

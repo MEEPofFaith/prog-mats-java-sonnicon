@@ -1,7 +1,6 @@
 package progressed.world.blocks.payloads;
 
 import arc.graphics.g2d.*;
-import arc.math.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;

@@ -1,13 +1,11 @@
 package progressed.entities.bullet;
 
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
 import mindustry.type.*;
 import progressed.entities.units.*;
 import progressed.graphics.*;

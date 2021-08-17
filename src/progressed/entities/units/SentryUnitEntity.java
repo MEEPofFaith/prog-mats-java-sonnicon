@@ -2,7 +2,6 @@ package progressed.entities.units;
 
 import arc.math.*;
 import mindustry.gen.*;
-import progressed.content.*;
 
 public class SentryUnitEntity extends UnitEntity{
     public float duration;

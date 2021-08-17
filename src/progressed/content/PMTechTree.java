@@ -8,10 +8,10 @@ import mindustry.type.*;
 import mindustry.world.*;
 import progressed.util.*;
 
-import static mindustry.content.Items.*;
 import static mindustry.content.Blocks.*;
-import static mindustry.content.UnitTypes.*;
+import static mindustry.content.Items.*;
 import static mindustry.content.TechTree.*;
+import static mindustry.content.UnitTypes.*;
 import static progressed.content.PMBlocks.*;
 import static progressed.content.PMItems.*;
 import static progressed.content.PMPayloads.*;

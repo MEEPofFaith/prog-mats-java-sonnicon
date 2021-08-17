@@ -4,8 +4,8 @@ import mindustry.content.*;
 import mindustry.ctype.*;
 import progressed.world.blocks.payloads.*;
 
-import static mindustry.type.ItemStack.*;
 import static mindustry.Vars.*;
+import static mindustry.type.ItemStack.*;
 
 public class PMPayloads implements ContentList{
     public static Missile

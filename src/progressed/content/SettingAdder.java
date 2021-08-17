@@ -1,7 +1,6 @@
 package progressed.content;
 
 import arc.scene.*;
-import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import mindustry.ui.*;
 import mindustry.ui.dialogs.*;

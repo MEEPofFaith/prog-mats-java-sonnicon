@@ -1,8 +1,11 @@
 package progressed.world.blocks.payloads;
 
 import arc.*;
+import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.scene.style.*;
+import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.struct.*;
 import arc.util.*;
@@ -13,7 +16,6 @@ import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
-import mindustry.world.blocks.*;
 import mindustry.world.blocks.payloads.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
@@ -28,6 +30,8 @@ public class PayloadCrafter extends BlockProducer{
 
     public int[] capacities = {};
 
+    private float scrollPos;
+
     public PayloadCrafter(String name){
         super(name);
 
@@ -38,6 +42,10 @@ public class PayloadCrafter extends BlockProducer{
             if(canProduce(block)){
                 tile.recipe = block;
             }
+        });
+
+        configClear((PayloadCrafterBuild tile) -> {
+           tile.recipe = null;
         });
     }
 
@@ -111,10 +119,6 @@ public class PayloadCrafter extends BlockProducer{
                    if(p.powerUse > 0){
                        ct.row();
                        ct.add(Stat.powerUse.localized() + ": " + PMUtls.stringsFixed(p.powerUse * 60f) + " " + StatUnit.powerSecond.localized());
-                   }
-                   if(p.requiresUnlock){
-                       ct.row();
-                       ct.add("@block.pm-requires-unlock");
                    }
                }).padTop(-9).left().get().background(Tex.underline);
 
@@ -237,10 +241,51 @@ public class PayloadCrafter extends BlockProducer{
 
         @Override
         public void buildConfiguration(Table table){
-            ItemSelection.buildTable(table, content.blocks().select(PayloadCrafter.this::canProduce), () -> recipe, this::configure);
-            if(!products.contains(PayloadCrafter.this::canProduce)){
-                table.add("@block.pm-no-unlock"); //If you can't build anything, go unlock stuff.
+            ButtonGroup<ImageButton> group = new ButtonGroup<>();
+            group.setMinCheckCount(0);
+            Table cont = new Table();
+            cont.defaults().size(40);
+
+            int i = 0;
+
+            for(Block b : content.blocks()){
+                if(b instanceof Missile m && products.contains(m)){
+                    ImageButton button = cont.button(Tex.whiteui, Styles.clearToggleTransi, 24, () -> {}).group(group).get();
+                    button.update(() -> button.setChecked(recipe == m));
+
+                    if(m.requiresUnlock && !m.unlockedNow()){
+                        button.getStyle().imageUp = new TextureRegionDrawable(Core.atlas.find("clear"));
+                        button.replaceImage(PMElements.imageStack(m.uiIcon, Icon.tree.getRegion(), Color.red));
+                        button.getImageCell().tooltip("@pm-missing-research");
+                    }else{
+                        button.changed(() -> configure(button.isChecked() ? m : null));
+                        button.getStyle().imageUp = new TextureRegionDrawable(m.uiIcon);
+                        button.getImageCell().tooltip(m.localizedName);
+                    }
+
+                    if(i++ % 4 == 3){
+                        cont.row();
+                    }
+                }
             }
+
+            //add extra blank spaces so it looks nice
+            if(i % 4 != 0){
+                int remaining = 4 - (i % 4);
+                for(int j = 0; j < remaining; j++){
+                    cont.image(Styles.black6);
+                }
+            }
+
+            ScrollPane pane = new ScrollPane(cont, Styles.smallPane);
+            pane.setScrollingDisabled(true, false);
+            pane.setScrollYForce(scrollPos);
+            pane.update(() -> {
+                scrollPos = pane.getScrollY();
+            });
+
+            pane.setOverscroll(false, false);
+            table.add(pane).maxHeight(Scl.scl(40 * 5));
         }
 
         @Override

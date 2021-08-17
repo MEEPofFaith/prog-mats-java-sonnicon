@@ -1,6 +1,5 @@
 package progressed.entities.bullet;
 
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import mindustry.entities.bullet.*;

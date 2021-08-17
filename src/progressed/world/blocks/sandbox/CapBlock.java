@@ -1,7 +1,6 @@
 package progressed.world.blocks.sandbox;
 
 import arc.graphics.g2d.*;
-import arc.struct.*;
 import mindustry.type.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.meta.*;

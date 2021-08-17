@@ -27,8 +27,8 @@ import progressed.world.blocks.distribution.*;
 import progressed.world.blocks.payloads.*;
 import progressed.world.blocks.sandbox.*;
 
-import static mindustry.type.ItemStack.*;
 import static mindustry.Vars.*;
+import static mindustry.type.ItemStack.*;
 
 public class PMBlocks implements ContentList{
     public static Block

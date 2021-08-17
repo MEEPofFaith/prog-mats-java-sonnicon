@@ -23,7 +23,7 @@ import progressed.entities.units.*;
 import progressed.world.blocks.crafting.*;
 import progressed.world.blocks.payloads.*;
 
-import static mindustry.Vars.tilesize;
+import static mindustry.Vars.*;
 
 public class PMStatValues{
     public static <T extends UnlockableContent> StatValue ammo(ObjectMap<T, BulletType> map){

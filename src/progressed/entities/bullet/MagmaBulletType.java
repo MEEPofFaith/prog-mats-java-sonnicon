@@ -2,7 +2,7 @@ package progressed.entities.bullet;
 
 import arc.graphics.*;
 import arc.graphics.g2d.*;
-import arc.math.Mathf;
+import arc.math.*;
 import arc.util.*;
 import mindustry.content.*;
 import mindustry.entities.*;

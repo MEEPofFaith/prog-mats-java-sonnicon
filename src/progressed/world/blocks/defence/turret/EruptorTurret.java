@@ -15,7 +15,7 @@ import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
-import progressed.entities.bullet.MagmaBulletType;
+import progressed.entities.bullet.*;
 import progressed.graphics.*;
 import progressed.graphics.PMFx.*;
 import progressed.util.*;

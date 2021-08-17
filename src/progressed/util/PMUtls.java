@@ -1,7 +1,7 @@
 package progressed.util;
 
-import arc.math.*;
 import arc.math.Interp.*;
+import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
 import mindustry.*;

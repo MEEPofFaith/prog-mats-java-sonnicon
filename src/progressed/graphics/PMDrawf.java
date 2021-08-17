@@ -2,7 +2,6 @@ package progressed.graphics;
 
 import arc.graphics.*;
 import arc.graphics.g2d.*;
-import arc.math.Mathf;
 import arc.math.geom.*;
 import arc.util.*;
 import mindustry.graphics.*;

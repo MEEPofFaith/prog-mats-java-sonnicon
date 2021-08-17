@@ -15,7 +15,6 @@ import mindustry.graphics.*;
 import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.world.*;
-import mindustry.world.blocks.defense.turrets.Turret.*;
 import mindustry.world.consumers.*;
 import mindustry.world.meta.*;
 import progressed.entities.*;

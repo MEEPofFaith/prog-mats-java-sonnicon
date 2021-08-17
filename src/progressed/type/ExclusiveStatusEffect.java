@@ -1,8 +1,6 @@
 package progressed.type;
 
-import arc.*;
 import arc.struct.*;
-import mindustry.game.EventType.*;
 import mindustry.type.*;
 
 public class ExclusiveStatusEffect extends StatusEffect{

@@ -26,18 +26,14 @@ public class SentryBulletType extends BulletType{
 
     @Override
     public void draw(Bullet b){
-        if(b.data instanceof Sentry s){
-            Draw.rect(s.unit.fullIcon, b.x, b.y, b.rotation() - 90f);
-        }
+        Draw.rect(unit.fullIcon, b.x, b.y, b.rotation() - 90f);
     }
 
     @Override
     public void despawned(Bullet b){
-        if(b.data instanceof Sentry s){
-            Unit spawned = s.unit.spawn(b.team, b);
-            spawned.rotation = b.rotation();
-            spawned.vel.add(b.vel);
-        }
+        Unit spawned = unit.spawn(b.team, b);
+        spawned.rotation = b.rotation();
+        spawned.vel.add(b.vel);
 
         super.despawned(b);
     }

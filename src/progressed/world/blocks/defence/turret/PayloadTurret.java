@@ -82,7 +82,6 @@ public class PayloadTurret extends PayloadMissileTurret{
                 }
             }
 
-
             if(payload != null){
                 updatePayload();
 
@@ -255,7 +254,7 @@ public class PayloadTurret extends PayloadMissileTurret{
         protected void updateShooting(){
             reload += delta() * peekAmmo().reloadMultiplier * baseReloadSpeed();
 
-            if(reload > reloadTime && loaded){
+            if(reload > reloadTime && loaded && !shooting){
                 charging = true;
                 shooting = true;
             }

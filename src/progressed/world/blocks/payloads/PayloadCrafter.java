@@ -47,7 +47,8 @@ public class PayloadCrafter extends BlockProducer{
         });
 
         configClear((PayloadCrafterBuild tile) -> {
-           tile.recipe = null;
+            tile.recipe = null;
+            tile.progress = 0f;
         });
     }
 
@@ -194,6 +195,8 @@ public class PayloadCrafter extends BlockProducer{
                     payVector.setZero();
                     progress %= 1f;
                 }
+            }else if(recipe == null || !consValid()){
+                progress = 0f;
             }
 
             heat = Mathf.lerpDelta(heat, Mathf.num(produce), 0.15f);

@@ -1,6 +1,7 @@
 package progressed.world.blocks.sandbox;
 
 import arc.*;
+import arc.flabel.*;
 import arc.math.*;
 import arc.util.*;
 import mindustry.*;
@@ -24,9 +25,10 @@ public class StrobeSource extends StrobeNode{
     public void setStats(){
         super.setStats();
         if(boost){
-            stats.add(Stat.speedIncrease, (100 * speedBoost), StatUnit.percent);
+            stats.add(Stat.speedIncrease, t -> {
+                t.add(new FLabel("{wave}{rainbow}" + PMUtls.stringsFixed(100 * speedBoost) + " " + StatUnit.percent));
+            });
         }
-        stats.add(Stat.basePowerGeneration, powerProduction * 60.0f, StatUnit.powerSecond);
     }
 
     @Override

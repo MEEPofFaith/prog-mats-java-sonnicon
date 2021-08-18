@@ -1,12 +1,14 @@
 package progressed.world.blocks.payloads;
 
 import arc.graphics.g2d.*;
+import arc.math.*;
 import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.logic.*;
 import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
@@ -33,6 +35,14 @@ public class Sentry extends Missile{
     }
 
     public class SentryBuild extends Building{
+        @Override
+        public void control(LAccess type, double p1, double p2, double p3, double p4){
+            if(type == LAccess.enabled && !Mathf.zero((float)p1)){
+                spawn();
+            }
+            super.control(type, p1, p2, p3, p4);
+        }
+
         @Override
         public void buildConfiguration(Table table){
             Table cont = new Table();

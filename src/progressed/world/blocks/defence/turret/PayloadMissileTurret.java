@@ -291,7 +291,7 @@ public class PayloadMissileTurret extends PayloadBlock{
                     }
                 }
             }else{
-                moveInPayload();
+                moveInPayload(false);
             }
 
             if(acceptCoolant){

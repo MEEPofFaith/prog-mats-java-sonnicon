@@ -17,6 +17,7 @@ public class PayloadTurret extends PayloadMissileTurret{
 
     public float recoilAmount = 1f;
     public float restitution = 0.02f;
+    public float uncharge = 0.25f;
     public float shootCone = 8f;
     public float loadLength = -1f, shootLength = -1, width = -1f;
     public float lineStart = -1f, lineLength = -1f;
@@ -47,7 +48,7 @@ public class PayloadTurret extends PayloadMissileTurret{
     public void init(){
         if(loadLength < 0) loadLength = size * tilesize / 4f;
         if(shootLength < 0) shootLength = size * tilesize / 2f;
-        if(lineStart < 0) lineStart = shootLength;
+        if(lineStart < 0) lineStart = shootLength + 1.5f;
         if(lineLength < 0) lineLength = loadLength + shootLength;
         if(width < 0) width = size * tilesize / 4f;
         if(elevation < 0) elevation = size / 2f;
@@ -89,9 +90,8 @@ public class PayloadTurret extends PayloadMissileTurret{
                     payRotation = rotation - 90f;
                 }
 
-                Draw.z(hasArrived() ? Layer.turret + 0.01f : Layer.blockOver);
+                Draw.z((hasArrived() || shooting) ? Layer.turret + 0.01f : Layer.blockOver);
                 //payload.draw()
-                Draw.z(Layer.blockOver);
                 Drawf.shadow(payload.x(), payload.y(), payload.size() * 2f);
                 Draw.rect(payload.block().fullIcon, payload.x(), payload.y(), payRotation);
             }
@@ -146,6 +146,9 @@ public class PayloadTurret extends PayloadMissileTurret{
 
             recoil = Mathf.lerpDelta(recoil, 0f, restitution);
             heat = Mathf.lerpDelta(heat, 0f, cooldown);
+            if(!charging){
+                charge = Mathf.lerpDelta(charge, 0f, uncharge);
+            }
 
             if(unit != null){
                 unit.health(health);
@@ -238,7 +241,7 @@ public class PayloadTurret extends PayloadMissileTurret{
                     }
                 }
             }else{
-                moveInPayload(); //Rotating is done elsewhere
+                moveInPayload(false); //Rotating is done elsewhere
             }
 
             if(acceptCoolant){
@@ -265,7 +268,6 @@ public class PayloadTurret extends PayloadMissileTurret{
             super.shoot(type);
             recoil = recoilAmount;
             payLength = 0f;
-            charge = 0f;
         }
 
         protected void bullet(BulletType type){

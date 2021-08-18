@@ -24,6 +24,7 @@ public class Missile extends NuclearWarhead{
         researchCostMultiplier = 5f;
         hasShadow = false;
         rebuildable = false;
+        drawDisabled = false;
     }
 
     @Override

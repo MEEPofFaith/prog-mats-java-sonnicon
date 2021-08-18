@@ -29,7 +29,7 @@ public class PMUnitTypes implements ContentList{
         //Region Sentry Units
         barrage = new SentryUnitType("barrage"){{
             health = 500f;
-            duration = 16f * 60f;
+            duration = 39f * 60f;
 
             weapons.add(new Weapon("large-weapon"){{
                 top = false;
@@ -56,6 +56,7 @@ public class PMUnitTypes implements ContentList{
 
         downpour = new SentryUnitType("downpour"){{
             health = 300f;
+            duration = 32f * 60f;
 
             weapons.add(new Weapon(name + "-hole"){{
                 rotate = mirror = alternate = top = false;
@@ -95,7 +96,7 @@ public class PMUnitTypes implements ContentList{
             final float len = 56f, rangeMul = 16f;
             {
                 health = 800f;
-                duration = 12f * 60f;
+                duration = 25f * 60f;
 
                 rotateSpeed = 30f;
                 range = len * rangeMul;

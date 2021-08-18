@@ -396,17 +396,17 @@ public class PayloadMissileTurret extends PayloadBlock{
 
         @Override
         public boolean isControlled(){
-            return ControlBlock.super.isControlled();
+            return unit().isPlayer();
         }
 
         @Override
         public boolean canControl(){
-            return ControlBlock.super.canControl();
+            return true;
         }
 
         @Override
         public boolean shouldAutoTarget(){
-            return ControlBlock.super.shouldAutoTarget();
+            return true;
         }
 
         @Override

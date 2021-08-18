@@ -3,5 +3,5 @@
 /bin/
 /bin/main/
 /build/
-.vscode/
-images/payload/
+/.vscode/
+/images/payload/

@@ -6,6 +6,7 @@ import arc.scene.ui.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import mindustry.entities.units.*;
+import mindustry.game.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.logic.*;
@@ -34,7 +35,7 @@ public class Sentry extends Missile{
         Draw.rect(region, tile.drawx(), tile.drawy(), tile.build.rotdeg() - 90f);
     }
 
-    public class SentryBuild extends Building{
+    public class SentryBuild extends MissileBuild{
         @Override
         public void control(LAccess type, double p1, double p2, double p3, double p4){
             if(type == LAccess.enabled && !Mathf.zero((float)p1)){
@@ -63,6 +64,9 @@ public class Sentry extends Missile{
         @Override
         public void onDestroyed(){
             //no
+
+            //Kaboom
+            explode();
         }
     }
 }

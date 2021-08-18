@@ -43,6 +43,8 @@ public class PMPayloads implements ContentList{
             size = 2;
             powerUse = 3f;
             constructTime = 60f * 19f;
+
+            explosion = PMBullets.strikedownBasic;
         }};
 
         empMissile = new Missile("emp-missile"){{
@@ -53,6 +55,8 @@ public class PMPayloads implements ContentList{
             powerUse = 4f;
             constructTime = 60f * 21f;
             requiresUnlock = true;
+
+            explosion = PMBullets.strikedownEmp;
         }};
 
         recursiveMissile = new Missile("recursive-missile"){{
@@ -63,6 +67,11 @@ public class PMPayloads implements ContentList{
             powerUse = 5f;
             constructTime = 60f * 26f;
             requiresUnlock = true;
+
+            explosionArea = -1f;
+            explosion = PMBullets.recursionTwo;
+            explosions = 13;
+            maxDelay = 20f;
         }};
 
         emptyNuke = new Missile("empty-nuke"){{
@@ -84,6 +93,8 @@ public class PMPayloads implements ContentList{
             constructTime = 60f * 55f;
             requiresUnlock = true;
             shadowRad = size * tilesize * 2f;
+
+            explosion = PMBullets.arbiterBasic;
         }};
 
         clusterNuke = new Missile("cluster-nuke"){{
@@ -95,6 +106,11 @@ public class PMPayloads implements ContentList{
             constructTime = 60f * 60f;
             requiresUnlock = true;
             shadowRad = size * tilesize * 2f;
+
+            explosionArea = -1f;
+            explosion = PMBullets.arbiterClusterFrag;
+            explosions = PMBullets.arbiterCluster.fragBullets;
+            maxDelay = 20f;
         }};
 
         basicSentry = new Sentry("basic-sentry"){{

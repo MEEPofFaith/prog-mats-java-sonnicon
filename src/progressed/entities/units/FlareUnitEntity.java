@@ -3,7 +3,9 @@ package progressed.entities.units;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
+import arc.util.io.*;
 import mindustry.world.blocks.defense.turrets.*;
+import progressed.content.*;
 
 public class FlareUnitEntity extends SentryUnitEntity{
     public float animation = 1f, height = 0f;
@@ -98,5 +100,24 @@ public class FlareUnitEntity extends SentryUnitEntity{
     @Override
     public void impulseNet(Vec2 v){
         // cannot move
+    }
+
+    @Override
+    public void write(Writes write){
+        super.write(write);
+        write.f(animation);
+        write.f(height);
+    }
+
+    @Override
+    public void read(Reads read){
+        super.read(read);
+        animation = read.f();
+        height = read.f();
+    }
+
+    @Override
+    public int classId(){
+        return PMUnitTypes.classID(FlareUnitEntity.class);
     }
 }

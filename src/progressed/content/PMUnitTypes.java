@@ -1,6 +1,9 @@
 package progressed.content;
 
+import arc.func.*;
 import arc.graphics.*;
+import arc.struct.*;
+import arc.struct.ObjectMap.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
@@ -12,7 +15,59 @@ import progressed.entities.bullet.*;
 import progressed.entities.units.*;
 import progressed.graphics.*;
 
+@SuppressWarnings("unchecked")
 public class PMUnitTypes implements ContentList{
+    //Steal from Endless Rusting which stole from Progressed Materials in the past which stole from BetaMindy
+    private static Entry<Class<? extends Entityc>, Prov<? extends Entityc>>[] types = new Entry[]{
+        prov(SentryUnitEntity.class, SentryUnitEntity::new),
+        prov(FlareUnitEntity.class, FlareUnitEntity::new)
+    };
+
+    private static ObjectIntMap<Class<? extends Entityc>> idMap = new ObjectIntMap<>();
+
+    /**
+     * Internal function to flatmap {@code Class -> Prov} into an {@link Entry}.
+     * @author GlennFolker
+     */
+    private static <T extends Entityc> Entry<Class<T>, Prov<T>> prov(Class<T> type, Prov<T> prov){
+        Entry<Class<T>, Prov<T>> entry = new Entry<>();
+        entry.key = type;
+        entry.value = prov;
+        return entry;
+    }
+
+    /**
+     * Setups all entity IDs and maps them into {@link EntityMapping}.
+     * @author GlennFolker
+     */
+
+    private static void setupID(){
+        for(
+            int i = 0,
+            j = 0,
+            len = EntityMapping.idMap.length;
+
+            i < len;
+
+            i++
+        ){
+            if(EntityMapping.idMap[i] == null){
+                idMap.put(types[j].key, i);
+                EntityMapping.idMap[i] = types[j].value;
+
+                if(++j >= types.length) break;
+            }
+        }
+    }
+
+    /**
+     * Retrieves the class ID for a certain entity type.
+     * @author GlennFolker
+     */
+    public static <T extends Entityc> int classID(Class<T> type){
+        return idMap.get(type, -1);
+    }
+
     public static UnitType
     
     //sentry
@@ -26,7 +81,10 @@ public class PMUnitTypes implements ContentList{
 
     @Override
     public void load(){
+        setupID();
+
         //Region Sentry Units
+        EntityMapping.nameMap.put("barrage", SentryUnitEntity::new);
         barrage = new SentryUnitType("barrage"){{
             health = 500f;
             duration = 39f * 60f;
@@ -54,6 +112,7 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
+        EntityMapping.nameMap.put("downpour", SentryUnitEntity::new);
         downpour = new SentryUnitType("downpour"){{
             health = 300f;
             duration = 32f * 60f;
@@ -67,7 +126,7 @@ public class PMUnitTypes implements ContentList{
                 shootSound = Sounds.missile;
                 bullet = new StrikeBulletType(2.4f, 40f, "prog-mats-storm-missile"){{
                     lifetime = 90f;
-                    
+
                     splashDamage = 250f;
                     splashDamageRadius = 42f;
                     homingPower = 0.035f;
@@ -92,6 +151,7 @@ public class PMUnitTypes implements ContentList{
             }});
         }};
 
+        EntityMapping.nameMap.put("rapier", SentryUnitEntity::new);
         rapier = new SentryUnitType("rapier"){
             final float len = 56f, rangeMul = 16f;
             {
@@ -129,12 +189,14 @@ public class PMUnitTypes implements ContentList{
             }
         };
 
+        EntityMapping.nameMap.put("small-flare", FlareUnitEntity::new);
         flareSmall = new FlareUnitType("small-flare"){{
             health = 300f;
             attraction = 800f;
             flareY = 29f / 4f;
         }};
 
+        EntityMapping.nameMap.put("medium-flare", FlareUnitEntity::new);
         flareMedium = new FlareUnitType("medium-flare", 360f){{
             health = 900f;
             attraction = 11000f;
@@ -142,6 +204,7 @@ public class PMUnitTypes implements ContentList{
             flareEffectSize = 1.5f;
         }};
 
+        EntityMapping.nameMap.put("large-flare", FlareUnitEntity::new);
         flareLarge = new FlareUnitType("large-flare", 420f){{
             health = 2700f;
             attraction = 26000f;

@@ -395,6 +395,21 @@ public class PayloadMissileTurret extends PayloadBlock{
         }
 
         @Override
+        public boolean isControlled(){
+            return ControlBlock.super.isControlled();
+        }
+
+        @Override
+        public boolean canControl(){
+            return ControlBlock.super.canControl();
+        }
+
+        @Override
+        public boolean shouldAutoTarget(){
+            return ControlBlock.super.shouldAutoTarget();
+        }
+
+        @Override
         public void drawSelect(){
             Drawf.dashCircle(x, y, range, team.color);
         }

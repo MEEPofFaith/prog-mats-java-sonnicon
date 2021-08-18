@@ -23,12 +23,13 @@ public class Missile extends NuclearWarhead{
         category = Category.units;
         researchCostMultiplier = 5f;
         hasShadow = false;
+        rebuildable = false;
     }
 
     @Override
     public void init(){
         if(constructTime < 0) constructTime = buildCost;
-        if(shadowRad < 0) shadowRad = size * tilesize * 2f;
+        if(shadowRad < 0) shadowRad = size * tilesize * 1.5f;
 
         super.init();
     }

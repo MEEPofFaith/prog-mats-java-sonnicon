@@ -111,7 +111,7 @@ public class EverythingTurret extends PowerTurret{
     }
 
     public class EverythingTurretBuild extends PowerTurretBuild{
-        protected float drawBias, bias = startingBias, drawRot = Mathf.random(360f);
+        protected float bias = startingBias, drawRot = Mathf.random(360f);
         protected int selectedBullet;
 
         @Override
@@ -146,7 +146,7 @@ public class EverythingTurret extends PowerTurret{
             Draw.rect(baseRegion, x, y);
             Draw.z(Layer.turret);
             Drawf.shadow(region, x - elevation, y - elevation, drawRot);
-            Draw.rect(region, x, y, drawRot);
+            Drawf.spinSprite(region, x, y, drawRot);
         }
 
         @Override

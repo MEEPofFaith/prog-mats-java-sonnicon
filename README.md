@@ -1,6 +1,6 @@
 ![Logo](images/ProgMats.png)
 
-[![Java CI with Gradle](https://github.com/MEEPofFaith/prog-mats-java/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/MEEPofFaith/prog-mats-java/actions) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord)](https://discord.gg/RCCVQFW) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=8a1a1a&label=Avant)](https://discord.gg/V6ygvgGVqE) [![Stars](https://img.shields.io/github/stars/MEEPofFaith/prog-mats-java?label=Star%20the%20mod%20here%21&style=social)]()
+[![Java CI with Gradle](https://github.com/MEEPofFaith/prog-mats-java-sonnicon/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/MEEPofFaith/prog-mats-java-sonnicon/actions) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord)](https://discord.gg/RCCVQFW) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=8a1a1a&label=Avant)](https://discord.gg/V6ygvgGVqE) [![Stars](https://img.shields.io/github/stars/MEEPofFaith/prog-mats-java-sonnicon?label=Star%20the%20mod%20here%21&style=social)]()
 
 # Progressed Materials
 (I definitely didn't steal this readme format from BetaMindy)
@@ -15,7 +15,7 @@ Progressed Materials is a combination of three of my previous v5 mods:
 Adds a load of turrets ~~many of which need balancing~~, small minor things, and sandbox only items for fun and testing. This mod is mostly made of random ideas I get and is a bundle of chaos.
 
 ## Download Now!   
-[![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=FCC21B&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)
+[![Download](https://img.shields.io/github/v/release/MEEPofFaith/prog-mats-java-sonnicon?color=gold&include_prereleases&label=DOWNLOAD%20LATEST%20RELEASE&logo=github&logoColor=FCC21B&style=for-the-badge)](https://github.com/MEEPofFaith/prog-mats-java/releases)
 
 __Or find it in the in-game mod browser, where installation is almost completely automatic, and you can ignore everything under this message!__
 

@@ -115,54 +115,85 @@ public class PMFx{
         });
     }),
 
-    nuclearExplosion = new Effect(140f, e -> {
-        e.scaled(16f, s -> {
-            color(Pal.missileYellow);
-            stroke(4.5f * s.fout());
-            Lines.circle(e.x, e.y, 6f + s.fin() * 45f);
-        });
-        e.scaled(60f, s -> {
-            color(Color.gray);
-    
-            randLenVectors(e.id, 8, 3f + 45f * s.finpow(), (x, y) -> {
-                Fill.circle(e.x + x, e.y + y, 0.75f + s.fout() * 6f);
+    nuclearExplosion = new Effect(30, 500f, b -> {
+        float intensity = 2f;
+        float baseLifetime = 25f + intensity * 15f;
+        b.lifetime = 50f + intensity * 64f;
+
+        color(Pal.redderDust);
+        alpha(0.8f);
+        for(int i = 0; i < 5; i++){
+            rand.setSeed(b.id * 2 + i);
+            float lenScl = rand.random(0.25f, 1f);
+            int fi = i;
+            b.scaled(b.lifetime * lenScl, e -> {
+                randLenVectors(e.id + fi - 1, e.fin(Interp.pow10Out), (int)(2.8f * intensity), 25f * intensity, (x, y, in, out) -> {
+                    float fout = e.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
+                    float rad = fout * ((2f + intensity) * 2.35f);
+
+                    Fill.circle(e.x + x, e.y + y, rad);
+                    Drawf.light(e.x + x, e.y + y, rad * 2.6f, Pal.gray, 0.7f);
+                });
             });
-    
-            color(Pal.missileYellowBack);
-            stroke(s.fout() * 1.5f);
-    
-            randLenVectors(e.id + 1, 6, 1.5f + 43.5f * s.finpow(), (x, y) -> {
-                lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 1.5f + s.fout() * 6f);
+        }
+
+        b.scaled(baseLifetime, e -> {
+            Draw.color();
+            e.scaled(2 + intensity * 2f, i -> {
+                stroke((3.1f + intensity/5f) * i.fout());
+                Lines.circle(e.x, e.y, (3f + i.fin() * 14f) * intensity);
+                Drawf.light(e.x, e.y, i.fin() * 28f * 2f * intensity, Color.white, 0.9f * e.fout());
             });
-        });
-        randLenVectors(e.id + 3, 50, e.finpow() * 40f, (x, y) -> {
-            float size = e.fout() * 4f;
-            color(Pal.lighterOrange, Color.lightGray, e.fin());
-            Fill.circle(e.x + x, e.y + y, size / 2f);
+
+            color(Pal.lighterOrange, Pal.redSpark, e.fin());
+            stroke((2f * e.fout()));
+
+            Draw.z(Layer.effect + 0.001f);
+            randLenVectors(e.id + 1, e.finpow() + 0.001f, (int)(8 * intensity), 30f * intensity, (x, y, in, out) -> {
+                lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 1f + out * 4 * (4f + intensity));
+                Drawf.light(e.x + x, e.y + y, (out * 4 * (3f + intensity)) * 3.5f, Draw.getColor(), 0.8f);
+            });
         });
     }),
 
-    mushroomCloudExplosion = new Effect(250f, 800f, e -> {
-        float colorFin = e.fin(Interp.pow2Out);
-        float slopeFin = e.fin(Interp.pow5Out);
-        float slopeFout = 1 - e.fin(Interp.pow3In);
+    mushroomCloudExplosion = new Effect(30, 500f, b -> {
+        float intensity = 8f;
+        float baseLifetime = 25f + intensity * 15f;
+        b.lifetime = 50f + intensity * 64f;
 
-        randLenVectors(e.id, 150, 140f * slopeFin, (x, y) -> {
-            color(Color.white, Color.gray, colorFin);
-            Fill.circle(e.x + x, e.y + y, 8f * slopeFout);
-        });
+        color(Pal.redderDust);
+        alpha(0.8f);
+        for(int i = 0; i < 5; i++){
+            rand.setSeed(b.id * 2 + i);
+            float lenScl = rand.random(0.25f, 1f);
+            int fi = i;
+            b.scaled(b.lifetime * lenScl, e -> {
+                randLenVectors(e.id + fi - 1, e.fin(Interp.pow10Out), (int)(2.8f * intensity), 25f * intensity, (x, y, in, out) -> {
+                    float fout = e.fout(Interp.pow5Out) * rand.random(0.5f, 1f);
+                    float rad = fout * ((2f + intensity) * 2.35f);
 
-        e.scaled(125f, s -> {
-            float sColorFin = s.fin(Interp.pow2Out);
-            float sSlopeFin = s.fin(Interp.pow5Out);
-            color(Color.lightGray, Color.white, sColorFin);
-            stroke(6f * s.fout());
-            Lines.circle(e.x, e.y, 180f * sSlopeFin);
-        });
+                    Fill.circle(e.x + x, e.y + y, rad);
+                    Drawf.light(e.x + x, e.y + y, rad * 2.6f, Pal.gray, 0.7f);
+                });
+            });
+        }
 
-        randLenVectors(e.id * 2, 200, 60f * slopeFin, (x, y) -> {
-            color(Tmp.c1.set(Color.orange).lerp(new Color[]{Color.orange, Color.red, Color.crimson, Color.darkGray}, colorFin));
-            Fill.circle(e.x + x, e.y + y, 8f * slopeFout);
+        b.scaled(baseLifetime, e -> {
+            Draw.color();
+            e.scaled(2 + intensity * 2f, i -> {
+                stroke((3.1f + intensity/5f) * i.fout());
+                Lines.circle(e.x, e.y, (3f + i.fin() * 14f) * intensity);
+                Drawf.light(e.x, e.y, i.fin() * 28f * 2f * intensity, Color.white, 0.9f * e.fout());
+            });
+
+            color(Pal.lighterOrange, Pal.redSpark, e.fin());
+            stroke((2f * e.fout()));
+
+            Draw.z(Layer.effect + 0.001f);
+            randLenVectors(e.id + 1, e.finpow() + 0.001f, (int)(8 * intensity), 30f * intensity, (x, y, in, out) -> {
+                lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), 1f + out * 4 * (4f + intensity));
+                Drawf.light(e.x + x, e.y + y, (out * 4 * (3f + intensity)) * 3.5f, Draw.getColor(), 0.8f);
+            });
         });
     }),
 

@@ -1,5 +1,7 @@
 ![Logo](images/ProgMats.png)
 
+Developement has been moved to a new repo to be based off a different template! Go to [here](https://github.com/MEEPofFaith/prog-mats-java) to see the developement of the mod continue.
+
 [![Java CI with Gradle](https://github.com/MEEPofFaith/prog-mats-java-sonnicon/workflows/Java%20CI%20with%20Gradle/badge.svg)](https://github.com/MEEPofFaith/prog-mats-java-sonnicon/actions) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=7289DA&label=Discord)](https://discord.gg/RCCVQFW) [![Discord](https://img.shields.io/discord/704355237246402721.svg?logo=discord&logoColor=white&logoWidth=20&labelColor=8a1a1a&label=Avant)](https://discord.gg/V6ygvgGVqE) [![Stars](https://img.shields.io/github/stars/MEEPofFaith/prog-mats-java-sonnicon?label=Star%20the%20mod%20here%21&style=social)]()
 
 # Progressed Materials

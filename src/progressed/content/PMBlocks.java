@@ -962,7 +962,7 @@ public class PMBlocks implements ContentList{
                 Items.silicon, 80
             ));
 
-            size = 4;
+            size = 5;
             products = Seq.with(PMPayloads.emptyMissile, PMPayloads.emptyNuke);
         }};
 
@@ -976,7 +976,7 @@ public class PMBlocks implements ContentList{
                 Items.surgeAlloy, 110
             ));
 
-            size = 4;
+            size = 5;
             products = Seq.with(PMPayloads.basicMissile, PMPayloads.empMissile, PMPayloads.recursiveMissile, PMPayloads.basicNuke, PMPayloads.clusterNuke);
         }};
 
@@ -988,7 +988,7 @@ public class PMBlocks implements ContentList{
                 Items.silicon, 150
             ));
 
-            size = 4;
+            size = 3;
             products = Seq.with(PMPayloads.basicSentry, PMPayloads.strikeSentry, PMPayloads.dashSentry);
         }};
 
